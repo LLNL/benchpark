@@ -1,13 +1,14 @@
 # benchpark
-An open collaborative repository for cross site benchmarking environments
+Benchpark is an open collaborative repository for reproducible specifications of HPC benchmarks.
 
-An open collaborative repository allowing multiple sites and projects to
-share [Ramble](https://github.com/GoogleCloudPlatform/ramble) and
-[Spack](https://github.com/spack/spack) configurations in order to create
-reproducible benchmarking environments.
+An open collaborative repository allows multiple HPC sites and projects to share
+reproducible specifications of HPC benchmarks:
+* [Ramble](https://github.com/GoogleCloudPlatform/ramble) run configurations and
+* [Spack](https://github.com/spack/spack) build configurations
+in order to create reproducible benchmarking environments.
 
 ## License
 
-benchpark is released under the Apache 2.0 w/ LLVM Exception license. For more details see the [LICENSE](/LICENSE) file.
+Benchpark is released under the Apache 2.0 w/ LLVM Exception license. For more details see the [LICENSE](/LICENSE) file.
 
 LLNL-CODE-850629
