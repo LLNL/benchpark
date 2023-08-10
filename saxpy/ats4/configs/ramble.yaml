@@ -1,0 +1,39 @@
+ramble:
+  config:
+    deprecated: true
+    spack_flags:
+      install: '--add --keep-stage'
+      concretize: '-U -f'
+  variables:
+    mpi_command: 'srun -N {n_nodes} -n {n_ranks}'
+    batch_submit: '{execute_experiment}'
+  applications:
+    saxpy:
+      workloads:
+        problem:
+          variables:
+            n_ranks: '{processes_per_node} * {n_nodes}'
+            batch_time: '02:00:00'
+          experiments:
+            saxpy_{n}_{n_nodes}_{processes_per_node}_{n_ranks}:
+              variables:
+                processes_per_node: ['8', '4']
+                n_nodes: ['1', '2']
+                n: ['128', '256', '512', '1024']
+              matrix:
+                  - n
+  spack:
+    concretized: true
+    packages:
+      rocmclang551:
+        spack_spec: clang@16.0.0-rocm5.5.1
+      craympich8126:
+        spack_spec: cray-mpich@8.1.26
+      saxpy:
+        spack_spec: saxpy@1.0.0 +rocm amdgpu_target="gfx90a" 
+        compiler: rocmclang551
+    environments:
+      saxpy:
+        packages:
+        - craympich8126
+        - saxpy
