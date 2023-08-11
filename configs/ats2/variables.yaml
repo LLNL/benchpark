@@ -1,0 +1,6 @@
+variables:
+  mpi_command: 'usr/tcetmp/bin/lrun -n {n_ranks} -T {process_per_node}'
+  batch_submit: 'bsub {execute_experiment}'
+  batch_nodes: '#BSUB -nnodes {n_nodes}'
+  batch_ranks: '#BSUB -nnodes {n_nodes}'  # copy of nodes as placeholder
+  batch_timeout: '#BSUB -W {batch_time}'

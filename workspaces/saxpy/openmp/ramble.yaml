@@ -1,7 +1,7 @@
 ramble:
   include:
-  - ./spack.yaml
-  - ./variables.yaml
+  - ./configs/spack.yaml
+  - ./configs/variables.yaml
 
   config:
     deprecated: true
@@ -18,6 +18,7 @@ ramble:
               OMP_NUM_THREADS: '{n_threads}'
           variables:
             n_ranks: '8'
+            batch_time: '120'
           experiments:
             saxpy_{n}_{n_nodes}_{n_ranks}_{n_threads}:
               variables:
@@ -34,10 +35,10 @@ ramble:
     concretized: true
     packages:
       saxpy:
-        spac_spec: saxpy@1.0.0 +openmp ^cmake@3.23.1
+        spack_spec: saxpy@1.0.0 +openmp ^cmake@3.23.1
         compiler: mycompiler
     environments:
-    saxpy:
-      packages:
-      - mympi
-      - saxpy
+      saxpy:
+        packages:
+        - mympi
+        - saxpy

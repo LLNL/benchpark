@@ -1,40 +1,29 @@
 ramble:
-  include:
-  - ./configs/spack.yaml
-  - ./configs/variables.yaml
-
   config:
     deprecated: true
     spack_flags:
       install: '--add --keep-stage'
       concretize: '-U -f'
-
   applications:
     saxpy:
       workloads:
         problem:
-          env_vars:
-            set:
-              OMP_NUM_THREADS: '{n_threads}'
           variables:
-            n_ranks: '8'
+            n_ranks: '{processes_per_node} * {n_nodes}'
+            batch_time: '02:00:00'
           experiments:
-            saxpy_{n}_{n_nodes}_{n_ranks}_{n_threads}:
+            saxpy_{n}_{n_nodes}_{processes_per_node}_{n_ranks}:
               variables:
                 processes_per_node: ['8', '4']
                 n_nodes: ['1', '2']
-                n_threads: ['2', '4']
-                n: ['512', '1024']
-              matrices:
-                - size_threads:
+                n: ['128', '256', '512', '1024']
+              matrix:
                   - n
-                  - n_threads
-
   spack:
     concretized: true
     packages:
       saxpy:
-        spack_spec: saxpy@1.0.0 +openmp ^cmake@3.23.1
+        spack_spec: saxpy@1.0.0 +rocm amdgpu_target="gfx90a"
         compiler: mycompiler
     environments:
       saxpy:

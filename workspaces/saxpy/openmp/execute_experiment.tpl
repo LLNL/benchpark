@@ -1,6 +1,7 @@
 #!/bin/bash
-#BSUB -nnodes {n_nodes}
-#BSUB -W {batch_time}
+{batch_nodes}
+{batch_ranks}
+{batch_timeout}
 
 cd {experiment_run_dir}
 
