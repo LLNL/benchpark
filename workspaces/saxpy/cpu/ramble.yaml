@@ -1,12 +1,14 @@
 ramble:
+  include:
+  - ./configs/spack.yaml
+  - ./configs/variables.yaml
+
   config:
     deprecated: true
     spack_flags:
       install: '--add --keep-stage'
       concretize: '-U -f'
-  variables:
-    mpi_command: 'srun -N {n_nodes} -n {n_ranks}'
-    batch_submit: 'sbatch {execute_experiment}'
+
   applications:
     saxpy:
       workloads:
@@ -27,18 +29,15 @@ ramble:
                 - size_threads:
                   - n
                   - n_threads
+
   spack:
     concretized: true
     packages:
-      gcc1211:
-        spack_spec: gcc@12.1.1
-      mvapich2237gcc1211:
-        spack_spec: mvapich2@2.3.7-gcc12.1.1
       saxpy:
         spack_spec: saxpy@1.0.0 +openmp ^cmake@3.23.1
-        compiler: gcc1211
+        compiler: mycompiler
     environments:
       saxpy:
         packages:
-        - mvapich2237gcc1211
+        - mympi
         - saxpy

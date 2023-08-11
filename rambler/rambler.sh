@@ -1,0 +1,47 @@
+#!/bin/bash
+
+if [ -z "${3}" ]; then
+    echo "Missing arguments. Run rambler.sh $TEST_NAME $TEST_CONFIG_NAME $TEST_WORKING_DIR"
+    exit 1
+fi
+
+TEST_NAME=$1
+TEST_CONFIG_NAME=$2
+TEST_WORKING_ROOT=$3
+TEST_SOURCE_DIR=$(cd $(dirname $0)/..; pwd)
+
+TEST_WORKING_DIR=${TEST_WORKING_ROOT}/${TEST_NAME}/${TEST_CONFIG_NAME}
+TEST_WORKSPACE_SOURCE=${TEST_SOURCE_DIR}/workspaces/${TEST_NAME}
+
+rm -rf ${TEST_WORKING_DIR}
+mkdir -p ${TEST_WORKING_DIR}/workspace/configs/auxiliary_software_files
+lndir -silent ${TEST_WORKSPACE_SOURCE} ${TEST_WORKING_DIR}/workspace/configs
+lndir -silent ${TEST_SOURCE_DIR}/configs/${TEST_CONFIG_NAME} ${TEST_WORKING_DIR}/workspace/configs
+
+git clone --depth=1 -c feature.manyFiles=true https://github.com/spack/spack.git ${TEST_WORKING_DIR}/spack
+git clone --depth=1 -c feature.manyFiles=true https://github.com/GoogleCloudPlatform/ramble.git ${TEST_WORKING_DIR}/ramble
+
+export SPACK_DISABLE_LOCAL_CONFIG=1
+rm -rf ~/.ramble/repos.yaml
+
+. ${TEST_WORKING_DIR}/spack/share/spack/setup-env.sh
+. ${TEST_WORKING_DIR}/ramble/share/ramble/setup-env.sh
+spack config --scope=site add config:misc_cache:/dev/shm/$USER/.spack/cache
+#spack config --scope=site add ${TEST_SOURCE_DIR}/cts1/configs/auxiliary_software_files/compilers.yaml
+#spack config --scope=site add ${TEST_SOURCE_DIR}/cts1/configs/auxiliary_software_files/packages.yaml
+# NOTE GBB: We can avoid copying when I fix spack bug with prior two lines
+cp ${TEST_SOURCE_DIR}/configs/${TEST_CONFIG_NAME}/auxiliary_software_files/{compilers,packages}.yaml $SPACK_ROOT/etc/spack/.
+
+spack repo add --scope=site ${TEST_SOURCE_DIR}/repo
+ramble repo add --scope=site ${TEST_SOURCE_DIR}/repo
+
+echo "
+cd ${TEST_WORKING_DIR}/workspace
+
+. ${TEST_WORKING_DIR}/spack/share/spack/setup-env.sh
+. ${TEST_WORKING_DIR}/ramble/share/ramble/setup-env.sh
+
+export SPACK_DISABLE_LOCAL_CONFIG=1
+ramble -D . workspace setup
+ramble -D . on
+"

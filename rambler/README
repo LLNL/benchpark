@@ -1,0 +1,9 @@
+rambler.sh is parametrized by:
+
+1. test name
+2. system type on which to run (e.g. cts1)
+3. location in which to set up the ramble workspace
+
+e.g.
+
+./rambler.sh saxpy cts1 ${WORKSPACE}/saxpy

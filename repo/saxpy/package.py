@@ -1,16 +1,18 @@
 from spack.package import *
 import os
+import shutil
+import spack.repo
 
 class Saxpy(CMakePackage, CudaPackage, ROCmPackage):
     """Test saxpy problem."""
 
     homepage = "https://example.com"
-    url = "file://{0}/srcs/saxpy_src.tar.gz".format(os.getcwd())
     tags = ["benchmark"]
 
+    has_code = False
     test_requires_compiler = True
 
-    version('1.0.0', '8f0f17e5c0af35627fc58075249357bfb59795f892239786ddab9cdd5ee414f1', extension="tar.gz")
+    version('1.0.0')
 
     variant("openmp", default=True, description="Enable OpenMP support")
 
@@ -20,6 +22,12 @@ class Saxpy(CMakePackage, CudaPackage, ROCmPackage):
 
     depends_on("cmake")
     depends_on("mpi")
+
+    @run_before("cmake")
+    def stage_source(self):
+        repo_path = os.path.dirname(spack.repo.path.package_path(self.name))
+        for f in ["CMakeLists.txt", "saxpy.cc"]:
+            shutil.copy2(os.path.join(repo_path, f), self.stage.source_path)
 
     def setup_build_environment(self, env):
       if "+cuda" in self.spec:
