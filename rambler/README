@@ -6,5 +6,4 @@ rambler.sh is parametrized by:
 
 e.g.
 
-
 ./rambler.sh saxpy/openmp cts1 ${WORKSPACE}/saxpy/openmp
