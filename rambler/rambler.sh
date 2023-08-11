@@ -27,10 +27,6 @@ rm -rf ~/.ramble/repos.yaml
 . ${TEST_WORKING_DIR}/spack/share/spack/setup-env.sh
 . ${TEST_WORKING_DIR}/ramble/share/ramble/setup-env.sh
 spack config --scope=site add config:misc_cache:/dev/shm/$USER/.spack/cache
-#spack config --scope=site add ${TEST_SOURCE_DIR}/cts1/configs/auxiliary_software_files/compilers.yaml
-#spack config --scope=site add ${TEST_SOURCE_DIR}/cts1/configs/auxiliary_software_files/packages.yaml
-# NOTE GBB: We can avoid copying when I fix spack bug with prior two lines
-cp ${TEST_SOURCE_DIR}/configs/${TEST_CONFIG_NAME}/auxiliary_software_files/{compilers,packages}.yaml $SPACK_ROOT/etc/spack/.
 
 spack repo add --scope=site ${TEST_SOURCE_DIR}/repo
 ramble repo add --scope=site ${TEST_SOURCE_DIR}/repo
@@ -41,7 +37,10 @@ cd ${TEST_WORKING_DIR}/workspace
 . ${TEST_WORKING_DIR}/spack/share/spack/setup-env.sh
 . ${TEST_WORKING_DIR}/ramble/share/ramble/setup-env.sh
 
+<<<<<<< HEAD
 export SPACK_DISABLE_LOCAL_CONFIG=1
+=======
+>>>>>>> abd23a6 (wip alec and greg refactor)
 ramble -D . workspace setup
 ramble -D . on
 "

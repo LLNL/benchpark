@@ -17,7 +17,52 @@ packages:
   cuda:
     externals:
     - spec: cuda@11.7.0
-      prefix: /usr/tce/packages/cuda/cuda-11.7.0 
+      prefix: /usr/tce/packages/cuda/cuda-11.7.0
+      buildable: false
+  automake:
+    externals:
+    - spec: automake@1.13.4
+      prefix: /usr
+  autoconf:
+    externals:
+    - spec: autoconf@2.69
+      prefix: /usr
+  curand:
+    externals:
+    - spec: curand@10.1.243
+      prefix: /usr/tce/packages/cuda/cuda-10.1.243
+      buildable: false
+    - spec: curand@11.8.0
+      prefix: /usr/tce/packages/cuda/cuda-11.8.0
+      buildable: false
+  cusparse:
+    externals:
+    - spec: cusparse@10.1.243
+      prefix: /usr/tce/packages/cuda/cuda-10.1.243
+      buildable: false
+    - spec: cusparse@11.8.0
+      prefix: /usr/tce/packages/cuda/cuda-11.8.0
+      buildable: false
+  cuda:
+    externals:
+    - spec: cuda@10.1.243
+      prefix: /usr/tce/packages/cuda/cuda-10.1.243
+      buildable: false
+    - spec: cuda@11.8.0
+      prefix: /usr/tce/packages/cuda/cuda-11.8.0
+      buildable: false
+  blas:
+    externals:
+    - spec: cublas@10.1.243
+      prefix: /usr/tce/packages/cuda/cuda-10.1.243
+      buildable: false
+    - spec: cublas@11.8.0
+      prefix: /usr/tce/packages/cuda/cuda-11.8.0
+      buildable: false
+  lapack:
+    externals:
+    - spec: lapack-xl@3.9.0
+      prefix: /usr/tcetmp/packages/lapack/lapack-3.9.0-xl-2020.03.18
       buildable: false
   mpi:
     externals:

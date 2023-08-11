@@ -1,6 +1,12 @@
 spack:
   packages:
-    mycompiler:
+    gcc1211:
       spack_spec: gcc@12.1.1
-    mympi:
+    intel202160classic:
+      spack_spec: intel@2021.6.0-classic
+    inteloneapimkl202210:
+      spack_spec: intel-oneapi-mkl@2022.1.0
+    mvapich2237gcc1211:
       spack_spec: mvapich2@2.3.7-gcc12.1.1
+    mvapich2237intel202160classic:
+      spack_spec: mvapich2@2.3.7-intel2021.6.0-classic
