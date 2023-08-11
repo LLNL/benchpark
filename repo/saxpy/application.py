@@ -22,6 +22,7 @@ class Saxpy(SpackApplication):
 
     workload_variable('n', default='1024', description='problem size', workloads=['problem'])
 
-    figure_of_merit('success', log_file='{experiment_run_dir}/{experiment_name}.out', fom_regex=r'Kernel done', group_name='fom', units='')
+    figure_of_merit('Kernel {num} size', fom_regex=r'Kernel done \((?P<num>[0-9]+)\): (?P<size>[0-9]+)', group_name='size', units='')
+    figure_of_merit("success", fom_regex=r'(?P<done>Kernel done)', group_name='done', units='')
 
     success_criteria('pass', mode='string', match=r'Kernel done', file='{experiment_run_dir}/{experiment_name}.out')
