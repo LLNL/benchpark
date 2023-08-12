@@ -1,0 +1,33 @@
+packages:
+  gmake:
+    externals:
+    - spec: gmake@4.2.1
+      prefix: /usr/tcetmp/packages/gmake/gmake-4.2.1
+      buildable: false
+  cmake:
+    externals:
+    - spec: cmake@3.23.1
+      prefix: /usr/tce/packages/cmake/cmake-3.23.1
+      buildable: false
+  curand:
+    externals:
+    - spec: curand@11.8.0
+      prefix: /usr/tce/packages/cuda/cuda-11.8.0 
+      buildable: false
+  cusparse:
+    externals:
+    - spec: cusparse@11.8.0
+      prefix: /usr/tce/packages/cuda/cuda-11.8.0 
+      buildable: false
+  cuda:
+    externals:
+    - spec: cuda@11.8.0
+      prefix: /usr/tce/packages/cuda/cuda-11.8.0 
+      buildable: false
+  mpi:
+    externals:
+    - spec: spectrum-mpi@2022.08.19
+      prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-xl-2022.08.19
+      buildable: false
+      extra_attributes:
+        ldflags: "-L/usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-xl-2022.08.19/lib -lmpiprofilesupport -lmpi_ibm_usempi -lmpi_ibm_mpifh -lmpi_ibm"

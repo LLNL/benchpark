@@ -1,0 +1,44 @@
+ramble:
+  config:
+    deprecated: true
+    spack_flags:
+      install: '--add --keep-stage'
+      concretize: '-U -f'
+  variables:
+    mpi_command: 'flux run -N {n_nodes} -n {n_ranks} -g {n_gpus_per_task} -o gpu-affinity=per-task'
+    batch_submit: '{execute_experiment}'
+  applications:
+    raja-perf:
+      workloads:
+        suite:
+          experiments:
+            suite_{n_nodes}_{n_ranks}_{n_gpus_per_task}:
+              variables:
+                n_ranks: '1'
+                n_nodes: '1'
+                n_gpus_per_task: '1'
+  spack:
+    concretized: true
+    packages:
+      amdclang551:
+        spack_spec: clang@16.0.0-rocm5.5.1
+      gcc1220:
+        spack_spec: gcc@12.2.0
+      blt:
+        spack_spec: 'blt@0.5.2:'
+        compiler: gcc1220
+      cmake:
+        spack_spec: 'cmake@3.23.0:'
+        compiler: gcc1220
+      craympich8126:
+        spack_spec: cray-mpich@8.1.26 +gpu-aware
+      raja-perf:
+        spack_spec: raja-perf@develop +rocm~openmp amdgpu_target=gfx90a
+        compiler: amdclang551
+    environments:
+      raja-perf:
+        packages:
+        - blt
+        - cmake
+        - craympich8126
+        - raja-perf

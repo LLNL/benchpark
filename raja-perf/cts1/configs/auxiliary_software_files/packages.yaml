@@ -1,0 +1,18 @@
+packages:
+  gmake:
+    externals:
+    - spec: gmake@4.2.1
+      prefix: /usr
+      buildable: false
+  cmake:
+    externals:
+    - spec: cmake@3.23.1
+      prefix: /usr/tce
+      buildable: false
+  mpi:
+    externals:
+    - spec: mvapich2@2.3.7-gcc12.1.1
+      prefix: /usr/tce/packages/mvapich2/mvapich2-2.3.7-gcc-12.1.1
+      buildable: false
+      extra_attributes:
+        ldflags: "-L/usr/tce/packages/mvapich2/mvapich2-2.3.7-gcc-12.1.1/lib -lmpi"

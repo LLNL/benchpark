@@ -1,0 +1,47 @@
+ramble:
+  config:
+    deprecated: true
+    spack_flags:
+      install: '--add --keep-stage'
+      concretize: '-U -f'
+  variables:
+    mpi_command: 'srun -N {n_nodes} -n {n_ranks}'
+    batch_submit: 'sbatch {execute_experiment}'
+  applications:
+    raja-perf:
+      workloads:
+        suite:
+          env_vars:
+            set:
+              OMP_NUM_THREADS: '{n_threads}'
+          experiments:
+            suite_{n_nodes}_{n_ranks}_{n_threads}:
+              variables:
+                n_ranks: '1'
+                n_nodes: '1'
+                n_threads: ['8', '16']
+              matrix:
+                - n_threads
+  spack:
+    concretized: true
+    packages:
+      gcc1211:
+        spack_spec: gcc@12.1.1
+      blt:
+        spack_spec: 'blt@0.5.2:'
+        compiler: gcc1211
+      cmake:
+        spack_spec: 'cmake@3.23.1:'
+        compiler: gcc1211
+      mvapich2237gcc1211:
+        spack_spec: mvapich2@2.3.7-gcc12.1.1
+      raja-perf:
+        spack_spec: raja-perf@develop +openmp
+        compiler: gcc1211
+    environments:
+      raja-perf:
+        packages:
+        - blt
+        - cmake
+        - mvapich2237gcc1211 
+        - raja-perf
