@@ -1,9 +1,6 @@
 #!/bin/bash
-#BSUB -nnodes {n_nodes}
-#BSUB -W {batch_time}
-
-{module_purge}
-{module_load}
+{batch_nodes}
+{batch_timeout}
 
 cd {experiment_run_dir}
 
