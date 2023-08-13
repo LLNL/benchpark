@@ -18,7 +18,7 @@ ramble:
               OMP_NUM_THREADS: '{omp_num_threads}'
           variables:
             n_ranks: '{processes_per_node} * {n_nodes}'
-            batch_time: '02:00:00'
+            batch_time: '02:00'
             p: 2
             px: '{p}'
             py: '{p}'
@@ -35,18 +35,9 @@ ramble:
             threads_per_node_core: ['8', '10', '13'] #TODO: Specify n_threads according to available n_nodes and n_ranks
             omp_num_threads: '{threads_per_node_core} * {n_nodes}'
           experiments:
-            amg2023_omp_gcc1211_problem1_{n_nodes}_{omp_num_threads}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
+            amg2023_omp_{compilers}_problem1_{n_nodes}_{omp_num_threads}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
               variables:
-                env_name: 'amg2023-omp-gcc1211'
-                compiler_module: 'gcc/12.1.1'
-              matrices:
-                - size_threads:
-                  - n # TODO: Filter matrix
-                  - threads_per_node_core # TODO: Filter matrix
-            amg2023_omp_intelclassic202160_problem1_{n_nodes}_{omp_num_threads}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
-              variables:
-                env_name: 'amg2023-omp-intelclassic202160'
-                compiler_module: 'intel-classic/2021.6.0'
+                env_name: 'amg2023-omp-{compilers}'
               matrices:
                 - size_threads:
                   - n # TODO: Filter matrix
@@ -54,28 +45,18 @@ ramble:
   spack:
     concretized: true
     packages:
-      'hypre-omp-{build}':
-        variables:
-          build: ['gcc1211', 'intelclassic202160']
-          compiler_spec: ['gcc1211', 'intel202160classic']
+      'hypre-omp-{compilers}':
         spack_spec: hypre@2.28.0 +mpi+openmp+mixedint+verbose+use-mpi-wrapper
-        compiler: '{compiler_spec}'
-      'amg2023-omp-{build}':
-        variables:
-          build: ['gcc1211', 'intelclassic202160']
-          compiler_spec: ['gcc1211', 'intel202160classic']
+        compiler: '{compilers}'
+      'amg2023-omp-{compilers}':
         spack_spec: amg2023@develop +mpi+openmp+use-mpi-wrapper
-        compiler: '{compiler_spec}'
+        compiler: '{compilers}'
     environments:
-      amg2023-omp-gcc1211:
+      amg2023-omp-{compilers}:
+        matrix:
+        - compilers
         packages:
-        - inteloneapimkl202210
-        - mvapich2237gcc1211
-        - hypre-omp-gcc1211
-        - amg2023-omp-gcc1211
-      amg2023-omp-intelclassic202160:
-        packages:
-        - inteloneapimkl202210
-        - mvapich2237intel202160classic
-        - hypre-omp-intelclassic202160
-        - amg2023-omp-intelclassic202160
+        - lapack
+        - mpi-{compilers}
+        - hypre-omp-{compilers}
+        - amg2023-omp-{compilers}

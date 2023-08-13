@@ -1,10 +1,4 @@
 spack:
-  variables:
-    cuda_version: ['10.1.243', '11.8.0']
-    default_cuda: '11.8.0'
-    cuda_arch: '70'
-    xl_version: '2022.08.19'
-    mpi_version: '2022.08.19'
   packages:
     compiler-cuda{cuda_version}:
       spack_spec: xl@16.1.1-{xl_version}-cuda{cuda_version}
@@ -15,4 +9,6 @@ spack:
     lapack:
       spack_spec: lapack-xl@3.9.0
     default_mpi:
+      spack_spec: spectrum-mpi@{mpi_version}
+    mpi-{compilers}:
       spack_spec: spectrum-mpi@{mpi_version}

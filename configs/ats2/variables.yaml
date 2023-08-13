@@ -3,5 +3,11 @@ variables:
   mpi_command: '/usr/tcetmp/bin/lrun -n {n_ranks} -T {processes_per_node} {gtl_flag}'
   batch_submit: 'bsub {execute_experiment}'
   batch_nodes: '#BSUB -nnodes {n_nodes}'
-  batch_ranks: '#BSUB -T {n_ranks/n_nodes}'
+  batch_ranks: '#BSUB -nnodes {n_nodes}'
   batch_timeout: '#BSUB -W {batch_time}'
+  cuda_version: ['10.1.243', '11.8.0']
+  default_cuda: '11.8.0'
+  cuda_arch: '70'
+  xl_version: '2022.08.19'
+  mpi_version: '2022.08.19'
+  compilers: [compiler-cuda11.8.0, compiler-cuda10.1.243]
