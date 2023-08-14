@@ -21,21 +21,18 @@ class Amg2023(MakefilePackage, CudaPackage, ROCmPackage):
 
     variant("mpi", default=True, description="Enable MPI support")
     variant("openmp", default=False, description="Enable OpenMP support")
-    variant("use-mpi-wrapper", default=False, description="Use MPI wrappers instead of c, c++ and fortran compilers")
 
     depends_on("hypre@2.27.0:")
     depends_on("mpi", when="+mpi")
 
-    conflicts("+use-mpi-wrapper", when="~mpi")
-
     def edit(self, spec, prefix):
         makefile = FileFilter('Makefile')
-        if "+mpi" in spec and "+use-mpi-wrapper" in spec:
+        if "+mpi" in spec:
             makefile.filter('CC        = .*', 'CC        = {0}'.format(spec["mpi"].mpicc))
             makefile.filter('CXX       = .*', 'CXX       = {0}'.format(spec["mpi"].mpicxx))
         else:
-            makefile.filter('CC        = .*', 'CC        = {0}'.format(self.compiler.cc))
-            makefile.filter('CXX       = .*', 'CXX       = {0}'.format(self.compiler.cxx))
+            makefile.filter('CC        = .*', 'CC        = {0}'.format(spack_cc))
+            makefile.filter('CXX       = .*', 'CXX       = {0}'.format(spack_cc))
 
         makefile.filter('HYPRE_DIR = .*', 'HYPRE_DIR = {0}'.format(self.spec['hypre'].prefix))
 

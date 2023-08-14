@@ -1,6 +1,8 @@
 variables:
+  gtl_flag: ''  # to be overwritten by tests that need GTL
+  compilers: [compiler-rocm, compiler-gcc]
   mpi_command: 'srun -N {n_nodes} -n {n_ranks}'
   batch_submit: 'sbatch {execute_experiment}'
   batch_nodes: '#SBATCH -N {n_nodes}'
   batch_ranks: '#SBATCH -n {n_ranks}'
-  batch_timeout: '#SBATCH -t {batch_time}'
+  batch_timeout: '#SBATCH -t {batch_time}:00'

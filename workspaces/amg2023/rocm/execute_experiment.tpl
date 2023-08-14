@@ -1,10 +1,7 @@
 #!/bin/bash
-#SBATCH -N {n_nodes}
-#SBATCH -n {n_ranks}
-#SBATCH -t {batch_time} 
-
-{module_purge}
-{module_load}
+{batch_nodes}
+{batch_ranks}
+{batch_timeout}
 
 cd {experiment_run_dir}
 

@@ -4,9 +4,6 @@ ramble:
     spack_flags:
       install: '--add --keep-stage'
       concretize: '-U -f'
-  variables:
-    mpi_command: 'srun -N {n_nodes} -n {n_ranks}'
-    batch_submit: '{execute_experiment}'
   applications:
     amg2023:
       workloads:
@@ -14,7 +11,7 @@ ramble:
           variables:
             n_ranks: '{processes_per_node} * {n_nodes}'
             batch_time: '02:00:00'
-            p: 2 
+            p: 2
             px: '{p}'
             py: '{p}'
             pz: '{p}'
@@ -22,16 +19,12 @@ ramble:
             nx: '{n}'
             ny: '{n}'
             nz: '{n}'
-            module_purge: 'module --force purge'
-            module_load: 'module load StdEnv {cray_version} {rocm_version}' #TODO: Set from compiler config or remove entirely
             experiment_setup: ''
           experiments:
             '{env_name}_problem1_{n_nodes}_{px}_{py}_{pz}_{nx}_{ny}_{nz}':
               variables:
                 gtl: ["gtl", "no-gtl"]
                 env_name: 'amg2023-gpu-{gtl}'
-                rocm_version: 'rocm/5.5.1'
-                cray_version: 'PrgEnv-cray/8.4.0'
                 processes_per_node: ['8', '4']
                 n_nodes: ['1', '2']
               matrices:
@@ -43,8 +36,6 @@ ramble:
                   OMP_NUM_THREADS: '{omp_num_threads}'
               variables:
                 env_name: 'amg2023-omp'
-                rocm_version: 'rocm/5.5.1'
-                cray_version: 'PrgEnv-cray/8.4.0'
                 processes_per_node: ['8', '4']
                 n_nodes: ['1', '2']
                 omp_num_threads: ['1', '2', '4']
@@ -56,42 +47,31 @@ ramble:
     concretized: true
     variables:
       gtl: ["gtl", "no-gtl"]
-      gtlspec: ["+gpu-aware-mpi", "~gpu-aware-mpi"]
     packages:
-      rocmclang551:
-        spack_spec: clang@16.0.0-rocm5.5.1
-      rocblas551:
-        spack_spec: rocblas@5.5.1
-      rocsolver551:
-        spack_spec: rocsolver@5.5.1
-      craympich8126-gtl:
-        spack_spec: cray-mpich@8.1.26 +gpu-aware
-      craympich8126-no-gtl:
-        spack_spec: cray-mpich@8.1.26 ~gpu-aware
       hypre-{gtl}:
-        spack_spec: hypre@2.28.0 +mpi+rocm+mixedint{gtlspec}+verbose~use-mpi-wrapper amdgpu_target="gfx90a"
-        compiler: rocmclang551
+        spack_spec: hypre@2.28.0 +mpi+rocm+mixedint amdgpu_target="gfx90a"
+        compiler: compiler-rocm
       amg2023-gpu-{gtl}:
-        spack_spec: amg2023@develop +mpi+rocm~use-mpi-wrapper amdgpu_target="gfx90a"
-        compiler: rocmclang551
+        spack_spec: amg2023@develop +mpi+rocm amdgpu_target="gfx90a"
+        compiler: compiler-rocm
       hypre-omp:
-        spack_spec: hypre@2.28.0 +mpi+openmp+mixedint+verbose~use-mpi-wrapper # TODO: Fix spack concretization bug cflags="-fopenmp" cxxflags="-fopenmp" ldflags="-fopenmp"
-        compiler: rocmclang551
+        spack_spec: hypre@2.28.0 +mpi+openmp+mixedint
+        compiler: compiler-rocm
       amg2023-omp:
-        spack_spec: amg2023@develop +mpi+openmp~use-mpi-wrapper # TODO: Fix spack concretization bug cflags="-fopenmp" cxxflags="-fopenmp" ldflags="-fopenmp"
-        compiler: rocmclang551
+        spack_spec: amg2023@develop +mpi+openmp
+        compiler: compiler-rocm
     environments:
       amg2023-gpu-{gtl}:
         packages:
-        - rocblas551
-        - rocsolver551
-        - craympich8126-{gtl}
+        - blas-rocm
+        - lapack-rocm
+        - mpi-{gtl}
         - hypre-{gtl}
         - amg2023-gpu-{gtl}
       amg2023-omp:
         packages:
-        - rocblas551
-        - rocsolver551
-        - craympich8126-no-gtl
+        - blas-rocm
+        - lapack-rocm
+        - default-mpi
         - hypre-omp
         - amg2023-omp

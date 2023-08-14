@@ -21,12 +21,25 @@ lndir -silent ${TEST_SOURCE_DIR}/configs/${TEST_CONFIG_NAME} ${TEST_WORKING_DIR}
 git clone --depth=1 -c feature.manyFiles=true https://github.com/spack/spack.git ${TEST_WORKING_DIR}/spack
 git clone --depth=1 -c feature.manyFiles=true https://github.com/GoogleCloudPlatform/ramble.git ${TEST_WORKING_DIR}/ramble
 
+echo CLONED
+
 export SPACK_DISABLE_LOCAL_CONFIG=1
 rm -rf ~/.ramble/repos.yaml
 
+echo REMOVED
+
 . ${TEST_WORKING_DIR}/spack/share/spack/setup-env.sh
+
+echo SOURCE SPACK
+
 . ${TEST_WORKING_DIR}/ramble/share/ramble/setup-env.sh
+
+echo SOURCED RAMBLE
+
+export SPACK_DISABLE_LOCAL_CONFIG=1
 spack config --scope=site add config:misc_cache:/dev/shm/$USER/.spack/cache
+
+echo CACHE MOVED
 
 spack repo add --scope=site ${TEST_SOURCE_DIR}/repo
 ramble repo add --scope=site ${TEST_SOURCE_DIR}/repo
@@ -37,10 +50,8 @@ cd ${TEST_WORKING_DIR}/workspace
 . ${TEST_WORKING_DIR}/spack/share/spack/setup-env.sh
 . ${TEST_WORKING_DIR}/ramble/share/ramble/setup-env.sh
 
-<<<<<<< HEAD
 export SPACK_DISABLE_LOCAL_CONFIG=1
-=======
->>>>>>> abd23a6 (wip alec and greg refactor)
+
 ramble -D . workspace setup
 ramble -D . on
 "

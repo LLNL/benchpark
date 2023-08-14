@@ -4,21 +4,8 @@ from spack.pkg.builtin.hypre import Hypre as BuiltinHypre
 import os
 
 class Hypre(BuiltinHypre):
-    variant("gpu-aware-mpi", default=False, description="Enable GPU aware MPI")
-    depends_on("cray-mpich+gpu-aware", when="+gpu-aware-mpi ^cray-mpich") 
-    depends_on("cray-mpich~gpu-aware", when="~gpu-aware-mpi ^cray-mpich")                      
-
-    variant("gpu-aware-mpi", default=False, description="Enable GPU aware MPI")
-    variant("use-mpi-wrapper", default=False, description="Use MPI wrappers instead of c, c++ and fortran compilers")
-    variant("verbose", default=False, description="Enable verbose build")
-
-    depends_on("blas")
-    depends_on("lapack")
-
-    conflicts("+gpu-aware-mpi", when="~mpi")
-    conflicts("+use-mpi-wrapper", when="~mpi")
-
-    flag_handler = build_system_flags
+    requires("+rocm", when="^rocblas")
+    requires("+rocm", when="^rocsolver")
 
     def configure_args(self):
         spec = self.spec
@@ -31,7 +18,7 @@ class Hypre(BuiltinHypre):
             configure_args.append("--with-MPI")
             configure_args.append("--with-MPI-lib-dirs={0}".format(spec["mpi"].prefix.lib))
             configure_args.append("--with-MPI-include={0}".format(spec["mpi"].prefix.include))
-            if "+gpu-aware-mpi" in spec:
+            if spec.satisfies("^cray-mpich+gtl"):
                 configure_args.append("--enable-gpu-aware-mpi")
         else:
             configure_args.append("--without-MPI")
@@ -49,19 +36,23 @@ class Hypre(BuiltinHypre):
 
         if self.spec["blas"].satisfies("rocblas"):
             configure_args.append("--enable-rocblas")
+        if self.spec["lapack"].satisfies("rocsolver"):
+            rocm_rpath_flag = f"-Wl,-rpath,{os.path.dirname(spec['lapack'].prefix)}/lib"
+            sep = " " if "LDFLAGS" in os.environ else ""
+            os.environ["LDFLAGS"] = os.environ.get("LDFLAGS", "") + sep + rocm_rpath_flag
 
-        if "+mpi" in spec and "+use-mpi-wrapper" in spec:
+        if "+mpi" in spec and not spec.satisfies("^cray-mpich~wrappers"):
             os.environ["CC"] = spec["mpi"].mpicc
             os.environ["CXX"] = spec["mpi"].mpicxx
             if "+fortran" in spec:
                 os.environ["F77"] = spec["mpi"].mpif77
                 os.environ["FC"] = spec["mpi"].mpifc
         else:
-            os.environ["CC"] = self.compiler.cc
-            os.environ["CXX"] = self.compiler.cxx
+            os.environ["CC"] = spack_cc
+            os.environ["CXX"] = spack_cxx
             if "+fortran" in spec:
-                os.environ["F77"] = self.compiler.f77
-                os.environ["FC"] = self.compiler.fc
+                os.environ["F77"] = spack_f77
+                os.environ["FC"] = spack_fc
 
         if "+mpi" in spec:
             if spec["mpi"].extra_attributes and "ldflags" in spec["mpi"].extra_attributes:
@@ -165,18 +156,18 @@ class Hypre(BuiltinHypre):
 
     def setup_build_environment(self, env):
         spec = self.spec
-        if "+mpi" in spec and "+use-mpi-wrapper" in spec:
+        if "+mpi" in spec and not spec.satisfies("^cray-mpich~wrappers"):
             env.set("CC", spec["mpi"].mpicc)
             env.set("CXX", spec["mpi"].mpicxx)
             if "+fortran" in spec:
                 env.set("F77", spec["mpi"].mpif77)
                 env.set("FC", spec["mpi"].mpifc)
         else:
-            env.set("CC", self.compiler.cc)
-            env.set("CXX", self.compiler.cxx)
+            env.set("CC", spack_cc)
+            env.set("CXX", spack_cxx)
             if "+fortran" in spec:
-               env.set("F77", self.compiler.f77)
-               env.set("FC", self.compiler.fc)
+                env.set("F77", spack_f77)
+                env.set("FC", spack_fc)
 
         if "+cuda" in spec:
             env.set("CUDA_HOME", spec["cuda"].prefix)
@@ -195,4 +186,3 @@ class Hypre(BuiltinHypre):
             env.append_flags("CFLAGS", "-fopenmp")
             env.append_flags("CXXFLAGS", "-fopenmp")
             env.append_flags("LDFLAGS", "-fopenmp")
-
