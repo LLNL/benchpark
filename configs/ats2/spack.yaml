@@ -1,0 +1,6 @@
+spack:
+  packages:
+    mycompiler:
+      spack_spec: xl@16.1.1-2022.08.19-cuda11.7.0
+    mympi:
+      spack_spec: spectrum-mpi@2022.08.19-cuda-11.7.0

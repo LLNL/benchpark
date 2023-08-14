@@ -1,0 +1,6 @@
+spack:
+  packages:
+    mycompiler:
+      spack_spec: clang@16.0.0-rocm5.5.1
+    mympi:
+      spack_spec: cray-mpich@8.1.26

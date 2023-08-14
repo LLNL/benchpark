@@ -1,0 +1,6 @@
+spack:
+  packages:
+    mycompiler:
+      spack_spec: gcc@12.1.1
+    mympi:
+      spack_spec: mvapich2@2.3.7-gcc12.1.1
