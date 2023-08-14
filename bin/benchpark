@@ -36,7 +36,6 @@ echo SOURCE SPACK
 
 echo SOURCED RAMBLE
 
-export SPACK_DISABLE_LOCAL_CONFIG=1
 spack config --scope=site add config:misc_cache:/dev/shm/$USER/.spack/cache
 
 echo CACHE MOVED
@@ -50,7 +49,7 @@ cd ${TEST_WORKING_DIR}/workspace
 . ${TEST_WORKING_DIR}/spack/share/spack/setup-env.sh
 . ${TEST_WORKING_DIR}/ramble/share/ramble/setup-env.sh
 
-export SPACK_DISABLE_LOCAL_CONFIG=1
+export SPACK_DISABLE_LOCAL_CONFIG
 
 ramble -D . workspace setup
 ramble -D . on
