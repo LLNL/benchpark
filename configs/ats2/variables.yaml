@@ -1,6 +1,13 @@
 variables:
-  mpi_command: '/usr/tcetmp/bin/lrun -n {n_ranks} -T {processes_per_node}'
-  batch_submit: 'bsub {execute_experiment}'
+  gtl_flag: ''  # to be overwritten by tests that need GTL
+  mpi_command: '/usr/tcetmp/bin/lrun -n {n_ranks} -T {processes_per_node} {gtl_flag}'
+  batch_submit: 'bsub -q pdebug {execute_experiment}'
   batch_nodes: '#BSUB -nnodes {n_nodes}'
-  batch_ranks: '#BSUB -nnodes {n_nodes}'  # copy of nodes as placeholder
+  batch_ranks: '#BSUB -nnodes {n_nodes}'
   batch_timeout: '#BSUB -W {batch_time}'
+  cuda_version: ['10.1.243', '11.8.0']
+  default_cuda: '11.8.0'
+  cuda_arch: '70'
+  xl_version: '2022.08.19'
+  mpi_version: '2022.08.19'
+  compilers: [compiler-cuda11.8.0, compiler-cuda10.1.243]

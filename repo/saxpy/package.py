@@ -49,6 +49,8 @@ class Saxpy(CMakePackage, CudaPackage, ROCmPackage):
 
         if '+openmp' in spec:
             args.append('-DUSE_OPENMP=ON')
+        else:
+            args.append("-DUSE_OPENMP=OFF")
 
         if '+cuda' in spec:
             args.append('-DCMAKE_CUDA_HOST_COMPILER={0}'.format(spec["mpi"].mpicxx))

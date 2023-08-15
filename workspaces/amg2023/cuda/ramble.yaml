@@ -1,0 +1,100 @@
+ramble:
+  config:
+    deprecated: true
+    spack_flags:
+      install: '--add --keep-stage'
+      concretize: '-U -f'
+  applications:
+    amg2023:
+      workloads:
+        problem1:
+          variables:
+            n_ranks: '{processes_per_node} * {n_nodes}'
+            batch_time: '02:00'
+            p: 2
+            px: '{p}'
+            py: '{p}'
+            pz: '{p}'
+            n: ['10', '20']
+            nx: '{n}'
+            ny: '{n}'
+            nz: '{n}'
+            experiment_setup: ''
+          experiments:
+            amg2023_cuda{cuda_version}_problem1_{gtl}_{n_nodes}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
+              variables:
+                experiment_setup: ['/usr/tcetmp/bin/enable_mps', '']
+                env_name: 'amg2023-cuda{cuda_version}'
+                xl_version: 'xl/2022.08.19'
+                gtl: 'nogtl'
+                gtlflag: ''
+                processes_per_node: ['8', '4']
+                n_nodes: ['1', '2']
+              #zips:
+              #  gtl_info:
+              #  - gtl
+              #  - gtlflag
+              matrices:
+                - size:
+                  - n # TODO: Filter matrix
+                  #- gtl_info
+            amg2023_cuda{cuda_version}_problem1_{gtl}_{n_nodes}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
+              variables:
+                experiment_setup: ['/usr/tcetmp/bin/enable_mps', '']
+                env_name: 'amg2023-cuda{cuda_version}'
+                xl_version: 'xl/2022.08.19'
+                gtl: 'gtl'
+                gtlflag: '-M"-gpu"'
+                processes_per_node: ['8', '4']
+                n_nodes: ['1', '2']
+              matrices:
+                - size:
+                  - n
+            amg2023_omp_problem1_{n_nodes}_{omp_num_threads}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
+              env_vars:
+                set:
+                  OMP_NUM_THREADS: '{omp_num_threads}'
+              variables:
+                env_name: 'amg2023-omp'
+                cuda_version: ''
+                xl_version: 'xl/2022.08.19'
+                gtlflag: ''
+                processes_per_node: ['8', '4']
+                n_nodes: ['1', '2']
+                omp_num_threads: ['1', '2', '4']
+              matrices:
+                - size_threads:
+                  - n # TODO: Filter matrix
+                  - omp_num_threads # TODO: Filter matrix
+  spack:
+    concretized: true
+    packages:
+      hypre-cuda{cuda_version}:
+        spack_spec: hypre@2.28.0 +mpi+cuda+mixedint cuda_arch={cuda_arch} ^cuda@{cuda_version}
+        compiler: compiler-cuda{cuda_version}
+      amg2023-cuda{cuda_version}:
+        spack_spec: amg2023@develop +mpi+cuda ^cuda@{cuda_version}
+        compiler: compiler-cuda{cuda_version}
+      hypre-omp:
+        spack_spec: hypre@2.28.0 +mpi+openmp+mixedint ~cuda
+        compiler: default-compiler
+      amg2023-omp:
+        spack_spec: amg2023@develop +mpi+openmp~cuda
+        compiler: default-compiler
+    environments:
+      amg2023-cuda{cuda_version}:
+        matrix:
+        - cuda_version
+        packages:
+        - cublas{cuda_version}
+        - lapack
+        - default-mpi
+        - hypre-cuda{cuda_version}
+        - amg2023-cuda{cuda_version}
+      amg2023-omp:
+        packages:
+        - cublas{default_cuda}
+        - lapack
+        - default-mpi
+        - hypre-omp
+        - amg2023-omp
