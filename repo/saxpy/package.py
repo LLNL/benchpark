@@ -47,6 +47,9 @@ class Saxpy(CMakePackage, CudaPackage, ROCmPackage):
 
         args.append('-DCMAKE_CXX_COMPILER={0}'.format(spec["mpi"].mpicxx))
 
+        if '+openmp' in spec:
+            args.append('-DUSE_OPENMP=ON')
+
         if '+cuda' in spec:
             args.append('-DCMAKE_CUDA_HOST_COMPILER={0}'.format(spec["mpi"].mpicxx))
             args.append('-DCMAKE_CUDA_COMPILER={0}'.format(spec["cuda"].prefix + "/bin/nvcc"))
