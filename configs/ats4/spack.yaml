@@ -1,9 +1,9 @@
 spack:
   packages:
-    mycompiler:
-      spack_spec: clang@16.0.0-rocm5.5.1
-    mympi:
-      spack_spec: cray-mpich@8.1.26
+    default-compiler:
+      spack_spec: cce@16.0.0-rocm5.5.1
+    default-mpi:
+      spack_spec: cray-mpich@8.1.26%cce ~gtl
     compiler-rocm:
       spack_spec: cce@16.0.0-rocm5.5.1
     compiler-gcc:
@@ -14,8 +14,6 @@ spack:
       spack_spec: rocsolver@5.5.1
     lapack:
       spack_spec: cray-libsci@23.05.1.4
-    default-mpi:
-      spack_spec: cray-mpich@8.1.26%cce ~gtl
     mpi-compiler-rocm:
       spack_spec: cray-mpich@8.1.26%cce ~gtl
     mpi-compiler-gcc:

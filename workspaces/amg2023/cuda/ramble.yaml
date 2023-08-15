@@ -77,10 +77,10 @@ ramble:
         compiler: compiler-cuda{cuda_version}
       hypre-omp:
         spack_spec: hypre@2.28.0 +mpi+openmp+mixedint ~cuda
-        compiler: default_compiler
+        compiler: default-compiler
       amg2023-omp:
         spack_spec: amg2023@develop +mpi+openmp~cuda
-        compiler: default_compiler
+        compiler: default-compiler
     environments:
       amg2023-cuda{cuda_version}:
         matrix:
@@ -88,13 +88,13 @@ ramble:
         packages:
         - cublas{cuda_version}
         - lapack
-        - default_mpi
+        - default-mpi
         - hypre-cuda{cuda_version}
         - amg2023-cuda{cuda_version}
       amg2023-omp:
         packages:
         - cublas{default_cuda}
         - lapack
-        - default_mpi
+        - default-mpi
         - hypre-omp
         - amg2023-omp

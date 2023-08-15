@@ -12,21 +12,21 @@ ramble:
             n_ranks: '{processes_per_node} * {n_nodes}'
             batch_time: '120'
           experiments:
-            saxpy_{n}_{n_nodes}_{processes_per_node}_{n_ranks}:
+            saxpy_cuda{cuda_version}_{n}_{n_nodes}_{processes_per_node}_{n_ranks}:
               variables:
                 processes_per_node: '4'
                 n_nodes: '1'
                 n: ['128', '256', '512', '1024']
               matrix:
-                  - n
+              - n
   spack:
     concretized: true
     packages:
       saxpy:
-        spack_spec: saxpy@1.0.0 +cuda cuda_arch=70 ^cuda@11.7.0
-        compiler: mycompiler
+        spack_spec: saxpy@1.0.0 +cuda cuda_arch=70 ^cuda@11.8.0
+        compiler: default-compiler
     environments:
       saxpy:
         packages:
-        - mympi
+        - default-mpi
         - saxpy

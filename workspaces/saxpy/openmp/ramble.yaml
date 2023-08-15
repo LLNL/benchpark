@@ -36,9 +36,9 @@ ramble:
     packages:
       saxpy:
         spack_spec: saxpy@1.0.0 +openmp ^cmake@3.23.1
-        compiler: mycompiler
+        compiler: default-compiler
     environments:
       saxpy:
         packages:
-        - mympi
+        - default-mpi
         - saxpy

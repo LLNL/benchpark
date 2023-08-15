@@ -49,7 +49,7 @@ cd ${TEST_WORKING_DIR}/workspace
 . ${TEST_WORKING_DIR}/spack/share/spack/setup-env.sh
 . ${TEST_WORKING_DIR}/ramble/share/ramble/setup-env.sh
 
-export SPACK_DISABLE_LOCAL_CONFIG
+export SPACK_DISABLE_LOCAL_CONFIG=1
 
 ramble -D . workspace setup
 ramble -D . on
