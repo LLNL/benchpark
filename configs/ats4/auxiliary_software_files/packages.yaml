@@ -137,18 +137,16 @@ packages:
     externals:
     - spec: rocthrust@5.4.3
       prefix: /opt/rocm-5.4.3
-      buildable: false
     - spec: rocthrust@5.5.1
       prefix: /opt/rocm-5.5.1
-      buildable: false
+    buildable: false
   hip:
     externals:
     - spec: hip@5.4.3
       prefix: /opt/rocm-5.4.3
-      buildable: false
     - spec: hip@5.5.1
       prefix: /opt/rocm-5.5.1
-      buildable: false
+    buildable: false
   hsa-rocr-dev:
     externals:
     - spec: hsa-rocr-dev@5.4.3
@@ -183,8 +181,12 @@ packages:
       buildable: false
   cray-libsci:
     externals:
-    - spec: cray-libsci@23.05.1.4
+    - spec: cray-libsci@23.05.1.4%cce
+      prefix: /opt/cray/pe/libsci/23.05.1.4/cray/12.0/x86_64/
+    - spec: cray-libsci@23.05.1.4%gcc
       prefix: /opt/cray/pe/libsci/23.05.1.4/gnu/10.3/x86_64/
+  lapack:
+    buildable: false
   hypre:
     variants: amdgpu_target=gfx90a
   mpi:

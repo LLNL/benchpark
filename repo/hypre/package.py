@@ -7,6 +7,11 @@ class Hypre(BuiltinHypre):
     requires("+rocm", when="^rocblas")
     requires("+rocm", when="^rocsolver")
 
+    compiler_to_cpe_name = {
+        "cce": "cray",
+        "gcc": "gnu",
+    }
+
     def configure_args(self):
         configure_args = super().configure_args()
 
@@ -29,3 +34,11 @@ class Hypre(BuiltinHypre):
         if spec["lapack"].satisfies("rocsolver"):
             rocm_rpath_flag = f"-Wl,-rpath,{os.path.dirname(spec['lapack'].prefix)}/lib"
             env.append_flags("LDFLAGS", rocm_rpath_flag)
+        if spec["lapack"].satisfies("cray-libsci"):
+            libsci_name = "sci_"
+            libsci_name += self.compiler_to_cpe_name[spec.compiler.name]
+            if spec.satisfies("+mpi"):
+                libsci_name += "_mpi"
+            if spec.satisfies("+openmp"):
+                libsci_name += "_mp"
+            env.append_flags("LDFLAGS", f"-L{spec['lapack'].prefix}/lib -l{libsci_name}")

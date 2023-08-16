@@ -45,7 +45,7 @@ class Amg2023(MakefilePackage, CudaPackage, ROCmPackage):
             makefile.filter('HYPRE_HIP_LIBS    =', '#HYPRE_HIP_LIBS    =')
 
         if "+rocm" in spec:
-            makefile.filter('HYPRE_HIP_PATH    = .*', 'HYPRE_HIP_PATH    = ${ROCM_PATH}')
+            makefile.filter('HYPRE_HIP_PATH    = .*', f'HYPRE_HIP_PATH    = {spec["hip"].prefix}')
         else:
             makefile.filter('HYPRE_HIP_PATH    =', '#HYPRE_HIP_PATH    =')
             makefile.filter('HYPRE_HIP_INCLUDE =', '#HYPRE_HIP_INCLUDE =')
