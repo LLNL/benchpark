@@ -64,14 +64,14 @@ ramble:
       amg2023-gpu-{gtl}:
         packages:
         - blas-rocm
-        - lapack-rocm
+        - lapack
         - mpi-{gtl}
         - hypre-{gtl}
         - amg2023-gpu-{gtl}
       amg2023-omp:
         packages:
         - blas-rocm
-        - lapack-rocm
+        - lapack
         - default-mpi
         - hypre-omp
         - amg2023-omp

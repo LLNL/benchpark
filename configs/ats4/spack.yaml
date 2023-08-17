@@ -10,8 +10,8 @@ spack:
       spack_spec: gcc@12.2.0
     blas-rocm:
       spack_spec: rocblas@5.5.1
-    lapack-rocm:
-      spack_spec: rocsolver@5.5.1
+#    lapack-rocm:
+#      spack_spec: rocsolver@5.5.1
     lapack:
       spack_spec: cray-libsci@23.05.1.4
     mpi-compiler-rocm:
