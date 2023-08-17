@@ -1,6 +1,6 @@
 rambler.sh is parametrized by:
 
-1. test name (the subdirectory of `workspaces` that contains `ramble.yaml`)
+1. test name (the subdirectory of `experiments` that contains `ramble.yaml`)
 2. system type on which to run (e.g. cts1)
 3. location in which to set up the ramble workspace
 
