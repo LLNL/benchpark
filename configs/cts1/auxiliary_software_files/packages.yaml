@@ -1,4 +1,13 @@
 packages:
+  papi:
+    externals:
+    - spec: papi@6.0.0.1
+      prefix: /usr/tce/packages/papi/papi-6.0.0.1
+      buildable: false
+  elfutils:
+    externals:
+    - spec: elfutils@0.188
+      prefix: /usr
   tar:
     externals:
     - spec: tar@1.30
@@ -22,6 +31,11 @@ packages:
     externals:
     - spec: intel-oneapi-mkl@2022.1.0
       prefix: /usr/tce/backend/installations/linux-rhel8-x86_64/intel-19.0.4/intel-oneapi-mkl-2022.1.0-sksz67twjxftvwchnagedk36gf7plkrp
+      buildable: false
+  python:
+    externals:
+    - spec: python@3.9.12
+      prefix: /usr/tce/packages/python/python-3.9.12/
       buildable: false
   mpi:
     externals:

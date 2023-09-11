@@ -1,6 +1,15 @@
 packages:
   all:
     require: target=x86_64
+  papi:
+    externals:
+    - spec: papi@7.0.0.2
+      prefix: /opt/cray/pe/papi/7.0.0.2
+      buildable: false
+  elfutils:
+    externals:
+    - spec: elfutils@0.188
+      prefix: /usr
   tar:
     externals:
     - spec: tar@1.30
@@ -189,6 +198,11 @@ packages:
     buildable: false
   hypre:
     variants: amdgpu_target=gfx90a
+  python:
+    externals:
+    - spec: python@3.9.12
+      prefix: /usr/tce/packages/python/python-3.9.12/
+      buildable: false
   mpi:
     buildable: false
   cray-mpich:

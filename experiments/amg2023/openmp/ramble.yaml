@@ -27,6 +27,7 @@ ramble:
             nx: '{n}'
             ny: '{n}'
             nz: '{n}'
+            configs: 'time'
             module_purge: 'module --force purge'
             module_load: 'module load StdEnv {compiler_module}' #TODO: Set from compiler config or remove entirely
             experiment_setup: ''
@@ -46,11 +47,13 @@ ramble:
     concretized: true
     packages:
       'hypre-omp-{compilers}':
-        spack_spec: hypre@2.28.0 ~fortran+mpi+openmp+mixedint
+        spack_spec: hypre@2.28.0 +caliper ~fortran+mpi+openmp+mixedint
         compiler: '{compilers}'
       'amg2023-omp-{compilers}':
-        spack_spec: amg2023@develop +mpi+openmp
+        spack_spec: amg2023@cmake-build +caliper +mpi+openmp
         compiler: '{compilers}'
+      caliper:
+        spack_spec: caliper
     environments:
       amg2023-omp-{compilers}:
         matrix:
@@ -60,3 +63,7 @@ ramble:
         - mpi-{compilers}
         - hypre-omp-{compilers}
         - amg2023-omp-{compilers}
+        - caliper
+  modifiers:
+    - name: caliper
+      mode: time

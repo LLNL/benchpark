@@ -31,6 +31,7 @@ spack config --scope=site add config:misc_cache:/dev/shm/$USER/.spack/cache
 
 spack repo add --scope=site ${TEST_SOURCE_DIR}/repo
 ramble repo add --scope=site ${TEST_SOURCE_DIR}/repo
+ramble repo add -t modifiers --scope=site ${TEST_SOURCE_DIR}/repo
 
 echo "
 cd ${TEST_WORKING_DIR}/workspace
