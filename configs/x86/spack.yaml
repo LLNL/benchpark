@@ -3,12 +3,12 @@ spack:
     default-compiler:
       spack_spec: gcc@12.2.0
     default-mpi:
-      spack_spec: mvapich2@2.3.7-gcc12
+      spack_spec: mvapich2@2.3.7
     gcc12:
       spack_spec: gcc@12.2.0
-    intel202160classic:
-      spack_spec: intel@2021.6.0-classic
+    intelbasic:
+      spack_spec: intel-oneapi-compilers@2023.2.0
     lapack:
       spack_spec: intel-oneapi-mkl@2022.1.0
-    mpi-{compilers}:
-      spack_spec: mvapich2@2.3.7-{compilers}
+    mpi-{compiler}:
+      spack_spec: mvapich2@2.3.7%{compiler}
