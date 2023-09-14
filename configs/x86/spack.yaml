@@ -1,11 +1,11 @@
 spack:
   packages:
     default-compiler:
-      spack_spec: gcc@12.1.1
+      spack_spec: gcc@12.2.0
     default-mpi:
-      spack_spec: mvapich2@2.3.7-gcc1211
-    gcc1211:
-      spack_spec: gcc@12.1.1
+      spack_spec: mvapich2@2.3.7-gcc12
+    gcc12:
+      spack_spec: gcc@12.2.0
     intel202160classic:
       spack_spec: intel@2021.6.0-classic
     lapack:
