@@ -20,6 +20,11 @@ lndir -silent ${TEST_SOURCE_DIR}/configs/${TEST_CONFIG_NAME} ${TEST_WORKING_DIR}
 
 git clone --depth=1 -c feature.manyFiles=true https://github.com/spack/spack.git ${TEST_WORKING_DIR}/spack
 git clone --depth=1 -c feature.manyFiles=true https://github.com/GoogleCloudPlatform/ramble.git ${TEST_WORKING_DIR}/ramble
+save_root=`pwd`
+cd "${TEST_WORKING_DIR}/ramble"
+git fetch --depth=20 origin develop
+git checkout a9afb3596daa51e41984bb3d1e9579bcfccbb4c1
+cd "$save_root"
 
 export SPACK_DISABLE_LOCAL_CONFIG=1
 rm -rf ~/.ramble/repos.yaml
