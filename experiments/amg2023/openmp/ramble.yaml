@@ -37,8 +37,18 @@ ramble:
             omp_num_threads: '{threads_per_node_core} * {n_nodes}'
           experiments:
             amg2023_omp_{compilers}_problem1_{n_nodes}_{omp_num_threads}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
+              modifiers:
+                - name: caliper
+                  mode: spot 
+              success_criteria:
+                - name: solve_fom
+                  mode: fom_comparison
+                  fom_name: '{target_fom_name}'
+                  formula: '{value} > {target_fom_value}'
               variables:
                 env_name: 'amg2023-omp-{compilers}'
+                target_fom_name: 'Solve-FOM'
+                target_fom_value: 3.0E+09
               matrices:
                 - size_threads:
                   - n # TODO: Filter matrix
@@ -64,6 +74,3 @@ ramble:
         - hypre-omp-{compilers}
         - amg2023-omp-{compilers}
         - caliper
-  modifiers:
-    - name: caliper
-      mode: time

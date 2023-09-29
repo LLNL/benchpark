@@ -49,11 +49,3 @@ class Amg2023(SpackApplication):
     workload_variable('nz', default='220',
                       description='nz',
                       workloads=['problem1', 'problem2'])
-
-    figure_of_merit('Figure of Merit (FOM)', log_file='{experiment_run_dir}/{experiment_name}.out', fom_regex=r'Figure of Merit \(FOM\):\s+(?P<fom>[0-9]+\.[0-9]*(e^[0-9]*)?)', group_name='fom', units='')
-
-    #TODO: Fix the FOM success_criteria(...)
-    success_criteria('pass', mode='string', match=r'Figure of Merit \(FOM\)', file='{experiment_run_dir}/{experiment_name}.out')
-
-    def evaluate_success(self):
-      return True
