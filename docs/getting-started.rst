@@ -2,7 +2,7 @@
 Getting Started
 ===============
 
-To install benchpark make sure you have git and Python 3.6+. Then:
+Python 3.6 and git are required to install Benchpark.
 
 ```
 $ git clone https://github.com/llnl/benchpark.git
