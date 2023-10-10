@@ -6,18 +6,18 @@ Benchpark is an open collaborative repository for reproducible specifications of
 Benchpark enables cross-site collaboration on benchmarking by providing a mechanism for sharing
 reproducible, working specifications for the following:
 
-* **Benchmark specification**
+1. **System specification** 
+
+  - location of system compilers, system MPI
+  - scheduler and launcher on the system
+
+2. **Benchmark specification**
 
   - source repo and version
   - build (Spack) configuration
   - run (Ramble) configuration 
 
-* **System specification** 
-
-  - location of system compilers, system MPI
-  - scheduler and launcher on the system
-
-* **Experiment specification**
+3. **Experiment specification**
 
   - programming models to use for benchmarks on a given system type
   - valid experiments for benchmarks on a given system 
@@ -34,6 +34,7 @@ a set of self-contained configuration files required
 to correctly build and execute those experiments. 
  
 Configuration files are organized as follows:: 
+
   ${APP_SOURCE_DIR} 
   ├── configs 
   │  ├── ${SYSTEM} 
@@ -56,31 +57,32 @@ Configuration files are organized as follows::
      │  └── package.py 
      └── repo.yaml 
 
+
 A complete experiment specification requires three types of config files:  
 
-1. **System-specific:** Configuration files required by Spack to build the code on the target system. The following is required for each given system ``${SYSTEM}``:
+1. **System specification:** Configuration files required by Spack to build the code on the target system. The following is required for each given system ``${SYSTEM}``:
 
   - ``compilers.yaml`` define the compilers on the system.
   - ``packages.yaml`` define the pre-installed packages  (e.g., system MPI) on the system.
   - ``spack.yaml`` defines names for Spack compiler and package specs. 
   - ``variables.yaml`` defines system-specific launcher and job scheduler. 
  
-2. **Application-specific:** Specifications for building and running an application/benchmark, independent of the target system. The following is required for each benchmark: 
+2. **Benchmark specification:** Specifications for building and running an application/benchmark, independent of the target system. The following is required for each benchmark: 
 
   - ``package.py`` is a Spack specification that defines how to build and install the benchmark.
   - ``application.py`` is a Ramble specification that defines the benchmark input and parameters.
 
-By default, the specifications provided in the Spack and Ramble repos will be used.
-The user can override the default specifications by providing custom specifications in Benchpark, 
+By default, benchmark specifications provided in the Spack and Ramble repos will be used.
+The user can override these default benchmark specifications by providing custom specifications in Benchpark, 
 and pointing Spack and Ramble to these custom specifications instead::
   spack repo add --scope=site ${APP_SOURCE_DIR}/repo 
   ramble repo add --scope=site ${APP_SOURCE_DIR}/repo 
 
-Note that the ${APP_SOURCE_DIR}/repo needs a repo.yaml to distinguish the application’s spec 
+Note that the ``${APP_SOURCE_DIR}/repo`` needs a ``repo.yaml`` to distinguish the application’s spec 
 from the default Spack/Ramble spec for the same application, if one exists. 
 
 
-3. **Experiment-specific:** 
+3. **Experiment specification:** 
 
   - ``ramble.yaml`` defines the specs for building, running, analyzing and archiving experiments. 
   - ``execution_template.tpl`` serves as a template for the actual experiment script that will be executed. 
