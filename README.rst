@@ -5,31 +5,40 @@ benchpark
 Benchpark is an open collaborative repository for reproducible specifications of HPC benchmarks.
 Benchpark enables cross-site collaboration on benchmarking by providing a mechanism for sharing
 reproducible, working specifications for the following:
-* Benchmark specifications
+
+1. **System specifications** 
+
+  - location of system compilers, system MPI
+  - scheduler and launcher on the system
+
+2. **Benchmark specifications**
+
   - source repo and version
   - build (Spack) configuration
   - run (Ramble) configuration 
-* System specifications 
-  - location of system compilers, system MPI
-  - scheduler and launcher on the system
-* Experiment specifications
+
+3. **Experiment specifications**
+
   - programming models to use for benchmarks on a given system type
   - valid experiments for benchmarks on a given system 
+
     + scientific parameter studies
     + performance parameter studies
 
 Dependencies
 ------------
 Benchpark uses the following open source projects for specifying configurations:
+
 * `Ramble <https://github.com/GoogleCloudPlatform/ramble>`_ run configurations and
 * `Spack <https://github.com/spack/spack>`_ build configurations
 
 Documentation
 -------------
-1. `Getting Started <docs/getting-started.rst>`_
-2. `Running a Benchmark <docs/running-a-benchmark.rst>`_
-3. `Adding a Custom System Config <docs/adding-a-system-config.rst>`_
-4. `Adding a New Benchmark <docs/adding-a-benchmark.rst>`_
+1. `Getting started <docs/getting-started.rst>`_
+2. `Navigating Benchpark <docs/navigating-benchpark.rst>`_
+3. `Running a Benchmark <docs/running-a-benchmark.rst>`_
+4. `Adding a new System Config <docs/adding-a-system-config.rst>`_
+5. `Adding a new Benchmark <docs/adding-a-benchmark.rst>`_
 
 Community
 ---------
