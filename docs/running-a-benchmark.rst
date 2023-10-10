@@ -1,7 +1,7 @@
 =================================
 Running a benchmark in Benchpark
 =================================
-After installing Benchpark, one can select a benchmark experiment to run on a specified system type.
+After installing Benchpark, select a benchmark experiment to run on a specified system type.
 
 Create a directory for a given experiment
 ----------------------------------------- 
