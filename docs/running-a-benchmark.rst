@@ -181,9 +181,9 @@ Analyze the experiment results
 -----------------------------------------
 Once the experiments have been run, the command 
 
-```
+``
 ramble -D . workspace analyze 
-```
+``
 
 is used to analyze figures of merit and evaluate `success/failure <https://googlecloudplatform.github.io/ramble/success_criteria.html>`_ of the experiments. Ramble generates a summary results file at ``$workspace``
 
