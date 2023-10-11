@@ -5,6 +5,9 @@ After installing Benchpark, select a benchmark experiment to run on a specified 
 
 Benchpark experiments are modeled as a `Ramble workspace <https://googlecloudplatform.github.io/ramble/workspace.html>`_ – a set of self-contained configuration files required to correctly build and execute those experiments.
 
+Configuring Benchpark experiments
+-----------------------------------------
+
 The structure of the benchpark repository is as follows:
 
 ```
