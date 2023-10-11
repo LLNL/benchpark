@@ -1,0 +1,14 @@
+spack:
+  packages:
+    default-compiler:
+      spack_spec: xl@16.1.1-{xl_version}-cuda{default_cuda}
+    default-mpi:
+      spack_spec: spectrum-mpi@{mpi_version}
+    compiler-cuda{cuda_version}:
+      spack_spec: xl@16.1.1-{xl_version}-cuda{cuda_version}
+    cublas{cuda_version}:
+      spack_spec: cublas@{cuda_version}
+    lapack:
+      spack_spec: lapack-xl@3.9.0
+    mpi-{compilers}:
+      spack_spec: spectrum-mpi@{mpi_version}

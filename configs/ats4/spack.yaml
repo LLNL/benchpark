@@ -1,0 +1,24 @@
+spack:
+  packages:
+    default-compiler:
+      spack_spec: cce@16.0.0-rocm5.5.1
+    default-mpi:
+      spack_spec: cray-mpich@8.1.26%cce ~gtl
+    compiler-rocm:
+      spack_spec: cce@16.0.0-rocm5.5.1
+    compiler-gcc:
+      spack_spec: gcc@12.2.0
+    blas-rocm:
+      spack_spec: rocblas@5.5.1
+#    lapack-rocm:
+#      spack_spec: rocsolver@5.5.1
+    lapack:
+      spack_spec: cray-libsci@23.05.1.4
+    mpi-compiler-rocm:
+      spack_spec: cray-mpich@8.1.26%cce ~gtl
+    mpi-compiler-gcc:
+      spack_spec: cray-mpich@8.1.26%gcc ~gtl
+    mpi-gtl:
+      spack_spec: cray-mpich@8.1.26%cce +gtl
+    mpi-no-gtl:
+      spack_spec: cray-mpich@8.1.26%cce ~gtl
