@@ -79,8 +79,6 @@ The following steps should be followed to configure an experiment in Benchpark:
 
 ``mkdir $workspace``
 
-``cd $workspace``
-
 4. Clone the Spack and Ramble repositories. Skip this step if Spack/Ramble installation is already available
 
 ``git clone --depth=1 -c feature.manyFiles=true https://github.com/spack/spack.git $workspace/spack``
@@ -105,9 +103,16 @@ The following steps should be followed to configure an experiment in Benchpark:
 
 ``ramble repo add --scope=site $benchpark/repo``
 
+8. Copy the required system and experiment config files to $workspace
+
+``cp -r $benchpark/configs/ats4/* $workspace/configs
+
+``cp -r $benchpark/experiments/amg2023/cuda/* $workspace/configs
+
+
 To simplify the configuration process, we provide a script with the Benchpark repository ``$benchpark/bin/benchpark``
 
-This script 
+This script needs the system name, backend name and the 
 
 Create a directory for a given experiment
 ----------------------------------------- 
