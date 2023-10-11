@@ -99,7 +99,7 @@ The following steps should bbe followed to configure an experiment in Benchpark
 
 ``rm -rf ~/.ramble/repos.yaml``
 
-7. Point Spack and Ramble to the Benchpark package and application repositories respectively
+7. Point Spack and Ramble to the Benchpark package and application repository
 
 ``spack repo add --scope=site $benchpark/repo``
 
