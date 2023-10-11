@@ -67,7 +67,7 @@ The top-level ``repo.yaml`` provides a unique namespace for the benchpark reposi
 
 Configuring Benchpark experiments
 -----------------------------------------
-The following steps should bbe followed to configure an experiment in Benchpark
+The following steps should be followed to configure an experiment in Benchpark:
 
 1. Clone the Benchpark repository at some location ``$benchpark``
 
@@ -105,6 +105,9 @@ The following steps should bbe followed to configure an experiment in Benchpark
 
 ``ramble repo add --scope=site $benchpark/repo``
 
+To simplify the configuration process, we provide a script with the Benchpark repository ``$benchpark/bin/benchpark``
+
+This script 
 
 Create a directory for a given experiment
 ----------------------------------------- 
