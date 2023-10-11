@@ -6,7 +6,7 @@ System descriptions are located in ``configs/``. Each system type is
 added as a subdirectory. If your system is not covered by
 any of the existing descriptions, you can add a new directory.
 
-This directory contains:
+This directory name should identify the system and  contains:
 
 - `spack.yaml  <https://googlecloudplatform.github.io/ramble/configuration_files.html#spack-config>`_: this is a Ramble configuration file
 
