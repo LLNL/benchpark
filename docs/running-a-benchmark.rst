@@ -65,6 +65,34 @@ The top-level ``repo.yaml`` provides a unique namespace for the benchpark reposi
 
 **Experiment-specific** – These specs are located in ``$benchpark/experiments``. They are organized by the target "backend" for the experiment e.g. ``$benchpark/experiment/amg2023/cuda`` for a CUDA-based experiment and ``$benchpark/experiment/amg2023/openmp`` for an OpenMP-based experiment. These files, in conjunction with the system configuration files and package/application repositories, are used to generate a set of concrete Ramble experiments for the target system and backend. ``ramble.yaml`` defines the `Ramble specs <https://googlecloudplatform.github.io/ramble/workspace_config.html#workspace-config>`_ for building, running, analyzing and archiving experiments. ``execution_template.tpl`` provides the template script from which the final experiment script to be executed is concretized.
 
+Configuring Benchpark experiments
+-----------------------------------------
+The following steps should bbe followed to configure an experiment in Benchpark
+
+1. Clone the Benchpark repository at some location ``$benchpark``
+
+``git clone git@github.com:LLNL/benchpark.git $benchpark``
+
+2. Add the required system-, application- and experiment-specific config files for the benchmark to ``$benchpark`` as desribed `above <https://github.com/LLNL/benchpark/edit/rfhaque-patch-1/docs/running-a-benchmark.rst?pr=%2FLLNL%2Fbenchpark%2Fpull%2F19#understanding-benchpark-repository-structure>`_
+
+3. Create an experiment directory at some location ``$workspace``
+
+``mkdir $workspace``
+
+``cd $workspace``
+
+4. Clone the Spack and Ramble repositories. Skip this step if Spack/Ramble installation is already available
+
+``git clone --depth=1 -c feature.manyFiles=true https://github.com/spack/spack.git $workspace/spack``
+
+``git clone --depth=1 -c feature.manyFiles=true https://github.com/GoogleCloudPlatform/ramble.git $workspace/ramble``
+
+5. Source the Spack/Ramble shell scripts for your environment
+
+``. $workspace/spack/share/spack/setup-env.sh``
+
+``. $workspace/ramble/share/ramble/setup-env.sh``
+
 Create a directory for a given experiment
 ----------------------------------------- 
 ```
