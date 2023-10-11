@@ -5,7 +5,7 @@ After installing Benchpark, select a benchmark experiment to run on a specified 
 
 Benchpark experiments are modeled as a `Ramble workspace <https://googlecloudplatform.github.io/ramble/workspace.html>`_ – a set of self-contained configuration files required to correctly build and execute those experiments.
 
-Configuring Benchpark experiments
+Understanding Benchpark repository structure
 -----------------------------------------
 
 The structure of the benchpark repository is as follows:
@@ -52,7 +52,7 @@ $benchpark
 |     └── repo.yaml
 ```
 
-In order to create a complete experiment specification on a target system, we require three sets of config files:
+In order to create a concrete set of experiments for a benchmark on a given target system, we require the following three sets of config files:
 
 **System-specific** – These specs are located in ``$benchpark/configs``. These are Spack configuration files required to build the code on a given system e.g. ``ats4`` or ``cts1``. The user can either use an existing system configuration provided by benchpark for instance, ``$benchpark/configs/ats4`` or provide their own configuration at ``$benchpark/configs``. For a target system, files ``compilers.yaml`` and ``packages.yaml`` `provide <https://spack.readthedocs.io/en/latest/configuration.html>`_, respectively, the compilers and package definitions (e.g. MPI) required by Spack to build an application on that system. ``spack.yaml`` provides names for Spack compiler/packages specs that are used by Ramble to create its Spack environment. ``variables.yaml`` defines system-specific variables to be used by the experiments e.g. application launcher and job scheduler available on the system.
 
@@ -63,7 +63,7 @@ ramble repo add --scope=site $benchpark/repo``
 
 The top-level ``repo.yaml`` provides a unique namespace for the benchpark repository.
 
-**Experiment-specific** – These specs are located in ``$benchpark/experiments``. They are organized by the target "backend" for the experiment e.g. ``$benchpark/experiment/amg2023/cuda`` for a CUDA-based experiment and ``$benchpark/experiment/amg2023/openmp`` for an OpenMP-bassed experiment. These files, in conjunction with the system configuration files and package/application repositories, are used to generate a set of concrete Ramble experiments for the target system and backend. ``ramble.yaml`` defines the `Ramble specs <https://googlecloudplatform.github.io/ramble/workspace_config.html#workspace-config>`_ for building, running, analyzing and archiving experiments. ``execution_template.tpl`` provides the template script from which the final experiment script to be executed is concretized.
+**Experiment-specific** – These specs are located in ``$benchpark/experiments``. They are organized by the target "backend" for the experiment e.g. ``$benchpark/experiment/amg2023/cuda`` for a CUDA-based experiment and ``$benchpark/experiment/amg2023/openmp`` for an OpenMP-based experiment. These files, in conjunction with the system configuration files and package/application repositories, are used to generate a set of concrete Ramble experiments for the target system and backend. ``ramble.yaml`` defines the `Ramble specs <https://googlecloudplatform.github.io/ramble/workspace_config.html#workspace-config>`_ for building, running, analyzing and archiving experiments. ``execution_template.tpl`` provides the template script from which the final experiment script to be executed is concretized.
 
 Create a directory for a given experiment
 ----------------------------------------- 
