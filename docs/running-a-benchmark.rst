@@ -113,7 +113,7 @@ To simplify the configuration process, we provide a script with the Benchpark re
 
 This script takes as input the system name, experiment backend name and the location of the experiment directory and sets the Spack/Ramble configuration appropriately.
 
-``$benchpark/bin/benchpark ats4 amg2023/cuda $workspace``
+``$benchpark/bin/benchpark amg2023/cuda ats4 $workspace``
 
 Building the benchmark and setting up a workspace
 ----------------------------------------- 
@@ -174,11 +174,16 @@ $workspace
 |                └── ...
 ```
 
-An individual experiment instance can also be executed directly by running its script (e.g. ``$workspace/experiments/amg2023/problem1/amg2023_cuda11.8.0_problem1_1_8_2_2_2_10_10_10/execute_experiment``)
-Note that rerunning experiments overwrite existing output files.
+An experiment instance can also be executed individually by directly invoking its ``execute_experiment`` script (e.g. ``$workspace/experiments/amg2023/problem1/amg2023_cuda11.8.0_problem1_1_8_2_2_2_10_10_10/execute_experiment``)
+Note that rerunning experiments overwrites any existing output files.
 
 Analyze the experiment results 
 -----------------------------------------
+Once the experiments have been run, the command 
+
 ```
 ramble -D . workspace analyze 
 ```
+
+is used to analyze figures of merit and evaluate `success/failure <https://googlecloudplatform.github.io/ramble/success_criteria.html>`_ of the experiments. Ramble generates a summary results file at ``$workspace``
+
