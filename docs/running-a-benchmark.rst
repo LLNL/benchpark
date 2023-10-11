@@ -93,6 +93,19 @@ The following steps should bbe followed to configure an experiment in Benchpark
 
 ``. $workspace/ramble/share/ramble/setup-env.sh``
 
+6. Clean the spack and Ramble environment
+
+``export SPACK_DISABLE_LOCAL_CONFIG=1``
+
+``rm -rf ~/.ramble/repos.yaml``
+
+7. Point Spack and Ramble to the Benchpark package and application repositories respectively
+
+``spack repo add --scope=site $benchpark/repo``
+
+``ramble repo add --scope=site $benchpark/repo``
+
+
 Create a directory for a given experiment
 ----------------------------------------- 
 ```
