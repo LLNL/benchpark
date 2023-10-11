@@ -105,31 +105,77 @@ The following steps should be followed to configure an experiment in Benchpark:
 
 8. Copy the required system and experiment config files to $workspace
 
-``cp -r $benchpark/configs/ats4/* $workspace/configs
+``cp -r $benchpark/configs/ats4/* $workspace/configs``
 
-``cp -r $benchpark/experiments/amg2023/cuda/* $workspace/configs
-
+``cp -r $benchpark/experiments/amg2023/cuda/* $workspace/configs``
 
 To simplify the configuration process, we provide a script with the Benchpark repository ``$benchpark/bin/benchpark``
 
-This script needs the system name, backend name and the 
+This script takes as input the system name, experiment backend name and the location of the experiment directory and sets the Spack/Ramble configuration appropriately.
 
-Create a directory for a given experiment
+``$benchpark/bin/benchpark ats4 amg2023/cuda $workspace``
+
+Building the benchmark and setting up a workspace
 ----------------------------------------- 
+This step builds the application using Spack.
+
+``cd $workspace``
+
+``ramble -D . workspace setup``
+
+It also creates the set of concrete experiments to be executed. After workspace setup is complete, Ramble creates a ``$workspace/experiments`` directory with a unique subdirectory for each experiment instance
+
 ```
-cd ${APP_WORKING_DIR}/workspace 
+$workspace
+| └── experiments
+|    └── amg2023
+|        └── problem1
+|            ├── amg2023_cuda11.8.0_problem1_1_8_2_2_2_10_10_10
+|            │   ├── execute_experiment
+|            │   └── ...
+|            ├── amg2023_cuda11.8.0_problem1_2_4_2_2_2_10_10_10
+|            │   ├── execute_experiment
+|            │   └── ...
+|            ├── amg2023_cuda11.8.0_problem1_1_8_2_2_2_20_20_20
+|            │   ├── execute_experiment
+|            │   └── ...
+|            └── amg2023_cuda11.8.0_problem1_2_4_2_2_2_20_20_20
+|                ├── execute_experiment
+|                └── ...
 ```
-Set up a workspace
+Each instance gets its own ``execute_experiment`` script that is used to set input paramaters/environment variables, run the experiment and generate the output.
+
+Run the experiment(s)
 -----------------------------------------
+This step runs all the experiments in the workspace. An output file is generated for each experiment in its unique directory.
+
+``ramble -D . on``
+
 ```
-ramble -D . workspace setup 
+$workspace
+| └── experiments
+|    └── amg2023
+|        └── problem1
+|            ├── amg2023_cuda11.8.0_problem1_1_8_2_2_2_10_10_10
+|            │   ├── execute_experiment
+|            │   ├── amg2023_cuda11.8.0_problem1_1_8_2_2_2_10_10_10.out
+|            │   └── ...
+|            ├── amg2023_cuda11.8.0_problem1_2_4_2_2_2_10_10_10
+|            │   ├── execute_experiment
+|            │   ├── amg2023_cuda11.8.0_problem1_2_4_2_2_2_10_10_10.out
+|            │   └── ...
+|            ├── amg2023_cuda11.8.0_problem1_1_8_2_2_2_20_20_20
+|            │   ├── execute_experiment
+|            │   ├── amg2023_cuda11.8.0_problem1_1_8_2_2_2_20_20_20.out
+|            │   └── ...
+|            └── amg2023_cuda11.8.0_problem1_2_4_2_2_2_20_20_20
+|                ├── execute_experiment
+|                ├── amg2023_cuda11.8.0_problem1_2_4_2_2_2_20_20_20.out
+|                └── ...
 ```
 
-Run the experiment
------------------------------------------
-```
-ramble -D . on 
-```
+An individual experiment instance can also be executed directly by running its script (e.g. ``$workspace/experiments/amg2023/problem1/amg2023_cuda11.8.0_problem1_1_8_2_2_2_10_10_10/execute_experiment``)
+Note that rerunning experiments overwrite existing output files.
 
 Analyze the experiment results 
 -----------------------------------------
