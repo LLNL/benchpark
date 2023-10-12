@@ -54,7 +54,7 @@ Authors and citations
 ---------------------
 Many thanks to Benchpark's `contributors <https://github.com/llnl/benchpark/graphs/contributors>`_.
 
-Benchpark was created by Olga Pearce, Alec Scott, Greg Becker, Riyaz Haque, Nathan Hanford.
+Benchpark was created by Olga Pearce, Alec Scott, Greg Becker, Riyaz Haque, and Nathan Hanford.
 
 To cite Benchpark, please use the following citation:
 
