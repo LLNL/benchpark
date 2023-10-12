@@ -8,8 +8,8 @@ reproducible, working specifications for the following:
 
 1. **System specifications** 
 
-- location of system compilers, system MPI
-- scheduler and launcher on the system
+- location of system compilers and system MPI
+- system scheduler and launcher
 
 2. **Benchmark specifications**
 
