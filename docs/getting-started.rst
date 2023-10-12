@@ -9,6 +9,7 @@ $ git clone https://github.com/llnl/benchpark.git
 $ cd benchpark/bin
 $ ./benchpark benchmark/ProgrammingModel system /output/path/to/workspace
 ```
+
 where:
 
 - ``benchmark/ProgrammingModel:`` amg2023/openmp | amg2023/cuda | saxpy/openmp (available choices in benchpark/experiments)
