@@ -22,9 +22,9 @@ Benchpark requires Spack to build its experiment(s).
 If a default Spack installation is not available on the test system, 
 it can be cloned from the github repository as follows: 
 
-``
+```
 git clone --depth=1 -c feature.manyFiles=true https://github.com/spack/spack.git ${APP_WORKING_DIR}/spack 
-``
+```
 
 Once a Spack installation is available, source the appropriate script for your shell:
 ``` 
