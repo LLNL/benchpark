@@ -26,8 +26,8 @@ Dependencies
 ------------
 Benchpark uses the following open source projects for specifying configurations:
 
-* `Ramble <https://github.com/GoogleCloudPlatform/ramble>`_ ro specify run configurations, and
-* `Spack <https://github.com/spack/spack>`_ to specify build configurations.
+* `Ramble <https://github.com/GoogleCloudPlatform/ramble>`_ ro specify run configurations
+* `Spack <https://github.com/spack/spack>`_ to specify build configurations
 
 Documentation
 -------------
