@@ -11,7 +11,7 @@ The following steps should be followed to configure an experiment in Benchpark:
 
 ``git clone git@github.com:LLNL/benchpark.git $benchpark``
 
-2. Add the required system-, application- and experiment-specific config files for the benchmark to ``$benchpark`` as desribed `above <https://github.com/LLNL/benchpark/edit/rfhaque-patch-1/docs/running-a-benchmark.rst?pr=%2FLLNL%2Fbenchpark%2Fpull%2F19#understanding-benchpark-repository-structure>`_
+2. Add the required system-, application- and experiment-specific config files for the benchmark to ``$benchpark`` as desribed `above <docs/navigating-benchpark.rst>`_
 
 3. Create an experiment directory at some location ``$workspace``
 
