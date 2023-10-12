@@ -11,8 +11,8 @@ $ ./benchpark benchmark/ProgrammingModel system /output/path/to/workspace
 ```
 where:
 
-- `benchmark/ProgrammingModel:` amg2023/openmp | amg2023/cuda | saxpy/openmp (available choices in available in benchpark/experiments)
-- `system:` ats2 | ats4 | cts1 (available choices in benchpark/configs)
+- ``benchmark/ProgrammingModel:`` amg2023/openmp | amg2023/cuda | saxpy/openmp (available choices in available in benchpark/experiments)
+- ``system:`` ats2 | ats4 | cts1 (available choices in benchpark/configs)
 
 Installation
 --------------
