@@ -22,8 +22,8 @@ reproducible, working specifications for the following:
 - programming models to use for benchmarks on a given system type
 - valid experiments for benchmarks on a given system 
 
-    + scientific parameter studies
-    + performance parameter studies
++ scientific parameter studies
++ performance parameter studies
 
 Dependencies
 ------------
