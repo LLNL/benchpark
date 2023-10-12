@@ -20,10 +20,7 @@ reproducible, working specifications for the following:
 3. **Experiment specifications**
 
 - programming models to use for benchmarks on a given system type
-- valid experiments for benchmarks on a given system 
-
-+ scientific parameter studies
-+ performance parameter studies
+- valid experiments for benchmarks on a given system (scientific parameter studies, performance parameter studies, etc.)
 
 Dependencies
 ------------
