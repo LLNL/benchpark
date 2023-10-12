@@ -8,19 +8,19 @@ reproducible, working specifications for the following:
 
 1. **System specifications** 
 
-  - location of system compilers, system MPI
-  - scheduler and launcher on the system
+- location of system compilers, system MPI
+- scheduler and launcher on the system
 
 2. **Benchmark specifications**
 
-  - source repo and version
-  - build (Spack) configuration
-  - run (Ramble) configuration 
+- source repo and version
+- build (Spack) configuration
+- run (Ramble) configuration 
 
 3. **Experiment specifications**
 
-  - programming models to use for benchmarks on a given system type
-  - valid experiments for benchmarks on a given system 
+- programming models to use for benchmarks on a given system type
+- valid experiments for benchmarks on a given system 
 
     + scientific parameter studies
     + performance parameter studies
@@ -34,11 +34,12 @@ Benchpark uses the following open source projects for specifying configurations:
 
 Documentation
 -------------
-1. `Getting started <docs/getting-started.rst>`_
-2. `Navigating Benchpark <docs/navigating-benchpark.rst>`_
-3. `Running a Benchmark <docs/running-a-benchmark.rst>`_
-4. `Adding a new System Config <docs/adding-a-system-config.rst>`_
-5. `Adding a new Benchmark <docs/adding-a-benchmark.rst>`_
+1. `About Benchpark <docs/about-benchpark.rst>`_
+2. `Getting started <docs/getting-started.rst>`_
+3. `Navigating Benchpark <docs/navigating-benchpark.rst>`_
+4. `Running a Benchmark <docs/running-a-benchmark.rst>`_
+5. `Adding a new System Config <docs/adding-a-system-config.rst>`_
+6. `Adding a new Benchmark <docs/adding-a-benchmark.rst>`_
 
 Community
 ---------
