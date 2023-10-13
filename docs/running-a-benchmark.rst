@@ -1,7 +1,8 @@
 =================================
 Running a benchmark in Benchpark
 =================================
-After installing Benchpark, select a benchmark experiment to run on a specified system type.
+After following the directions in `Getting Started <docs/getting-started.rst>`_ to instal Benchpark, 
+select a benchmark experiment to run on a specified system type.
 
 Configuring Benchpark experiments
 -----------------------------------------
