@@ -1,0 +1,37 @@
+ramble:
+  include:
+  - ./configs/spack.yaml
+  - ./configs/variables.yaml
+
+  config:
+    deprecated: true
+    spack_flags:
+      install: '--add --keep-stage'
+      concretize: '-U -f'
+  applications:
+    raja-perf:
+      workloads:
+        suite:
+          experiments:
+            suite_{n_nodes}_{n_ranks}:
+              variables:
+                processes_per_node: ['1', '2', '4']
+                n_ranks: '{processes_per_node} * {n_nodes}'
+                n_nodes: '1'
+                cuda_version: ''
+                compilers: ''
+  spack:
+    concretized: true
+    packages:
+      blt:
+        spack_spec: 'blt@0.5.2:'
+        compiler: default-compiler
+      raja-perf:
+        spack_spec: raja-perf@develop +cuda~openmp+mpi cxxflags="-g -O2 -std=c++14" cuda_arch=70 ^cuda@11.8.0
+        compiler: default-compiler
+    environments:
+      raja-perf:
+        packages:
+        - blt
+        - default-mpi
+        - raja-perf
