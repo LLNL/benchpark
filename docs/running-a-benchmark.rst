@@ -24,15 +24,19 @@ for your experiment as described in `Getting Started <docs/getting-started.rst>`
   git clone --depth=1 -c feature.manyFiles=true https://github.com/spack/spack.git $workspace/spack
   git clone --depth=1 -c feature.manyFiles=true https://github.com/GoogleCloudPlatform/ramble.git $workspace/ramble
 
-5. Source the Spack/Ramble shell scripts for your environment::
+5. Source the Spack/Ramble shell scripts for your environment:
 
+``
   . $workspace/spack/share/spack/setup-env.sh
   . $workspace/ramble/share/ramble/setup-env.sh
+``
 
-6. Clean the spack and Ramble environment::
+6. Clean the spack and Ramble environment:
 
-  export SPACK_DISABLE_LOCAL_CONFIG=1
-  rm -rf ~/.ramble/repos.yaml
+```
+export SPACK_DISABLE_LOCAL_CONFIG=1
+rm -rf ~/.ramble/repos.yaml
+```
 
 7. Point Spack and Ramble to the Benchpark package and application repository::
 
