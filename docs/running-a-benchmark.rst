@@ -9,11 +9,12 @@ The following steps should be followed to configure an experiment in Benchpark.
 
 1. Clone the Benchpark repository at some location ``$benchpark``::
 
-git clone git@github.com:LLNL/benchpark.git $benchpark
+  git clone git@github.com:LLNL/benchpark.git $benchpark
 
-2. Add the required system-, application- and experiment-specific config files for the benchmark to ``$benchpark`` as described `above <docs/navigating-benchpark.rst>`_
+2. Set up the required system-, application- and experiment-specific config files 
+for your experiment as described in `Getting Started <docs/getting-started.rst>`_
 
-3. Create an experiment directory at some location ``$workspace``_::
+3. Create an experiment directory at some location ``$workspace`` ::
 
   mkdir $workspace
 
@@ -44,7 +45,7 @@ git clone git@github.com:LLNL/benchpark.git $benchpark
 
 To simplify the configuration process, we provide a script with the Benchpark repository ``$benchpark/bin/benchpark``.
 This script takes as input the system name, experiment programming model, and the location of the experiment directory, 
-and sets the Spack and Ramble configurations appropriately::
+and sets the Spack and Ramble configurations::
 
   $benchpark/bin/benchpark amg2023/cuda ats4 $workspace
 
