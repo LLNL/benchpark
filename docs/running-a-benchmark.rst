@@ -12,10 +12,10 @@ The following steps should be followed to configure an experiment in Benchpark.
   git clone git@github.com:LLNL/benchpark.git $benchpark
 
 2. Set up the required system-, application- and experiment-specific config files 
-for your experiment as described in `Getting Started <docs/getting-started.rst>`
+for your experiment as described in `Getting Started <docs/getting-started.rst>`_
+
 
 3. Create an experiment directory at some location ``$workspace`` ::
-
   mkdir $workspace
 
 4. Clone the Spack and Ramble repositories. Skip this step if Spack/Ramble installation is already available::
