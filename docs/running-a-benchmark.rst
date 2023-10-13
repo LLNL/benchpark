@@ -36,11 +36,10 @@ for your experiment as described in `Getting Started <docs/getting-started.rst>`
 
 7. Point Spack and Ramble to the Benchpark package and application repository::
 
-  spack repo add --scope=site $benchpark/repo
-  ramble repo add --scope=site $benchpark/repo
+  ``spack repo add --scope=site $benchpark/repo``
+  ``ramble repo add --scope=site $benchpark/repo``
 
-Copy the required system and experiment config files to $workspace::
-~~~~~~~~~~~`
+8. Copy the required system and experiment config files to $workspace::
 
   cp -r $benchpark/configs/ats4/* $workspace/configs
   cp -r $benchpark/experiments/amg2023/cuda/* $workspace/configs
