@@ -12,7 +12,7 @@ The following steps should be followed to configure an experiment in Benchpark.
   git clone git@github.com:LLNL/benchpark.git $benchpark
 
 2. Set up the required system-, application- and experiment-specific config files 
-for your experiment as described in `Getting Started <docs/getting-started.rst>`_
+for your experiment as described in `Getting Started <docs/getting-started.rst>`
 
 3. Create an experiment directory at some location ``$workspace`` ::
 
