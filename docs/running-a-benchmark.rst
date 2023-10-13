@@ -7,9 +7,9 @@ Configuring Benchpark experiments
 -----------------------------------------
 The following steps should be followed to configure an experiment in Benchpark.
 
-1. Clone the Benchpark repository at some location ``$benchpark``_::
+1. Clone the Benchpark repository at some location ``$benchpark``::
 
-  git clone git@github.com:LLNL/benchpark.git $benchpark
+git clone git@github.com:LLNL/benchpark.git $benchpark
 
 2. Add the required system-, application- and experiment-specific config files for the benchmark to ``$benchpark`` as described `above <docs/navigating-benchpark.rst>`_
 
