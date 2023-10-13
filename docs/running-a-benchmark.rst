@@ -16,6 +16,7 @@ for your experiment as described in `Getting Started <docs/getting-started.rst>`
 
 
 3. Create an experiment directory at some location ``$workspace`` ::
+
   mkdir $workspace
 
 4. Clone the Spack and Ramble repositories. Skip this step if Spack/Ramble installation is already available::
