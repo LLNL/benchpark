@@ -8,41 +8,37 @@ Configuring Benchpark experiments
 -----------------------------------------
 The following steps should be followed to configure an experiment in Benchpark.
 
-1. Clone the Benchpark repository at some location ``$benchpark``::
+1 Clone the Benchpark repository at some location ``$benchpark``::
 
   git clone git@github.com:LLNL/benchpark.git $benchpark
 
-2. Set up the required system-, application- and experiment-specific config files 
+2 Set up the required system-, application- and experiment-specific config files 
 for your experiment as described in `Getting Started <docs/getting-started.rst>`_
 
 
-3. Create an experiment directory at some location ``$workspace`` ::
+3 Create an experiment directory at some location ``$workspace`` ::
 
   mkdir $workspace
 
-4. Clone the Spack and Ramble repositories. Skip this step if Spack/Ramble installation is already available::
+4 Clone the Spack and Ramble repositories. Skip this step if Spack/Ramble installation is already available::
 
   git clone --depth=1 -c feature.manyFiles=true https://github.com/spack/spack.git $workspace/spack
   git clone --depth=1 -c feature.manyFiles=true https://github.com/GoogleCloudPlatform/ramble.git $workspace/ramble
 
-5. Source the Spack/Ramble shell scripts for your environment:
+5 Source the Spack/Ramble shell scripts for your environment::
 
-``
   . $workspace/spack/share/spack/setup-env.sh
   . $workspace/ramble/share/ramble/setup-env.sh
-``
 
-6. Clean the spack and Ramble environment:
+6 Clean the spack and Ramble environment::
 
-```
 export SPACK_DISABLE_LOCAL_CONFIG=1
 rm -rf ~/.ramble/repos.yaml
-```
 
-7. Point Spack and Ramble to the Benchpark package and application repository::
+7 Point Spack and Ramble to the Benchpark package and application repository::
 
-  ``spack repo add --scope=site $benchpark/repo``
-  ``ramble repo add --scope=site $benchpark/repo``
+  spack repo add --scope=site $benchpark/repo
+  ramble repo add --scope=site $benchpark/repo
 
 8 Copy the required system and experiment config files to $workspace::
 
