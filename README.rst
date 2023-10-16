@@ -31,12 +31,13 @@ Benchpark uses the following open source projects for specifying configurations:
 
 Documentation
 -------------
-1. `About Benchpark <docs/about-benchpark.rst>`_
-2. `Getting started <docs/getting-started.rst>`_
-3. `Navigating Benchpark <docs/navigating-benchpark.rst>`_
-4. `Running a Benchmark <docs/running-a-benchmark.rst>`_
-5. `Adding a new System Config <docs/adding-a-system-config.rst>`_
-6. `Adding a new Benchmark <docs/adding-a-benchmark.rst>`_
+1. `Checkout benchpark <docs/1-checkout-benchpark.rst>`_
+2. `Browse benchpark <docs/2-browse-benchpark.rst>`_
+3. `(opt) Edit benchpark <docs/3-opt-edit-benchpark.rst>`_
+4. `Setup experiment <docs/4-setup-experiment.rst>`_
+5. `Run experiment <docs/5-run-experiment.rst>`_ 
+6. `Add a new System Config <docs/add-a-system-config.rst>`_
+7. `Add a new Benchmark <docs/add-a-benchmark.rst>`_
 
 Community
 ---------
