@@ -15,22 +15,22 @@ where:
 This command will generate a unique ``$workspace/experiments`` 
 directory for each experiment with the following directory structure::
 
-$workspace
-| └── experiments
-|    └── amg2023
-|        └── problem1
-|            ├── amg2023_cuda11.8.0_problem1_1_8_2_2_2_10_10_10
-|            │   ├── execute_experiment
-|            │   └── ...
-|            ├── amg2023_cuda11.8.0_problem1_2_4_2_2_2_10_10_10
-|            │   ├── execute_experiment
-|            │   └── ...
-|            ├── amg2023_cuda11.8.0_problem1_1_8_2_2_2_20_20_20
-|            │   ├── execute_experiment
-|            │   └── ...
-|            └── amg2023_cuda11.8.0_problem1_2_4_2_2_2_20_20_20
-|                ├── execute_experiment
-|                └── ...
+  $workspace
+  | └── experiments
+  |    └── amg2023
+  |        └── problem1
+  |            ├── amg2023_cuda11.8.0_problem1_1_8_2_2_2_10_10_10
+  |            │   ├── execute_experiment
+  |            │   └── ...
+  |            ├── amg2023_cuda11.8.0_problem1_2_4_2_2_2_10_10_10
+  |            │   ├── execute_experiment
+  |            │   └── ...
+  |            ├── amg2023_cuda11.8.0_problem1_1_8_2_2_2_20_20_20
+  |            │   ├── execute_experiment
+  |            │   └── ...
+  |            └── amg2023_cuda11.8.0_problem1_2_4_2_2_2_20_20_20
+  |                ├── execute_experiment
+  |                └── ...
 
 Each workspace has its own ``execute_experiment`` script which 
 will set input paramaters and environment variables, run the experiment, and generate the output.
