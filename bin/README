@@ -1,4 +1,4 @@
-rambler.sh is parametrized by:
+benchpark is parametrized by:
 
 1. test name (the subdirectory of `experiments` that contains `ramble.yaml`)
 2. system type on which to run (e.g. cts1)
@@ -6,4 +6,4 @@ rambler.sh is parametrized by:
 
 e.g.
 
-./rambler.sh saxpy/openmp cts1 ${WORKSPACE}/saxpy/openmp
+./benchpark saxpy/openmp cts1 ${WORKSPACE}/saxpy/openmp
