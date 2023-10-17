@@ -4,14 +4,45 @@ import argparse
 
 def main():
     parser = argparse.ArgumentParser(description="Benchpark")
-    parser.add_argument('benchmark', type=str, help="The benchmark to run")
-    parser.add_argument('system', type=str, help="The system we are on")
-    parser.add_argument('working directory', type=str, help="Where to install packages, store results, etc.")
+
+    subparsers = parser.add_subparsers(title="Subcommands", dest="subcommand")
+
+    actions = {}
+    benchpark_list(subparsers, actions)
+    benchpark_create(subparsers, actions)
 
     args = parser.parse_args()
 
+    if not args.subcommand:
+        print("Must specify subcommand: " + " ".join(actions.keys()))
+    elif args.subcommand in actions:
+        actions[args.subcommand](args)
+    else:
+        print("Invalid subcommand ({args.subcommand}) - must choose one of: " +  " ".join(actions.keys()))
 
+def benchpark_list(subparsers, actions_dict):
+    list_parser = subparsers.add_parser("list", help="List available benchmarks and systems")
 
+    actions_dict["list"] = benchpark_list_handler
+
+def benchpark_list_handler(args):
+    pass
+
+def benchpark_create(subparsers, actions_dict):
+    create_parser = subparsers.add_parser("create", help="Create a benchmark and prepare it to build/run")
+
+    create_parser.add_argument('benchmark', type=str, help="The benchmark to run")
+    create_parser.add_argument('system', type=str, help="The system we are on")
+    create_parser.add_argument('working-dir', type=str, help="Where to install packages, store results, etc.")
+
+    actions_dict["create"] = benchpark_create_handler
+
+def benchpark_create_handler(args):
+    workspace = args.working_dir
+    system = args.system
+    benchmark = args.benchmark
+
+    #shutil.rmtree(workspace)
 
 if __name__ == "__main__":
     main()
