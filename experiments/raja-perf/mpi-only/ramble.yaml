@@ -28,7 +28,7 @@ ramble:
     packages:
       blt:
         spack_spec: 'blt@0.5.2:'
-        compiler: default-compiler
+        compiler: gcc831
       'raja-perf-{compilers}':
         spack_spec: raja-perf@develop ~openmp +mpi ^cmake@3.23.1
         compiler: '{compilers}'

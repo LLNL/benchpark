@@ -17,6 +17,7 @@ ramble:
               variables:
                 processes_per_node: ['1', '2', '4']
                 n_ranks: '{processes_per_node} * {n_nodes}'
+                batch_time: '02:00'
                 n_nodes: '1'
                 cuda_version: ''
                 compilers: ''
@@ -25,9 +26,9 @@ ramble:
     packages:
       blt:
         spack_spec: 'blt@0.5.2:'
-        compiler: default-compiler
+        compiler: gcc831
       raja-perf:
-        spack_spec: raja-perf@develop +cuda~openmp+mpi cxxflags="-g -O2 -std=c++14" cuda_arch=70 ^cuda@11.8.0
+        spack_spec: raja-perf@develop +cuda~openmp+mpi cuda_arch=70 ^cuda@11.8.0
         compiler: default-compiler
     environments:
       raja-perf:
