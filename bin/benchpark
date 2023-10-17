@@ -68,7 +68,10 @@ def benchpark_create_handler(args):
     workspace_root/
         <benchmark>/
             <system>/
-                workspace/configs -> source/configs/<system>
+                workspace/
+                    configs/
+                        (everything from source/configs/<system>)
+                        (everything from source/experiments/<benchmark>)
                 spack/
                 ramble/
     """
@@ -92,8 +95,10 @@ def benchpark_create_handler(args):
     ramble_configs_dir = ramble_workspace_dir / "configs"
 
     configs_src_dir = source_dir / "configs" /  str(system)
+    experiment_src_dir = source_dir / "experiments" / benchmark
 
-    os.symlink(configs_src_dir, ramble_configs_dir)
+    shutil.copytree(configs_src_dir, ramble_configs_dir)
+    shutil.copytree(experiment_src_dir, ramble_configs_dir, dirs_exist_ok=True)
 
     spack_location = workspace_dir / "spack"
     ramble_location = workspace_dir / "ramble"
