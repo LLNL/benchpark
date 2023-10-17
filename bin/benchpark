@@ -1,2 +1,17 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
+import argparse
+
+def main():
+    parser = argparse.ArgumentParser(description="Benchpark")
+    parser.add_argument('benchmark', type=str, help="The benchmark to run")
+    parser.add_argument('system', type=str, help="The system we are on")
+    parser.add_argument('working directory', type=str, help="Where to install packages, store results, etc.")
+
+    args = parser.parse_args()
+
+
+
+
+if __name__ == "__main__":
+    main()
