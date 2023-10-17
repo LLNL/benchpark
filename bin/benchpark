@@ -30,13 +30,26 @@ def main():
     else:
         print("Invalid subcommand ({args.subcommand}) - must choose one of: " +  " ".join(actions.keys()))
 
+def source_location():
+    script_location = os.path.dirname(os.path.abspath(__file__))
+    return pathlib.Path(script_location).parent
+
 def benchpark_list(subparsers, actions_dict):
     list_parser = subparsers.add_parser("list", help="List available benchmarks and systems")
 
     actions_dict["list"] = benchpark_list_handler
 
 def benchpark_list_handler(args):
-    pass
+    source_dir = source_location()
+    print("Systems:")
+    for x in os.listdir(source_dir / "configs"):
+        print(f"\t{x}")
+
+    print("Benchmarks:")
+    experiments_dir = source_dir / "experiments"
+    for x in os.listdir(experiments_dir):
+        for y in os.listdir(experiments_dir / x):
+            print(f"\t{x}/{y}")
 
 def benchpark_create(subparsers, actions_dict):
     create_parser = subparsers.add_parser("create", help="Create a benchmark and prepare it to build/run")
@@ -64,8 +77,7 @@ def benchpark_create_handler(args):
     system = args.system
     workspace_root = pathlib.Path(os.path.abspath(args.workspace_root))
 
-    script_location = os.path.dirname(os.path.abspath(__file__))
-    source_dir = pathlib.Path(script_location).parent
+    source_dir = source_location()
 
     debug_print(source_dir)
 
