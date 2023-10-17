@@ -15,7 +15,7 @@ where:
 This command will generate a unique ``$workspace/experiments`` 
 directory for each experiment with the following directory structure::
 
-$workspace
+workspace
   | └── experiments
   |    └── amg2023
   |        └── problem1
