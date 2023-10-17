@@ -116,5 +116,20 @@ def benchpark_create_handler(args):
         f"{ramble_exe} repo add --scope=site {source_dir}/repo"
     )
 
+    instructions = f"""\
+To build/run these benchmarks, do the following:
+
+    cd {working_dir}
+
+    . {working_dir}/spack/share/spack/setup-env.sh
+    . {working_dir}/ramble/share/ramble/setup-env.sh
+
+    export SPACK_DISABLE_LOCAL_CONFIG=1
+
+    ramble -D . workspace setup
+    ramble -D . on
+"""
+    print(instructions)
+
 if __name__ == "__main__":
     main()
