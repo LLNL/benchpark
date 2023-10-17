@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
 import argparse
+import subprocess
+import pathlib
+import os
 
 def main():
     parser = argparse.ArgumentParser(description="Benchpark")
@@ -33,16 +36,41 @@ def benchpark_create(subparsers, actions_dict):
 
     create_parser.add_argument('benchmark', type=str, help="The benchmark to run")
     create_parser.add_argument('system', type=str, help="The system we are on")
-    create_parser.add_argument('working-dir', type=str, help="Where to install packages, store results, etc.")
+    create_parser.add_argument('working_dir', type=str, help="Where to install packages, store results, etc.")
 
     actions_dict["create"] = benchpark_create_handler
 
+def run_command(command_str):
+    subprocess.run(command_str, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
 def benchpark_create_handler(args):
-    workspace = args.working_dir
+    workspace_root = args.working_dir
     system = args.system
     benchmark = args.benchmark
 
-    #shutil.rmtree(workspace)
+    script_location = os.path.dirname(os.path.abspath(__file__))
+    source_dir = pathlib.Path(script_location).parent
+
+    print(source_dir)
+
+    return
+
+    shutil.rmtree(workspace)
+    pathlib.Path(workspace).mkdir(parents=True, exist_ok=True)
+    configs_dir = os.path.join(workspace_root, "configs")
+    os.mkdir(configs_dir)
+
+    run_command(
+        "git clone --depth=1 -c feature.manyFiles=true "
+        "https://github.com/spack/spack.git "
+        "${TEST_WORKING_DIR}/spack"
+    )
+
+    run_command(
+        "git clone --depth=1 -c feature.manyFiles=true "
+        "https://github.com/GoogleCloudPlatform/ramble.git "
+        "${TEST_WORKING_DIR}/ramble"
+    )
 
 if __name__ == "__main__":
     main()
