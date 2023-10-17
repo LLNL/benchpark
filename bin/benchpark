@@ -47,16 +47,27 @@ def benchpark_create(subparsers, actions_dict):
 
     actions_dict["create"] = benchpark_create_handler
 
-def run_command(command_str):
-    subprocess.run(command_str, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+def run_command(command_str, env=None):
+    subprocess.run(command_str, env=env, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
 def benchpark_create_handler(args):
+    """
+    workspace_root/
+        <benchmark>/
+            <system>/
+                configs -> source/configs/<system>
+                spack/
+                ramble/
+    """
+
     benchmark = args.benchmark
     system = args.system
     workspace_root = pathlib.Path(os.path.abspath(args.workspace_root))
 
     script_location = os.path.dirname(os.path.abspath(__file__))
     source_dir = pathlib.Path(script_location).parent
+
+    debug_print(source_dir)
 
     workspace_dir = workspace_root / str(benchmark) / str(system)
 
@@ -67,23 +78,42 @@ def benchpark_create_handler(args):
 
     configs_dir = workspace_dir / "configs"
 
-    debug_print(source_dir)
     configs_src_dir = source_dir / "configs" /  str(system)
 
     os.symlink(configs_src_dir, configs_dir)
 
-    return
+    spack_location = workspace_dir / "spack"
+    ramble_location = workspace_dir / "ramble"
 
     run_command(
         "git clone --depth=1 -c feature.manyFiles=true "
         "https://github.com/spack/spack.git "
-        "${TEST_WORKING_DIR}/spack"
+        f"{spack_location}"
     )
 
     run_command(
         "git clone --depth=1 -c feature.manyFiles=true "
         "https://github.com/GoogleCloudPlatform/ramble.git "
-        "${TEST_WORKING_DIR}/ramble"
+        f"{ramble_location}"
+    )
+
+    spack_exe = spack_location / "bin" / "spack"
+    ramble_exe = ramble_location / "bin" / "ramble"
+
+    env = {
+        "SPACK_DISABLE_LOCAL_CONFIG": "1"
+    }
+    run_command(
+        f"{spack_exe} config --scope=site add config:misc_cache:/dev/shm/$USER/.spack/cache",
+        env=env
+    )
+    run_command(
+        f"{spack_exe} repo add --scope=site {source_dir}/repo",
+        env=env
+    )
+
+    run_command(
+        f"{ramble_exe} repo add --scope=site {source_dir}/repo"
     )
 
 if __name__ == "__main__":
