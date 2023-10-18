@@ -5,8 +5,9 @@ import subprocess
 import pathlib
 import os
 import shutil
+import shlex
 
-DEBUG = True
+DEBUG = False
 
 def debug_print(message):
     if DEBUG:
@@ -61,7 +62,13 @@ def benchpark_create(subparsers, actions_dict):
     actions_dict["create"] = benchpark_create_handler
 
 def run_command(command_str, env=None):
-    subprocess.run(command_str, env=env, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    subprocess.run(
+        shlex.split(command_str),
+        env=env, check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True
+    )
 
 def benchpark_create_handler(args):
     """
@@ -86,13 +93,20 @@ def benchpark_create_handler(args):
 
     workspace_dir = workspace_root / str(benchmark) / str(system)
 
-    if workspace_dir.exists() and workspace_dir.is_dir():
-        shutil.rmtree(workspace_dir)
+    if workspace_dir.exists():
+        if workspace_dir.is_dir():
+            print(f"Clearing existing workspace {workspace_dir}")
+            shutil.rmtree(workspace_dir)
+        else:
+            print(f"Benchpark expects to manage {workspace_dir} as a directory, but it is not")
+            sys.exit(1)
 
     workspace_dir.mkdir(parents=True)
 
     ramble_workspace_dir = workspace_dir / "workspace"
     ramble_configs_dir = ramble_workspace_dir / "configs"
+
+    print(f"Setting up configs for Ramble workspace {ramble_configs_dir}")
 
     configs_src_dir = source_dir / "configs" /  str(system)
     experiment_src_dir = source_dir / "experiments" / benchmark
@@ -103,12 +117,14 @@ def benchpark_create_handler(args):
     spack_location = workspace_dir / "spack"
     ramble_location = workspace_dir / "ramble"
 
+    print (f"Cloning spack into {spack_location}")
     run_command(
         "git clone --depth=1 -c feature.manyFiles=true "
         "https://github.com/spack/spack.git "
         f"{spack_location}"
     )
 
+    print(f"Cloning ramble into {ramble_location}")
     run_command(
         "git clone --depth=1 -c feature.manyFiles=true "
         "https://github.com/GoogleCloudPlatform/ramble.git "
@@ -137,10 +153,10 @@ def benchpark_create_handler(args):
     instructions = f"""\
 To build/run these benchmarks, do the following:
 
-    cd {working_dir}
+    cd {workspace_dir}
 
-    . {working_dir}/spack/share/spack/setup-env.sh
-    . {working_dir}/ramble/share/ramble/setup-env.sh
+    . {workspace_dir}/spack/share/spack/setup-env.sh
+    . {workspace_dir}/ramble/share/ramble/setup-env.sh
 
     export SPACK_DISABLE_LOCAL_CONFIG=1
 
