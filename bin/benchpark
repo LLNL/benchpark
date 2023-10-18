@@ -20,7 +20,7 @@ def main():
 
     actions = {}
     benchpark_list(subparsers, actions)
-    benchpark_create(subparsers, actions)
+    benchpark_setup(subparsers, actions)
 
     args = parser.parse_args()
 
@@ -52,14 +52,14 @@ def benchpark_list_handler(args):
         for y in os.listdir(experiments_dir / x):
             print(f"\t{x}/{y}")
 
-def benchpark_create(subparsers, actions_dict):
-    create_parser = subparsers.add_parser("create", help="Create a benchmark and prepare it to build/run")
+def benchpark_setup(subparsers, actions_dict):
+    create_parser = subparsers.add_parser("setup", help="Create a benchmark and prepare it to build/run")
 
     create_parser.add_argument('benchmark', type=str, help="The benchmark to run")
     create_parser.add_argument('system', type=str, help="The system we are on")
     create_parser.add_argument('workspace_root', type=str, help="Where to install packages, store results, etc. (should be empty/nonexistent)")
 
-    actions_dict["create"] = benchpark_create_handler
+    actions_dict["setup"] = benchpark_setup_handler
 
 def run_command(command_str, env=None):
     subprocess.run(
@@ -70,7 +70,7 @@ def run_command(command_str, env=None):
         text=True
     )
 
-def benchpark_create_handler(args):
+def benchpark_setup_handler(args):
     """
     workspace_root/
         <benchmark>/
