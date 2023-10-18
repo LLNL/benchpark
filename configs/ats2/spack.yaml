@@ -2,7 +2,7 @@ spack:
   packages:
     default-compiler:
       spack_spec: xl@16.1.1-{xl_version}-cuda{default_cuda}
-    gcc831:
+    compiler-gcc:
       spack_spec: gcc@8.3.1
     default-mpi:
       spack_spec: spectrum-mpi@{mpi_version}
