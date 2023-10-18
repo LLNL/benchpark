@@ -26,7 +26,7 @@ ramble:
     packages:
       blt:
         spack_spec: 'blt@0.5.2:'
-        compiler: gcc831
+        compiler: compiler-gcc
       raja-perf:
         spack_spec: raja-perf@develop +cuda~openmp+mpi cuda_arch=70 ^cuda@11.8.0
         compiler: default-compiler
