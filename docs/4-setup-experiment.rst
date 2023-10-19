@@ -2,7 +2,7 @@
 Setup Experiment
 ===============
 
-Select a benchmark to run, along with the programming model to use, and a system to run them on.
+Select a benchmark experiment to run, along with the programming model to use, and a system to run them on.
 Also choose the workspace for your experiment::
 
   $ ./benchpark setup benchmark/ProgrammingModel system /output/path/to/workspace
