@@ -1,5 +1,5 @@
 =================================
-Running a benchmark in Benchpark
+Running an Experiment in Benchpark
 =================================
 
 To run all of the experiments in the workspace::
