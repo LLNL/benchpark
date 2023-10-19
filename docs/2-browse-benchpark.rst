@@ -1,7 +1,7 @@
 ===================
 Benchpark 
 ===================
-To list all possible benchmarks and systems::
+To list all available benchmarks and systems::
 
   benchpark list
  
