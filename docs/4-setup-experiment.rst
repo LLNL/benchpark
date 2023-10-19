@@ -5,7 +5,7 @@ Setup Experiment
 Select a benchmark to run, along with the programming model to use, and a system to run them on.
 Also choose the workspace for your experiment::
 
-  $ ./benchpark setup-experiment benchmark/ProgrammingModel system /output/path/to/workspace
+  $ ./benchpark setup benchmark/ProgrammingModel system /output/path/to/workspace
 
 where:
 
@@ -37,9 +37,9 @@ will set input paramaters and environment variables, run the experiment, and gen
 
 
 
-What ``benchmark setup-experiment`` does
+What ``benchmark setup`` does
 ------------------------------------------------- 
-``benchmark setup-experiment`` will set up a Ramble workspace,
+``benchmark setup`` will set up a Ramble workspace,
 build the benchmark, and generate run scripts for the benchmark.
 
 1 Create an experiment directory at some location ``$workspace`` ::
