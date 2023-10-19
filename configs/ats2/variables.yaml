@@ -10,4 +10,4 @@ variables:
   cuda_arch: '70'
   xl_version: '2022.08.19'
   mpi_version: '2022.08.19'
-  compilers: [compiler-cuda11.8.0, compiler-cuda10.1.243]
+  compilers: [compiler-cuda10.1.243, compiler-cuda11.8.0]
