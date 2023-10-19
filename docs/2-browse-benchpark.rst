@@ -1,15 +1,15 @@
 ===================
-Benchpark workspace
+Benchpark 
 ===================
+To list all possible benchmarks and systems::
 
-Benchpark experiments are organized as a 
-`Ramble workspace <https://googlecloudplatform.github.io/ramble/workspace.html>`_, 
-a set of self-contained configuration files required 
-to correctly build and execute those experiments. 
+  benchpark list
  
 Configuration files are organized as follows:: 
 
   $benchpark 
+  ├── bin
+  │  ├── benchpark
   ├── configs 
   │  ├── ${SYSTEM1} 
   │  │  ├── auxiliary_software_files 
