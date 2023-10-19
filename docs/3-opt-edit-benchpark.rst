@@ -1,5 +1,5 @@
 ==============
-(optional) Edit benchpark
+(optional) Benchpark edit
 ==============
 
 Benchpark configuration files are organized as follows:: 
