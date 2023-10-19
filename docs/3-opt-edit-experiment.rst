@@ -1,5 +1,5 @@
 ==============
-(optional) Benchpark edit
+(optional) Edit experiment
 ==============
 
 Benchpark configuration files are organized as follows:: 
