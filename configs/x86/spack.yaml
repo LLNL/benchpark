@@ -1,0 +1,6 @@
+spack:
+  packages:
+    default-compiler:
+      spack_spec: gcc@12.2.0
+    default-mpi:
+      spack_spec: openmpi
