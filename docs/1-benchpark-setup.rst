@@ -1,5 +1,5 @@
 =========
-Checkout benchpark
+Benchpark setup
 =========
 
 Python 3.6 and git are required to check out and install Benchpark::
@@ -9,14 +9,14 @@ Python 3.6 and git are required to check out and install Benchpark::
 
 Benchpark uses the following open source projects for specifying configurations:
 
-* `Ramble <https://github.com/GoogleCloudPlatform/ramble>`_ ro specify run configurations
+* `Ramble <https://github.com/GoogleCloudPlatform/ramble>`_ to specify run configurations
 * `Spack <https://github.com/spack/spack>`_ to specify build configurations
 
 If you already have Spack and/or Ramble on your system and you want to use these
 installs, simply point Benchpark at these installs by passing in their locations.
 
 
-What the ``benchpark setup`` script does
+What the ``benchpark setup`` script does for you
 -----------------------------------------
 
 1 Clone the Spack and Ramble repositories. Skip this step if Spack/Ramble installation is already available::
