@@ -19,23 +19,9 @@ installs, simply point Benchpark at these installs by passing in their locations
 What the ``benchpark setup`` script does for you
 -----------------------------------------
 
-1 Clone the Spack and Ramble repositories. Skip this step if Spack/Ramble installation is already available::
+``benchpark setup`` installs Spack and Ramble. If you are running into any issues with either,
+please see the detailed installation instructions in those projects' docs.
 
-  git clone --depth=1 -c feature.manyFiles=true https://github.com/spack/spack.git $workspace/spack
-  git clone --depth=1 -c feature.manyFiles=true https://github.com/GoogleCloudPlatform/ramble.git $workspace/ramble
+Spack: https://spack.readthedocs.io/en/latest/getting_started.html#installation 
 
-2 Source the Spack/Ramble shell scripts for your environment::
-
-  . $workspace/spack/share/spack/setup-env.sh
-  . $workspace/ramble/share/ramble/setup-env.sh
-
-Detailed Spack installation instructions are available at 
-https://spack.readthedocs.io/en/latest/getting_started.html#installation 
-
-Detailed Ramble installation instructions are available at 
-https://googlecloudplatform.github.io/ramble/getting_started.html#installation 
-
-3 Clean the Spack and Ramble environment::
-
-export SPACK_DISABLE_LOCAL_CONFIG=1
-rm -rf ~/.ramble/repos.yaml
+Ramble: https://googlecloudplatform.github.io/ramble/getting_started.html#installation 
