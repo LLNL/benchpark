@@ -1,46 +1,169 @@
-#!/bin/bash
+#!/usr/bin/env python3
 
-if [ -z "${3}" ]; then
-    echo "Missing arguments. Run benchpark $TEST_NAME $TEST_CONFIG_NAME $TEST_WORKING_DIR"
-    exit 1
-fi
+import argparse
+import subprocess
+import pathlib
+import os
+import shutil
+import shlex
 
-TEST_NAME=$1
-TEST_CONFIG_NAME=$2
-TEST_WORKING_ROOT=$3
-TEST_SOURCE_DIR=$(cd $(dirname $0)/..; pwd)
+DEBUG = False
 
-TEST_WORKING_DIR=${TEST_WORKING_ROOT}/${TEST_NAME}/${TEST_CONFIG_NAME}
-TEST_WORKSPACE_SOURCE=${TEST_SOURCE_DIR}/experiments/${TEST_NAME}
+def debug_print(message):
+    if DEBUG:
+        print("(debug) " + str(message))
 
-rm -rf ${TEST_WORKING_DIR}
-mkdir -p ${TEST_WORKING_DIR}/workspace/configs/auxiliary_software_files
-lndir -silent ${TEST_WORKSPACE_SOURCE} ${TEST_WORKING_DIR}/workspace/configs
-lndir -silent ${TEST_SOURCE_DIR}/configs/${TEST_CONFIG_NAME} ${TEST_WORKING_DIR}/workspace/configs
+def main():
+    parser = argparse.ArgumentParser(description="Benchpark")
 
-git clone --depth=1 -c feature.manyFiles=true https://github.com/spack/spack.git ${TEST_WORKING_DIR}/spack
-git clone --depth=1 -c feature.manyFiles=true https://github.com/GoogleCloudPlatform/ramble.git ${TEST_WORKING_DIR}/ramble
+    subparsers = parser.add_subparsers(title="Subcommands", dest="subcommand")
 
-export SPACK_DISABLE_LOCAL_CONFIG=1
-rm -rf ~/.ramble/repos.yaml
+    actions = {}
+    benchpark_list(subparsers, actions)
+    benchpark_setup(subparsers, actions)
 
-. ${TEST_WORKING_DIR}/spack/share/spack/setup-env.sh
-. ${TEST_WORKING_DIR}/ramble/share/ramble/setup-env.sh
+    args = parser.parse_args()
 
-spack config --scope=site add config:misc_cache:/dev/shm/$USER/.spack/cache
+    if not args.subcommand:
+        print("Must specify subcommand: " + " ".join(actions.keys()))
+    elif args.subcommand in actions:
+        actions[args.subcommand](args)
+    else:
+        print("Invalid subcommand ({args.subcommand}) - must choose one of: " +  " ".join(actions.keys()))
 
-spack repo add --scope=site ${TEST_SOURCE_DIR}/repo
-ramble repo add --scope=site ${TEST_SOURCE_DIR}/repo
-ramble repo add -t modifiers --scope=site ${TEST_SOURCE_DIR}/repo
+def source_location():
+    script_location = os.path.dirname(os.path.abspath(__file__))
+    return pathlib.Path(script_location).parent
 
-echo "
-cd ${TEST_WORKING_DIR}/workspace
+def benchpark_list(subparsers, actions_dict):
+    list_parser = subparsers.add_parser("list", help="List available benchmarks and systems")
 
-. ${TEST_WORKING_DIR}/spack/share/spack/setup-env.sh
-. ${TEST_WORKING_DIR}/ramble/share/ramble/setup-env.sh
+    actions_dict["list"] = benchpark_list_handler
 
-export SPACK_DISABLE_LOCAL_CONFIG=1
+def benchpark_list_handler(args):
+    source_dir = source_location()
+    print("Systems:")
+    for x in os.listdir(source_dir / "configs"):
+        print(f"\t{x}")
 
-ramble -D . workspace setup
-ramble -D . on
-"
+    print("Benchmarks:")
+    experiments_dir = source_dir / "experiments"
+    for x in os.listdir(experiments_dir):
+        for y in os.listdir(experiments_dir / x):
+            print(f"\t{x}/{y}")
+
+def benchpark_setup(subparsers, actions_dict):
+    create_parser = subparsers.add_parser("setup", help="Create a benchmark and prepare it to build/run")
+
+    create_parser.add_argument('benchmark', type=str, help="The benchmark to run")
+    create_parser.add_argument('system', type=str, help="The system we are on")
+    create_parser.add_argument('workspace_root', type=str, help="Where to install packages, store results, etc. (should be empty/nonexistent)")
+
+    actions_dict["setup"] = benchpark_setup_handler
+
+def run_command(command_str, env=None):
+    subprocess.run(
+        shlex.split(command_str),
+        env=env, check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True
+    )
+
+def benchpark_setup_handler(args):
+    """
+    workspace_root/
+        <benchmark>/
+            <system>/
+                workspace/
+                    configs/
+                        (everything from source/configs/<system>)
+                        (everything from source/experiments/<benchmark>)
+                spack/
+                ramble/
+    """
+
+    benchmark = args.benchmark
+    system = args.system
+    workspace_root = pathlib.Path(os.path.abspath(args.workspace_root))
+
+    source_dir = source_location()
+
+    debug_print(source_dir)
+
+    workspace_dir = workspace_root / str(benchmark) / str(system)
+
+    if workspace_dir.exists():
+        if workspace_dir.is_dir():
+            print(f"Clearing existing workspace {workspace_dir}")
+            shutil.rmtree(workspace_dir)
+        else:
+            print(f"Benchpark expects to manage {workspace_dir} as a directory, but it is not")
+            sys.exit(1)
+
+    workspace_dir.mkdir(parents=True)
+
+    ramble_workspace_dir = workspace_dir / "workspace"
+    ramble_configs_dir = ramble_workspace_dir / "configs"
+
+    print(f"Setting up configs for Ramble workspace {ramble_configs_dir}")
+
+    configs_src_dir = source_dir / "configs" /  str(system)
+    experiment_src_dir = source_dir / "experiments" / benchmark
+
+    shutil.copytree(configs_src_dir, ramble_configs_dir)
+    shutil.copytree(experiment_src_dir, ramble_configs_dir, dirs_exist_ok=True)
+
+    spack_location = workspace_dir / "spack"
+    ramble_location = workspace_dir / "ramble"
+
+    print (f"Cloning spack into {spack_location}")
+    run_command(
+        "git clone --depth=1 -c feature.manyFiles=true "
+        "https://github.com/spack/spack.git "
+        f"{spack_location}"
+    )
+
+    print(f"Cloning ramble into {ramble_location}")
+    run_command(
+        "git clone --depth=1 -c feature.manyFiles=true "
+        "https://github.com/GoogleCloudPlatform/ramble.git "
+        f"{ramble_location}"
+    )
+
+    spack_exe = spack_location / "bin" / "spack"
+    ramble_exe = ramble_location / "bin" / "ramble"
+
+    env = {
+        "SPACK_DISABLE_LOCAL_CONFIG": "1"
+    }
+    run_command(
+        f"{spack_exe} config --scope=site add config:misc_cache:/dev/shm/$USER/.spack/cache",
+        env=env
+    )
+    run_command(
+        f"{spack_exe} repo add --scope=site {source_dir}/repo",
+        env=env
+    )
+
+    run_command(
+        f"{ramble_exe} repo add --scope=site {source_dir}/repo"
+    )
+
+    instructions = f"""\
+To build/run these benchmarks, do the following:
+
+    cd {workspace_dir}
+
+    . {workspace_dir}/spack/share/spack/setup-env.sh
+    . {workspace_dir}/ramble/share/ramble/setup-env.sh
+
+    export SPACK_DISABLE_LOCAL_CONFIG=1
+
+    ramble -D . workspace setup
+    ramble -D . on
+"""
+    print(instructions)
+
+if __name__ == "__main__":
+    main()
