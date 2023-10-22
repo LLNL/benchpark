@@ -31,9 +31,9 @@ Benchpark uses the following open source projects for specifying configurations:
 
 Documentation
 -------------
-1. `Checkout benchpark <docs/1-checkout-benchpark.rst>`_
-2. `Browse benchpark <docs/2-browse-benchpark.rst>`_
-3. `(opt) Edit benchpark <docs/3-opt-edit-benchpark.rst>`_
+1. `Benchpark setup <docs/1-benchpark-setup.rst>`_
+2. `Benchpark list <docs/2-benchpark-list.rst>`_
+3. `(optional) Edit experiment <docs/3-opt-edit-experiment.rst>`_
 4. `Setup experiment <docs/4-setup-experiment.rst>`_
 5. `Run experiment <docs/5-run-experiment.rst>`_ 
 6. `Add a new System Config <docs/add-a-system-config.rst>`_
