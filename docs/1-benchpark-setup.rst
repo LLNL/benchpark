@@ -2,10 +2,10 @@
 Benchpark setup
 =========
 
-Python 3.6 and git are required to check out and install Benchpark::
+Git is needed to clone Benchpark, and Python 3.6 is needed to run Benchpark::
 
   git clone git@github.com:LLNL/benchpark.git $benchpark  
-  benchpark setup [--spack=spack_dir] [--ramble=ramble_dir]
+  benchpark setup 
 
 Benchpark uses the following open source projects for specifying configurations:
 
