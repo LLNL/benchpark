@@ -1,5 +1,5 @@
 ===============
-Benchmark setup 
+Benchpark setup 
 ===============
 
 Select a benchmark experiment to run, along with the programming model to use, and a system to run them on.
@@ -15,6 +15,17 @@ where:
 This command will assemble a Ramble workspace 
 with a configuration for the specified benchmark and system 
 with the following directory structure::
+
+
+    workspace_root/
+        <benchmark>/
+            <system>/
+                workspace/
+                    configs/
+                        (everything from source/configs/<system>)
+                        (everything from source/experiments/<benchmark>)
+                spack/
+                ramble/
 
   $workspace
   | └── experiments
