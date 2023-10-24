@@ -4,7 +4,7 @@ Benchpark setup
 
 Git is needed to clone Benchpark, and Python 3.6 is needed to run Benchpark::
 
-  git clone git@github.com:LLNL/benchpark.git $benchpark  
+  git clone git@github.com:LLNL/benchpark.git   
   benchpark setup 
 
 Benchpark uses the following open source projects for specifying configurations:
