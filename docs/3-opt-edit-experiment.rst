@@ -44,18 +44,3 @@ ramble.yaml
 If you would like to use modifiers on your system,
 such as using Caliper to measure the performance of your experiments, 
 you can manually edit the specification in ``ramble.yaml``.
-
-benchpark/repo
---------------
-If  you are working on a benchmark that is not upstreamead to Spack and/or Ramble,
-you may introduce the following code::
-
-  └── repo 
-     ├── ${BENCHMARK1} 
-     │  ├── application.py 
-     │  └── package.py 
-     └── repo.yaml 
-
-where ``application.py`` is a Ramble specification for the benchmark,
-``package.py`` is a Spack specification for the benchmark, and
-``repo.yaml`` points at those two files.
