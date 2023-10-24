@@ -1,5 +1,5 @@
 ===============
-Setup Experiment
+Benchmark setup 
 ===============
 
 Select a benchmark experiment to run, along with the programming model to use, and a system to run them on.
@@ -12,8 +12,9 @@ where:
 - ``benchmark/ProgrammingModel``: amg2023/openmp | amg2023/cuda | saxpy/openmp (available choices in benchpark/experiments)
 - ``system``: ats2 | ats4 | cts1 (available choices in benchpark/configs)
 
-This command will generate a unique ``$workspace/experiments`` 
-directory for each experiment with the following directory structure::
+This command will assemble a Ramble workspace 
+with a configuration for the specified benchmark and system 
+with the following directory structure::
 
   $workspace
   | └── experiments
