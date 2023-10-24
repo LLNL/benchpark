@@ -44,3 +44,8 @@ ramble.yaml
 If you would like to use modifiers on your system,
 such as using Caliper to measure the performance of your experiments, 
 you can manually edit the specification in ``ramble.yaml``.
+
+Adding a new system
+-------------------
+If a system specification for your system is not available, you might
+need to `Add a system config <docs/add-a-system.rst>`_.
