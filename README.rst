@@ -35,9 +35,11 @@ Documentation
 2. `Benchpark list <docs/2-benchpark-list.rst>`_
 3. `(optional) Edit <docs/3-opt-edit-experiment.rst>`_
 4. `Benchpark setup <docs/4-benchpark-setup.rst>`_
-5. `Run experiment <docs/5-run-experiment.rst>`_ 
-6. `Add a new System Config <docs/add-a-system-config.rst>`_
+5. `Build experiment <docs/5-build-experiment.rst>`_ 
+6. `Run experiment <docs/6-run-experiment.rst>`_ 
 7. `Add a new Benchmark <docs/add-a-benchmark.rst>`_
+8. `Add a new System Config <docs/add-a-system-config.rst>`_
+9. `Add a new Experiment <docs/add-an-experiment.rst>`_
 
 Community
 ---------
