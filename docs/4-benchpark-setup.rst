@@ -26,34 +26,5 @@ with the following directory structure::
                         (everything from source/configs/<system>)
                         (everything from source/experiments/<benchmark>)
 
-``benchpark setup`` will output further instructions, please follow them::
-
-  cd <workspace_root>/<benchmark/ProgrammingModel>/<system>/workspace
-
-  . <workspace_root>/<benchmark/ProgrammingModel>/<system>/spack/share/spack/setup-env.sh
-  . <workspace_root>/<benchmark/ProgrammingModel>/<system>/ramble/share/ramble/setup-env.sh
-
-  export SPACK_DISABLE_LOCAL_CONFIG=1
-
-  ramble -D . workspace setup  
-
-Each experiment has its own ``execute_experiment`` script which 
-will set input paramaters and environment variables, run the experiment, and generate the output::
-
-  $workspace
-  | └── experiments
-  |    └── amg2023
-  |        └── problem1
-  |            ├── amg2023_cuda11.8.0_problem1_1_8_2_2_2_10_10_10
-  |            │   ├── execute_experiment
-  |            │   └── ...
-  |            ├── amg2023_cuda11.8.0_problem1_2_4_2_2_2_10_10_10
-  |            │   ├── execute_experiment
-  |            │   └── ...
-  |            ├── amg2023_cuda11.8.0_problem1_1_8_2_2_2_20_20_20
-  |            │   ├── execute_experiment
-  |            │   └── ...
-  |            └── amg2023_cuda11.8.0_problem1_2_4_2_2_2_20_20_20
-  |                ├── execute_experiment
-  |                └── ...
-
+``benchpark setup`` will output 
+`Build experiment <docs/5-build-experiment.rst>`_ instructions.
