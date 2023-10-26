@@ -5,7 +5,7 @@ Benchpark setup
 Select a benchmark experiment to run, along with the programming model to use, and a system to run them on.
 Also choose the workspace for your experiment::
 
-  $ ./benchpark setup benchmark/ProgrammingModel system /output/path/to/workspace
+  $ ./benchpark setup benchmark/ProgrammingModel system /output/path/to/workspace_root
 
 where:
 
@@ -25,7 +25,17 @@ with the following directory structure::
                     configs/
                         (everything from source/configs/<system>)
                         (everything from source/experiments/<benchmark>)
-                    experiments/
+
+``benchpark setup`` will output further instructions, please follow them::
+
+  cd <workspace_root>/<benchmark/ProgrammingModel>/<system>/workspace
+
+  . <workspace_root>/<benchmark/ProgrammingModel>/<system>/spack/share/spack/setup-env.sh
+  . <workspace_root>/<benchmark/ProgrammingModel>/<system>/ramble/share/ramble/setup-env.sh
+
+  export SPACK_DISABLE_LOCAL_CONFIG=1
+
+  ramble -D . workspace setup  
 
 Each experiment has its own ``execute_experiment`` script which 
 will set input paramaters and environment variables, run the experiment, and generate the output::
