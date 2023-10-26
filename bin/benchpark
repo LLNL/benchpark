@@ -42,9 +42,6 @@ def benchpark_list(subparsers, actions_dict):
 
 def benchpark_list_handler(args):
     source_dir = source_location()
-    print("Systems:")
-    for x in os.listdir(source_dir / "configs"):
-        print(f"\t{x}")
 
     print("Benchmarks:")
     experiments_dir = source_dir / "experiments"
@@ -52,10 +49,43 @@ def benchpark_list_handler(args):
         for y in os.listdir(experiments_dir / x):
             print(f"\t{x}/{y}")
 
+    print("Systems:")
+    for x in os.listdir(source_dir / "configs"):
+        print(f"\t{x}")
+
+
+def benchpark_check_benchmark(arg_str):
+    source_dir = source_location()
+    arg_str_found = False
+    experiments_dir = source_dir / "experiments"
+    for x in os.listdir(experiments_dir):
+        for y in os.listdir(experiments_dir / x):
+            if x+"/"+y == arg_str:
+                arg_str_found = True
+    if not arg_str_found:
+        print(f"Invalid benchmark/experiment {arg_str} - must choose one of: ")
+        for x in os.listdir(experiments_dir):
+            for y in os.listdir(experiments_dir / x):
+                print(f"\t{x}/{y}")
+    return arg_str_found
+
+def benchpark_check_system(arg_str):
+    source_dir = source_location()
+    arg_str_found = False
+    for x in os.listdir(source_dir / "configs"):
+        if x == arg_str:
+            arg_str_found = True
+    if not arg_str_found:
+        print(f"Invalid system {arg_str} - must choose one of: ")
+        for x in os.listdir(source_dir / "configs"):
+            print(f"\t{x}")
+    return arg_str_found
+
+
 def benchpark_setup(subparsers, actions_dict):
     create_parser = subparsers.add_parser("setup", help="Create a benchmark and prepare it to build/run")
 
-    create_parser.add_argument('benchmark', type=str, help="The benchmark to run")
+    create_parser.add_argument('benchmark', type=str, help="The benchmark/experiment to run")
     create_parser.add_argument('system', type=str, help="The system we are on")
     create_parser.add_argument('workspace_root', type=str, help="Where to install packages, store results, etc. (should be empty/nonexistent)")
 
@@ -86,10 +116,14 @@ def benchpark_setup_handler(args):
     benchmark = args.benchmark
     system = args.system
     workspace_root = pathlib.Path(os.path.abspath(args.workspace_root))
-
     source_dir = source_location()
-
     debug_print(source_dir)
+    debug_print(benchmark)
+    valid_benchmark = benchpark_check_benchmark(benchmark)
+    debug_print(system)
+    valid_system = benchpark_check_system(system)
+    if not (valid_benchmark and valid_system):
+        return
 
     workspace_dir = workspace_root / str(benchmark) / str(system)
 
@@ -153,7 +187,7 @@ def benchpark_setup_handler(args):
     instructions = f"""\
 To build/run these benchmarks, do the following:
 
-    cd {workspace_dir}
+    cd {workspace_dir}/workspace
 
     . {workspace_dir}/spack/share/spack/setup-env.sh
     . {workspace_dir}/ramble/share/ramble/setup-env.sh
@@ -161,7 +195,6 @@ To build/run these benchmarks, do the following:
     export SPACK_DISABLE_LOCAL_CONFIG=1
 
     ramble -D . workspace setup
-    ramble -D . on
 """
     print(instructions)
 
