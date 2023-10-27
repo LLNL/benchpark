@@ -174,7 +174,7 @@ def benchpark_setup_handler(args):
     instructions = f"""\
 To build/run these benchmarks, do the following:
 
-    cd {workspace_dir}
+    cd {ramble_workspace_dir}
 
     . {workspace_dir}/spack/share/spack/setup-env.sh
     . {workspace_dir}/ramble/share/ramble/setup-env.sh
