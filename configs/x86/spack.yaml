@@ -1,6 +1,10 @@
 spack:
   packages:
     default-compiler:
-      spack_spec: gcc@12.2.0
+      spack_spec: gcc@10.3.1
     default-mpi:
+      spack_spec: openmpi
+    lapack:
+      spack_spec: intel-oneapi-mkl@2022.1.0
+    mpi-{compilers}:
       spack_spec: openmpi

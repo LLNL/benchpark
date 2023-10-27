@@ -40,6 +40,7 @@ ramble:
                 env_name: 'amg2023-omp-{compilers}'
               matrices:
                 - size_threads:
+                  - compilers
                   - n # TODO: Filter matrix
                   - threads_per_node_core # TODO: Filter matrix
   spack:
