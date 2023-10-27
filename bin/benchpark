@@ -133,12 +133,13 @@ def benchpark_setup_handler(args):
 
     spack_exe = spack_location / "bin" / "spack"
     ramble_exe = ramble_location / "bin" / "ramble"
+    spack_cache_location = spack_location / "misc-cache"
 
     env = {
         "SPACK_DISABLE_LOCAL_CONFIG": "1"
     }
     run_command(
-        f"{spack_exe} config --scope=site add config:misc_cache:/dev/shm/$USER/.spack/cache",
+        f"{spack_exe} config --scope=site add config:misc_cache:{spack_cache_location}",
         env=env
     )
     run_command(
