@@ -70,6 +70,25 @@ def run_command(command_str, env=None):
         text=True
     )
 
+
+# Note: it would be nice to vendor spack.llnl.util.link_tree, but that
+# involves pulling in most of llnl/util/ and spack/util/
+def symlink_tree(src, dst):
+    """Like ``cp -R`` but instead of files, create symlinks"""
+    src = os.path.abspath(src)
+    dst = os.path.abspath(dst)
+    for x in [src, dst]:
+        if not os.path.isdir(x):
+            raise ValueError(f"Not a directory: {x}")
+    for src_subdir, directories, files in os.walk(src):
+        relative_src_dir = pathlib.Path(os.path.relpath(src_subdir, src))
+        dst_dir = pathlib.Path(dst) / relative_src_dir
+        dst_dir.mkdir(parents=True, exist_ok=True)
+        for x in files:
+            dst_symlink = dst_dir / x
+            src_file = os.path.join(src_subdir, x)
+            os.symlink(src_file, dst_symlink)
+
 def benchpark_setup_handler(args):
     """
     workspace_root/
@@ -111,8 +130,9 @@ def benchpark_setup_handler(args):
     configs_src_dir = source_dir / "configs" /  str(system)
     experiment_src_dir = source_dir / "experiments" / benchmark
 
-    shutil.copytree(configs_src_dir, ramble_configs_dir)
-    shutil.copytree(experiment_src_dir, ramble_configs_dir, dirs_exist_ok=True)
+    ramble_configs_dir.mkdir(parents=True)
+    symlink_tree(configs_src_dir, ramble_configs_dir)
+    symlink_tree(experiment_src_dir, ramble_configs_dir)
 
     spack_location = workspace_dir / "spack"
     ramble_location = workspace_dir / "ramble"
@@ -133,12 +153,13 @@ def benchpark_setup_handler(args):
 
     spack_exe = spack_location / "bin" / "spack"
     ramble_exe = ramble_location / "bin" / "ramble"
+    spack_cache_location = spack_location / "misc-cache"
 
     env = {
         "SPACK_DISABLE_LOCAL_CONFIG": "1"
     }
     run_command(
-        f"{spack_exe} config --scope=site add config:misc_cache:/dev/shm/$USER/.spack/cache",
+        f"{spack_exe} config --scope=site add config:misc_cache:{spack_cache_location}",
         env=env
     )
     run_command(
