@@ -1,7 +1,7 @@
 spack:
   packages:
     default-compiler:
-      spack_spec: gcc@10.3.1
+      spack_spec: gcc
     default-mpi:
       spack_spec: openmpi
     lapack:
