@@ -14,6 +14,31 @@ spack section in the `Ramble configuration file
 <https://googlecloudplatform.github.io/ramble/configuration_files.html#spack-config>`_.
 Minimally, you need to define ``default-compiler`` and ``default-mpi``.  
 
+.. code-block:: yaml
+
+    spack:
+      concretized: [True/False] # Should be false unless defined in a concretized workspace
+      [variables: {}]
+      packages:
+        <package_name>:
+          spack_spec: 'spack_spec_for_package'
+          compiler_spec: 'Compiler spec, if different from spack_spec' # Default: None
+          compiler: 'package_name_to_use_as_compiler' # Default: None
+          [variables: {}]
+          [matrix:]
+          [matrices:]
+      environments:
+        <environment_name>:
+          packages:
+          - list of
+          - packages in
+          - environment
+          [variables: {}]
+          [matrix:]
+          [matrices:]
+        <external_env_name>:
+          external_spack_env: 'name_or_path_to_spack_env'
+
 2. ``variables.yaml`` defines system-specific launcher and job scheduler.
 `variables.yaml  <https://googlecloudplatform.github.io/ramble/configuration_files.html#variables-section>`_ is a Ramble configuration file.
 
