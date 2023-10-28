@@ -36,7 +36,5 @@ spack section in the `Ramble configuration file
 3. Optionally, one can add more information about the software installed on the system in 
 ``benchpark/configs/${SYSTEM}/auxiliary_software_files/``.
 
-  - `compilers.yaml <https://spack.readthedocs.io/en/latest/getting_started.html#compiler-config>`_ 
-defines the compilers installed on the system.
-  - `packages.yaml <https://spack.readthedocs.io/en/latest/build_settings.html#package-settings-packages-yaml>`_ 
-defines the pre-installed packages  (e.g., system MPI) on the system.
+  - `compilers.yaml <https://spack.readthedocs.io/en/latest/getting_started.html#compiler-config>`_ defines the compilers installed on the system.
+  - `packages.yaml <https://spack.readthedocs.io/en/latest/build_settings.html#package-settings-packages-yaml>`_ defines the pre-installed packages  (e.g., system MPI) on the system.
