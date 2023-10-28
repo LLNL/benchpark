@@ -27,14 +27,16 @@ spack section in the `Ramble configuration file
 .. code-block:: yaml
 
     variables:
-        mpi_command: 'mpirun -N {n_nodes} -n {n_ranks}'
-        batch_submit: '{execute_experiment}'
-        batch_nodes: ''
-        batch_ranks: ''
-        batch_timeout: ''
+      mpi_command: 'mpirun -N {n_nodes} -n {n_ranks}'
+      batch_submit: '{execute_experiment}'
+      batch_nodes: ''
+      batch_ranks: ''
+      batch_timeout: ''
 
 3. Optionally, one can add more information about the software installed on the system in 
-``benchpark/configs/auxiliary_software_files``.
+``benchpark/configs/${SYSTEM}/auxiliary_software_files/``.
 
-  - `compilers.yaml <https://spack.readthedocs.io/en/latest/getting_started.html#compiler-config>`_ defines the compilers installed on the system.
-  - `packages.yaml <https://spack.readthedocs.io/en/latest/build_settings.html#package-settings-packages-yaml>`_ defines the pre-installed packages  (e.g., system MPI) on the system.
+  - `compilers.yaml <https://spack.readthedocs.io/en/latest/getting_started.html#compiler-config>`_ 
+defines the compilers installed on the system.
+  - `packages.yaml <https://spack.readthedocs.io/en/latest/build_settings.html#package-settings-packages-yaml>`_ 
+defines the pre-installed packages  (e.g., system MPI) on the system.
