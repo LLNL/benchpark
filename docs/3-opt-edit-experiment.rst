@@ -48,4 +48,4 @@ you can manually edit the specification in ``ramble.yaml``.
 Adding a new system
 -------------------
 If a system specification for your system is not available, you might
-need to `Add a system config <docs/add-a-system.rst>`_.
+need to `Add a system config <add-a-system.rst>`_.
