@@ -23,15 +23,15 @@ spack section in the `Ramble configuration file
           spack_spec: 'spack_spec_for_package'
 
 2. ``variables.yaml`` defines system-specific launcher and job scheduler.
-`variables.yaml  <https://googlecloudplatform.github.io/ramble/configuration_files.html#variables-section>`_ is a Ramble configuration file.
 
 .. code-block:: yaml
+
     variables:
-      mpi_command: 'mpirun -N {n_nodes} -n {n_ranks}'
-      batch_submit: '{execute_experiment}'
-      batch_nodes: ''
-      batch_ranks: ''
-      batch_timeout: ''
+        mpi_command: 'mpirun -N {n_nodes} -n {n_ranks}'
+        batch_submit: '{execute_experiment}'
+        batch_nodes: ''
+        batch_ranks: ''
+        batch_timeout: ''
 
 3. Optionally, one can add more information about the software installed on the system in 
 ``benchpark/configs/auxiliary_software_files``.
