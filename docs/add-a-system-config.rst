@@ -17,7 +17,7 @@ Minimally, you need to define ``default-compiler`` and ``default-mpi``.
 2. ``variables.yaml`` defines system-specific launcher and job scheduler.
 `variables.yaml  <https://googlecloudplatform.github.io/ramble/configuration_files.html#variables-section>`_ is a Ramble configuration file.
 
-..  literalinclude:: ../configs/x86/variables.yaml
+..  literalinclude:: /configs/x86/variables.yaml
     :language: yaml
     :emphasize-lines: 1,3-4
     :linenos:
