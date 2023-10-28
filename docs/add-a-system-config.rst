@@ -12,7 +12,6 @@ The following is required for each given system ``benchpark/configs/${SYSTEM}``:
 use to build the benchmarks on this system.  ``spack.yaml`` becomes the
 spack section in the `Ramble configuration file 
 <https://googlecloudplatform.github.io/ramble/configuration_files.html#spack-config>`_.
-Minimally, you need to define ``default-compiler`` and ``default-mpi``.  
 
 .. code-block:: yaml
 
@@ -24,7 +23,7 @@ Minimally, you need to define ``default-compiler`` and ``default-mpi``.
           spack_spec: 'spack_spec_for_package'
 
 2. ``variables.yaml`` defines system-specific launcher and job scheduler.
-`variables.yaml  <https://googlecloudplatform.github.io/ramble/configuration_files.html#variables-section>`_ is a Ramble configuration file.  An example in ``/configs/x86/variables.yaml``:
+`variables.yaml  <https://googlecloudplatform.github.io/ramble/configuration_files.html#variables-section>`_ is a Ramble configuration file.
 
 .. code-block:: yaml
     variables:
