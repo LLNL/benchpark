@@ -28,24 +28,24 @@ Benchpark configuration files are organized as follows::
 
 You can edit any of them to change the behaviour of your experiments.
 
-compilers.yaml
---------------
-If you would like to use a non-default compiler on your system, 
-you can manually edit the specification in ``compilers.yaml``.
-
-variables.yaml
---------------
-If you would like to use non-default runtime behaviour on your system,
-such as compiling in batch instead of on the login node, 
-you can manually edit the specification in ``variables.yaml``.
-
-ramble.yaml
---------------
-If you would like to use modifiers on your system,
-such as using Caliper to measure the performance of your experiments, 
-you can manually edit the specification in ``ramble.yaml``.
-
-Adding a new system
+System specification
 -------------------
-If a system specification for your system is not available, you might
-need to `Add a system config <add-a-system.rst>`_.
+Files under ``benchpark/configs/${SYSTEM}`` provide the specification
+of the software stack on your system
+(see `Add a system config <add-a-system.rst>`_ for details).
+
+Experiment specification
+-------------------
+Files under ``benchpark/experiments/${BENCHMARK}/${ProgrammingModel}``
+provide the specifications for the experiments.
+If you would like to make changes to your experiments,  such as enabling 
+specific tools to measure the performance of your experiments, 
+you can manually edit the specifications in ``ramble.yaml``
+(see `Add an experiment <add-an-experiment.rst>`_ for details).
+
+Benchmark specification
+-------------------
+If you would like to modify a specification of your benchmark,
+you can do so by upstreaming changes to Spack and/or Ramble,
+or working on your benchmark specification in ``benchpark/repo/${BENCHMARK}`` 
+(see `Add a benchmark <add-a-benchmark.rst>`_ for details).
