@@ -63,7 +63,7 @@ def benchpark_list_handler(args):
     systems = benchpark_systems()
 
     if sublist==None:
-        print("Benchmarks:")
+        print("Benchmarks/ProgrammingModel:")
         for benchmark in benchmarks:
             print(f"\t{benchmark}")
         print("Systems:")

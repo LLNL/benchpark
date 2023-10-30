@@ -8,4 +8,4 @@ Git is needed to clone Benchpark, and Python 3.6 is needed to run Benchpark::
   cd benchpark
 
 Now you are ready to look at the benchmarks and systems available in Benchpark,
-as described in `Benchpark list <docs/2-benchpark-list.rst>`_
+as described in `Benchpark list <2-benchpark-list.rst>`_

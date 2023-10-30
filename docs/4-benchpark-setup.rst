@@ -5,7 +5,7 @@ Benchpark setup
 Select a benchmark experiment to run, along with the programming model to use, and a system to run them on.
 Also choose the workspace for your experiment::
 
-  $ ./benchpark setup benchmark/ProgrammingModel system /output/path/to/workspace_root
+  $ benchpark setup benchmark/ProgrammingModel system /output/path/to/workspace_root
 
 where:
 
@@ -18,13 +18,14 @@ with the following directory structure::
 
     workspace_root/
         <benchmark>/
-            <system>/
-                spack/
-                ramble/
-                workspace/
-                    configs/
-                        (everything from source/configs/<system>)
-                        (everything from source/experiments/<benchmark>)
+            <ProgrammingMode>/
+                <system>/
+                    ramble/
+                    spack/
+                    workspace/
+                        configs/
+                            (everything from source/configs/<system>)
+                            (everything from source/experiments/<benchmark>)
 
 ``benchpark setup`` will output 
-`Build experiment <docs/5-build-experiment.rst>`_ instructions.
+`Build experiment <5-build-experiment.rst>`_ instructions.
