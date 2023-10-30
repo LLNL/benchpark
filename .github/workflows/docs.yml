@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   build:
-    run-on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
@@ -30,7 +30,7 @@ jobs:
 
     - name: Setup GitHub Pages
       id: pages
-      usees: actions/configure-pages@f156874f8191504dae5b037505266ed5dda6c382
+      uses: actions/configure-pages@f156874f8191504dae5b037505266ed5dda6c382
 
     - name: Install Sphinx and Theme via Pip
       run: |
