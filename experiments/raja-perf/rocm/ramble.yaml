@@ -20,7 +20,7 @@ ramble:
                 n_nodes: '1'
                 n_gpus_per_task: '1'
                 compilers: ''
-                batch_time: '02:00'
+                batch_time: '120m'
   spack:
     concretized: true
     packages:

@@ -10,7 +10,7 @@ ramble:
         problem1:
           variables:
             n_ranks: '{processes_per_node} * {n_nodes}'
-            batch_time: '02:00'
+            batch_time: '120m'
             p: 2
             px: '{p}'
             py: '{p}'
