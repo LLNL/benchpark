@@ -6,6 +6,7 @@ import pathlib
 import os
 import shutil
 import shlex
+import sys
 
 DEBUG = False
 
@@ -14,6 +15,9 @@ def debug_print(message):
         print("(debug) " + str(message))
 
 def main():
+    if sys.version_info[:2] < (3, 8):
+       raise Exception("Benchpark requires at least python 3.8+.")
+
     parser = argparse.ArgumentParser(description="Benchpark")
 
     subparsers = parser.add_subparsers(title="Subcommands", dest="subcommand")
