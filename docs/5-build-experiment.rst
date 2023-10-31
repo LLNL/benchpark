@@ -2,7 +2,7 @@
 Build experiment
 ================
 
-`Benchmark setup <docs/4-benchmark-setup.rst>`_ will output instructions to follow::
+`Benchmark setup <4-benchmark-setup.rst>`_ will output instructions to follow::
 
   cd <workspace_root>/<benchmark/ProgrammingModel>/<system>/workspace
 
@@ -13,19 +13,20 @@ Build experiment
 
   ramble -D . workspace setup  
 
-which will build the source code and set up following workspace directory structure::
+which will build the source code and set up the following workspace directory structure::
 
     workspace_root/
         <benchmark>/
-            <system>/
-                spack/
-                ramble/
-                workspace/
-                    configs/
-                        (everything from source/configs/<system>)
-                        (everything from source/experiments/<benchmark>)
-                    experiments/
-                        <benchmark>/
-                            <problem>/   
-                                <benchmark>_<ProgrammingModel>_<problem>
-                                    execute_experiment
+            <ProgrammingModel>/
+                <system>/
+                    ramble/
+                    spack/
+                    workspace/
+                        configs/
+                            (everything from source/configs/<system>)
+                            (everything from source/experiments/<benchmark>)
+                        experiments/
+                            <benchmark>/
+                                <problem>/   
+                                    <benchmark>_<ProgrammingModel>_<problem>
+                                        execute_experiment
