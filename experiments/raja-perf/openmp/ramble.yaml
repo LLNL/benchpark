@@ -18,7 +18,6 @@ ramble:
               OMP_NUM_THREADS: '{n_threads}'
           variables:
             n_ranks: '1'
-            batch_time: '120'
           experiments:
             suite_{n_nodes}_{n_ranks}_{n_threads}:
               variables:

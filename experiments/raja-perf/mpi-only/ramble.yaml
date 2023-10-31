@@ -15,7 +15,6 @@ ramble:
         suite:
           variables:
             n_ranks: ['1', '2', '4', '8']
-            batch_time: '120'
           experiments:
             suite_{n_nodes}_{n_ranks}:
               variables:

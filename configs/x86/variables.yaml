@@ -1,4 +1,5 @@
 variables:
+  batch_time: ''
   mpi_command: 'mpirun -n {n_nodes} -c {n_ranks}'
   batch_submit: '{execute_experiment}'
   batch_nodes: ''

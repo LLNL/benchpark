@@ -18,7 +18,6 @@ ramble:
               OMP_NUM_THREADS: '{omp_num_threads}'
           variables:
             n_ranks: '{processes_per_node} * {n_nodes}'
-            batch_time: '02:00'
             p: 2
             px: '{p}'
             py: '{p}'

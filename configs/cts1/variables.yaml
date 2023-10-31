@@ -1,4 +1,5 @@
 variables:
+  batch_time: '02:00'
   mpi_command: 'srun -N {n_nodes} -n {n_ranks}'
   batch_submit: 'sbatch {execute_experiment}'
   batch_nodes: '#SBATCH -N {n_nodes}'
