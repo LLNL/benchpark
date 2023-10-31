@@ -51,7 +51,7 @@ Contributing
 ------------
 To contribute to Benchpark, please open a `pull request 
 <https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests>`_ 
-to the `main` branch.  Your PR must pass Benchpark's unit tests, and must be `PEP 8 <https://peps.python.org/pep-0008/>`_ compliant.
+to the `develop` branch.  Your PR must pass Benchpark's unit tests, and must be `PEP 8 <https://peps.python.org/pep-0008/>`_ compliant.
 
 Authors and citations
 ---------------------
