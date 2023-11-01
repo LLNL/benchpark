@@ -11,7 +11,7 @@ Build experiment
 
   export SPACK_DISABLE_LOCAL_CONFIG=1
 
-  ramble -D . workspace setup  
+  ramble -P -D . workspace setup  
 
 which will build the source code and set up the following workspace directory structure::
 

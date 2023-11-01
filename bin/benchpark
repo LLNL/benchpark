@@ -237,9 +237,9 @@ To build these benchmarks, do the following:
 
     export SPACK_DISABLE_LOCAL_CONFIG=1
 
-    ramble -D . workspace setup
+    ramble -P -D . workspace setup
 
-Further steps are needed to run the experiments (ramble -D . on)
+Further steps are needed to run the experiments (ramble -P -D . on)
 """
     print(instructions)
 
