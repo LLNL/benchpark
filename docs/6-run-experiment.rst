@@ -4,7 +4,7 @@ Running an Experiment in Benchpark
 
 To run all of the experiments in the workspace::
 
-   ramble -D . on
+   ramble -P -D . on
 
 An output file is generated for each experiment in its unique directory::
 
