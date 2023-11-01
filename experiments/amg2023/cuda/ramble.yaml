@@ -47,31 +47,22 @@ ramble:
                   - gtl_info
   spack:
     concretized: true
+    variables:
+      cuda_version: ['{cuda10_version}', '{default_cuda_version}']
+      cuda_compiler: ['compiler-cuda10', 'default-compiler']
+      versions: ['10', 'default']
     packages:
-      hypre-cuda-10:
-        spack_spec: hypre@2.28.0 +mpi+cuda+mixedint cuda_arch={cuda_arch} ^cuda@{cuda10_version}
-        compiler: compiler-cuda10
-      amg2023-cuda-10:
-        spack_spec: amg2023@develop +mpi+cuda ^cuda@{cuda10_version}
-        compiler: compiler-cuda10
-      hypre-cuda-default:
-        spack_spec: hypre@2.28.0 +mpi+cuda+mixedint cuda_arch={cuda_arch} ^cuda@{default_cuda_version}
-        compiler: default-compiler
-      amg2023-cuda-default:
-        spack_spec: amg2023@develop +mpi+cuda ^cuda@{default_cuda_version}
-        compiler: default-compiler
+      hypre-cuda-{versions}:
+        spack_spec: 'hypre@2.28.0 +mpi+cuda+mixedint cuda_arch={cuda_arch} ^cuda@{cuda_version}'
+        compiler: '{cuda_compiler}'
+      amg2023-cuda-{versions}:
+        spack_spec: 'amg2023@develop +mpi+cuda ^cuda@{cuda_version}'
+        compiler: '{cuda_compiler}'
     environments:
-      amg2023-cuda-10:
+      amg2023-cuda-{versions}:
         packages:
-        - cublas-cuda-10
+        - cublas-cuda-{versions}
         - lapack
         - default-mpi
-        - hypre-cuda-10
-        - amg2023-cuda-10
-      amg2023-cuda-default:
-        packages:
-        - cublas-cuda-default
-        - lapack
-        - default-mpi
-        - hypre-cuda-default
-        - amg2023-cuda-default
+        - hypre-cuda-{versions}
+        - amg2023-cuda-{versions}
