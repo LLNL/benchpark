@@ -1,10 +1,11 @@
-===================
-Benchpark list
-===================
+==============
+Benchpark List
+==============
+
 To list all benchmarks and systems available in Benchpark::
 
-  $ cd bin
-  $ benchpark list
+    cd bin
+    benchpark list
 
-Once you have decided on a ``system`` you will use, and the ``benchmark/ProgrammingModel`` to run, 
-you can proceed to `Benchpark setup <4-benchpark-setup.rst>`_.
+Once you have decided on a ``system`` you will use, and the ``benchmark/ProgrammingModel``
+to run, you can proceed to :doc:`4-benchpark-setup`.

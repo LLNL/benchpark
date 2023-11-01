@@ -1,6 +1,6 @@
-==================
+=================
 Add an Experiment
-==================
+=================
   
 Experiment specifications are located in ``$benchpark/experiments``. 
 They are organized by the *ProgrammingModel* used for on-node parallelization for the experiment, 
