@@ -43,7 +43,7 @@ ramble:
     concretized: true
     packages:
       hypre-omp:
-        spack_spec: hypre@2.28.0 ~fortran+mpi+openmp+mixedint
+        spack_spec: hypre@2.28.0 +mpi+openmp+mixedint
         compiler: default-compiler
       amg2023-omp:
         spack_spec: amg2023@develop +mpi+openmp
