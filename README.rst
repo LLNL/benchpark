@@ -71,6 +71,7 @@ ACM, New York, NY, USA, 9 pages.
 
 License
 -------
-Benchpark is released under the Apache 2.0 w/ LLVM Exception license. For more details see the [LICENSE](/LICENSE) file.
+Benchpark is released under the Apache 2.0 w/ LLVM Exception license. For more
+details see the [LICENSE](./LICENSE) file.
 
 LLNL-CODE-850629
