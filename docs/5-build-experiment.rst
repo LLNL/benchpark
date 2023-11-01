@@ -2,16 +2,16 @@
 Build experiment
 ================
 
-`Benchmark setup <4-benchmark-setup.rst>`_ will output instructions to follow::
+``benchpark setup`` will output instructions to follow::
 
-  cd <workspace_root>/<benchmark/ProgrammingModel>/<system>/workspace
+   cd <workspace_root>/<benchmark/ProgrammingModel>/<system>/workspace
 
-  . <workspace_root>/<benchmark/ProgrammingModel>/<system>/spack/share/spack/setup-env.sh
-  . <workspace_root>/<benchmark/ProgrammingModel>/<system>/ramble/share/ramble/setup-env.sh
+   . <workspace_root>/<benchmark/ProgrammingModel>/<system>/spack/share/spack/setup-env.sh
+   . <workspace_root>/<benchmark/ProgrammingModel>/<system>/ramble/share/ramble/setup-env.sh
 
-  export SPACK_DISABLE_LOCAL_CONFIG=1
+   export SPACK_DISABLE_LOCAL_CONFIG=1
 
-  ramble -D . workspace setup  
+   ramble -D . workspace setup
 
 which will build the source code and set up the following workspace directory structure::
 
@@ -27,6 +27,6 @@ which will build the source code and set up the following workspace directory st
                             (everything from source/experiments/<benchmark>)
                         experiments/
                             <benchmark>/
-                                <problem>/   
+                                <problem>/
                                     <benchmark>_<ProgrammingModel>_<problem>
                                         execute_experiment

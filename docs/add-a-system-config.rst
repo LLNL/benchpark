@@ -1,6 +1,6 @@
-======================
+=============================
 Adding a System Configuration
-======================
+=============================
 
 ``benchpark/configs`` contains a directory for each system specified in Benchpark.
 If the software stack on your system is unlike the available configurations, 
