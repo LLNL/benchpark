@@ -6,6 +6,7 @@ import pathlib
 import os
 import shutil
 import shlex
+import sys
 
 DEBUG = False
 
@@ -14,6 +15,9 @@ def debug_print(message):
         print("(debug) " + str(message))
 
 def main():
+    if sys.version_info[:2] < (3, 8):
+       raise Exception("Benchpark requires at least python 3.8+.")
+
     parser = argparse.ArgumentParser(description="Benchpark")
 
     subparsers = parser.add_subparsers(title="Subcommands", dest="subcommand")
@@ -37,25 +41,73 @@ def source_location():
 
 def benchpark_list(subparsers, actions_dict):
     list_parser = subparsers.add_parser("list", help="List available benchmarks and systems")
-
+    list_parser.add_argument('sublist', nargs='?')
     actions_dict["list"] = benchpark_list_handler
 
-def benchpark_list_handler(args):
+def benchpark_benchmarks():
     source_dir = source_location()
-    print("Systems:")
-    for x in os.listdir(source_dir / "configs"):
-        print(f"\t{x}")
-
-    print("Benchmarks:")
+    benchmarks = []
     experiments_dir = source_dir / "experiments"
     for x in os.listdir(experiments_dir):
         for y in os.listdir(experiments_dir / x):
-            print(f"\t{x}/{y}")
+            benchmarks.append(f"{x}/{y}")
+    return benchmarks
+
+def benchpark_systems():
+    source_dir = source_location()
+    systems = []
+    for x in os.listdir(source_dir / "configs"):
+        systems.append(x)
+    return systems
+
+def benchpark_list_handler(args):
+    source_dir = source_location()
+    sublist = args.sublist
+    benchmarks = benchpark_benchmarks()
+    systems = benchpark_systems()
+
+    if sublist==None:
+        print("Benchmarks/ProgrammingModel:")
+        for benchmark in benchmarks:
+            print(f"\t{benchmark}")
+        print("Systems:")
+        for system in systems:
+            print(f"\t{system}")
+    else:
+        if sublist == "benchmarks":
+            print("Benchmarks:")
+            for benchmark in benchmarks:
+                print(f"\t{benchmark}")
+        else:
+            if sublist == "systems":
+                print("Systems:")
+                for system in systems:
+                    print(f"\t{system}")
+            else:
+                print(f"Invalid benchpark list [{sublist}] - must choose [benchmarks],[systems], or leave empty")
+
+def benchpark_check_benchmark(arg_str):
+    benchmarks = benchpark_benchmarks()
+    found = arg_str in benchmarks
+    if not found:
+        print(f"Invalid benchmark/experiment {arg_str} - must choose one of: ")
+        for benchmark in benchmarks:
+            print(f"\t{benchmark}")
+    return found
+
+def benchpark_check_system(arg_str):
+    systems = benchpark_systems()
+    found = arg_str in systems
+    if not found:
+        print(f"Invalid system {arg_str} - must choose one of: ")
+        for system in systems:
+            print(f"\t{system}")
+    return found
 
 def benchpark_setup(subparsers, actions_dict):
     create_parser = subparsers.add_parser("setup", help="Create a benchmark and prepare it to build/run")
 
-    create_parser.add_argument('benchmark', type=str, help="The benchmark to run")
+    create_parser.add_argument('benchmark', type=str, help="The benchmark/experiment to run")
     create_parser.add_argument('system', type=str, help="The system we are on")
     create_parser.add_argument('workspace_root', type=str, help="Where to install packages, store results, etc. (should be empty/nonexistent)")
 
@@ -105,10 +157,14 @@ def benchpark_setup_handler(args):
     benchmark = args.benchmark
     system = args.system
     workspace_root = pathlib.Path(os.path.abspath(args.workspace_root))
-
     source_dir = source_location()
-
-    debug_print(source_dir)
+    debug_print(f"source_dir = {source_dir}")
+    debug_print(f"specified benchmark = {benchmark}")
+    valid_benchmark = benchpark_check_benchmark(benchmark)
+    debug_print(f"specified system = {system}")
+    valid_system = benchpark_check_system(system)
+    if not (valid_benchmark and valid_system):
+        return
 
     workspace_dir = workspace_root / str(benchmark) / str(system)
 
@@ -172,9 +228,9 @@ def benchpark_setup_handler(args):
     )
 
     instructions = f"""\
-To build/run these benchmarks, do the following:
+To build these benchmarks, do the following:
 
-    cd {workspace_dir}
+    cd {workspace_dir}/workspace
 
     . {workspace_dir}/spack/share/spack/setup-env.sh
     . {workspace_dir}/ramble/share/ramble/setup-env.sh
@@ -182,7 +238,8 @@ To build/run these benchmarks, do the following:
     export SPACK_DISABLE_LOCAL_CONFIG=1
 
     ramble -D . workspace setup
-    ramble -D . on
+
+Further steps are needed to run the experiments (ramble -D . on)
 """
     print(instructions)
 
