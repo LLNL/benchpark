@@ -7,6 +7,7 @@
 
    1-getting-started
    2-benchpark-list
+   3-opt-edit-experiment
    4-benchpark-setup
    5-build-experiment
    6-run-experiment
@@ -15,6 +16,6 @@
    :maxdepth: 1
    :caption: Contributing
 
-   add-a-system-config
-   add-an-experiment
    add-a-benchmark
+   add-an-experiment
+   add-a-system-config
