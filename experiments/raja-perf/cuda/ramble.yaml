@@ -17,10 +17,7 @@ ramble:
               variables:
                 processes_per_node: ['1', '2', '4']
                 n_ranks: '{processes_per_node} * {n_nodes}'
-                batch_time: '02:00'
                 n_nodes: '1'
-                cuda_version: ''
-                compilers: ''
   spack:
     concretized: true
     packages:
@@ -28,7 +25,7 @@ ramble:
         spack_spec: 'blt@0.5.2:'
         compiler: compiler-gcc
       raja-perf:
-        spack_spec: raja-perf@develop +cuda~openmp+mpi cuda_arch=70 ^cuda@11.8.0
+        spack_spec: raja-perf@develop +cuda~openmp+mpi cuda_arch={cuda_arch} ^cuda@{default_cuda_version}
         compiler: default-compiler
     environments:
       raja-perf:
