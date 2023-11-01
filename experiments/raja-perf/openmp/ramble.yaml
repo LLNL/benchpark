@@ -18,29 +18,24 @@ ramble:
               OMP_NUM_THREADS: '{n_threads}'
           variables:
             n_ranks: '1'
-            batch_time: '120'
           experiments:
-            suite_{compilers}_{n_nodes}_{n_ranks}_{n_threads}:
+            suite_{n_nodes}_{n_ranks}_{n_threads}:
               variables:
-                env_name: 'raja-perf-{compilers}'
+                env_name: raja-perf
                 n_nodes: '1'
                 n_threads: ['8', '16']
-              matrix:
-              - compilers
   spack:
     concretized: true
     packages:
       blt:
         spack_spec: 'blt@0.5.2:'
-        compiler: default-compiler
-      'raja-perf-{compilers}':
+        compiler: compiler-gcc
+      raja-perf:
         spack_spec: raja-perf@develop +openmp +mpi ^cmake@3.23.1
-        compiler: '{compilers}'
+        compiler: default-compiler
     environments:
-      raja-perf-{compilers}:
-        matrix:
-        - compilers
+      raja-perf:
         packages:
         - blt
-        - mpi-{compilers}
-        - raja-perf-{compilers}
+        - default-mpi
+        - raja-perf
