@@ -18,7 +18,7 @@ with the following directory structure::
 
     workspace_root/
         <benchmark>/
-            <ProgrammingMode>/
+            <ProgrammingModel>/
                 <system>/
                     ramble/
                     spack/
