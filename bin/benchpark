@@ -139,11 +139,6 @@ def benchpark_setup(subparsers, actions_dict):
     actions_dict["setup"] = benchpark_setup_handler
 
 
-def benchpark_version(subparsers, actions_dict):
-    list_parser = subparsers.add_parser("version", help="Benchpark version")
-    list_parser.add_argument("sublist", nargs="?")
-    actions_dict["version"] = benchpark_version_handler
-
 
 def run_command(command_str, env=None):
     subprocess.run(
