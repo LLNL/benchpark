@@ -27,4 +27,13 @@ with the following directory structure::
                             (everything from source/configs/<system>)
                             (everything from source/experiments/<benchmark>)
 
-``benchpark setup`` will output :doc:`5-build-experiment` instructions.
+``benchpark setup`` will output instructions to follow::
+
+   cd <workspace_root>/<benchmark/ProgrammingModel>/<system>/workspace
+
+   . <workspace_root>/<benchmark/ProgrammingModel>/<system>/spack/share/spack/setup-env.sh
+   . <workspace_root>/<benchmark/ProgrammingModel>/<system>/ramble/share/ramble/setup-env.sh
+
+   export SPACK_DISABLE_LOCAL_CONFIG=1
+
+Now you are ready to build your experiments as described in :doc:`5-build-experiment`.
