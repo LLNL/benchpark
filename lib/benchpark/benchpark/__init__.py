@@ -13,4 +13,3 @@ benchpark_version_info = tuple([__try_int(v) for v in __version__.split(".")])
 
 
 __all__ = ["benchpark_version_info", "benchpark_version"]
-
