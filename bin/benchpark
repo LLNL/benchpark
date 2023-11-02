@@ -44,6 +44,7 @@ def main():
         )
 
 
+
 def source_location():
     script_location = os.path.dirname(os.path.abspath(__file__))
     return pathlib.Path(script_location).parent
@@ -273,8 +274,10 @@ Further steps are needed to run the experiments (ramble -P -D . on)
 """
     print(instructions)
 
+
 def benchpark_version_handler(args):
     print(benchpark.benchpark_version)
+
 
 if __name__ == "__main__":
     main()
