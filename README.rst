@@ -1,6 +1,6 @@
-=========
+==================================================
 benchpark `<http://software.llnl.gov/benchpark/>`_
-=========
+==================================================
 
 Benchpark is an open collaborative repository for reproducible specifications of HPC benchmarks.
 Benchpark enables cross-site collaboration on benchmarking by providing a mechanism for sharing
