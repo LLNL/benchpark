@@ -12,13 +12,15 @@ import benchpark
 
 DEBUG = False
 
+
 def debug_print(message):
     if DEBUG:
         print("(debug) " + str(message))
 
+
 def main():
     if sys.version_info[:2] < (3, 8):
-       raise Exception("Benchpark requires at least python 3.8+.")
+        raise Exception("Benchpark requires at least python 3.8+.")
 
     parser = argparse.ArgumentParser(description="Benchpark")
 
@@ -36,16 +38,25 @@ def main():
     elif args.subcommand in actions:
         actions[args.subcommand](args)
     else:
-        print("Invalid subcommand ({args.subcommand}) - must choose one of: " +  " ".join(actions.keys()))
+        print(
+            "Invalid subcommand ({args.subcommand}) - must choose one of: "
+            + " ".join(actions.keys())
+        )
+
+
 
 def source_location():
     script_location = os.path.dirname(os.path.abspath(__file__))
     return pathlib.Path(script_location).parent
 
+
 def benchpark_list(subparsers, actions_dict):
-    list_parser = subparsers.add_parser("list", help="List available benchmarks and systems")
-    list_parser.add_argument('sublist', nargs='?')
+    list_parser = subparsers.add_parser(
+        "list", help="List available benchmarks and systems"
+    )
+    list_parser.add_argument("sublist", nargs="?")
     actions_dict["list"] = benchpark_list_handler
+
 
 def benchpark_benchmarks():
     source_dir = source_location()
@@ -56,6 +67,7 @@ def benchpark_benchmarks():
             benchmarks.append(f"{x}/{y}")
     return benchmarks
 
+
 def benchpark_systems():
     source_dir = source_location()
     systems = []
@@ -63,13 +75,14 @@ def benchpark_systems():
         systems.append(x)
     return systems
 
+
 def benchpark_list_handler(args):
     source_dir = source_location()
     sublist = args.sublist
     benchmarks = benchpark_benchmarks()
     systems = benchpark_systems()
 
-    if sublist==None:
+    if sublist == None:
         print("Benchmarks/ProgrammingModel:")
         for benchmark in benchmarks:
             print(f"\t{benchmark}")
@@ -87,7 +100,10 @@ def benchpark_list_handler(args):
                 for system in systems:
                     print(f"\t{system}")
             else:
-                print(f"Invalid benchpark list [{sublist}] - must choose [benchmarks],[systems], or leave empty")
+                print(
+                    f"Invalid benchpark list [{sublist}] - must choose [benchmarks],[systems], or leave empty"
+                )
+
 
 def benchpark_check_benchmark(arg_str):
     benchmarks = benchpark_benchmarks()
@@ -98,6 +114,7 @@ def benchpark_check_benchmark(arg_str):
             print(f"\t{benchmark}")
     return found
 
+
 def benchpark_check_system(arg_str):
     systems = benchpark_systems()
     found = arg_str in systems
@@ -107,12 +124,21 @@ def benchpark_check_system(arg_str):
             print(f"\t{system}")
     return found
 
-def benchpark_setup(subparsers, actions_dict):
-    create_parser = subparsers.add_parser("setup", help="Create a benchmark and prepare it to build/run")
 
-    create_parser.add_argument('benchmark', type=str, help="The benchmark/experiment to run")
-    create_parser.add_argument('system', type=str, help="The system we are on")
-    create_parser.add_argument('workspace_root', type=str, help="Where to install packages, store results, etc. (should be empty/nonexistent)")
+def benchpark_setup(subparsers, actions_dict):
+    create_parser = subparsers.add_parser(
+        "setup", help="Create a benchmark and prepare it to build/run"
+    )
+
+    create_parser.add_argument(
+        "benchmark", type=str, help="The benchmark/experiment to run"
+    )
+    create_parser.add_argument("system", type=str, help="The system we are on")
+    create_parser.add_argument(
+        "workspace_root",
+        type=str,
+        help="Where to install packages, store results, etc. (should be empty/nonexistent)",
+    )
 
     actions_dict["setup"] = benchpark_setup_handler
 
@@ -124,10 +150,11 @@ def benchpark_version(subparsers, actions_dict):
 def run_command(command_str, env=None):
     subprocess.run(
         shlex.split(command_str),
-        env=env, check=True,
+        env=env,
+        check=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        text=True
+        text=True,
     )
 
 
@@ -148,6 +175,7 @@ def symlink_tree(src, dst):
             dst_symlink = dst_dir / x
             src_file = os.path.join(src_subdir, x)
             os.symlink(src_file, dst_symlink)
+
 
 def benchpark_setup_handler(args):
     """
@@ -181,7 +209,9 @@ def benchpark_setup_handler(args):
             print(f"Clearing existing workspace {workspace_dir}")
             shutil.rmtree(workspace_dir)
         else:
-            print(f"Benchpark expects to manage {workspace_dir} as a directory, but it is not")
+            print(
+                f"Benchpark expects to manage {workspace_dir} as a directory, but it is not"
+            )
             sys.exit(1)
 
     workspace_dir.mkdir(parents=True)
@@ -191,7 +221,7 @@ def benchpark_setup_handler(args):
 
     print(f"Setting up configs for Ramble workspace {ramble_configs_dir}")
 
-    configs_src_dir = source_dir / "configs" /  str(system)
+    configs_src_dir = source_dir / "configs" / str(system)
     experiment_src_dir = source_dir / "experiments" / benchmark
 
     ramble_configs_dir.mkdir(parents=True)
@@ -201,7 +231,7 @@ def benchpark_setup_handler(args):
     spack_location = workspace_dir / "spack"
     ramble_location = workspace_dir / "ramble"
 
-    print (f"Cloning spack into {spack_location}")
+    print(f"Cloning spack into {spack_location}")
     run_command(
         "git clone --depth=1 -c feature.manyFiles=true "
         "https://github.com/spack/spack.git "
@@ -219,21 +249,14 @@ def benchpark_setup_handler(args):
     ramble_exe = ramble_location / "bin" / "ramble"
     spack_cache_location = spack_location / "misc-cache"
 
-    env = {
-        "SPACK_DISABLE_LOCAL_CONFIG": "1"
-    }
+    env = {"SPACK_DISABLE_LOCAL_CONFIG": "1"}
     run_command(
         f"{spack_exe} config --scope=site add config:misc_cache:{spack_cache_location}",
-        env=env
+        env=env,
     )
-    run_command(
-        f"{spack_exe} repo add --scope=site {source_dir}/repo",
-        env=env
-    )
+    run_command(f"{spack_exe} repo add --scope=site {source_dir}/repo", env=env)
 
-    run_command(
-        f"{ramble_exe} repo add --scope=site {source_dir}/repo"
-    )
+    run_command(f"{ramble_exe} repo add --scope=site {source_dir}/repo")
 
     instructions = f"""\
 To build these benchmarks, do the following:
@@ -251,8 +274,10 @@ Further steps are needed to run the experiments (ramble -P -D . on)
 """
     print(instructions)
 
+
 def benchpark_version_handler(args):
     print(benchpark.benchpark_version)
+
 
 if __name__ == "__main__":
     main()
