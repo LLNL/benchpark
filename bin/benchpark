@@ -8,6 +8,8 @@ import shutil
 import shlex
 import sys
 
+import benchpark
+
 DEBUG = False
 
 def debug_print(message):
@@ -25,6 +27,7 @@ def main():
     actions = {}
     benchpark_list(subparsers, actions)
     benchpark_setup(subparsers, actions)
+    benchpark_version(subparsers, actions)
 
     args = parser.parse_args()
 
@@ -112,6 +115,11 @@ def benchpark_setup(subparsers, actions_dict):
     create_parser.add_argument('workspace_root', type=str, help="Where to install packages, store results, etc. (should be empty/nonexistent)")
 
     actions_dict["setup"] = benchpark_setup_handler
+
+def benchpark_version(subparsers, actions_dict):
+    list_parser = subparsers.add_parser("version", help="Benchpark version")
+    list_parser.add_argument('sublist', nargs='?')
+    actions_dict["version"] = benchpark_version_handler
 
 def run_command(command_str, env=None):
     subprocess.run(
@@ -242,6 +250,9 @@ To build these benchmarks, do the following:
 Further steps are needed to run the experiments (ramble -P -D . on)
 """
     print(instructions)
+
+def benchpark_version_handler(args):
+    print(benchpark.benchpark_version)
 
 if __name__ == "__main__":
     main()
