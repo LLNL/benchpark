@@ -2,19 +2,14 @@
 Build experiment
 ================
 
-``benchpark setup`` will output instructions to follow::
+``benchpark setup`` has set up the directory structure for your experiment.  
+The next step is setting up the Ramble workspace and building the code::
 
    cd <workspace_root>/<benchmark/ProgrammingModel>/<system>/workspace
-
-   . <workspace_root>/<benchmark/ProgrammingModel>/<system>/spack/share/spack/setup-env.sh
-   . <workspace_root>/<benchmark/ProgrammingModel>/<system>/ramble/share/ramble/setup-env.sh
-
-   export SPACK_DISABLE_LOCAL_CONFIG=1
-
    ramble -P -D . workspace setup  
 
 
-which will build the source code and set up the following workspace directory structure::
+Ramble will build the source code and set up the following workspace directory structure::
 
     workspace_root/
         <benchmark>/
@@ -31,3 +26,7 @@ which will build the source code and set up the following workspace directory st
                                 <problem>/
                                     <benchmark>_<ProgrammingModel>_<problem>
                                         execute_experiment
+
+
+If you change any build instructions, rerun the `ramble -P -D . workspace setup` command
+to re-setup the workspace and rebuild the binaries as necessary.
