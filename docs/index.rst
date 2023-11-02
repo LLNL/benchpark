@@ -11,6 +11,8 @@
    4-benchpark-setup
    5-build-experiment
    6-run-experiment
+   7-analyze-experiment
+   FAQ-what-to-rerun
 
 .. toctree::
    :maxdepth: 1
