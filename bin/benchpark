@@ -8,8 +8,6 @@ import shutil
 import shlex
 import sys
 
-import benchpark
-
 DEBUG = False
 
 
@@ -29,7 +27,6 @@ def main():
     actions = {}
     benchpark_list(subparsers, actions)
     benchpark_setup(subparsers, actions)
-    benchpark_version(subparsers, actions)
 
     args = parser.parse_args()
 
@@ -260,7 +257,7 @@ def benchpark_setup_handler(args):
     run_command(f"{ramble_exe} repo add --scope=site {source_dir}/repo")
 
     instructions = f"""\
-To build these benchmarks, do the following:
+To complete the benchpark setup, do the following:
 
     cd {workspace_dir}/workspace
 
@@ -269,15 +266,9 @@ To build these benchmarks, do the following:
 
     export SPACK_DISABLE_LOCAL_CONFIG=1
 
-    ramble -P -D . workspace setup
-
-Further steps are needed to run the experiments (ramble -P -D . on)
+Further steps are needed to build the experiments (ramble -P -D . workspace setup) and run them (ramble -P -D . on)
 """
     print(instructions)
-
-
-def benchpark_version_handler(args):
-    print(benchpark.benchpark_version)
 
 
 if __name__ == "__main__":
