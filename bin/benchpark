@@ -139,7 +139,6 @@ def benchpark_setup(subparsers, actions_dict):
     actions_dict["setup"] = benchpark_setup_handler
 
 
-
 def run_command(command_str, env=None):
     subprocess.run(
         shlex.split(command_str),
