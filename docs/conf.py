@@ -19,9 +19,9 @@ sys.path.append(os.path.abspath("../lib/benchpark/benchpark"))
 print(sys.path)
 
 
-project = 'Benchpark'
-copyright = '2023, LLNS LLC'
-author = 'Olga Pearce, Alec Scott, Peter Scheibel, Greg Becker, Riyaz Haque, and Nathan Hanford'
+project = "Benchpark"
+copyright = "2023, LLNS LLC"
+author = "Olga Pearce, Alec Scott, Peter Scheibel, Greg Becker, Riyaz Haque, and Nathan Hanford"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
