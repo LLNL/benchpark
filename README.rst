@@ -1,6 +1,8 @@
 ==================================================
-benchpark `<http://software.llnl.gov/benchpark/>`_
+Benchpark 
 ==================================================
+
+You can find detailed documentation in `ReadTheDocs <https://software.llnl.gov/benchpark>`_
 
 Benchpark is an open collaborative repository for reproducible specifications of HPC benchmarks.
 Benchpark enables cross-site collaboration on benchmarking by providing a mechanism for sharing
@@ -26,7 +28,7 @@ Dependencies
 ------------
 Benchpark uses the following open source projects for specifying configurations:
 
-* `Ramble <https://github.com/GoogleCloudPlatform/ramble>`_ ro specify run configurations
+* `Ramble <https://github.com/GoogleCloudPlatform/ramble>`_ to specify run configurations
 * `Spack <https://github.com/spack/spack>`_ to specify build configurations
 
 Community
