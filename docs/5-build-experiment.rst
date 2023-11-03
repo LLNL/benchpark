@@ -28,5 +28,5 @@ Ramble will build the source code and set up the following workspace directory s
                                         execute_experiment
 
 
-If you change any build instructions, rerun the ``ramble -P -D . workspace setup`` command
-to re-setup the workspace and rebuild the binaries as necessary.
+If you edit any of the files, see :doc:`FAQ-what-to-rerun` to determine
+whether you need to re-do any of the previous steps.
