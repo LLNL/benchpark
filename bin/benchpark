@@ -251,7 +251,7 @@ def benchpark_setup_handler(args):
     run_command(f"{ramble_exe} repo add --scope=site {source_dir}/repo")
 
     instructions = f"""\
-To build these benchmarks, do the following:
+To complete the benchpark setup, do the following:
 
     cd {workspace_dir}/workspace
 
@@ -260,9 +260,7 @@ To build these benchmarks, do the following:
 
     export SPACK_DISABLE_LOCAL_CONFIG=1
 
-    ramble -P -D . workspace setup
-
-Further steps are needed to run the experiments (ramble -P -D . on)
+Further steps are needed to build the experiments (ramble -P -D . workspace setup) and run them (ramble -P -D . on)
 """
     print(instructions)
 
