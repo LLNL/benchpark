@@ -1,12 +1,8 @@
 name: Linting & Style Checks
-
 on:
-  push:
-    branches:
-      - develop
-  pull_request:
-    branches:
-      - develop
+  # This Workflow can be triggered manually
+  workflow_dispatch:
+  workflow_call:
 
 jobs:
   lint:
