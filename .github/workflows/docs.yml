@@ -1,15 +1,8 @@
 name: Build & Deploy docs site to GitHub Pages
 on:
-  push:
-    branches:
-      - develop
-  pull_request:
-    branches:
-      - develop
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
+  # This Workflow can be triggered manually
+  workflow_dispatch:
+  workflow_call:
 
 jobs:
   build:
