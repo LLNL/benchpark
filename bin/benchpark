@@ -97,7 +97,7 @@ def benchpark_list_handler(args):
                     print(f"\t{system}")
             else:
                 raise ValueError(
-                    f"Invalid benchpark list \"{sublist}\" - must choose [benchmarks], [systems], or leave empty"
+                    f'Invalid benchpark list "{sublist}" - must choose [benchmarks], [systems], or leave empty'
                 )
 
 
@@ -105,7 +105,7 @@ def benchpark_check_benchmark(arg_str):
     benchmarks = benchpark_benchmarks()
     found = arg_str in benchmarks
     if not found:
-        out_str = f"Invalid benchmark/experiment \"{arg_str}\" - must choose one of: "
+        out_str = f'Invalid benchmark/experiment "{arg_str}" - must choose one of: '
         for benchmark in benchmarks:
             out_str += f"\n\t{benchmark}"
         raise ValueError(out_str)
@@ -116,7 +116,7 @@ def benchpark_check_system(arg_str):
     systems = benchpark_systems()
     found = arg_str in systems
     if not found:
-        out_str = f"Invalid system \"{arg_str}\" - must choose one of: "
+        out_str = f'Invalid system "{arg_str}" - must choose one of: '
         for system in systems:
             out_str += f"\n\t{system}"
         raise ValueError(out_str)
@@ -194,7 +194,11 @@ def benchpark_setup_handler(args):
     debug_print(f"specified system = {system}")
     valid_system = benchpark_check_system(system)
     if not (valid_benchmark and valid_system):
-        raise ValueError("Invalid benchmark/experiment and system provided: {0} {1}".format(benchmark, system))
+        raise ValueError(
+            "Invalid benchmark/experiment and system provided: {0} {1}".format(
+                benchmark, system
+            )
+        )
 
     workspace_dir = workspace_root / str(benchmark) / str(system)
 
