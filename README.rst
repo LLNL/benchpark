@@ -1,6 +1,8 @@
-=========
-benchpark
-=========
+==================================================
+Benchpark 
+==================================================
+
+You can find detailed documentation in `ReadTheDocs <https://software.llnl.gov/benchpark>`_
 
 Benchpark is an open collaborative repository for reproducible specifications of HPC benchmarks.
 Benchpark enables cross-site collaboration on benchmarking by providing a mechanism for sharing
@@ -26,29 +28,20 @@ Dependencies
 ------------
 Benchpark uses the following open source projects for specifying configurations:
 
-* `Ramble <https://github.com/GoogleCloudPlatform/ramble>`_ ro specify run configurations
+* `Ramble <https://github.com/GoogleCloudPlatform/ramble>`_ to specify run configurations
 * `Spack <https://github.com/spack/spack>`_ to specify build configurations
-
-Documentation
--------------
-1. `About Benchpark <docs/about-benchpark.rst>`_
-2. `Getting started <docs/getting-started.rst>`_
-3. `Navigating Benchpark <docs/navigating-benchpark.rst>`_
-4. `Running a Benchmark <docs/running-a-benchmark.rst>`_
-5. `Adding a new System Config <docs/adding-a-system-config.rst>`_
-6. `Adding a new Benchmark <docs/adding-a-benchmark.rst>`_
 
 Community
 ---------
 Benchpark is an open source project.  Questions, discussion, and contributions 
-of new benchmarks and system specifications are welcome.
+of new benchmarks, experiments, and system specifications are welcome.
 We use `github discussions <https://github.com/llnl/benchpark/discussions>`_ for Q&A and discussion.
 
 Contributing
 ------------
 To contribute to Benchpark, please open a `pull request 
 <https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests>`_ 
-to the `main` branch.  Your PR must pass Benchpark's unit tests, and must be `PEP 8 <https://peps.python.org/pep-0008/>`_ compliant.
+to the `develop` branch.  Your PR must pass Benchpark's unit tests, and must be `PEP 8 <https://peps.python.org/pep-0008/>`_ compliant.
 
 Authors and citations
 ---------------------
@@ -68,6 +61,7 @@ ACM, New York, NY, USA, 9 pages.
 
 License
 -------
-Benchpark is released under the Apache 2.0 w/ LLVM Exception license. For more details see the [LICENSE](/LICENSE) file.
+Benchpark is released under the Apache 2.0 w/ LLVM Exception license. For more
+details see the [LICENSE](./LICENSE) file.
 
 LLNL-CODE-850629

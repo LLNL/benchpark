@@ -1,0 +1,62 @@
+name: Build & Deploy docs site to GitHub Pages
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+
+    - name: Setup Python
+      uses: actions/setup-python@65d7f2d534ac1bc67fcd62888c5f4f3d2cb2b236
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+        cache-dependency-path: '.github/workflows/requirements/docs.txt'
+
+    - name: Setup GitHub Pages
+      id: pages
+      uses: actions/configure-pages@f156874f8191504dae5b037505266ed5dda6c382
+
+    - name: Install Sphinx and Theme via Pip
+      run: |
+        pip install -r .github/workflows/requirements/docs.txt
+
+    - name: Build with sphinx
+      run: |
+        sphinx-build docs/ _build
+
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@a753861a5debcf57bf8b404356158c8e1e33150c
+      if: github.ref == 'refs/heads/develop'
+      with:
+        path: ./_build
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/develop'
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@9dbe3824824f8a1377b8e298bafde1a50ede43e5

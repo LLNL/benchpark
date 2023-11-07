@@ -10,7 +10,6 @@ ramble:
         problem1:
           variables:
             n_ranks: '{processes_per_node} * {n_nodes}'
-            batch_time: '02:00'
             p: 2
             px: '{p}'
             py: '{p}'
@@ -29,38 +28,22 @@ ramble:
                 processes_per_node: ['8', '4']
                 n_nodes: ['1', '2']
               matrices:
-                - size:
-                  - n # TODO: Filter matrix
-            '{env_name}_problem1_{n_nodes}_{omp_num_threads}_{px}_{py}_{pz}_{nx}_{ny}_{nz}':
-              env_vars:
-                set:
-                  OMP_NUM_THREADS: '{omp_num_threads}'
-              variables:
-                env_name: 'amg2023-omp'
-                processes_per_node: ['8', '4']
-                n_nodes: ['1', '2']
-                omp_num_threads: ['1', '2', '4']
-              matrices:
-                - size_threads:
-                  - n # TODO: Filter matrix
-                  - omp_num_threads # TODO: Filter matrix
+                - size_gtl:
+                  - n
+                  - gtl
   spack:
     concretized: true
     variables:
       gtl: ["gtl", "no-gtl"]
     packages:
       hypre-{gtl}:
-        spack_spec: hypre@2.28.0 +caliper +mpi+rocm+mixedint amdgpu_target="gfx90a"
-        compiler: compiler-rocm
-      amg2023-gpu-{gtl}:
-        spack_spec: amg2023@cmake-build +caliper +mpi+rocm amdgpu_target="gfx90a"
+        spack_spec: hypre@2.28.0 +caliper +mpi+rocm+mixedint amdgpu_target="{rocm_arch}"
         compiler: compiler-rocm
       hypre-omp:
         spack_spec: hypre@2.28.0 +mpi+openmp+mixedint
         compiler: compiler-rocm
       amg2023-omp:
         spack_spec: amg2023@develop +mpi+openmp
-        compiler: compiler-rocm
       caliper:
         spack_spec: caliper ~papi
     environments:
@@ -68,7 +51,7 @@ ramble:
         packages:
         - blas-rocm
         - lapack
-        - mpi-{gtl}
+        - mpi-rocm-{gtl}
         - hypre-{gtl}
         - amg2023-gpu-{gtl}
         - caliper

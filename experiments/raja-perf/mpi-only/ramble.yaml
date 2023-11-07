@@ -15,28 +15,23 @@ ramble:
         suite:
           variables:
             n_ranks: ['1', '2', '4', '8']
-            batch_time: '120'
           experiments:
-            suite_{compilers}_{n_nodes}_{n_ranks}:
+            suite_{n_nodes}_{n_ranks}:
               variables:
-                env_name: 'raja-perf-{compilers}'
+                env_name: raja-perf
                 n_nodes: '1'
-              matrix:
-              - compilers
   spack:
     concretized: true
     packages:
       blt:
         spack_spec: 'blt@0.5.2:'
         compiler: compiler-gcc
-      'raja-perf-{compilers}':
+      raja-perf:
         spack_spec: raja-perf@develop ~openmp +mpi ^cmake@3.23.1
-        compiler: '{compilers}'
+        compiler: default-compiler
     environments:
-      raja-perf-{compilers}:
-        matrix:
-        - compilers
+      raja-perf:
         packages:
         - blt
-        - mpi-{compilers}
-        - raja-perf-{compilers}
+        - default-mpi
+        - raja-perf

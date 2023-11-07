@@ -14,7 +14,6 @@ ramble:
         problem:
           variables:
             n_ranks: '{processes_per_node} * {n_nodes}'
-            batch_time: '02:00'
           experiments:
             saxpy_{n}_{n_nodes}_{processes_per_node}_{n_ranks}:
               variables:
@@ -27,7 +26,7 @@ ramble:
     concretized: true
     packages:
       saxpy:
-        spack_spec: saxpy@1.0.0 +rocm amdgpu_target="gfx90a"
+        spack_spec: saxpy@1.0.0 +rocm amdgpu_target="{rocm_arch}"
         compiler: default-compiler
     environments:
       saxpy:
