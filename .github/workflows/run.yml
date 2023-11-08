@@ -8,6 +8,10 @@ jobs:
   saxpy:
     runs-on: ubuntu-latest
     steps:
+      - name: Install system deps
+        run: |
+          apt-get update
+          apt-get install -y gfortran
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
 
       - name: Build Saxpy Workspace
