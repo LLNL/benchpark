@@ -14,6 +14,8 @@ concurrency:
 jobs:
   changes:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
     outputs:
       docs: ${{ steps.filter.output.docs }}
       style: ${{ steps.filter.output.style }}
@@ -30,22 +32,22 @@ jobs:
         with:
           filters: |
             docs:
-            - '.github/**'
-            - 'docs/**'
+              - '.github/**'
+              - 'docs/**'
             style:
-            - '.github/**'
-            - 'bin/**'
-            - 'configs/**'
-            - 'docs/conf.py'
-            - 'experiments/**'
-            - 'repo/**'
+              - '.github/**'
+              - 'bin/**'
+              - 'configs/**'
+              - 'docs/conf.py'
+              - 'experiments/**'
+              - 'repo/**'
 
   docs:
     if: ${{ needs.changes.outputs.docs == 'true' }}
-    needs: [ changes ]
+    needs: changes
     uses: ./.github/workflows/docs.yml
 
   style:
     if: ${{ needs.changes.outputs.style == 'true' }}
-    needs: [ changes ]
+    needs: changes
     uses: ./.github/workflows/style.yml
