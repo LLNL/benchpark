@@ -21,7 +21,7 @@ jobs:
           . workspace/saxpy/openmp/x86/ramble/share/ramble/setup-env.sh
           env | grep SPACK >> "$GITHUB_ENV"
           env | grep SPACK >> "$GITHUB_ENV"
-          echo $PATH >> "$GITHUB_ENV"
+          echo "PATH=$PATH" >> "$GITHUB_ENV"
 
       - name: Setup Saxpy Workspace
         run: |
