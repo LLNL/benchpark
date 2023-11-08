@@ -43,6 +43,7 @@ jobs:
               - 'repo/**'
 
       - name: debug
+        if: steps.filter.outputs.docs == 'true'
         run: |
           echo ${{ steps.filter.output.docs }}
 
