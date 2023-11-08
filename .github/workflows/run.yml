@@ -20,22 +20,29 @@ jobs:
 
       - name: Setup Ramble & Spack
         run: |
-          export SPACK_DISABLE_LOCAL_CONFIG=1
+          # export SPACK_DISABLE_LOCAL_CONFIG=1
           . workspace/saxpy/openmp/x86/spack/share/spack/setup-env.sh
           . workspace/saxpy/openmp/x86/ramble/share/ramble/setup-env.sh
           env | grep SPACK >> "$GITHUB_ENV"
           env | grep SPACK >> "$GITHUB_ENV"
           echo "PATH=$PATH" >> "$GITHUB_ENV"
 
-      - name: Setup Saxpy Workspace
-        run: |
-          cd workspace/saxpy/openmp/x86/workspace/
-          ramble --workspace-dir . --disable-progress-bar --disable-logger workspace setup
 
-      - name: Run Saxpy Experiments
+      - name: Debug Missing Fortran
         run: |
-          ramble --workspace-dir . --disable-progress-bar --disable-logger on
+          spack compiler find
+          spack compiler list
+          cat ~/.spack/linux/compilers.yaml
 
-      - name: Analyze Saxpy Results
-        run: |
-          ramble --workspace-dir . --disable-progress-bar --disable-logger workspace analyze
+      # - name: Setup Saxpy Workspace
+      #   run: |
+      #     cd workspace/saxpy/openmp/x86/workspace/
+      #     ramble --workspace-dir . --disable-progress-bar --disable-logger workspace setup
+
+      # - name: Run Saxpy Experiments
+      #   run: |
+      #     ramble --workspace-dir . --disable-progress-bar --disable-logger on
+
+      # - name: Analyze Saxpy Results
+      #   run: |
+      #     ramble --workspace-dir . --disable-progress-bar --disable-logger workspace analyze
