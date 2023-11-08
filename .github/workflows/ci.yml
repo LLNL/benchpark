@@ -42,6 +42,10 @@ jobs:
               - 'experiments/**'
               - 'repo/**'
 
+      - name: debug
+        run: |
+          echo ${{ steps.filter.output.docs }}
+
   debug:
     needs: changes
     runs-on: ubuntu-latest
