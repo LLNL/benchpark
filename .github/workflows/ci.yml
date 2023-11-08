@@ -46,6 +46,6 @@ jobs:
     uses: ./.github/workflows/docs.yml
 
   style:
-    if: ${{ needs.changes.outputs.docs == 'true' }}
+    if: ${{ needs.changes.outputs.style == 'true' }}
     needs: [ changes ]
     uses: ./.github/workflows/style.yml
