@@ -1,0 +1,34 @@
+name: Run Benchpark and Simple Benchmark Suite
+on:
+  # This Workflow can be triggered manually
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  saxpy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+
+      - name: Build Saxpy Workspace
+        run: |
+          ./bin/benchpark setup saxpy/openmp x86 workspace/
+
+      - name: Setup Ramble & Spack
+        run: |
+          export SPACK_DISABLE_LOCAL_CONFIG=1
+          . workspace/saxpy/openmp/x86/spack/share/spack/setup-env.sh
+          . workspace/saxpy/openmp/x86/ramble/share/ramble/setup-env.sh
+
+      - name: Setup Saxpy Workspace
+        run: |
+          cd workspace/saxpy/openmp/x86/workspace/
+          ramble -P -D . workspace setup --disable-logger --disable-progress-bar
+
+      - name: Run Saxpy Experiments
+        run: |
+          ramble on -P -D . on
+
+      - name: Analyze Saxpy Results
+        run: |
+          ramble -P -D . workspace analyze
