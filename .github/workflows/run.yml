@@ -29,16 +29,16 @@ jobs:
           echo "PATH=$PATH" >> "$GITHUB_ENV"
 
       - name: Setup Saxpy Workspace
+        working-directory: ./workspace/saxpy/openmp/x86/workspace/
         run: |
-          cd workspace/saxpy/openmp/x86/workspace/
           ramble --workspace-dir . --disable-progress-bar --disable-logger workspace setup
 
       - name: Run Saxpy Experiments
+        working-directory: ./workspace/saxpy/openmp/x86/workspace/
         run: |
-          cd workspace/saxpy/openmp/x86/workspace/
-          ramble --workspace-dir . --disable-progress-bar --disable-logger on
+          ramble -c variables:n_nodes:1 --workspace-dir . --disable-progress-bar --disable-logger on
 
       - name: Analyze Saxpy Results
+        working-directory: ./workspace/saxpy/openmp/x86/workspace/
         run: |
-          cd workspace/saxpy/openmp/x86/workspace/
-          ramble --workspace-dir . --disable-progress-bar --disable-logger workspace analyze
+          ramble -c variables:n_nodes:1 --workspace-dir . --disable-progress-bar --disable-logger workspace analyze
