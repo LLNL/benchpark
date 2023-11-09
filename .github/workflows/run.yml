@@ -8,11 +8,12 @@ jobs:
   saxpy:
     runs-on: ubuntu-latest
     steps:
-      - name: Install system deps
+      - name: Remove gcc > 12 # to prevent Spack from picking a gcc without gfortan
         run: |
-          sudo apt-get update
-          sudo apt-get install -y gfortran
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+          sudo apt-get remove -y gcc-13
+
+      - name: Checkout Benchpark
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
 
       - name: Build Saxpy Workspace
         run: |
@@ -20,29 +21,22 @@ jobs:
 
       - name: Setup Ramble & Spack
         run: |
-          # export SPACK_DISABLE_LOCAL_CONFIG=1
+          export SPACK_DISABLE_LOCAL_CONFIG=1
           . workspace/saxpy/openmp/x86/spack/share/spack/setup-env.sh
           . workspace/saxpy/openmp/x86/ramble/share/ramble/setup-env.sh
           env | grep SPACK >> "$GITHUB_ENV"
           env | grep SPACK >> "$GITHUB_ENV"
           echo "PATH=$PATH" >> "$GITHUB_ENV"
 
-
-      - name: Debug Missing Fortran
+      - name: Setup Saxpy Workspace
         run: |
-          spack compiler find
-          spack compiler list
-          cat ~/.spack/linux/compilers.yaml
+          cd workspace/saxpy/openmp/x86/workspace/
+          ramble --workspace-dir . --disable-progress-bar --disable-logger workspace setup
 
-      # - name: Setup Saxpy Workspace
-      #   run: |
-      #     cd workspace/saxpy/openmp/x86/workspace/
-      #     ramble --workspace-dir . --disable-progress-bar --disable-logger workspace setup
+      - name: Run Saxpy Experiments
+        run: |
+          ramble --workspace-dir . --disable-progress-bar --disable-logger on
 
-      # - name: Run Saxpy Experiments
-      #   run: |
-      #     ramble --workspace-dir . --disable-progress-bar --disable-logger on
-
-      # - name: Analyze Saxpy Results
-      #   run: |
-      #     ramble --workspace-dir . --disable-progress-bar --disable-logger workspace analyze
+      - name: Analyze Saxpy Results
+        run: |
+          ramble --workspace-dir . --disable-progress-bar --disable-logger workspace analyze
