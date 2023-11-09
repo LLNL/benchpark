@@ -35,8 +35,10 @@ jobs:
 
       - name: Run Saxpy Experiments
         run: |
+          cd workspace/saxpy/openmp/x86/workspace/
           ramble --workspace-dir . --disable-progress-bar --disable-logger on
 
       - name: Analyze Saxpy Results
         run: |
+          cd workspace/saxpy/openmp/x86/workspace/
           ramble --workspace-dir . --disable-progress-bar --disable-logger workspace analyze
