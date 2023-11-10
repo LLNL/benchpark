@@ -48,5 +48,5 @@ jobs:
       - name: Upload Binaries to CI Cache
         # if: github.ref == 'refs/heads/develop'
         run: |
-          spack mirror set --push --oci ${{ github.actor }} --oci-password "${{ secrets.GITHUB_TOKEN }}" ci-buildcache
+          spack mirror set --push --oci-username ${{ github.actor }} --oci-password "${{ secrets.GITHUB_TOKEN }}" ci-buildcache
           spack buildcache push -j $(($(nproc) + 1)) --base-image ubuntu:22.04 --unsigned --update-index ci-buildcache
