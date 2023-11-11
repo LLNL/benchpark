@@ -2,7 +2,9 @@
 Benchpark 
 ==================================================
 
-You can find detailed documentation in `ReadTheDocs <https://software.llnl.gov/benchpark>`_
+You can find detailed documentation in `ReadTheDocs
+<https://software.llnl.gov/benchpark>`_. Benchpark can also be found on `GitHub
+<https://github.com/llnl/benchpark>`_.
 
 Benchpark is an open collaborative repository for reproducible specifications of HPC benchmarks.
 Benchpark enables cross-site collaboration on benchmarking by providing a mechanism for sharing
