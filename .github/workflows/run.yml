@@ -26,9 +26,10 @@ jobs:
 
           spack mirror add ci-buildcache oci://ghcr.io/llnl/benchpark-binary-cache
           spack config add "packages:all:target:[x86_64_v3]"
+          export SPACK_INSTALL_FLAGS=--no-check-signature
 
           env | grep SPACK >> "$GITHUB_ENV"
-          env | grep SPACK >> "$GITHUB_ENV"
+          env | grep RAMBLE >> "$GITHUB_ENV"
           echo "PATH=$PATH" >> "$GITHUB_ENV"
 
       - name: Setup Saxpy Workspace
