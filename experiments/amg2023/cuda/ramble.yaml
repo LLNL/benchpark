@@ -25,7 +25,7 @@ ramble:
             # because MPS only works for cuda<=v10
             amg2023_cuda_10_problem1_{gtl}_{n_nodes}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
               variables:
-                experiment_setup: '/usr/tcetmp/bin/enable_mps'
+                experiment_setup: '{enable_mps}'
                 env_name: amg2023-cuda-10
                 processes_per_node: '8'
                 n_nodes: '1'
