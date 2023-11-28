@@ -261,8 +261,6 @@ def benchpark_setup_handler(args):
     instructions = f"""\
 To complete the benchpark setup, do the following:
 
-    cd {workspace_dir}/workspace
-
     . {spack_location}/share/spack/setup-env.sh
     . {ramble_location}/share/ramble/setup-env.sh
 
