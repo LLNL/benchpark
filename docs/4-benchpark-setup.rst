@@ -9,19 +9,19 @@ Also choose the workspace for your experiment::
 
 where:
 
-- ``benchmark/ProgrammingModel``: amg2023/openmp | amg2023/cuda | saxpy/openmp (available choices in benchpark/experiments)
-- ``system``: ats2 | ats4 | cts1 (available choices in benchpark/configs)
+- ``benchmark/ProgrammingModel``: amg2023/openmp | amg2023/cuda | saxpy/openmp (available choices in ``benchpark/experiments``)
+- ``system``: ats2 | ats4 | cts1 (available choices in ``benchpark/configs``)
 
 This command will assemble a Ramble workspace 
 with a configuration for the specified benchmark and system 
 with the following directory structure::
 
     workspace_root/
+        ramble/
+        spack/
         <benchmark>/
             <ProgrammingModel>/
                 <system>/
-                    ramble/
-                    spack/
                     workspace/
                         configs/
                             (everything from source/configs/<system>)
@@ -29,10 +29,8 @@ with the following directory structure::
 
 ``benchpark setup`` will output instructions to follow::
 
-   cd <workspace_root>/<benchmark/ProgrammingModel>/<system>/workspace
-
-   . <workspace_root>/<benchmark/ProgrammingModel>/<system>/spack/share/spack/setup-env.sh
-   . <workspace_root>/<benchmark/ProgrammingModel>/<system>/ramble/share/ramble/setup-env.sh
+   . <workspace_root>/spack/share/spack/setup-env.sh
+   . <workspace_root>/ramble/share/ramble/setup-env.sh
 
    export SPACK_DISABLE_LOCAL_CONFIG=1
 
