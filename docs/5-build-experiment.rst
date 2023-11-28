@@ -12,11 +12,11 @@ The next step is setting up the Ramble workspace and building the code::
 Ramble will build the source code and set up the following workspace directory structure::
 
     workspace_root/
+        ramble/
+        spack/
         <benchmark>/
             <ProgrammingModel>/
                 <system>/
-                    ramble/
-                    spack/
                     workspace/
                         configs/
                             (everything from source/configs/<system>)
