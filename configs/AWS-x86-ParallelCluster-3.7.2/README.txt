@@ -4,7 +4,7 @@ AWS x86 ParallelCluster 3.7.2
 This config should work on any AWS x86 ParallelCluster 3.7.2 instance with the
 following caveats:
 
-1) All compute instances must be x86 and EFA enabled. Supported instances types
+1) All compute instances must be x86 and EFA enabled. Supported instance types
    can be found here:
 
    https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html#efa-instance-types
@@ -17,7 +17,7 @@ following caveats:
 
    sudo yum install lapack
 
-3) OpenMPI is the only supported MPI flavor. InelMPI is not yet supported.
+3) OpenMPI is the only supported MPI flavor. IntelMPI is not yet supported.
 
    OpenMPI is running in verbose mode so the user than confirm that EFA is
    being used when running experiments. A line similar to the following in
