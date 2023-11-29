@@ -28,5 +28,7 @@ Ramble will build the source code and set up the following workspace directory s
                                         execute_experiment
 
 
+.. include:: workspace_directory_structure.rst
+
 If you edit any of the files, see :doc:`FAQ-what-to-rerun` to determine
 whether you need to re-do any of the previous steps.
