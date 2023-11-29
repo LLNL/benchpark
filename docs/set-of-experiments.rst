@@ -2,12 +2,15 @@
 Working with a set of experiments
 ==============
 
-To keep the source code consistent while working with 
-a set of ``experiments`` (several ``benchmark/ProgrammingModels`` x ``systems``),
-one can consider working with a single ``Benchpark workspace``, which will ensure the same
-clone of Spack, and the same clone of Ramble, will be used for all of the ``experiments`` in 
-this set.  To work with a set of ``experiments`` based on a single clone of Spack and 
-a single clone of Ramble, set up your experiments in the same /output/path/to/workspace_root::
+You may want to use the same workspace_root directory when setting up multiple experiments:
+
+* Benchpark only stores one copy of Spack/Ramble per workspace, and does not repeatedly
+  download them when reusing a workspace.
+* Since each experiment in the workspace shares the Spack/Ramble instances, the edits/updates
+  you make to Spack packages will apply to all experiments in the workspace.
+
+To use the same workspace_root directory when setting up multiple experiments,
+instruct benchpark to set them up in the same workspace_root::
 
     benchpark setup benchmark1/ProgrammingModel1 system1 /output/path/to/workspace_root
     benchpark setup benchmark1/ProgrammingModel2 system2 /output/path/to/workspace_root
