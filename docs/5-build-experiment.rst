@@ -27,9 +27,5 @@ Ramble will build the source code and set up the following workspace directory s
                                     <benchmark>_<ProgrammingModel>_<problem>
                                         execute_experiment
 
-Testing out include
-
-.. include:: experiments_dir_structure.rst
-
 If you edit any of the files, see :doc:`FAQ-what-to-rerun` to determine
 whether you need to re-do any of the previous steps.
