@@ -21,3 +21,9 @@
    add-a-benchmark
    add-an-experiment
    add-a-system-config
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Benchmark Suites
+
+   set-of-experiments
