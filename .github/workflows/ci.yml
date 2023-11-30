@@ -1,0 +1,66 @@
+name: ci
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+concurrency:
+  group: ci-${{github.ref}}-${{github.event.pull_request.number || github.run_number}}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      docs: ${{ steps.filter.outputs.docs }}
+      style: ${{ steps.filter.outputs.style }}
+      run: ${{ steps.filter.outputs.run }}
+
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # @v2
+        if: ${{ github.event_name == 'push' }}
+        with:
+          fetch-depth: 0
+
+        # For pull requests it's not necessary to checkout the code
+      - uses: dorny/paths-filter@4512585405083f25c027a35db413c2b3b9006d50
+        id: filter
+        with:
+          filters: |
+            docs:
+              - '.github/**'
+              - 'docs/**'
+              - 'README.rst'
+            style:
+              - '.github/**'
+              - 'bin/**'
+              - 'configs/**'
+              - 'docs/conf.py'
+              - 'experiments/**'
+              - 'repo/**'
+            run:
+              - '.github/**'
+              - 'bin/**'
+              - 'configs/**'
+              - 'experiments/**'
+              - 'repo/**'
+
+  docs:
+    if: ${{ needs.changes.outputs.docs == 'true' }}
+    needs: changes
+    uses: ./.github/workflows/docs.yml
+
+  style:
+    if: ${{ needs.changes.outputs.style == 'true' }}
+    needs: changes
+    uses: ./.github/workflows/style.yml
+
+  run:
+    if: ${{ needs.changes.outputs.run == 'true' }}
+    needs: changes
+    uses: ./.github/workflows/run.yml

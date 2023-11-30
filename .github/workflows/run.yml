@@ -1,0 +1,78 @@
+name: Run Benchpark and Simple Benchmark Suite
+on:
+  # This Workflow can be triggered manually
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  saxpy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remove gcc > 12 # to prevent Spack from picking a gcc without gfortan
+        run: |
+          sudo apt-get remove -y gcc-13
+
+      - name: Checkout Benchpark
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+
+      - name: Build Saxpy Workspace
+        run: |
+          ./bin/benchpark setup saxpy/openmp x86 workspace/
+
+      - name: Setup Ramble & Spack
+        run: |
+          . workspace/spack/share/spack/setup-env.sh
+          . workspace/ramble/share/ramble/setup-env.sh
+
+          spack mirror add ci-buildcache oci://ghcr.io/llnl/benchpark-binary-cache
+          spack config add "packages:all:target:[x86_64_v3]"
+
+          env | grep SPACK >> "$GITHUB_ENV"
+          env | grep RAMBLE >> "$GITHUB_ENV"
+          echo "PATH=$PATH" >> "$GITHUB_ENV"
+
+      - name: Setup Saxpy Workspace
+        working-directory: ./workspace/saxpy/openmp/x86/workspace/
+        run: |
+          ramble \
+            --workspace-dir . \
+            --disable-progress-bar \
+            --disable-logger \
+            -c config:spack_flags:install:'--no-check-signature' \
+            workspace setup
+
+      - name: Run Saxpy Experiments
+        working-directory: ./workspace/saxpy/openmp/x86/workspace/
+        run: |
+          ramble \
+            -c variables:n_nodes:1 \
+            -c variables:n_ranks:1 \
+            --workspace-dir . \
+            --disable-progress-bar \
+            --disable-logger \
+            on
+
+      - name: Analyze Saxpy Results
+        working-directory: ./workspace/saxpy/openmp/x86/workspace/
+        run: |
+          ramble \
+            --workspace-dir . \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace analyze
+
+      - name: Upload Binaries to CI Cache
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          spack mirror set \
+            --push \
+            --oci-username ${{ github.actor }} \
+            --oci-password "${{ secrets.GITHUB_TOKEN }}" \
+            ci-buildcache
+
+          spack buildcache push \
+            -j $(($(nproc) + 1)) \
+            --base-image ubuntu:22.04 \
+            --unsigned \
+            --update-index ci-buildcache \
+            $(spack find --format '/{hash}')

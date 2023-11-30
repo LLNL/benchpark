@@ -1,0 +1,50 @@
+# If you are referencing Benchpark in a publication, please cite the paper
+# described here.
+#
+# Here's the raw citation:
+#
+#   Olga Pearce, Alec Scott, Gregory Becker, Riyaz Haque, Nathan Hanford, Stephanie Brink,
+#   Doug Jacobsen, Heidi Poxon, Jens Domke, and Todd Gamblin. 2023.
+#   Towards Collaborative Continuous Benchmarking for HPC.
+#   In Workshops of The International Conference on High Performance Computing,
+#   Network, Storage, and Analysis (SC-W 2023), November 12–17, 2023, Denver, CO, USA.
+#   ACM, New York, NY, USA, 9 pages.
+#
+# And here's the CITATION.cff format:
+
+cff-version: 1.2.0
+message: "If you are referencing Benchpark in a publication, please cite the paper below."
+title: "Benchpark"
+repository-code: "https://github.com/llnl/benchpark"
+preferred-citation:
+  type: conference-paper
+  authors:
+    - family-names: "Pearce"
+      given-names: "Olga"
+    - family-names: "Scott"
+      given-names: "Alec"
+    - family-names: "Becker"
+      given-names: "Gregory"
+    - family-names: "Haque"
+      given-names: "Riyaz"
+    - family-names: "Hanford"
+      given-names: "Nathan"
+    - family-names: "Brink"
+      given-names: "Stephanie"
+    - family-names: "Jacobsen"
+      given-names: "Doug"
+    - family-names: "Poxon"
+      given-names: "Heidi"
+    - family-names: "Domke"
+      given-names: "Jens"
+    - family-names: "Gamblin"
+      given-names: "Todd"
+  title: "Towards Collaborative Continuous Benchmarking for HPC"
+  conference:
+    name: "Supercomputing 2023 (SC’23)"
+    city: "Denver"
+    region: "Colorado"
+    country: "USA"
+  month: November 12-17
+  year: 2023
+  notes: LLNL-CONF-853344

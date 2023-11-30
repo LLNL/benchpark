@@ -9,3 +9,4 @@ variables:
   cuda10_version: '10.1.243'
   default_cuda_version: '11.8.0'
   cuda_arch: '70'
+  enable_mps: '/usr/tcetmp/bin/enable_mps'

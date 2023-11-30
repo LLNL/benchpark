@@ -96,8 +96,8 @@ def benchpark_list_handler(args):
                 for system in systems:
                     print(f"\t{system}")
             else:
-                print(
-                    f"Invalid benchpark list [{sublist}] - must choose [benchmarks],[systems], or leave empty"
+                raise ValueError(
+                    f'Invalid benchpark list "{sublist}" - must choose [benchmarks], [systems], or leave empty'
                 )
 
 
@@ -105,9 +105,10 @@ def benchpark_check_benchmark(arg_str):
     benchmarks = benchpark_benchmarks()
     found = arg_str in benchmarks
     if not found:
-        print(f"Invalid benchmark/experiment {arg_str} - must choose one of: ")
+        out_str = f'Invalid benchmark/experiment "{arg_str}" - must choose one of: '
         for benchmark in benchmarks:
-            print(f"\t{benchmark}")
+            out_str += f"\n\t{benchmark}"
+        raise ValueError(out_str)
     return found
 
 
@@ -115,9 +116,10 @@ def benchpark_check_system(arg_str):
     systems = benchpark_systems()
     found = arg_str in systems
     if not found:
-        print(f"Invalid system {arg_str} - must choose one of: ")
+        out_str = f'Invalid system "{arg_str}" - must choose one of: '
         for system in systems:
-            print(f"\t{system}")
+            out_str += f"\n\t{system}"
+        raise ValueError(out_str)
     return found
 
 
@@ -178,8 +180,8 @@ def benchpark_setup_handler(args):
                     configs/
                         (everything from source/configs/<system>)
                         (everything from source/experiments/<benchmark>)
-                spack/
-                ramble/
+        spack/
+        ramble/
     """
 
     benchmark = args.benchmark
@@ -192,7 +194,11 @@ def benchpark_setup_handler(args):
     debug_print(f"specified system = {system}")
     valid_system = benchpark_check_system(system)
     if not (valid_benchmark and valid_system):
-        return
+        raise ValueError(
+            "Invalid benchmark/experiment and system provided: {0} {1}".format(
+                benchmark, system
+            )
+        )
 
     workspace_dir = workspace_root / str(benchmark) / str(system)
 
@@ -220,43 +226,45 @@ def benchpark_setup_handler(args):
     symlink_tree(configs_src_dir, ramble_configs_dir)
     symlink_tree(experiment_src_dir, ramble_configs_dir)
 
-    spack_location = workspace_dir / "spack"
-    ramble_location = workspace_dir / "ramble"
-
-    print(f"Cloning spack into {spack_location}")
-    run_command(
-        "git clone --depth=1 -c feature.manyFiles=true "
-        "https://github.com/spack/spack.git "
-        f"{spack_location}"
-    )
-
-    print(f"Cloning ramble into {ramble_location}")
-    run_command(
-        "git clone --depth=1 -c feature.manyFiles=true "
-        "https://github.com/GoogleCloudPlatform/ramble.git "
-        f"{ramble_location}"
-    )
+    spack_location = workspace_root / "spack"
+    ramble_location = workspace_root / "ramble"
 
     spack_exe = spack_location / "bin" / "spack"
     ramble_exe = ramble_location / "bin" / "ramble"
     spack_cache_location = spack_location / "misc-cache"
 
-    env = {"SPACK_DISABLE_LOCAL_CONFIG": "1"}
-    run_command(
-        f"{spack_exe} config --scope=site add config:misc_cache:{spack_cache_location}",
-        env=env,
-    )
-    run_command(f"{spack_exe} repo add --scope=site {source_dir}/repo", env=env)
+    if not spack_location.exists():
+        print(f"Cloning spack into {spack_location}")
+        run_command(
+            "git clone --depth=1 -c feature.manyFiles=true "
+            "https://github.com/spack/spack.git "
+            f"{spack_location}"
+        )
 
-    run_command(f"{ramble_exe} repo add --scope=site {source_dir}/repo")
+        env = {"SPACK_DISABLE_LOCAL_CONFIG": "1"}
+        run_command(
+            f"{spack_exe} config --scope=site add config:misc_cache:{spack_cache_location}",
+            env=env,
+        )
+        run_command(f"{spack_exe} repo add --scope=site {source_dir}/repo", env=env)
+
+    if not ramble_location.exists():
+        print(f"Cloning ramble into {ramble_location}")
+        run_command(
+            "git clone --depth=1 -c feature.manyFiles=true "
+            "https://github.com/GoogleCloudPlatform/ramble.git "
+            f"{ramble_location}"
+        )
+
+        run_command(f"{ramble_exe} repo add --scope=site {source_dir}/repo")
 
     instructions = f"""\
 To complete the benchpark setup, do the following:
 
     cd {workspace_dir}/workspace
 
-    . {workspace_dir}/spack/share/spack/setup-env.sh
-    . {workspace_dir}/ramble/share/ramble/setup-env.sh
+    . {spack_location}/share/spack/setup-env.sh
+    . {ramble_location}/share/ramble/setup-env.sh
 
     export SPACK_DISABLE_LOCAL_CONFIG=1
 
