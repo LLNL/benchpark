@@ -137,7 +137,7 @@ def benchpark_setup(subparsers, actions_dict):
     create_parser.add_argument(
         "experiments_root",
         type=str,
-        help="Where to install packages and store results for the experiments. Benchpark expects to manage this directory, and it should be empty/nonexistent the first time you run benchpark setup experiments."
+        help="Where to install packages and store results for the experiments. Benchpark expects to manage this directory, and it should be empty/nonexistent the first time you run benchpark setup experiments.",
     )
 
     actions_dict["setup"] = benchpark_setup_handler
