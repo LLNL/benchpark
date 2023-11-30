@@ -45,7 +45,7 @@ ramble:
                   fom_name: '{target_fom_name}'
                   formula: '{value} > {target_fom_value}'
               variables:
-                env_name: 'amg2023-omp'
+                env_name: amg2023-omp
                 target_fom_name: 'Solve-FOM'
                 target_fom_value: 3.0E+09
               matrices:

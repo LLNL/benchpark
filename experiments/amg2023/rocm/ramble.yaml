@@ -18,7 +18,6 @@ ramble:
             nx: '{n}'
             ny: '{n}'
             nz: '{n}'
-            configs: 'time'
             experiment_setup: ''
           experiments:
             '{env_name}_problem1_{n_nodes}_{px}_{py}_{pz}_{nx}_{ny}_{nz}':
@@ -37,13 +36,11 @@ ramble:
       gtl: ["gtl", "no-gtl"]
     packages:
       hypre-{gtl}:
-        spack_spec: hypre@2.28.0 +caliper +mpi+rocm+mixedint amdgpu_target="{rocm_arch}"
+        spack_spec: hypre@2.28.0 +mpi+rocm+mixedint +caliper amdgpu_target="{rocm_arch}"
         compiler: compiler-rocm
-      hypre-omp:
-        spack_spec: hypre@2.28.0 +mpi+openmp+mixedint
+      amg2023-gpu-{gtl}:
+        spack_spec: amg2023@develop +mpi+rocm +caliper amdgpu_target="{rocm_arch}"
         compiler: compiler-rocm
-      amg2023-omp:
-        spack_spec: amg2023@develop +mpi+openmp
       caliper:
         spack_spec: caliper ~papi
     environments:
@@ -55,13 +52,6 @@ ramble:
         - hypre-{gtl}
         - amg2023-gpu-{gtl}
         - caliper
-      amg2023-omp:
-        packages:
-        - blas-rocm
-        - lapack
-        - default-mpi
-        - hypre-omp
-        - amg2023-omp
   modifiers:
     - name: caliper
       mode: time
