@@ -189,6 +189,11 @@ packages:
     buildable: false
   hypre:
     variants: amdgpu_target=gfx90a
+  hwloc:
+    externals:
+    - spec: hwloc@2.9.1
+      prefix: /usr
+      buildable: false
   mpi:
     buildable: false
   cray-mpich:
