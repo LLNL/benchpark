@@ -1,0 +1,50 @@
+ramble:
+  include:
+  - ./configs/spack.yaml
+  - ./configs/variables.yaml
+
+  config:
+    deprecated: true
+    spack_flags:
+      install: '--add --keep-stage'
+      concretize: '-U -f'
+
+  applications:
+    gromacs:
+      workloads:
+        water_gmx50:
+          env_vars:
+            set:
+              OMP_NUM_THREADS: '{omp_num_threads}'
+          variables:
+            n_ranks: '{processes_per_node} * {n_nodes}'
+            size: ['1536', '3072']
+            experiment_setup: ''
+            processes_per_node: ['8', '4']
+            n_nodes: ['1', '2']
+            threads_per_node_core: ['2', '4']
+            omp_num_threads: '{threads_per_node_core} * {n_nodes}'
+          experiments:
+            gromacs_omp_water_gmx50_{n_nodes}_{omp_num_threads}_{size}:
+              variables:
+                env_name: gromacs-omp
+              matrices:
+                - size_threads:
+                  - size
+                  - threads_per_node_core
+  spack:
+    concretized: true
+    packages:
+      fftw-omp:
+        spack_spec: fftw@3.3.10 +mpi+openmp
+        compiler: default-compiler
+      gromacs-omp:
+        spack_spec: gromacs@main +mpi+openmp~hwloc
+        compiler: default-compiler
+    environments:
+      gromacs-omp:
+        packages:
+        - lapack
+        - default-mpi
+        - fftw-omp
+        - gromacs-omp
