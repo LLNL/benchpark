@@ -268,7 +268,7 @@ To complete the benchpark setup, do the following:
 
     export SPACK_DISABLE_LOCAL_CONFIG=1
 
-Further steps are needed to build the experiments (ramble -P -D . workspace setup) and run them (ramble -P -D . on)
+Further steps are needed to build the experiments (ramble -P -D {ramble_workspace_dir} workspace setup) and run them (ramble -P -D {ramble_workspace_dir} on)
 """
     print(instructions)
 
