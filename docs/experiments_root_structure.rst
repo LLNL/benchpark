@@ -1,8 +1,8 @@
-For each ``experiment`` (``benchmark`` x ``ProgrammingModel`` x ), 
+For each ``experiment`` (``benchmark`` x ``ProgrammingModel`` x ),
 Ramble sets up the following ``workspace`` directory structure
 to build and run the experiment::
 
-    workspace_root/
+    experiments_root/
         ramble/
         spack/
         <benchmark>/

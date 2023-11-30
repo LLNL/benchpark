@@ -2,23 +2,24 @@
 Working with a set of experiments
 ==============
 
-You may want to use the same workspace_root directory when setting up multiple experiments:
+You may want to use the same experiments_root directory when setting up multiple experiments:
 
-* Benchpark only stores one copy of Spack/Ramble per workspace, and does not repeatedly
-  download them when reusing a workspace.
-* Since each experiment in the workspace shares the Spack/Ramble instances, the edits/updates
-  you make to Spack packages will apply to all experiments in the workspace.
+* Benchpark only stores one copy of Spack/Ramble per experiments directory,
+  and does not repeatedly download them when reusing the experiments directory.
+* Since each experiment in the experiments directory shares the Spack/Ramble instances,
+  the edits/updates you make to Spack packages will apply to all experiments
+  in your experiments directory.
 
-To use the same workspace_root directory when setting up multiple experiments,
-instruct benchpark to set them up in the same workspace_root::
+To use the same experiments directory when setting up multiple experiments,
+instruct benchpark to set them up in the same experiments_root::
 
-    benchpark setup benchmark1/ProgrammingModel1 system1 /output/path/to/workspace_root
-    benchpark setup benchmark1/ProgrammingModel2 system2 /output/path/to/workspace_root
-    benchpark setup benchmark2/ProgrammingModel2 system1 /output/path/to/workspace_root
+    benchpark setup benchmark1/ProgrammingModel1 system1 /output/path/to/experiments_root
+    benchpark setup benchmark1/ProgrammingModel2 system2 /output/path/to/experiments_root
+    benchpark setup benchmark2/ProgrammingModel2 system1 /output/path/to/experiments_root
 
 This will result in the following directory structure::
 
-    workspace_root/
+    experiments_root/
         ramble/
         spack/
         benchmark1/
@@ -33,7 +34,8 @@ This will result in the following directory structure::
                 system1/
                     workspace/
 
-Note that there is a single clone of Ramble, and a single clone of Spack, 
+Note that there is a single clone of Ramble, and a single clone of Spack,
 which all of the ``experiments`` use.
 Each ``experiment`` (``benchmark/ProgrammingModel`` x ``system`` combination)
-has its own ``Ramble workspace``, where the ``experiment`` will be compiled and run.
+has its own ``Ramble workspace``, where this specific ``experiment``
+will be compiled and run.

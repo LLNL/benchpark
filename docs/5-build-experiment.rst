@@ -2,16 +2,16 @@
 Build experiment
 ================
 
-``benchpark setup`` has set up the directory structure for your experiment.  
+``benchpark setup`` has set up the directory structure for your experiment.
 The next step is setting up the Ramble workspace and building the code::
 
-   cd <workspace_root>/<benchmark/ProgrammingModel>/<system>/workspace
-   ramble -P -D . workspace setup  
+   cd <experiments_root>/<benchmark/ProgrammingModel>/<system>/workspace
+   ramble -P -D . workspace setup
 
 
 Ramble will build the source code and set up the following workspace directory structure::
 
-    workspace_root/
+    experiments_root/
         ramble/
         spack/
         <benchmark>/
@@ -29,7 +29,7 @@ Ramble will build the source code and set up the following workspace directory s
 
 Testing out include
 
-.. include:: workspace_directory_structure.rst
+.. include:: experiments_dir_structure.rst
 
 If you edit any of the files, see :doc:`FAQ-what-to-rerun` to determine
 whether you need to re-do any of the previous steps.
