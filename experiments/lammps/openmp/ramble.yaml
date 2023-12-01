@@ -44,7 +44,7 @@ ramble:
     concretized: true
     packages:
       lammps_omp:
-        spack_spec: lammps@20230802.1 +opt+manybody+molecule+kspace+rigid+intel+openmp+openmp-package+asphere+dpd-basic+dpd-meso+dpd-react+dpd-smooth+reaxff
+        spack_spec: lammps@20230802.1 +opt+manybody+molecule+kspace+rigid+openmp+openmp-package+asphere+dpd-basic+dpd-meso+dpd-react+dpd-smooth+reaxff
         compiler: default-compiler
     environments:
       lammps_omp:
