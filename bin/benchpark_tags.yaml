@@ -1,0 +1,85 @@
+benchpark-tags:
+  application-domain:
+    asc: null # Advanced Simulation and Computing
+    astrophysics: null
+    cfd: null # computational fluid dynamics
+    chemistry: null
+    climate: null
+    dft: null # density functional theory
+    engineering: null
+    fusion: null
+    material-science: null
+    molecular-dynamics: null
+  benchmark-scale:
+    large-scale: null
+    multi-node: null
+    single-node: null
+    sub-node: null
+  communication:
+    mpi: null
+    nccl: null
+    nvsmem: null
+    rccl: null
+    shmem: null
+    upc: null
+  communication-performance-characteristics:
+    network-bandwidth-bound: null
+    network-bisection-bandwidth-bound: null
+    network-collectives: null
+    network-latency-bound: null
+    network-point-to-point: null
+  compute-performance-characteristics:
+    atomics: null
+    high-branching: null
+    high-fp: null
+    i-o: null
+    mixed-precision: null
+    register-pressure: null
+    simd: null
+    vectorization: null
+  memory-access-characteristics:
+    high-memory-bandwidth: null
+    irregular-memory-access: null
+    large-memory-footprint: null
+    regular-memory-access: null
+  mesh-representation:
+    amr: null
+    block-structured-grid: null
+    structured-grid: null
+    unstructured-grid: null
+  method-type:
+    ai: null # AI, ML, DL
+    ale: null # arbitrary lagrangian-eulerian
+    dense-linear-algebra: null
+    deterministic: null
+    direct-solve: null
+    eulerian: null
+    explicit-differentiation: null
+    finite-element: null
+    fft: null # fast fourier transform
+    hydrodynamics: null
+    implicit-differentiation: null
+    lagrangian: null
+    montecarlo: null
+    nbody: null
+    particles: null
+    solver: null
+    sparse-linear-algebra: null
+    task-parallelism: null
+    transport: null
+  programming-language:
+    c: null
+    c++: null
+    fortran: null
+    julia: null
+    python: null
+    rust: null
+  programming-model:
+    charm++: null
+    cuda: null
+    hip: null
+    kokkos: null
+    oneapi: null
+    openmp: null
+    raja: null
+    sycl: null
