@@ -125,17 +125,19 @@ def benchpark_check_system(arg_str):
 
 def benchpark_setup(subparsers, actions_dict):
     create_parser = subparsers.add_parser(
-        "setup", help="Create a benchmark and prepare it to build/run"
+        "setup", help="Set up an experiment and prepare it to build/run"
     )
 
     create_parser.add_argument(
-        "benchmark", type=str, help="The benchmark/experiment to run"
+        "benchmark", type=str, help="The experiment (benchmark/ProgrammingModel) to run"
     )
-    create_parser.add_argument("system", type=str, help="The system we are on")
     create_parser.add_argument(
-        "workspace_root",
+        "system", type=str, help="The system on which to run the experiment"
+    )
+    create_parser.add_argument(
+        "experiments_root",
         type=str,
-        help="Where to install packages, store results, etc. (should be empty/nonexistent)",
+        help="Where to install packages and store results for the experiments. Benchpark expects to manage this directory, and it should be empty/nonexistent the first time you run benchpark setup experiments.",
     )
 
     actions_dict["setup"] = benchpark_setup_handler
@@ -173,23 +175,23 @@ def symlink_tree(src, dst):
 
 def benchpark_setup_handler(args):
     """
-    workspace_root/
+    experiments_root/
+        spack/
+        ramble/
         <benchmark>/
             <system>/
                 workspace/
                     configs/
                         (everything from source/configs/<system>)
                         (everything from source/experiments/<benchmark>)
-        spack/
-        ramble/
     """
 
     benchmark = args.benchmark
     system = args.system
-    workspace_root = pathlib.Path(os.path.abspath(args.workspace_root))
+    experiments_root = pathlib.Path(os.path.abspath(args.experiments_root))
     source_dir = source_location()
     debug_print(f"source_dir = {source_dir}")
-    debug_print(f"specified benchmark = {benchmark}")
+    debug_print(f"specified benchmark/ProgrammingModel = {benchmark}")
     valid_benchmark = benchpark_check_benchmark(benchmark)
     debug_print(f"specified system = {system}")
     valid_system = benchpark_check_system(system)
@@ -200,7 +202,7 @@ def benchpark_setup_handler(args):
             )
         )
 
-    workspace_dir = workspace_root / str(benchmark) / str(system)
+    workspace_dir = experiments_root / str(benchmark) / str(system)
 
     if workspace_dir.exists():
         if workspace_dir.is_dir():
@@ -226,8 +228,8 @@ def benchpark_setup_handler(args):
     symlink_tree(configs_src_dir, ramble_configs_dir)
     symlink_tree(experiment_src_dir, ramble_configs_dir)
 
-    spack_location = workspace_root / "spack"
-    ramble_location = workspace_root / "ramble"
+    spack_location = experiments_root / "spack"
+    ramble_location = experiments_root / "ramble"
 
     spack_exe = spack_location / "bin" / "spack"
     ramble_exe = ramble_location / "bin" / "ramble"
@@ -261,14 +263,12 @@ def benchpark_setup_handler(args):
     instructions = f"""\
 To complete the benchpark setup, do the following:
 
-    cd {workspace_dir}/workspace
-
     . {spack_location}/share/spack/setup-env.sh
     . {ramble_location}/share/ramble/setup-env.sh
 
     export SPACK_DISABLE_LOCAL_CONFIG=1
 
-Further steps are needed to build the experiments (ramble -P -D . workspace setup) and run them (ramble -P -D . on)
+Further steps are needed to build the experiments (ramble -P -D {ramble_workspace_dir} workspace setup) and run them (ramble -P -D {ramble_workspace_dir} on)
 """
     print(instructions)
 
