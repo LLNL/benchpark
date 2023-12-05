@@ -21,7 +21,7 @@ class Gromacs(SpackApplication):
 
     default_compiler('gcc9', spack_spec='gcc@9.3.0')
     software_spec('impi2018', spack_spec='intel-mpi@2018.4.274')
-    software_spec('gromacs', spack_spec='gromacs@2020.5', compiler='gcc9')
+    software_spec('gromacs', spack_spec='gromacs@2023.3', compiler='gcc12')
 
     executable('pre-process', 'gmx_mpi grompp ' +
                '-f {input_path}/{type}.mdp ' +
