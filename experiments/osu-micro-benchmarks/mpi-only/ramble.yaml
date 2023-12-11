@@ -32,3 +32,4 @@ ramble:
       osu-micro-benchmarks:
         packages:
         - default-mpi
+        - osu-micro-benchmarks
