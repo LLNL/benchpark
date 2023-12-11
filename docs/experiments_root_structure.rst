@@ -1,15 +1,6 @@
-================
-Build experiment
-================
-
-``benchpark setup`` has set up the directory structure for your experiment.
-The next step is setting up the Ramble workspace and building the code::
-
-   cd <experiments_root>/<benchmark/ProgrammingModel>/<system>/workspace
-   ramble -P -D . workspace setup
-
-
-Ramble will build the source code and set up the following workspace directory structure::
+For each ``experiment`` (``benchmark`` x ``ProgrammingModel`` x ),
+Ramble sets up the following ``workspace`` directory structure
+to build and run the experiment::
 
     experiments_root/
         ramble/
@@ -26,6 +17,3 @@ Ramble will build the source code and set up the following workspace directory s
                                 <problem>/
                                     <benchmark>_<ProgrammingModel>_<problem>
                                         execute_experiment
-
-If you edit any of the files, see :doc:`FAQ-what-to-rerun` to determine
-whether you need to re-do any of the previous steps.
