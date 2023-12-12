@@ -25,9 +25,6 @@ class Caliper(SpackModifier):
     _log_file = '{experiment_run_dir}/.caliper_fom'
     _cali_datadir = '{experiment_run_dir}/{experiment_name}.cali'
 
-    # FIXME: Should we just remove FOM from here entirely?
-    _target_fom_name = '{target_fom_name}'
-
     # This will feed into an external profiler/data aggregator
     # FIXME: Is this correct?
     archive_pattern('{experiment_run_dir}/{experiment_name}.cali')
@@ -35,7 +32,3 @@ class Caliper(SpackModifier):
     software_spec('caliper', spack_spec='caliper')
 
     required_package('caliper')
-
-    # FIXME: Can we just remove FOM from here, since that will only happen in post-processing?
-    figure_of_merit('{target_fom_name}', fom_regex='{target_fom_name} = (?P<fom>.*)', log_file=_log_file,
-                    units='', group_name='fom')

@@ -59,7 +59,7 @@ ramble:
         spack_spec: hypre@2.28.0 +mpi+openmp+mixedint+caliper 
         compiler: default-compiler
       amg2023-omp:
-        spack_spec: amg2023@cmake-build +mpi+openmp+caliper 
+        spack_spec: amg2023@develop +mpi+openmp+caliper 
         compiler: default-compiler
       caliper:
         spack_spec: caliper
