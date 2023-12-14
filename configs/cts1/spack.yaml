@@ -8,6 +8,8 @@ spack:
       spack_spec: gcc@12.1.1
     compiler-intel:
       spack_spec: intel@2021.6.0-classic
+    blas:
+      spack_spec: intel-oneapi-mkl@2022.1.0
     lapack:
       spack_spec: intel-oneapi-mkl@2022.1.0
     mpi-gcc:
