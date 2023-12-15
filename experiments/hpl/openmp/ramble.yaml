@@ -30,7 +30,7 @@ ramble:
             n_nodes: '1'
             omp_num_threads: ['2', '4', '8']
           experiments:
-            hpl_omp_problem1_{n_nodes}_{n_ranks}_{omp_num_threads}_{Ps}_{Qs}_{Ns}_{NBs}:
+            hpl_omp_standard_{n_nodes}_{n_ranks}_{omp_num_threads}_{Ps}_{Qs}_{Ns}_{NBs}:
               variables:
                 env_name: hpl-omp
               matrix:
