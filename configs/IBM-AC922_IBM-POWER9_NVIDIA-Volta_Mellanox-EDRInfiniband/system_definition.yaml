@@ -31,7 +31,7 @@ system_definition:
       - name: CUBLAS
         spack_spec: cublas@11.8.0
       - name: LAPACK
-        spacl_spec: lapack-xl@3.9.0
+        spack_spec: lapack-xl@3.9.0
   system-tested:
     owner: LLNL
     name: sierra
