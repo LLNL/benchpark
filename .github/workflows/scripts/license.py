@@ -19,7 +19,10 @@ apache_spdx = "Apache-2.0"
 #: regular expressions for licensed files.
 licensed_files = [
     r"^bin\/benchpark",
+    r"^configs\/[^\/]*\/[^\/]*",
     r"^docs\/[^\/]*\.rst$",
+    r"^experiments\/[^\/]*\/[^\/]*",
+    r"^repo\/[^\/]*\/[^\/]*",
 ]
 
 
@@ -173,7 +176,7 @@ if __name__ == "__main__":
         sys.exit()
 
     licensed_files[:] = [re.compile(regex) for regex in licensed_files]
-    root = os.path.dirname(os.path.abspath(__file__))
+    root = os.path.abspath(os.curdir)
 
     if cmd == "list-files":
         list_files(root)

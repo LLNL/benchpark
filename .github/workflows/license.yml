@@ -1,0 +1,21 @@
+name: License Checks
+on:
+  # This Workflow can be triggered manually
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  verify-license:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@65d7f2d534ac1bc67fcd62888c5f4f3d2cb2b236
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Verify license headers
+        run: |
+          python .github/workflows/scripts/license.py verify
