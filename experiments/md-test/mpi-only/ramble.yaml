@@ -15,26 +15,32 @@ ramble:
       concretize: '-U -f'
 
   applications:
-    hpcc:
+    md-test:
       workloads:
-        standard:
+        multi-file:
           variables:
             n_ranks: ['1', '2', '4', '8']
+            n_nodes: '1'
             experiment_setup: ''
           experiments:
-            hpcc_standard_{n_nodes}_{n_ranks}:
+            mdtest_multifile_{num-objects}_{iterations}_{additional-args}_{n_nodes}_{n_ranks}:
               variables:
-                env_name: hpcc
-                n_nodes: '1'
+                env_name: mdtest
+                num-objects: '1000'
+                iterations: '10'
+                additional-args: ''
   spack:
     concretized: true
     packages:
-      hpcc:
-        spack_spec: hpcc@1.5.0
+      ior:
+        spack_spec: ior@3.3.0
+        compiler: default-compiler
+      mdtest:
+        spack_spec: mdtest@1.9.3
         compiler: default-compiler
     environments:
-      hpcc:
+      mdtest:
         packages:
-        - blas
         - default-mpi
-        - hpcc
+        - ior
+        - mdtest
