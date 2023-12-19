@@ -1,0 +1,39 @@
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+system_definition:
+  manufacturer:
+    vendor: IBM
+    PCB: AC922
+  processor:
+    vendor: IBM
+    CPU: POWER9
+  accelerator:
+    vendor: NVIDIA
+    GPU: Volta
+  interconnect:
+    vendor: Mellanox
+    network: EDR-Infiniband
+  software:
+    operating-system:
+      name: RHEL
+      tested: Linux/TOSS
+    default-compiler:
+      CPU-compiler: XLC
+      GPU-compiler: NVCC
+      spack_spec: xl@16.1.1-2022.08.19-cuda11.8.0
+    default-mpi:
+      name: IBM-Spectrum-MPI
+      spack_spec: spectrum-mpi@2022.08.19
+    math-library:
+      - name: CUBLAS
+        spack_spec: cublas@11.8.0
+      - name: LAPACK
+        spacl_spec: lapack-xl@3.9.0
+  system-tested:
+    owner: LLNL
+    name: sierra
+    installation-year: 2018
+    description: [top500](https://www.top500.org/system/179398)
