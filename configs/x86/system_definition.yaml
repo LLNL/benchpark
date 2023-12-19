@@ -1,0 +1,26 @@
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+system_definition:
+  processor:
+    vendor: any
+    CPU: x86
+  software:
+    default-compiler:
+      CPU-compiler: GCC
+      spack_spec: gcc
+    default-mpi:
+      name: OpenMPI
+      spack_spec: openmpi
+    math-library:
+      - name: BLAS
+        spack_spec: blas
+      - name: LAPACK
+        spack_spec: lapack
+  system-tested:
+    owner: LLNL
+    name: magma
+    installation-year: 2019
+    description: [top500](https://www.top500.org/system/179774)
