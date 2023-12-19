@@ -8,5 +8,7 @@ spack:
       spack_spec: intel
     default-mpi:
       spack_spec: openmpi
+    blas:
+      spack_spec: blas
     lapack:
       spack_spec: lapack
