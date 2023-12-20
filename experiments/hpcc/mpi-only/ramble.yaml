@@ -13,28 +13,28 @@ ramble:
     spack_flags:
       install: '--add --keep-stage'
       concretize: '-U -f'
+
   applications:
-    raja-perf:
+    hpcc:
       workloads:
-        suite:
+        standard:
+          variables:
+            n_ranks: ['1', '2', '4', '8']
+            experiment_setup: ''
           experiments:
-            suite_{n_nodes}_{n_ranks}:
+            hpcc_standard_{n_nodes}_{n_ranks}:
               variables:
-                processes_per_node: ['1', '2', '4']
-                n_ranks: '{processes_per_node} * {n_nodes}'
+                env_name: hpcc
                 n_nodes: '1'
   spack:
     concretized: true
     packages:
-      blt:
-        spack_spec: 'blt@0.5.2:'
-        compiler: compiler-gcc
-      raja-perf:
-        spack_spec: raja-perf@develop +cuda~openmp+mpi cuda_arch=={cuda_arch} ^cuda@{default_cuda_version}
+      hpcc:
+        spack_spec: hpcc@1.5.0
         compiler: default-compiler
     environments:
-      raja-perf:
+      hpcc:
         packages:
-        - blt
+        - blas
         - default-mpi
-        - raja-perf
+        - hpcc
