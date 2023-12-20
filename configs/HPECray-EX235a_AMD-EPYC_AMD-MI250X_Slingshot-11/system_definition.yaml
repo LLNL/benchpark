@@ -6,32 +6,20 @@
 system_definition:
   manufacturer:
     vendor: HPE-Cray
-    PCB: EX235a
+    name: EX235a
   processor:
     vendor: AMD
-    CPU: EPYC
+    name: EPYC-Zen3
+    ISA: x86_64
   accelerator:
     vendor: AMD
-    GPU: MI250X
+    name: MI250X
+    GPU_ISA: gfx90a
   interconnect:
     vendor: HPE-Cray
-    network: Slingshot-11
-  software:
-    operating-system:
-      name: HPE-Cray-OS
-      tested: Linux/TOSS
-    default-compiler:
-      CPU-compiler: CCE
-      GPU-compiler: ROCM
-      spack_spec: cce@16.0.0-rocm5.5.1
-    default-mpi:
-      name: HPE-Cray-MPI
-      spack_spec: cray-mpich@8.1.26%cce ~gtl
-    math-library:
-      - name: rocBLAS
-        spack_spec: rocblas@5.5.1
-      - name LAPACK
-        spack_spec: cray-libsci@23.05.1.4
+    name: Slingshot-11
+  OS:
+    name: HPE-Cray-OS
   system-tested:
     owner: LLNL
     name: tioga

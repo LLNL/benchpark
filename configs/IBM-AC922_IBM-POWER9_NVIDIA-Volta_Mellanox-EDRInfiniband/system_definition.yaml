@@ -6,32 +6,20 @@
 system_definition:
   manufacturer:
     vendor: IBM
-    PCB: AC922
+    name: AC922
   processor:
     vendor: IBM
-    CPU: POWER9
+    name: POWER9
+    ISA: POWER-3.0B
   accelerator:
     vendor: NVIDIA
-    GPU: Volta
+    name: V100
+    GPU-ISA: sm_70
   interconnect:
     vendor: Mellanox
-    network: EDR-Infiniband
-  software:
-    operating-system:
-      name: RHEL
-      tested: Linux/TOSS
-    default-compiler:
-      CPU-compiler: XLC
-      GPU-compiler: NVCC
-      spack_spec: xl@16.1.1-2022.08.19-cuda11.8.0
-    default-mpi:
-      name: IBM-Spectrum-MPI
-      spack_spec: spectrum-mpi@2022.08.19
-    math-library:
-      - name: CUBLAS
-        spack_spec: cublas@11.8.0
-      - name: LAPACK
-        spack_spec: lapack-xl@3.9.0
+    name: EDR-Infiniband
+  OS:
+    name: RHEL
   system-tested:
     owner: LLNL
     name: sierra

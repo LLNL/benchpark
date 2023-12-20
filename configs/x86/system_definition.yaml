@@ -4,23 +4,24 @@
 # SPDX-License-Identifier: Apache-2.0
 
 system_definition:
+  manufacturer:
+    vendor: ""
+    name: ""
   processor:
-    vendor: any
-    CPU: x86
-  software:
-    default-compiler:
-      CPU-compiler: GCC
-      spack_spec: gcc
-    default-mpi:
-      name: OpenMPI
-      spack_spec: openmpi
-    math-library:
-      - name: BLAS
-        spack_spec: blas
-      - name: LAPACK
-        spack_spec: lapack
+    vendor: ""
+    name: ""
+    ISA: x86_64
+  accelerator:
+    vendor: ""
+    name: ""
+    GPU_ISA: ""
+  interconnect:
+    vendor: ""
+    name: ""
+  OS:
+    name: ""
   system-tested:
-    owner: LLNL
-    name: magma
-    installation-year: 2019
-    description: [top500](https://www.top500.org/system/179774)
+    owner: ""
+    name: ""
+    installation-year: ""
+    description: ""

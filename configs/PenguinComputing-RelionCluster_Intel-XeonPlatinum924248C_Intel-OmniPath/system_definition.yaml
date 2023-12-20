@@ -6,28 +6,20 @@
 system_definition:
   manufacturer:
     vendor: PenguinComputing
-    PCB: RelionCluster
+    name: RelionCluster
   processor:
     vendor: Intel
-    CPU: XeonPlatinum924248C
+    name: XeonPlatinum924248C
+    ISA: x86_64
+  accelerator:
+    vendor: ""
+    name: ""
+    GPU_ISA: ""
   interconnect:
     vendor: Intel
-    network: OmniPath
-  software:
-    operating-system:
-      name: Linux/TOSS
-      tested: Linux/TOSS
-    default-compiler:
-      CPU-compiler: GCC
-      spack_spec: xl@16.1.1-2022.08.19-cuda11.8.0
-    default-mpi:
-      name: MVAPICH
-      spack_spec: mvapich2@2.3.7-gcc1211
-    math-library:
-      - name: BLAS
-        spack_spec: intel-oneapi-mkl@2022.1.0
-      - name: LAPACK
-        spack_spec: intel-oneapi-mkl@2022.1.0
+    name: OmniPath
+  OS:
+    name: Linux/TOSS4
   system-tested:
     owner: LLNL
     name: magma
