@@ -27,7 +27,7 @@ ramble:
     concretized: true
     packages:
       saxpy:
-        spack_spec: saxpy@1.0.0 +cuda cuda_arch={cuda_arch} ^cuda@{default_cuda_version}
+        spack_spec: saxpy@1.0.0 +cuda cuda_arch=={cuda_arch} ^cuda@{default_cuda_version}
         compiler: default-compiler
     environments:
       saxpy:
