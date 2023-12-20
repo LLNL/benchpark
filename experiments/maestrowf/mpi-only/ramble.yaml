@@ -47,8 +47,8 @@ ramble:
   spack:
     concretized: true
     packages:
-      maestrowf-mpi-only:
-        spack_spec: maestrowf +mpi
+      maestrowf:
+        spack_spec: PyMaestrowf@develop
         compiler: default-compiler
       hypre-omp:
         spack_spec: hypre@2.28.0 +mpi+openmp+mixedint
@@ -63,4 +63,4 @@ ramble:
         - default-mpi
         - hypre-omp
         - amg2023-omp
-        - maestrowf-mpi-only
+        - maestrowf
