@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 system_definition:
+  name: HPECray-EPYC3-MI250X-Slingshot
   manufacturer:
     vendor: HPE-Cray
     name: EX235a

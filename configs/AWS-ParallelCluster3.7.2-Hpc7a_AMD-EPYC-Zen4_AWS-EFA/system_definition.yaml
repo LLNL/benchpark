@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 system_definition:
+  name: AWS-Hpc7a-EPYC4-EFA
   manufacturer:
     vendor: AWS
     name: ParallelCluster3.7.2-Hpc7a

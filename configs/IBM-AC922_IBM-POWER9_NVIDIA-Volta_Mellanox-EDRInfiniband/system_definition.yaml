@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 system_definition:
+  name: IBM-POWER9-V100-Infiniband
   manufacturer:
     vendor: IBM
     name: AC922
