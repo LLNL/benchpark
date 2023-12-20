@@ -33,6 +33,8 @@ packages:
     externals:
     - spec: cmake@3.20.2
       prefix: /usr
+    - spec: cmake@3.23.1
+      prefix: /usr/tce
   pkgconf:
     externals:
     - spec: pkgconf@1.4.2
