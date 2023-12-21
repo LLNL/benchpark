@@ -20,14 +20,19 @@ class Caliper(SpackModifier):
 
     mode('spot', description='Mode for collecting time only')
 
-    env_var_modification('CALI_CONFIG', 'spot(output={experiment_run_dir}/{experiment_name}.cali)', method='set', modes=['spot'])
+    mode('spot-topdown', description='Mode for collecting time only')
 
-    _log_file = '{experiment_run_dir}/.caliper_fom'
-    _cali_datadir = '{experiment_run_dir}/{experiment_name}.cali'
+    mode('spot-cuda', description='Mode for collecting time only')
 
-    # This will feed into an external profiler/data aggregator
-    # FIXME: Is this correct?
-    archive_pattern('{experiment_run_dir}/{experiment_name}.cali')
+    _cali_datafile = '{experiment_run_dir}/{experiment_name}.cali'
+
+    env_var_modification('CALI_CONFIG', 'spot(output={})'.format(_cali_datafile), method='set', modes=['spot'])
+
+    env_var_modification('CALI_CONFIG', 'spot(output={}, topdown.all)'.format(_cali_datafile), method='set', modes=['spot-topdown'])
+
+    env_var_modification('CALI_CONFIG', 'spot(output={}, profile.cuda)'.format(_cali_datafile), method='set', modes=['spot-cuda'])
+
+    archive_pattern(_cali_datafile)
 
     software_spec('caliper', spack_spec='caliper')
 
