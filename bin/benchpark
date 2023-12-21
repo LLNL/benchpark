@@ -15,6 +15,8 @@ import sys
 
 DEBUG = False
 
+__version__ = "0.1.0"
+
 
 def debug_print(message):
     if DEBUG:
@@ -26,6 +28,9 @@ def main():
         raise Exception("Benchpark requires at least python 3.8+.")
 
     parser = argparse.ArgumentParser(description="Benchpark")
+    parser.add_argument(
+        "-V", "--version", action="store_true", help="show version number and exit"
+    )
 
     subparsers = parser.add_subparsers(title="Subcommands", dest="subcommand")
 
@@ -34,16 +39,29 @@ def main():
     benchpark_setup(subparsers, actions)
 
     args = parser.parse_args()
+    no_args = True if len(sys.argv) == 1 else False
 
-    if not args.subcommand:
-        print("Must specify subcommand: " + " ".join(actions.keys()))
-    elif args.subcommand in actions:
+    if no_args:
+        parser.print_help()
+        return 1
+
+    if args.version:
+        print(get_version())
+        return 0
+
+    if args.subcommand in actions:
         actions[args.subcommand](args)
     else:
         print(
             "Invalid subcommand ({args.subcommand}) - must choose one of: "
             + " ".join(actions.keys())
         )
+
+
+def get_version():
+    benchpark_version = __version__
+
+    return benchpark_version
 
 
 def source_location():
