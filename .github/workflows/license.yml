@@ -18,4 +18,4 @@ jobs:
 
       - name: Verify license headers
         run: |
-          python .github/workflows/scripts/license.py verify
+          python .github/workflows/bin/license verify
