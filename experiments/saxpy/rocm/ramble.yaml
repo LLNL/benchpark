@@ -31,7 +31,7 @@ ramble:
     concretized: true
     packages:
       saxpy:
-        spack_spec: saxpy@1.0.0 +rocm amdgpu_target="{rocm_arch}"
+        spack_spec: saxpy@1.0.0 +rocm amdgpu_target={rocm_arch}
         compiler: default-compiler
     environments:
       saxpy:
