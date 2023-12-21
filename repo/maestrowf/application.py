@@ -52,5 +52,6 @@ class maestrowf(SpackApplication):
     #TODO: Fix the FOM success_criteria(...)
     success_criteria('pass', mode='string', match=r'Figure of Merit \(FOM\)', file='{experiment_run_dir}/{experiment_name}.out')
 
+    # Evaluate the success
     def evaluate_success(self):
       return True
