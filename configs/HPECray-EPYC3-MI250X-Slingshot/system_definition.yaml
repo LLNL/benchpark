@@ -11,7 +11,7 @@ system_definition:
   processor:
     vendor: AMD
     name: EPYC-Zen3
-    ISA: x86_64
+    ISA_family: x86_64
   accelerator:
     vendor: AMD
     name: MI250X

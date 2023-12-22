@@ -11,7 +11,7 @@ system_definition:
   processor:
     vendor: Intel
     name: XeonPlatinum924248C
-    ISA: x86_64
+    ISA_family: x86_64
   accelerator:
     vendor: ""
     name: ""

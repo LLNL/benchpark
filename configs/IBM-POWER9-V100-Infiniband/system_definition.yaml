@@ -11,7 +11,7 @@ system_definition:
   processor:
     vendor: IBM
     name: POWER9
-    ISA: POWER-3.0B
+    ISA_family: POWER-3.0B
   accelerator:
     vendor: NVIDIA
     name: V100
