@@ -13,12 +13,11 @@ you can add a new directory with a name which identifies the system.
 
 The naming convention for the systems is as following::
 
-  (opt)Integrator-(opt)ClusterType-CPU-(opt)GPU-Network
   [INTEGRATOR]-MICROARCHITECTURE[-GPU][-NETWORK]
 
 where::
 
-  COMPANY[_PRODUCTNAME][...]
+  INTEGRATOR = COMPANY[_PRODUCTNAME][...]
 
 Benchpark has definitions for the following systems:
 - AWS_PCluster_Hpc7a-zen4-EFA
