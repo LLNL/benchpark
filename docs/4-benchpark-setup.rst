@@ -10,7 +10,7 @@ Also choose a directory for your experiment::
 where:
 
 - ``benchmark/ProgrammingModel``: amg2023/openmp | amg2023/cuda | saxpy/openmp (available choices in ``benchpark/experiments``)
-- ``system``: x86_64 | HPECray-EPYC3-MI250X-Slingshot | AWS-Hpc7a-EPYC4-EFA (available choices in ``benchpark/configs``)
+- ``system``: x86_64 | HPECray-zen3-MI250X-Slingshot | AWS_PCluster_Hpc7a-zen4-EFA (available choices in ``benchpark/configs``)
 
 This command will assemble a Ramble workspace per experiment
 with a configuration for the specified benchmark and system
