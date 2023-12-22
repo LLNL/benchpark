@@ -28,3 +28,5 @@ system_definition:
     name: Any
     installation-year: Any
     description: Any
+  top500-system-instances:
+    - Many

@@ -25,6 +25,9 @@ system_definition:
     name: RHEL
   system-tested:
     owner: LLNL
-    name: sierra
+    name: lassen
     installation-year: 2018
     description: [top500](https://www.top500.org/system/179398)
+  top500-system-instances:
+    - Summit (ORNL)
+    - Sierra (LLNL)

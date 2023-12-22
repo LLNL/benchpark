@@ -28,3 +28,7 @@ system_definition:
     name: tioga
     installation-year: 2022
     description: [top500](https://www.top500.org/system/180052)
+  top500-system-instances:
+    - Frontier (ORNL)
+    - Lumi (EuroHPC/CSC)
+    - Tioga (LLNL)

@@ -28,3 +28,5 @@ system_definition:
     name: ""
     installation-year: ""
     description: [aws/hpc7a](https://aws.amazon.com/ec2/instance-types/hpc7a)
+  top500-system-instances:
+    - None
