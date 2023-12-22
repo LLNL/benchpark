@@ -13,7 +13,7 @@ The naming convention for the systems is as following::
 Benchpark has definitions for the following systems:
 - AWS-Hpc7a-EPYC4-EFA
 - HPECray-EPYC3-MI250X-Slingshot	(Frontier, Lumi, Tioga)
-- IBM-POWER9-V100-Infiniband	        (Sierra, Summit)
+- IBM-POWER9-V100-Infiniband	        (Sierra)
 - Penguin-XeonPlatinum-OmniPath
 - x86_64                                (generic x86 CPU only platform)
 
