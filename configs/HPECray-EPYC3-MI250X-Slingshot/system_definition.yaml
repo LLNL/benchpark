@@ -11,11 +11,13 @@ system_definition:
   processor:
     vendor: AMD
     name: EPYC-Zen3
-    ISA_family: x86_64
+    ISA: x86_64
+    uArch: zen3
   accelerator:
     vendor: AMD
     name: MI250X
-    GPU_ISA: gfx90a
+    ISA: GCN
+    uArch: gfx90a
   interconnect:
     vendor: HPE-Cray
     name: Slingshot-11

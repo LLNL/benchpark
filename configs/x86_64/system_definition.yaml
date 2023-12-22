@@ -4,25 +4,27 @@
 # SPDX-License-Identifier: Apache-2.0
 
 system_definition:
-  name: x86
+  name: x86_64
   manufacturer:
-    vendor: ""
-    name: ""
+    vendor: Any
+    name: Any
   processor:
-    vendor: ""
-    name: ""
-    ISA_family: x86_64
+    vendor: Any
+    name: Any
+    ISA: x86_64
+    uArch: Any
   accelerator:
-    vendor: ""
-    name: ""
-    GPU_ISA: ""
+    vendor: None
+    name: None
+    ISA: None
+    uArch: None
   interconnect:
-    vendor: ""
-    name: ""
+    vendor: Any
+    name: Any
   OS:
-    name: ""
+    name: Any
   system-tested:
-    owner: ""
-    name: ""
-    installation-year: ""
-    description: ""
+    owner: Any
+    name: Any
+    installation-year: Any
+    description: Any

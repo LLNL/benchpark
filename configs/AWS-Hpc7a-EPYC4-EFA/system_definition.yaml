@@ -11,12 +11,13 @@ system_definition:
   processor:
     vendor: AMD
     name: EPYC-Zen4
-    ISA_family: x86_64
-    ISA: zen4
+    ISA: x86_64
+    uArch: zen4
   accelerator:
-    vendor: ""
-    name: ""
-    GPU_ISA: ""
+    vendor: None
+    name: None
+    ISA: None
+    uArch: None
   interconnect:
     vendor: AWS
     name: EFA

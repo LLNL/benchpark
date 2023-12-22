@@ -11,11 +11,13 @@ system_definition:
   processor:
     vendor: Intel
     name: XeonPlatinum924248C
-    ISA_family: x86_64
+    ISA: x86_64
+    uArch: IceLake-SP
   accelerator:
-    vendor: ""
-    name: ""
-    GPU_ISA: ""
+    vendor: None
+    name: None
+    ISA: None
+    uArch: None
   interconnect:
     vendor: Intel
     name: OmniPath

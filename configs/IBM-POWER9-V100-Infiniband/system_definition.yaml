@@ -11,11 +11,13 @@ system_definition:
   processor:
     vendor: IBM
     name: POWER9
-    ISA_family: POWER-3.0B
+    ISA: ppc64le
+    uArch: power9
   accelerator:
     vendor: NVIDIA
     name: V100
-    GPU-ISA: sm_70
+    ISA: PTX
+    uArch: sm_70
   interconnect:
     vendor: Mellanox
     name: EDR-Infiniband
