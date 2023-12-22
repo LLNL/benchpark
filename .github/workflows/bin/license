@@ -54,7 +54,7 @@ def list_files(root):
 
 # Error codes for license verification. All values are chosen such that
 # bool(value) evaluates to True
-OLD_LICENSE, SPDX_MISMATCH, GENERAL_MISMATCH = range(1, 4)
+SPDX_MISMATCH, GENERAL_MISMATCH, COPYRIGHT_YEAR_MISMATCH = range(1, 4)
 
 #: Latest year that copyright applies. UPDATE THIS when bumping copyright.
 latest_year = 2023
@@ -62,9 +62,9 @@ strict_date = r"Copyright %s" % latest_year
 
 #: regexes for valid license lines at tops of files
 license_line_regexes = [
-    r"Copyright (%d|%d) Lawrence Livermore National Security, LLC and other"
-    % (latest_year - 1, latest_year),  # allow a little leeway: current or last year
-    r"Benchpark Project Developers\. See the top-level COPYRIGHT file for details.",
+    r"Copyright (%d|[0-9]{4}) Lawrence Livermore National Security, LLC and other"
+    % latest_year,
+    r"Benchpark Project Developers. See the top-level COPYRIGHT file for details.",
     r"SPDX-License-Identifier: Apache-2.0",
 ]
 
@@ -83,10 +83,12 @@ class LicenseError(object):
         total = sum(self.error_counts.values())
         missing = self.error_counts[GENERAL_MISMATCH]
         spdx_mismatch = self.error_counts[SPDX_MISMATCH]
+        copyright_year_mismatch = self.error_counts[COPYRIGHT_YEAR_MISMATCH]
         return (
             "%d improperly licensed files\n" % (total),
             "files with wrong SPDX-License-Identifier:   %d\n" % spdx_mismatch,
             "files not containing expected license:      %d\n" % missing,
+            "files with wrong copyright year:            %d\n" % copyright_year_mismatch,
         )
 
 
@@ -103,16 +105,12 @@ def _check_license(lines, path):
                 # out of date.
                 if i == 0:
                     if not re.search(strict_date, line):
-                        print("{}: copyright date mismatch".format(path))
+                        print("{0}: Copyright date mismatch".format(path))
+                        return COPYRIGHT_YEAR_MISMATCH
                 found.append(i)
 
     if len(found) == len(license_line_regexes) and found == list(sorted(found)):
         return
-
-    def old_license(line, path):
-        if re.search("This program is free software", line):
-            print("{0}: has old LGPL license header".format(path))
-            return OLD_LICENSE
 
     # If the SPDX identifier is present, then there is a mismatch (since it
     # did not match the above regex)
@@ -128,7 +126,7 @@ def _check_license(lines, path):
             print("{0}: SPDX license identifier missing".format(path))
             return GENERAL_MISMATCH
 
-    checks = [old_license, wrong_spdx_identifier]
+    checks = [wrong_spdx_identifier]
 
     for line in lines:
         for check in checks:
