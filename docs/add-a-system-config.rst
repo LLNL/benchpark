@@ -19,7 +19,7 @@ Benchpark has definitions for the following systems:
 
 The following files are required for each system ``benchpark/configs/${SYSTEM}``:
 
-1. ``system_definition.yaml``
+1. ``system_definition.yaml`` describes the system hardware, including the integrator (and the name of the product node or cluster type), the processor, (optionally) the accelerator, and the network; the information included here is what you will typically see recorded about the system on Top500.org.  We intend to make the system definitions in Benchpark searchable, and will add a schema to enforce consistency; until then, please copy the file and fill out all of the fields without changing the keys.  Also listed is the specific system the config was developed and tested on, as well as the known systems with the same hardware so that the users of those systems can find this system specification.
 
 .. code-block:: yaml
 
