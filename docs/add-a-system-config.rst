@@ -8,7 +8,7 @@ you can add a new directory with a name which identifies the system.
 
 The naming convention for the systems is as following::
 
-  Integrator-(opt)ClusterType-CPU-(opt)GPU-Network
+  (opt)Integrator-(opt)ClusterType-CPU-(opt)GPU-Network
 
 Benchpark has definitions for the following systems:
 - AWS-Hpc7a-EPYC4-EFA
