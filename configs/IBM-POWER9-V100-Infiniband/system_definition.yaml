@@ -21,8 +21,6 @@ system_definition:
   interconnect:
     vendor: Mellanox
     name: EDR-Infiniband
-  OS:
-    name: RHEL
   system-tested:
     owner: LLNL
     name: lassen

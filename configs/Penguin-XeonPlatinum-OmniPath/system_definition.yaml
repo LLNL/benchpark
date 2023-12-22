@@ -21,8 +21,6 @@ system_definition:
   interconnect:
     vendor: Intel
     name: OmniPath
-  OS:
-    name: Linux/TOSS4
   system-tested:
     owner: LLNL
     name: magma

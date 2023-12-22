@@ -21,8 +21,6 @@ system_definition:
   interconnect:
     vendor: AWS
     name: EFA
-  OS:
-    name: Amazon-Linux-2
   system-tested:
     owner: AWS
     name: ""

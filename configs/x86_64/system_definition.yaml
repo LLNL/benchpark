@@ -21,8 +21,6 @@ system_definition:
   interconnect:
     vendor: Any
     name: Any
-  OS:
-    name: Any
   system-tested:
     owner: Any
     name: Any
