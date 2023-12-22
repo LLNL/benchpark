@@ -12,7 +12,7 @@ system_definition:
     vendor: Intel
     name: XeonPlatinum924248C
     ISA: x86_64
-    uArch: IceLake-SP
+    uArch: icelake
   accelerator:
     vendor: None
     name: None
