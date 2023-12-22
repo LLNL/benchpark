@@ -11,7 +11,8 @@ system_definition:
   processor:
     vendor: AMD
     name: EPYC-Zen4
-    ISA: x86_64
+    ISA_family: x86_64
+    ISA: zen4
   accelerator:
     vendor: ""
     name: ""
