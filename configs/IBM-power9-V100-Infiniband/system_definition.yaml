@@ -4,8 +4,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 system_definition:
-  name: IBM-POWER9-V100-Infiniband
-  manufacturer:
+  name: IBM-power9-V100-Infiniband
+  integrator:
     vendor: IBM
     name: AC922
   processor:
@@ -22,10 +22,9 @@ system_definition:
     vendor: Mellanox
     name: EDR-Infiniband
   system-tested:
-    owner: LLNL
+    site: LLNL
     name: lassen
     installation-year: 2018
     description: [top500](https://www.top500.org/system/179398)
   top500-system-instances:
-    - Summit (ORNL)
     - Sierra (LLNL)

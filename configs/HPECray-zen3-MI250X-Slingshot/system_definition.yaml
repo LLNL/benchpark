@@ -4,9 +4,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 system_definition:
-  name: HPECray-EPYC3-MI250X-Slingshot
-  manufacturer:
-    vendor: HPE-Cray
+  name: HPECray-zen3-MI250X-Slingshot
+  integrator:
+    vendor: HPECray
     name: EX235a
   processor:
     vendor: AMD
@@ -19,14 +19,14 @@ system_definition:
     ISA: GCN
     uArch: gfx90a
   interconnect:
-    vendor: HPE-Cray
-    name: Slingshot-11
+    vendor: HPECray
+    name: Slingshot11
   system-tested:
-    owner: LLNL
+    site: LLNL
     name: tioga
     installation-year: 2022
     description: [top500](https://www.top500.org/system/180052)
   top500-system-instances:
     - Frontier (ORNL)
-    - Lumi (EuroHPC/CSC)
-    - Tioga (LLNL)
+    - Lumi     (CSC)
+    - Tioga    (LLNL)

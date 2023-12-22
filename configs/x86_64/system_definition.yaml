@@ -5,7 +5,7 @@
 
 system_definition:
   name: x86_64
-  manufacturer:
+  integrator:
     vendor: Any
     name: Any
   processor:
@@ -22,7 +22,7 @@ system_definition:
     vendor: Any
     name: Any
   system-tested:
-    owner: Any
+    site: Any
     name: Any
     installation-year: Any
     description: Any

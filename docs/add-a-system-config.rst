@@ -9,13 +9,18 @@ you can add a new directory with a name which identifies the system.
 The naming convention for the systems is as following::
 
   (opt)Integrator-(opt)ClusterType-CPU-(opt)GPU-Network
+  [INTEGRATOR]-MICROARCHITECTURE[-GPU][-NETWORK]
+
+where::
+
+  COMPANY[_PRODUCTNAME][...]
 
 Benchpark has definitions for the following systems:
-- AWS-Hpc7a-EPYC4-EFA
-- HPECray-EPYC3-MI250X-Slingshot	(Frontier, Lumi, Tioga)
-- IBM-POWER9-V100-Infiniband	        (Sierra)
-- Penguin-XeonPlatinum-OmniPath
-- x86_64                                (generic x86 CPU only platform)
+- AWS_PCluster_Hpc7a-zen4-EFA
+- HPECray-zen3-MI250X-Slingshot	(Frontier, Lumi, Tioga)
+- IBM-power9-V100-Infiniband	(Sierra)
+- Penguin-icelake-OmniPath
+- x86_64                        (generic x86 CPU only platform)
 
 The following files are required for each system ``benchpark/configs/${SYSTEM}``:
 
@@ -24,9 +29,9 @@ The following files are required for each system ``benchpark/configs/${SYSTEM}``
 .. code-block:: yaml
 
   system_definition:
-    name: HPECray-EPYC3-MI250X-Slingshot
-    manufacturer:
-      vendor: HPE-Cray
+    name: HPECray-zen3-MI250X-Slingshot
+    integrator:
+      vendor: HPECray
       name: EX235a
     processor:
       vendor: AMD
@@ -39,19 +44,17 @@ The following files are required for each system ``benchpark/configs/${SYSTEM}``
       ISA: GCN
       uArch: gfx90a
     interconnect:
-      vendor: HPE-Cray
-      name: Slingshot-11
-    OS:
-      name: HPE-Cray-OS
+      vendor: HPECray
+      name: Slingshot11
     system-tested:
-      owner: LLNL
+      site: LLNL
       name: tioga
       installation-year: 2022
       description: [top500](https://www.top500.org/system/180052)
     top500-system-instances:
       - Frontier (ORNL)
-      - Lumi (EuroHPC/CSC)
-      - Tioga (LLNL)
+      - Lumi     (CSC)
+      - Tioga    (LLNL)
 
 
 2. ``spack.yaml`` defines default compiler and package names Spack should

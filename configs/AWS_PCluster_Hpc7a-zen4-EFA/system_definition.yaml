@@ -4,27 +4,27 @@
 # SPDX-License-Identifier: Apache-2.0
 
 system_definition:
-  name: Penguin-XeonPlatinum-OmniPath
-  manufacturer:
-    vendor: PenguinComputing
-    name: RelionCluster
+  name: AWS_PCluster_Hpc7a-zen4-EFA
+  integrator:
+    vendor: AWS
+    name: ParallelCluster3.7.2-Hpc7a
   processor:
-    vendor: Intel
-    name: XeonPlatinum924248C
+    vendor: AMD
+    name: EPYC-Zen4
     ISA: x86_64
-    uArch: icelake
+    uArch: zen4
   accelerator:
     vendor: None
     name: None
     ISA: None
     uArch: None
   interconnect:
-    vendor: Intel
-    name: OmniPath
+    vendor: AWS
+    name: EFA
   system-tested:
-    owner: LLNL
-    name: magma
-    installation-year: 2019
-    description: [top500](https://www.top500.org/system/179774)
+    site: AWS
+    name: ""
+    installation-year: ""
+    description: [aws/hpc7a](https://aws.amazon.com/ec2/instance-types/hpc7a)
   top500-system-instances:
-    - Magma (LLNL)
+    - None
