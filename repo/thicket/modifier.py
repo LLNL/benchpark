@@ -1,13 +1,10 @@
-# Copyright 2022-2023 Google LLC
+#!/bin/bash
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
 #
-# Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
-# https://www.apache.org/licenses/LICENSE-2.0> or the MIT license
-# <LICENSE-MIT or https://opensource.org/licenses/MIT>, at your
-# option. This file may not be copied, modified, or distributed
-# except according to those terms.
+# SPDX-License-Identifier: Apache-2.0
 
 from ramble.modkit import *
-
 
 class Caliper(SpackModifier):
     """Define a modifier for Caliper"""
@@ -54,7 +51,7 @@ class Caliper(SpackModifier):
         sys.path.append(input_deploy_dir_str + "/thicket-playground-dev")
 
     # TODO: add hooks to customize this function per experiment
-    # add additional python scripts in configs? 
+    # add additional python scripts in configs?
     def _prepare_analysis(self, workspace):
         self._load_thicket()
 
