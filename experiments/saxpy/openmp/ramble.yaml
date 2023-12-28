@@ -25,6 +25,9 @@ ramble:
             n_ranks: '8'
           experiments:
             saxpy_{n}_{n_nodes}_{n_ranks}_{n_threads}:
+              modifiers:
+                - name: caliper
+                  mode: spot-topdown
               variables:
                 processes_per_node: ['8', '4']
                 n_nodes: ['1', '2']
@@ -39,10 +42,13 @@ ramble:
     concretized: true
     packages:
       saxpy:
-        spack_spec: saxpy@1.0.0 +openmp ^cmake@3.23.1
+        spack_spec: saxpy@1.0.0 +openmp+caliper ^cmake@3.23.1
         compiler: default-compiler
+      caliper:
+        spack_spec: caliper+papi
     environments:
       saxpy:
         packages:
         - default-mpi
         - saxpy
+        - caliper
