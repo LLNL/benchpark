@@ -5,7 +5,7 @@
 
 packages:
   all:
-    require: target=x86_64:
+    require: 'target=x86_64:'
     variants: amdgpu_target=gfx90a
   papi:
     externals:
