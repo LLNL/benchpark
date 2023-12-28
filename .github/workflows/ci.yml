@@ -20,6 +20,7 @@ jobs:
       docs: ${{ steps.filter.outputs.docs }}
       style: ${{ steps.filter.outputs.style }}
       run: ${{ steps.filter.outputs.run }}
+      license: ${{ steps.filter.outputs.license }}
 
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # @v2
@@ -49,6 +50,13 @@ jobs:
               - 'configs/**'
               - 'experiments/**'
               - 'repo/**'
+            license:
+              - '.github/**'
+              - 'bin/**'
+              - 'configs/**'
+              - 'docs/**'
+              - 'experiments/**'
+              - 'repo/**'
 
   docs:
     if: ${{ needs.changes.outputs.docs == 'true' }}
@@ -64,3 +72,8 @@ jobs:
     if: ${{ needs.changes.outputs.run == 'true' }}
     needs: changes
     uses: ./.github/workflows/run.yml
+
+  license:
+    if: ${{ needs.changes.outputs.license == 'true' }}
+    needs: changes
+    uses: ./.github/workflows/license.yml
