@@ -17,7 +17,7 @@ jobs:
 
       - name: Build Saxpy Workspace
         run: |
-          ./bin/benchpark setup saxpy/openmp x86 workspace/
+          ./bin/benchpark setup saxpy/openmp x86_64 workspace/
 
       - name: Setup Ramble & Spack
         run: |
@@ -32,7 +32,7 @@ jobs:
           echo "PATH=$PATH" >> "$GITHUB_ENV"
 
       - name: Setup Saxpy Workspace
-        working-directory: ./workspace/saxpy/openmp/x86/workspace/
+        working-directory: ./workspace/saxpy/openmp/x86_64/workspace/
         run: |
           ramble \
             --workspace-dir . \
@@ -42,7 +42,7 @@ jobs:
             workspace setup
 
       - name: Run Saxpy Experiments
-        working-directory: ./workspace/saxpy/openmp/x86/workspace/
+        working-directory: ./workspace/saxpy/openmp/x86_64/workspace/
         run: |
           ramble \
             -c variables:n_nodes:1 \
@@ -53,7 +53,7 @@ jobs:
             on
 
       - name: Analyze Saxpy Results
-        working-directory: ./workspace/saxpy/openmp/x86/workspace/
+        working-directory: ./workspace/saxpy/openmp/x86_64/workspace/
         run: |
           ramble \
             --workspace-dir . \
