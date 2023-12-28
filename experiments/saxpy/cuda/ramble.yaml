@@ -1,3 +1,8 @@
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: Apache-2.0
+
 ramble:
   config:
     deprecated: true
@@ -22,7 +27,7 @@ ramble:
     concretized: true
     packages:
       saxpy:
-        spack_spec: saxpy@1.0.0 +cuda cuda_arch={cuda_arch} ^cuda@{default_cuda_version}
+        spack_spec: saxpy@1.0.0 +cuda cuda_arch=={cuda_arch} ^cuda@{default_cuda_version}
         compiler: default-compiler
     environments:
       saxpy:
