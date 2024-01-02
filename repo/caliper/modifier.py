@@ -20,9 +20,9 @@ class Caliper(SpackModifier):
 
     mode('spot', description='Mode for collecting time only')
 
-    mode('spot-topdown', description='Mode for collecting time only')
+    mode('spot-topdown', description='Top-down analysis for Intel CPUs (all levels)')
 
-    mode('spot-cuda', description='Mode for collecting time only')
+    mode('spot-cuda', description='Profile CUDA API functions')
 
     _cali_datafile = '{experiment_run_dir}/{experiment_name}.cali'
 
