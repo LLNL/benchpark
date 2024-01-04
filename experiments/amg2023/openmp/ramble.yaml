@@ -57,7 +57,7 @@ ramble:
         spack_spec: amg2023@develop +mpi+openmp+caliper 
         compiler: default-compiler
       caliper:
-        spack_spec: caliper+papi
+        spack_spec: caliper+adiak+mpi~libunwind~libdw+papi
     environments:
       amg2023-omp:
         packages:

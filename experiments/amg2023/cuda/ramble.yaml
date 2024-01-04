@@ -67,7 +67,7 @@ ramble:
         spack_spec: 'amg2023@develop +mpi+cuda+caliper ^cuda@{cuda_version}'
         compiler: '{cuda_compiler}'
       caliper:
-        spack_spec: caliper+cuda~papi~libunwind
+        spack_spec: 'caliper+adiak+mpi~libunwind~libdw~papi+cuda cuda_arch=={cuda_arch}'
     environments:
       amg2023-cuda-{versions}:
         packages:
