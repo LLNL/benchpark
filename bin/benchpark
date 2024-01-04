@@ -18,6 +18,65 @@ DEBUG = False
 __version__ = "0.1.0"
 
 
+sysconfig_template = '''\
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+# ----------------------------------------------------------------------------
+# If you submit this system configuration back to Benchpark as a pull request,
+# please first remove this boilerplate and all FIXME comments.
+#
+# This is a template system configuration file for Benchpark. We've put "FIXME"
+# next to all the things you'll want to change. If not applicable, the fields
+# can be left blank.
+#
+# See the Benchpark documentation for more information on adding system
+# configurations.
+# ----------------------------------------------------------------------------
+
+system_definition:
+  name: {system_name}
+
+  # FIXME: Add vendor and name of system integrator.
+  integrator:
+    vendor:
+    name:
+
+  # FIXME: Add vendor, name, ISA, and microarchitecture of system CPU.
+  processor:
+    vendor:
+    name:
+    ISA:
+    uArch:
+
+  # FIXME: Add vendor, name, ISA, and microarchitecture of system accelerator.
+  accelerator:
+    vendor:
+    name:
+    ISA:
+    uArch:
+
+  # FIXME: Add vendor and name of system interconnect.
+  interconnect:
+    vendor:
+    name:
+
+  # FIXME: Add site, name, installation year, and description of systems tested
+  # with this description in Benchpark.
+  system-tested:
+    site:
+    name:
+    installation-year:
+    description:
+
+  # FIXME: Add Top500 system(s) name and site.
+  top500-system-instances:
+    -
+'''
+
+
 def debug_print(message):
     if DEBUG:
         print("(debug) " + str(message))
@@ -37,6 +96,7 @@ def main():
     actions = {}
     benchpark_list(subparsers, actions)
     benchpark_setup(subparsers, actions)
+    benchpark_define(subparsers, actions)
 
     args = parser.parse_args()
     no_args = True if len(sys.argv) == 1 else False
@@ -165,6 +225,48 @@ def benchpark_setup(subparsers, actions_dict):
 
     actions_dict["setup"] = benchpark_setup_handler
 
+
+def benchpark_define(subparsers, actions_dict):
+    list_parser = subparsers.add_parser(
+        "define", help="Define a new system definition"
+    )
+    list_parser.add_argument("system", nargs="?")
+    list_parser.add_argument("-f", "--force", action="store_true", help="Overwrite any existing system definition file with the same name")
+    actions_dict["define"] = benchpark_define_handler
+
+
+def benchpark_define_handler(args):
+    system = args.system
+
+    if system == None:
+        raise ValueError(
+            f'Must specify system for benchpark define "{system}"'
+        )
+    else:
+        print("Created template for {0} system definition".format(system))
+
+    # Create a directory for the new system definition
+    sysconfig_path = "./configs/" + system + "/system_definition.yaml"
+    if os.path.exists(sysconfig_path) and not args.force:
+        raise OSError(
+            "{0} already exists.\n         Try running `benchpark define {1} --force` to overwrite it.".format(sysconfig_path, system),
+        )
+    else:
+        os.makedirs(os.path.dirname(sysconfig_path), exist_ok=True)
+
+    # Write the new system definition file
+    write_sysconfig(sysconfig_path, system)
+    print("Created system definition file: {0}".format(sysconfig_path))
+
+
+def write_sysconfig(sysconfig_path, sys_name):
+    """Writes the new system definition file."""
+
+    # Write out a template for the file
+    with open(sysconfig_path, "w") as sysconfig_file:
+        sysconfig_file.write(
+            sysconfig_template.format(system_name=sys_name)
+        )
 
 def run_command(command_str, env=None):
     subprocess.run(
