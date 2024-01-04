@@ -1,0 +1,90 @@
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+benchpark_tags:
+  application-domain:
+    - asc # Advanced Simulation and Computing
+    - astrophysics
+    - cfd # computational fluid dynamics
+    - chemistry
+    - climate
+    - dft # density functional theory
+    - engineering
+    - fusion
+    - material-science
+    - molecular-dynamics
+  benchmark-scale:
+    - large-scale
+    - multi-node
+    - single-node
+    - sub-node
+  communication:
+    - mpi
+    - nccl
+    - nvsmem
+    - rccl
+    - shmem
+    - upc
+  communication-performance-characteristics:
+    - network-bandwidth-bound
+    - network-bisection-bandwidth-bound
+    - network-collectives
+    - network-latency-bound
+    - network-point-to-point
+  compute-performance-characteristics:
+    - atomics
+    - high-branching
+    - high-fp
+    - i-o
+    - mixed-precision
+    - register-pressure
+    - simd
+    - vectorization
+  memory-access-characteristics:
+    - high-memory-bandwidth
+    - irregular-memory-access
+    - large-memory-footprint
+    - regular-memory-access
+  mesh-representation:
+    - amr
+    - block-structured-grid
+    - structured-grid
+    - unstructured-grid
+  method-type:
+    - ai # AI, ML, DL
+    - ale # arbitrary lagrangian-eulerian
+    - dense-linear-algebra
+    - deterministic
+    - direct-solve
+    - eulerian
+    - explicit-differentiation
+    - finite-element
+    - fft # fast fourier transform
+    - hydrodynamics
+    - implicit-differentiation
+    - lagrangian
+    - montecarlo
+    - nbody
+    - particles
+    - solver
+    - sparse-linear-algebra
+    - task-parallelism
+    - transport
+  programming-language:
+    - c
+    - c++
+    - fortran
+    - julia
+    - python
+    - rust
+  programming-model:
+    - charm++
+    - cuda
+    - hip
+    - kokkos
+    - oneapi
+    - openmp
+    - raja
+    - sycl
