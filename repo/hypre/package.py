@@ -20,6 +20,12 @@ class Hypre(BuiltinHypre):
     def configure_args(self):
         configure_args = super().configure_args()
 
+        if self.spec["blas"].satisfies("cublas"):
+          if not "+fortran" in self.spec:        
+            configure_args.append("--with-fmangle=no-underscores")
+            configure_args.append("--with-fmangle-blas=no-underscores") 
+            configure_args.append("--with-fmangle-lapack=no-underscores")
+
         if self.spec["blas"].satisfies("rocblas"):
             configure_args.append("--enable-rocblas")
         if self.spec.satisfies("^cray-mpich+gtl"):
