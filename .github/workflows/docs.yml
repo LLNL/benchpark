@@ -31,7 +31,7 @@ jobs:
         sphinx-build docs/ _build
 
     - name: Upload artifact
-      uses: actions/upload-pages-artifact@a753861a5debcf57bf8b404356158c8e1e33150c
+      uses: actions/upload-pages-artifact@0252fc4ba7626f0298f0cf00902a25c6afc77fa8
       if: github.ref == 'refs/heads/develop'
       with:
         path: ./_build
