@@ -62,6 +62,7 @@ jobs:
             workspace analyze
 
       - name: Archive Experiment Workspace
+        working-directory: ./workspace/saxpy/openmp/x86_64/workspace/
         if: always()
         run: |
           ramble \
@@ -72,6 +73,7 @@ jobs:
           ls -hla
 
       - name: Upload Workspace Archive as CI Artifact
+        working-directory: ./workspace/saxpy/openmp/x86_64/workspace/
         if: always()
         uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
         with:
