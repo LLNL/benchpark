@@ -1,7 +1,5 @@
 name: Run Benchpark and Simple Benchmark Suite
 on:
-  # This Workflow can be triggered manually
-  workflow_dispatch:
   workflow_call:
 
 jobs:
