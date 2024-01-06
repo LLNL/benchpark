@@ -70,7 +70,6 @@ jobs:
             --disable-progress-bar \
             --disable-logger \
             workspace archive
-          ls -hla
 
       - name: Upload Workspace Archive as CI Artifact
         if: always()
