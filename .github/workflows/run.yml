@@ -61,6 +61,22 @@ jobs:
             --disable-logger \
             workspace analyze
 
+      - name: Archive Experiment Workspace
+        if: always()
+        run: |
+          ramble \
+            --workspace-dir . \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace archive
+
+      - name: Upload Workspace Archive as CI Artifact
+        if: always()
+        uses: actions/upload-artifact
+        with:
+          name: workspace-archive
+          path: 'archive/**'
+
       - name: Upload Binaries to CI Cache
         if: github.ref == 'refs/heads/develop'
         run: |
