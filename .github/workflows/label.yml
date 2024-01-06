@@ -1,11 +1,11 @@
-name: ci
+name: label
 on:
   pull_request_target:
     branches:
       - develop
 
 jobs:
-  labels:
+  pr:
     runs-on: ubuntu-latest
     permissions:
       contents: read
