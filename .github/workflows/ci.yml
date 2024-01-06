@@ -28,9 +28,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/labeler@8558fd74291d67161a8a78ce36a881fa63b766a9
-        if: github.event_name == 'pull_request'
-
         # For pull requests it's not necessary to checkout the code
       - uses: dorny/paths-filter@4512585405083f25c027a35db413c2b3b9006d50
         id: filter
