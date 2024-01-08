@@ -19,7 +19,9 @@ jobs:
         run: |
           pip install -r .github/workflows/requirements/style.txt
 
-      - name: Lint and Format Check with Flake8 and Black
+      - name: Lint and Format Check
         run: |
           black --diff --check .
+          codespell
+          isort
           flake8
