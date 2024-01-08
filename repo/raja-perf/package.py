@@ -3,15 +3,15 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-import os
-import socket
 import glob
+import os
 import re
-
+import socket
 from os import environ as env
 from os.path import join as pjoin
 
 from spack import *
+
 
 def spec_uses_toolchain(spec):
     gcc_toolchain_regex = re.compile(".*gcc-toolchain.*")

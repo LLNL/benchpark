@@ -14,10 +14,10 @@ system_definition:
     ISA: x86_64
     uArch: icelake
   accelerator:
-    vendor: None
-    name: None
-    ISA: None
-    uArch: None
+    vendor:
+    name:
+    ISA:
+    uArch:
   interconnect:
     vendor: Intel
     name: OmniPath
@@ -25,6 +25,6 @@ system_definition:
     site: LLNL
     name: magma
     installation-year: 2019
-    description: [top500](https://www.top500.org/system/179774)
+    description: top500 <https://www.top500.org/system/179774>
   top500-system-instances:
     - Magma (LLNL)

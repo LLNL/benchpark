@@ -1,0 +1,21 @@
+#-----------------------------------------------------------------------
+# DO NOT modify unless you really know what you are doing.
+#
+# See https://stackoverflow.com/a/74959635 for more info.
+# Talk to @alecbcs if you have questions/are not sure of a change's
+# possible impact to security.
+#-----------------------------------------------------------------------
+name: label
+on:
+  pull_request_target:
+    branches:
+      - develop
+
+jobs:
+  pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/labeler@8558fd74291d67161a8a78ce36a881fa63b766a9
