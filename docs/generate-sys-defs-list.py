@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-import yaml
 import glob
+
 import pandas as pd
+import yaml
 
 
 def main():

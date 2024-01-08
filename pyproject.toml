@@ -6,6 +6,7 @@ requires-python = ">=3.8"
 
 [tool.black]
 line-length = 88
+color = true
 target-version = ['py38', 'py39', 'py310', 'py311']
 include = '\.pyi?$|bin\/benchpark'
 exclude = '''
@@ -23,3 +24,12 @@ exclude = '''
   | repo
 )/
 '''
+
+[tool.isort]
+profile = "black"
+skip_gitignore = true
+color_output = true
+
+[tool.codespell]
+skip = './_build,./docs/_static'
+ignore-words-list = 'fom'
