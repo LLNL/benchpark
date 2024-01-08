@@ -1,7 +1,5 @@
 name: Build & Deploy docs site to GitHub Pages
 on:
-  # This Workflow can be triggered manually
-  workflow_dispatch:
   workflow_call:
 
 jobs:
