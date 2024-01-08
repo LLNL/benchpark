@@ -1,3 +1,8 @@
+.. Copyright 2023 Lawrence Livermore National Security, LLC and other
+   Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+
+   SPDX-License-Identifier: Apache-2.0
+
 ===============
 Benchpark Setup
 ===============
@@ -10,7 +15,7 @@ Also choose a directory for your experiment::
 where:
 
 - ``benchmark/ProgrammingModel``: amg2023/openmp | amg2023/cuda | saxpy/openmp (available choices in ``benchpark/experiments``)
-- ``system``: ats2 | ats4 | cts1 (available choices in ``benchpark/configs``)
+- ``system``: x86_64 | HPECray-zen3-MI250X-Slingshot | AWS_PCluster_Hpc7a-zen4-EFA (available choices in :doc:`available-system-specs`)
 
 This command will assemble a Ramble workspace per experiment
 with a configuration for the specified benchmark and system
