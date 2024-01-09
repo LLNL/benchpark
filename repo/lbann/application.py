@@ -12,7 +12,10 @@ class LBANN(SpackApplication):
     """LBANN benchmark"""
     name = "lbann"
 
-    tags = ["lbann"]
+    tags = ['engineering','ai','mixed-precision',
+            'large-memory-footprint','regular-memory-access',
+            'mpi','nccl','rccl','network-collectives',
+            'c++','cuda','hip']
 
     executable('p1', 'lbann' +
                      ' -P {px} {py} {pz}' +
