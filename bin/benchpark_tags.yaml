@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-benchpark_tags:
+benchparktags:
   application-domain:
     - asc # Advanced Simulation and Computing
     - astrophysics
@@ -42,6 +42,14 @@ benchpark_tags:
     - register-pressure
     - simd
     - vectorization
+  math-libraries:
+    - blas
+    - cublas
+    - hypre
+    - lapack
+    - mfem
+    - rocblas
+    - rocsolver
   memory-access-characteristics:
     - high-memory-bandwidth
     - irregular-memory-access
@@ -50,6 +58,7 @@ benchpark_tags:
   mesh-representation:
     - amr
     - block-structured-grid
+    - meshfree
     - structured-grid
     - unstructured-grid
   method-type:
@@ -60,17 +69,27 @@ benchpark_tags:
     - direct-solve
     - eulerian
     - explicit-differentiation
+    - explicit-timestepping
     - finite-element
     - fft # fast fourier transform
+    - full-assembly
+    - high-order
     - hydrodynamics
     - implicit-differentiation
+    - implicit-timestepping
     - lagrangian
+    - low-order
     - montecarlo
     - nbody
+    - ode # ordinary differential equations
+    - partial-assembly
     - particles
     - solver
+    - sph # smoothed particle hydrodynamics
     - sparse-linear-algebra
+    - spatial-discretization
     - task-parallelism
+    - time-dependent
     - transport
   programming-language:
     - c
