@@ -6,6 +6,15 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import subprocess
+
+subprocess.call(
+    [
+        "make",
+        "systemconfigs",
+    ]
+)
+
 project = "Benchpark"
 copyright = "2023, LLNS LLC"
 author = "Olga Pearce, Alec Scott, Peter Scheibel, Greg Becker, Riyaz Haque, and Nathan Hanford"
@@ -37,6 +46,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", ".spack-env"]
 
 html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
+html_css_files = ["css/custom.css"]
 
 # -- Run sphinx-apidoc -------------------------------------------------
 # Remove any previous API docs
@@ -54,3 +64,4 @@ sphinx_apidoc(
         "../lib/benchpark/benchpark",
     ]
 )
+

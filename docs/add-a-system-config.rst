@@ -20,10 +20,15 @@ where::
   INTEGRATOR = COMPANY[_PRODUCTNAME][...]
 
 Benchpark has definitions for the following systems:
+
 - AWS_PCluster_Hpc7a-zen4-EFA
+
 - HPECray-zen3-MI250X-Slingshot	(Frontier, Lumi, Tioga)
+
 - IBM-power9-V100-Infiniband	(Sierra)
+
 - Penguin-icelake-OmniPath
+
 - x86_64                        (generic x86 CPU only platform)
 
 The following files are required for each system ``benchpark/configs/${SYSTEM}``:
@@ -89,5 +94,5 @@ spack section in the `Ramble configuration file
 4. Optionally, one can add more information about the software installed on the system
 by adding Spack config files in ``benchpark/configs/${SYSTEM}/auxiliary_software_files/``.
 
-- `compilers.yaml <https://spack.readthedocs.io/en/latest/getting_started.html#compiler-config>`_ defines the compilers installed on the system.
-- `packages.yaml <https://spack.readthedocs.io/en/latest/build_settings.html#package-settings-packages-yaml>`_ defines the pre-installed packages  (e.g., system MPI) on the system.
+- ``compilers.yaml`` defines the `compilers <https://spack.readthedocs.io/en/latest/getting_started.html#compiler-config>`_  installed on the system.
+- ``packages.yaml`` defines the pre-installed `packages <https://spack.readthedocs.io/en/latest/build_settings.html#package-settings-packages-yaml>`_   (e.g., system MPI) on the system.  One way to populate this list is to find available external packages: `spack external <https://spack.readthedocs.io/en/v0.21.0/command_index.html#spack-external>`_. 

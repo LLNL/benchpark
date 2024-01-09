@@ -14,17 +14,17 @@ system_definition:
     ISA: x86_64
     uArch: zen4
   accelerator:
-    vendor: None
-    name: None
-    ISA: None
-    uArch: None
+    vendor:
+    name:
+    ISA:
+    uArch:
   interconnect:
     vendor: AWS
     name: EFA
   system-tested:
     site: AWS
-    name: ""
-    installation-year: ""
-    description: [aws/hpc7a](https://aws.amazon.com/ec2/instance-types/hpc7a)
+    name:
+    installation-year:
+    description: aws/hpc7a <https://aws.amazon.com/ec2/instance-types/hpc7a>
   top500-system-instances:
-    - None
+    -
