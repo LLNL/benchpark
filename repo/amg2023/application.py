@@ -13,6 +13,7 @@ class Amg2023(SpackApplication):
     name = "amg2023"
 
     tags = ['asc','engineering','solver','sparse-linear-algebra',
+            'large-scale','multi-node','single-node','sub-node',
             'high-branching','high-memory-bandwidth','large-memory-footprint',
             'regular-memory-access','irregular-memory-access','mixed-precision',
             'mpi','network-latency-bound','network-collectives','block-structured-grid',
