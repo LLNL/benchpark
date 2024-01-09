@@ -1,7 +1,5 @@
 name: Build & Deploy docs site to GitHub Pages
 on:
-  # This Workflow can be triggered manually
-  workflow_dispatch:
   workflow_call:
 
 jobs:
@@ -12,7 +10,7 @@ jobs:
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
 
     - name: Setup Python
-      uses: actions/setup-python@65d7f2d534ac1bc67fcd62888c5f4f3d2cb2b236
+      uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c
       with:
         python-version: '3.11'
         cache: 'pip'
@@ -20,7 +18,7 @@ jobs:
 
     - name: Setup GitHub Pages
       id: pages
-      uses: actions/configure-pages@f156874f8191504dae5b037505266ed5dda6c382
+      uses: actions/configure-pages@1f0c5cde4bc74cd7e1254d0cb4de8d49e9068c7d
 
     - name: Install Sphinx and Theme via Pip
       run: |
@@ -30,8 +28,12 @@ jobs:
       run: |
         sphinx-build docs/ _build
 
+    - name: Check for Typos using Codespell
+      run: |
+        codespell
+
     - name: Upload artifact
-      uses: actions/upload-pages-artifact@a753861a5debcf57bf8b404356158c8e1e33150c
+      uses: actions/upload-pages-artifact@0252fc4ba7626f0298f0cf00902a25c6afc77fa8
       if: github.ref == 'refs/heads/develop'
       with:
         path: ./_build
@@ -52,4 +54,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@9dbe3824824f8a1377b8e298bafde1a50ede43e5
+        uses: actions/deploy-pages@7a9bd943aa5e5175aeb8502edcc6c1c02d398e10
