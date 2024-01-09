@@ -1,0 +1,31 @@
+application:
+- changed-files:
+  - any-glob-to-any-file:
+    - repo/**
+
+ci:
+- changed-files:
+  - any-glob-to-any-file:
+    - .github/**
+
+configs:
+- changed-files:
+  - any-glob-to-any-file:
+    - configs/**
+
+dependencies:
+- changed-files:
+  - any-glob-to-any-file:
+    - .github/worklflows/requirements/**
+    - pyproject.toml
+
+docs:
+- changed-files:
+  - any-glob-to-any-file:
+    - docs/**
+    - README.rst
+
+experiment:
+- changed-files:
+  - any-glob-to-any-file:
+    - experiments/**
