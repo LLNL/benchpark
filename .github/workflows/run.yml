@@ -1,7 +1,5 @@
 name: Run Benchpark and Simple Benchmark Suite
 on:
-  # This Workflow can be triggered manually
-  workflow_dispatch:
   workflow_call:
 
 jobs:
@@ -17,7 +15,7 @@ jobs:
 
       - name: Build Saxpy Workspace
         run: |
-          ./bin/benchpark setup saxpy/openmp x86 workspace/
+          ./bin/benchpark setup saxpy/openmp x86_64 workspace/
 
       - name: Setup Ramble & Spack
         run: |
@@ -32,7 +30,7 @@ jobs:
           echo "PATH=$PATH" >> "$GITHUB_ENV"
 
       - name: Setup Saxpy Workspace
-        working-directory: ./workspace/saxpy/openmp/x86/workspace/
+        working-directory: ./workspace/saxpy/openmp/x86_64/workspace/
         run: |
           ramble \
             --workspace-dir . \
@@ -42,7 +40,7 @@ jobs:
             workspace setup
 
       - name: Run Saxpy Experiments
-        working-directory: ./workspace/saxpy/openmp/x86/workspace/
+        working-directory: ./workspace/saxpy/openmp/x86_64/workspace/
         run: |
           ramble \
             -c variables:n_nodes:1 \
@@ -53,13 +51,30 @@ jobs:
             on
 
       - name: Analyze Saxpy Results
-        working-directory: ./workspace/saxpy/openmp/x86/workspace/
+        working-directory: ./workspace/saxpy/openmp/x86_64/workspace/
         run: |
           ramble \
             --workspace-dir . \
             --disable-progress-bar \
             --disable-logger \
             workspace analyze
+
+      - name: Archive Experiment Workspace
+        working-directory: ./workspace/saxpy/openmp/x86_64/workspace/
+        if: always()
+        run: |
+          ramble \
+            --workspace-dir . \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace archive
+
+      - name: Upload Workspace Archive as CI Artifact
+        if: always()
+        uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
+        with:
+          name: workspace-archive
+          path: './workspace/saxpy/openmp/x86_64/workspace/archive/**'
 
       - name: Upload Binaries to CI Cache
         if: github.ref == 'refs/heads/develop'

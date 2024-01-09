@@ -1,7 +1,13 @@
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+import os
+
 from spack.package import *
 from spack.pkg.builtin.hypre import Hypre as BuiltinHypre
 
-import os
 
 class Hypre(BuiltinHypre):
     requires("+rocm", when="^rocblas")

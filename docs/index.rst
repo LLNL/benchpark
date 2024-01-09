@@ -1,3 +1,8 @@
+.. Copyright 2023 Lawrence Livermore National Security, LLC and other
+   Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+
+   SPDX-License-Identifier: Apache-2.0
+
 .. include:: ../README.rst
 
 .. toctree::
@@ -13,6 +18,12 @@
    6-run-experiment
    7-analyze-experiment
    FAQ-what-to-rerun
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Available Specifications
+
+   available-system-specs
 
 .. toctree::
    :maxdepth: 1

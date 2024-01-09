@@ -1,3 +1,8 @@
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: Apache-2.0
+
 ramble:
   config:
     deprecated: true
@@ -53,7 +58,7 @@ ramble:
       versions: ['10', 'default']
     packages:
       hypre-cuda-{versions}:
-        spack_spec: 'hypre@2.28.0 +mpi+cuda+mixedint cuda_arch={cuda_arch} ^cuda@{cuda_version}'
+        spack_spec: 'hypre@2.28.0 +mpi+cuda+mixedint cuda_arch=={cuda_arch} ^cuda@{cuda_version}'
         compiler: '{cuda_compiler}'
       amg2023-cuda-{versions}:
         spack_spec: 'amg2023@develop +mpi+cuda ^cuda@{cuda_version}'
