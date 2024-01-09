@@ -6,6 +6,7 @@
 from spack.package import *
 from spack.pkg.builtin.cray_mpich import CrayMpich as BuiltinCM
 
+
 class CrayMpich(BuiltinCM):
 
     variant("gtl", default=False, description="enable GPU-aware mode")
