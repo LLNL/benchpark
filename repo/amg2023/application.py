@@ -12,7 +12,11 @@ class Amg2023(SpackApplication):
     """AMG2023 benchmark"""
     name = "amg2023"
 
-    tags = ["amg2023"]
+    tags = ['asc','engineering','solver','sparse-linear-algebra',
+            'high-branching','high-memory-bandwidth','large-memory-footprint',
+            'regular-memory-access','irregular-memory-access','mixed-precision',
+            'mpi','network-latency-bound','network-collectives','block-structured-grid',
+            'c','cuda','hip','openmp']
 
     executable('p1', 'amg' +
                      ' -P {px} {py} {pz}' +
