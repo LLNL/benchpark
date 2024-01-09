@@ -3,10 +3,12 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-from spack.package import *
 import os
 import shutil
+
 import spack.repo
+from spack.package import *
+
 
 class Saxpy(CMakePackage, CudaPackage, ROCmPackage):
     """Test saxpy problem."""
