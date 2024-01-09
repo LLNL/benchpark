@@ -12,7 +12,9 @@ class Saxpy(SpackApplication):
     """saxpy benchmark"""
     name = "saxpy"
 
-    tags = ["saxpy"]
+    tags = ['single-node','high-memory-bandwidth',
+            'regular-memory-access',
+            'c++','cuda','hip','openmp']
 
     executable('p', 'saxpy -n {n}', use_mpi=True)
 
