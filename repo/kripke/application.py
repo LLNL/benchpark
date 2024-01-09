@@ -11,7 +11,11 @@ class Kripke(SpackApplication):
     """Kripke benchmark uses RAJA Portability Layer"""
     name = "Kripke"
 
-    tags = ["kripke, RAJA"]
+    tags = ['asc','transport','deterministic','structured-grid',
+            'large-scale','multi-node','single-node','c++','raja',
+            'simd','vectorization','register-pressure','high-fp','atomics','high-branching',
+            'high-memory-bandwidth','large-memory-footprint','regular-memory-access',
+            'mpi','network-latency-bound','network-collectives']
 
     executable('p1', 'kripke' +
                      ' -P {px} {py} {pz}' +
