@@ -11,7 +11,12 @@ class Laghos(SpackApplication):
     """Laghos benchmark"""
     name = "laghos"
 
-    tags = ["laghos"]
+    tags = ['asc','lagrangian','solver','high-order','finite-element','ode',
+            'hydrodynamics','time-dependent','explicit-timestepping',
+            'spatial-discretization','unstructured-grid','full-assembly','partial-assembly',
+            'large-scale','multi-node','single-node',
+            'hypre','mfem','mpi','network-collectives',
+            'c++','cuda','raja','openmp']
 
     executable('p1', 'laghos' +
                      ' -P {px} {py} {pz}' +
