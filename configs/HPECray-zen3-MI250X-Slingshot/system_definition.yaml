@@ -25,7 +25,7 @@ system_definition:
     site: LLNL
     name: tioga
     installation-year: 2022
-    description: [top500](https://www.top500.org/system/180052)
+    description: top500 <https://www.top500.org/system/180052>
   top500-system-instances:
     - Frontier (ORNL)
     - Lumi     (CSC)

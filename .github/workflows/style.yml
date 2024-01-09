@@ -1,7 +1,5 @@
 name: Linting & Style Checks
 on:
-  # This Workflow can be triggered manually
-  workflow_dispatch:
   workflow_call:
 
 jobs:
@@ -11,7 +9,7 @@ jobs:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
 
       - name: Set up Python 3.11
-        uses: actions/setup-python@65d7f2d534ac1bc67fcd62888c5f4f3d2cb2b236
+        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c
         with:
           python-version: '3.11'
           cache: 'pip'
@@ -21,7 +19,9 @@ jobs:
         run: |
           pip install -r .github/workflows/requirements/style.txt
 
-      - name: Lint and Format Check with Flake8 and Black
+      - name: Lint and Format Check
         run: |
           black --diff --check .
+          codespell
+          isort
           flake8
