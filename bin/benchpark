@@ -289,8 +289,8 @@ def benchpark_setup_handler(args):
         with open(initializer_script, "w") as f:
             f.write(
                 f"""\
-if [ -n "${{!_BENCHPARK_INITIALIZED}}" ]; then
-    exit 0
+if [ -n "${{_BENCHPARK_INITIALIZED:-}}" ]; then
+    return 0
 fi
 
 . {spack_location}/share/spack/setup-env.sh
@@ -298,7 +298,7 @@ fi
 
 export SPACK_DISABLE_LOCAL_CONFIG=1
 
-export _BENCHPARK_INITIALIZED=1
+export _BENCHPARK_INITIALIZED=true
 """
             )
 
