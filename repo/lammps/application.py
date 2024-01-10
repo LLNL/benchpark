@@ -8,7 +8,7 @@ import sys
 from ramble.appkit import *
 
 
-class LammpsInherited(SpackApplication):
+class LammpsInherited(Lammps):
 
     tags = ['asc','chemistry','material-science','molecular-dynamics',
             'fft','particles',
