@@ -286,8 +286,9 @@ def benchpark_setup_handler(args):
         run_command(f"{ramble_exe} repo add --scope=site {source_dir}/repo")
 
     if not initializer_script.exists():
-        with open(initializer_script, 'w') as f:
-            f.write(f"""\
+        with open(initializer_script, "w") as f:
+            f.write(
+                f"""\
 if [ -n "${{!_BENCHPARK_INITIALIZED}}" ]; then
     exit 0
 fi
@@ -298,7 +299,8 @@ fi
 export SPACK_DISABLE_LOCAL_CONFIG=1
 
 export _BENCHPARK_INITIALIZED=1
-""")
+"""
+            )
 
     instructions = f"""\
 To complete the benchpark setup, do the following:
