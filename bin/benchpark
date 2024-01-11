@@ -163,7 +163,22 @@ def benchpark_setup(subparsers, actions_dict):
         help="Where to install packages and store results for the experiments. Benchpark expects to manage this directory, and it should be empty/nonexistent the first time you run benchpark setup experiments.",
     )
 
+    system_create_parser = subparsers.add_parser(
+        "system-create", help="Initialize a system config"
+    )
+    system_create_parser.add_argument(
+        "--template", action="append",
+        help="Choose common config settings in templates/"
+    )
+    system_create_parser.add_argument(
+        "--from", type=str, help="Copy an existing system config"
+    )
+    system_create_parser.add_argument(
+        "name", type=str, help="Name of the new system"
+    )
+
     actions_dict["setup"] = benchpark_setup_handler
+    actions_dict["system-create"] = benchpark_system_create_setup_handler
 
 
 def run_command(command_str, env=None):
@@ -194,6 +209,38 @@ def symlink_tree(src, dst):
             dst_symlink = dst_dir / x
             src_file = os.path.join(src_subdir, x)
             os.symlink(src_file, dst_symlink)
+
+
+def benchpark_system_create_handler(args):
+    system_config_name = args.name
+
+    script_root = pathlib.Path(os.path.abspath(__file__))
+    project_base_dir = script_root.parent
+    config_dir = project_base_dir / "configs"
+
+    new_config_dir = config_dir / system_config_name
+
+    if new_config_dir.exists():
+        raise Exception(f"{new_config_dir} already exists")
+
+    try:
+        new_config_dir.mkdir()
+
+        if args.from:
+            src_config_dir = config_dir / args.from
+            if not src_config_dir.exists():
+                raise Exception(f"Specified --from={src_config_dir}, but that does not exist")
+            for resource in src_config_dir.iterter():
+                shutil.copytree(resource, new_config_dir / resource.name)
+
+        if args.template:
+            templates = list(pathlib.path(x) for x in args.template)
+
+            for template_dir in templates:
+                for resource in template_dir.iterdir():
+                    shutil.copytree(resource, new_config_dir / resource.name)
+    except:
+        shutil.rmtree(new_config_dir)
 
 
 def benchpark_setup_handler(args):
