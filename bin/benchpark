@@ -171,14 +171,14 @@ def benchpark_setup(subparsers, actions_dict):
         help="Choose common config settings in templates/"
     )
     system_create_parser.add_argument(
-        "--from", type=str, help="Copy an existing system config"
+        "--from", dest="use_existing", type=str, help="Copy an existing system config"
     )
     system_create_parser.add_argument(
         "name", type=str, help="Name of the new system"
     )
 
     actions_dict["setup"] = benchpark_setup_handler
-    actions_dict["system-create"] = benchpark_system_create_setup_handler
+    actions_dict["system-create"] = benchpark_system_create_handler
 
 
 def run_command(command_str, env=None):
@@ -210,12 +210,27 @@ def symlink_tree(src, dst):
             src_file = os.path.join(src_subdir, x)
             os.symlink(src_file, dst_symlink)
 
+def copy_dir_contents(srcdir, dstdir):
+    """
+    Given srcdir/{a, b, c} and dstdir/ (which already exists), copy {a, b, c}
+    into dstdir so it looks like dstdir/{a, b, c}.
+
+    Skip copying symlinks.
+    """
+    srcdir = pathlib.Path(srcdir)
+    dstdir = pathlib.Path(dstdir)
+    for entry in srcdir.iterdir():
+        if entry.is_dir():
+            shutil.copytree(entry, dstdir / entry.name)
+        elif not entry.is_symlink():
+            shutil.copy2(entry, dstdir / entry.name)
+
 
 def benchpark_system_create_handler(args):
     system_config_name = args.name
 
     script_root = pathlib.Path(os.path.abspath(__file__))
-    project_base_dir = script_root.parent
+    project_base_dir = script_root.parent.parent
     config_dir = project_base_dir / "configs"
 
     new_config_dir = config_dir / system_config_name
@@ -226,21 +241,19 @@ def benchpark_system_create_handler(args):
     try:
         new_config_dir.mkdir()
 
-        if args.from:
-            src_config_dir = config_dir / args.from
+        if args.use_existing:
+            src_config_dir = config_dir / args.use_existing
             if not src_config_dir.exists():
                 raise Exception(f"Specified --from={src_config_dir}, but that does not exist")
-            for resource in src_config_dir.iterter():
-                shutil.copytree(resource, new_config_dir / resource.name)
-
+            copy_dir_contents(src_config_dir, new_config_dir)
         if args.template:
             templates = list(pathlib.path(x) for x in args.template)
 
             for template_dir in templates:
-                for resource in template_dir.iterdir():
-                    shutil.copytree(resource, new_config_dir / resource.name)
+                copy_dir_contents(template_dir, new_config_dir)
     except:
         shutil.rmtree(new_config_dir)
+        raise
 
 
 def benchpark_setup_handler(args):
