@@ -39,8 +39,8 @@ ramble:
           experiments:
             amg2023_omp_problem1_{n_nodes}_{omp_num_threads}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
               modifiers:
-                - name: caliper
-                  mode: spot-topdown
+                - name: caliper-topdown
+                  mode: topdown-all
               variables:
                 env_name: amg2023-omp
               matrices:
