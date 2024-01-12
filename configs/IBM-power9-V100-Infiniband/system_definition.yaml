@@ -25,6 +25,6 @@ system_definition:
     site: LLNL
     name: lassen
     installation-year: 2018
-    description: [top500](https://www.top500.org/system/179398)
+    description: top500 <https://www.top500.org/system/179398>
   top500-system-instances:
     - Sierra (LLNL)
