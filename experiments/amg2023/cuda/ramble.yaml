@@ -27,8 +27,8 @@ ramble:
             gtl: ['gtl', 'nogtl']
             gtlflag: ['-M"-gpu"', '']
           modifiers:
-            - name: caliper
-              mode: spot-cuda
+            - name: caliper-cuda
+              mode: cuda
           experiments:
             # because MPS only works for cuda<=v10
             amg2023_cuda_10_problem1_{gtl}_{n_nodes}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
