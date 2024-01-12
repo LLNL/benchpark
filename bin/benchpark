@@ -247,7 +247,7 @@ def benchpark_system_create_handler(args):
                 raise Exception(f"Specified --from={src_config_dir}, but that does not exist")
             copy_dir_contents(src_config_dir, new_config_dir)
         if args.template:
-            templates = list(pathlib.path(x) for x in args.template)
+            templates = list(pathlib.Path(x) for x in args.template)
 
             for template_dir in templates:
                 copy_dir_contents(template_dir, new_config_dir)
