@@ -167,15 +167,14 @@ def benchpark_setup(subparsers, actions_dict):
         "system-create", help="Initialize a system config"
     )
     system_create_parser.add_argument(
-        "--template", action="append",
-        help="Choose common config settings in templates/"
+        "--template",
+        action="append",
+        help="Choose common config settings in templates/",
     )
     system_create_parser.add_argument(
         "--from", dest="use_existing", type=str, help="Copy an existing system config"
     )
-    system_create_parser.add_argument(
-        "name", type=str, help="Name of the new system"
-    )
+    system_create_parser.add_argument("name", type=str, help="Name of the new system")
 
     actions_dict["setup"] = benchpark_setup_handler
     actions_dict["system-create"] = benchpark_system_create_handler
@@ -209,6 +208,7 @@ def symlink_tree(src, dst):
             dst_symlink = dst_dir / x
             src_file = os.path.join(src_subdir, x)
             os.symlink(src_file, dst_symlink)
+
 
 def copy_dir_contents(srcdir, dstdir):
     """
@@ -244,7 +244,9 @@ def benchpark_system_create_handler(args):
         if args.use_existing:
             src_config_dir = config_dir / args.use_existing
             if not src_config_dir.exists():
-                raise Exception(f"Specified --from={src_config_dir}, but that does not exist")
+                raise Exception(
+                    f"Specified --from={src_config_dir}, but that does not exist"
+                )
             copy_dir_contents(src_config_dir, new_config_dir)
         if args.template:
             templates = list(pathlib.Path(x) for x in args.template)
