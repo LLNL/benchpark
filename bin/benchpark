@@ -6,11 +6,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import argparse
-import subprocess
-import pathlib
 import os
-import shutil
+import pathlib
 import shlex
+import shutil
+import subprocess
 import sys
 
 DEBUG = False

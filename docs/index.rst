@@ -21,6 +21,12 @@
 
 .. toctree::
    :maxdepth: 1
+   :caption: Available Specifications
+
+   available-system-specs
+
+.. toctree::
+   :maxdepth: 1
    :caption: Contributing
 
    add-a-benchmark

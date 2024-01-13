@@ -1,0 +1,13 @@
+name: nightly
+on:
+  schedule:
+    - cron: '0 14 * * *'
+
+#------------------------------------------------------------------------
+# Execute a nightly CI run to verify benchmarks continue to build & run
+# sucessfully. Will also update the CI buildcache to minimize build
+# times in PRs.
+#------------------------------------------------------------------------
+jobs:
+  run:
+    uses: ./.github/workflows/run.yml

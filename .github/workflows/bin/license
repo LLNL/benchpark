@@ -9,8 +9,8 @@ from __future__ import print_function
 
 import os
 import re
-from collections import defaultdict
 import sys
+from collections import defaultdict
 
 #: SPDX license id must appear in the first <license_lines> lines of a file
 license_lines = 7
