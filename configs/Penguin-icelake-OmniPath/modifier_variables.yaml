@@ -1,0 +1,20 @@
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+variables:
+  caliper_base: 'caliper'
+  caliper_base_variant: '+caliper'
+  caliper_base_name: 'caliper'
+  caliper_base_mode: 'time'
+
+  caliper_topdown: 'caliper_topdown'
+  caliper_topdown_variant: '+caliper'
+  caliper_topdown_name: 'caliper-topdown'
+  caliper_topdown_mode: 'topdown-all'
+
+  modifier: 'caliper_topdown'
+  modifier_variant: '{{modifier}_variant}'
+  modifier_name: '{{modifier}_name}'
+  modifier_mode: '{{modifier}_mode}'
