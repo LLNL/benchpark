@@ -283,7 +283,7 @@ def benchpark_setup_handler(args):
 
         run_command(f"{ramble_exe} repo add --scope=site {source_dir}/repo")
         run_command(
-            f"{ramble_exe} repo add -t modifiers --scope=site {source_dir}/repo"
+            f"{ramble_exe} repo add -t modifiers --scope=site {source_dir}/modifiers"
         )
 
     instructions = f"""\

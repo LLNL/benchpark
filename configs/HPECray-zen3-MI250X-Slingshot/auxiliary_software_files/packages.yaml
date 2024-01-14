@@ -7,15 +7,6 @@ packages:
   all:
     require: 'target=x86_64:'
     variants: amdgpu_target=gfx90a
-  papi:
-    externals:
-    - spec: papi@7.0.0.2
-      prefix: /opt/cray/pe/papi/7.0.0.2
-      buildable: false
-  elfutils:
-    externals:
-    - spec: elfutils@0.188
-      prefix: /usr
   tar:
     externals:
     - spec: tar@1.30

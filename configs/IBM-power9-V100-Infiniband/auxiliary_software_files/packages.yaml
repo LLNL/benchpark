@@ -4,15 +4,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 packages:
-  elfutils:
-    externals:
-    - spec: elfutils@0.188
-      prefix: /usr
-  libunwind:
-    externals:
-    - spec: libunwind@1.2
-      prefix: /usr
-      buildable: false
   tar:
     externals:
     - spec: tar@1.26

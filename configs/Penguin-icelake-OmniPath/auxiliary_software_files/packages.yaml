@@ -9,10 +9,6 @@ packages:
     - spec: papi@6.0.0.1
       prefix: /usr/tce/packages/papi/papi-6.0.0.1
       buildable: false
-  elfutils:
-    externals:
-    - spec: elfutils@0.188
-      prefix: /usr
   tar:
     externals:
     - spec: tar@1.30
