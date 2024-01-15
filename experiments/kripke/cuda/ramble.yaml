@@ -47,11 +47,11 @@ ramble:
   spack:
     concretized: true
     packages:
-      kripke-omp:
-        spack_spec: kripke@develop +mpi+openmp
+      kripke-cuda:
+        spack_spec: kripke@develop +cude
         compiler: default-compiler
     environments:
-      kripke-omp:
+      kripke-cuda:
         packages:
         - default-mpi
-        - kripke-omp
+        - kripke-cuda
