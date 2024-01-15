@@ -6,9 +6,10 @@
 import sys
 
 from ramble.appkit import *
+from ramble.app.builtin.lammps import Lammps as LammpsBase
 
 
-class LammpsInherited(Lammps):
+class Lammps(LammpsBase):
 
     tags = ['asc','chemistry','material-science','molecular-dynamics',
             'fft','particles',
