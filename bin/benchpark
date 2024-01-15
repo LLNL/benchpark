@@ -18,6 +18,57 @@ DEBUG = False
 __version__ = "0.1.0"
 
 
+sysconfig_template = '''\
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: Apache-2.0
+# ----------------------------------------------------------------------------
+# If you submit this system configuration back to Benchpark as a pull request,
+# please first remove this boilerplate and all FIXME comments.
+#
+# This is a template system configuration file for Benchpark. We've put "FIXME"
+# next to all the things you'll want to change. If not applicable, the fields
+# can be left blank.
+#
+# See the Benchpark documentation for more information on adding system
+# configurations.
+# ----------------------------------------------------------------------------
+system_definition:
+  name: {system_name}
+  # FIXME: Add vendor and name of system integrator.
+  integrator:
+    vendor:
+    name:
+  # FIXME: Add vendor, name, ISA, and microarchitecture of system CPU.
+  processor:
+    vendor:
+    name:
+    ISA:
+    uArch:
+  # FIXME: Add vendor, name, ISA, and microarchitecture of system accelerator.
+  accelerator:
+    vendor:
+    name:
+    ISA:
+    uArch:
+  # FIXME: Add vendor and name of system interconnect.
+  interconnect:
+    vendor:
+    name:
+  # FIXME: Add site, name, installation year, and description of systems tested
+  # with this description in Benchpark.
+  system-tested:
+    site:
+    name:
+    installation-year:
+    description:
+  # FIXME: Add Top500 system(s) name and site.
+  top500-system-instances:
+    -
+'''
+
+
 def debug_print(message):
     if DEBUG:
         print("(debug) " + str(message))
@@ -253,9 +304,23 @@ def benchpark_system_create_handler(args):
 
             for template_dir in templates:
                 copy_dir_contents(template_dir, new_config_dir)
+
+            # Write the new system definition file
+            write_sysconfig(new_config_path, system_config_name)
+            print("Created system definition file: {0}".format(new_config_dir))
     except:
         shutil.rmtree(new_config_dir)
         raise
+
+
+def write_system_definition(system_definition_path, sys_name):
+    """Writes the new system definition file."""
+
+    # Write out a template for the file
+    with open(system_definition_path, "w") as system_definition_file:
+        system_definition_file.write(
+            system_definition_template.format(system_name=sys_name)
+        )
 
 
 def benchpark_setup_handler(args):
