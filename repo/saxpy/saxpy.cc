@@ -139,9 +139,7 @@ int main(int argc, char** argv) {
       adiak_namevalue("compiler", adiak_general, NULL, "%s", SAXPY_COMPILER_ID);
       adiak_namevalue("compiler version", adiak_general, NULL, "%s", SAXPY_COMPILER_VERSION);
       CALI_MARK_BEGIN("main");
-    #endif
 
-    #ifdef USE_CALIPER
       adiak_namevalue("Problem", adiak_general, NULL, "%s", "standard");
       CALI_MARK_BEGIN("problem");
     #endif
@@ -179,11 +177,9 @@ int main(int argc, char** argv) {
 
     #ifdef USE_CALIPER
       CALI_MARK_END("problem");
-    #endif
 
-    #ifdef USE_CALIPER
-       CALI_MARK_END("main");
-       adiak_fini();
+      CALI_MARK_END("main");
+      adiak_fini();
     #endif
 
     MPI_Finalize();
