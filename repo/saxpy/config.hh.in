@@ -1,0 +1,19 @@
+// Copyright 2023 Lawrence Livermore National Security, LLC and other
+// Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+//
+// SPDX-License-Identifier: Apache-2.0
+
+#ifndef SAXPY_CONFIG_HH
+#define SAXPY_CONFIG_HH
+
+#define SAXPY_COMPILER_ID "@CMAKE_C_COMPILER_ID@"
+#define SAXPY_COMPILER_VERSION "@CMAKE_C_COMPILER_VERSION@"
+#define SAXPY_CMAKE_C_FLAGS "@CMAKE_C_FLAGS@"
+
+// Version information
+#define SAXPY_MAJOR_VERSION @SAXPY_MAJOR_VERSION@
+#define SAXPY_MINOR_VERSION @SAXPY_MINOR_VERSION@
+#define SAXPY_PATCH_VERSION @SAXPY_PATCH_VERSION@
+#define SAXPY_VERSION       "@SAXPY_VERSION@"
+
+#endif // SAXPY_CONFIG_HH
