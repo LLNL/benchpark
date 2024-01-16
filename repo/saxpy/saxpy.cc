@@ -132,10 +132,7 @@ int main(int argc, char** argv) {
       adiak_launchdate();
       adiak_executable();
       adiak_executablepath();
-      adiak_libraries();
-      adiak_cmdline();
-      adiak_hostname();
-      adiak_clustername();
+      adiak_collect_all();
       adiak_namevalue("compiler", adiak_general, NULL, "%s", SAXPY_COMPILER_ID);
       adiak_namevalue("compiler version", adiak_general, NULL, "%s", SAXPY_COMPILER_VERSION);
       CALI_MARK_BEGIN("main");
