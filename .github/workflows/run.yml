@@ -1,7 +1,5 @@
 name: Run Benchpark and Simple Benchmark Suite
 on:
-  # This Workflow can be triggered manually
-  workflow_dispatch:
   workflow_call:
 
 jobs:
@@ -60,6 +58,23 @@ jobs:
             --disable-progress-bar \
             --disable-logger \
             workspace analyze
+
+      - name: Archive Experiment Workspace
+        working-directory: ./workspace/saxpy/openmp/x86_64/workspace/
+        if: always()
+        run: |
+          ramble \
+            --workspace-dir . \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace archive
+
+      - name: Upload Workspace Archive as CI Artifact
+        if: always()
+        uses: actions/upload-artifact@1eb3cb2b3e0f29609092a73eb033bb759a334595
+        with:
+          name: workspace-archive
+          path: './workspace/saxpy/openmp/x86_64/workspace/archive/**'
 
       - name: Upload Binaries to CI Cache
         if: github.ref == 'refs/heads/develop'
