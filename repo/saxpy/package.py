@@ -22,6 +22,7 @@ class Saxpy(CMakePackage, CudaPackage, ROCmPackage):
     version('1.0.0')
 
     variant("openmp", default=True, description="Enable OpenMP support")
+    variant("caliper", default=False, description="Enable Caliper monitoring")
 
     conflicts("+cuda", when="+rocm+openmp")
     conflicts("+rocm", when="+cuda+openmp")
@@ -29,11 +30,13 @@ class Saxpy(CMakePackage, CudaPackage, ROCmPackage):
 
     depends_on("cmake")
     depends_on("mpi")
+    depends_on("caliper", when="+caliper")
+    depends_on("adiak", when="+caliper")
 
     @run_before("cmake")
     def stage_source(self):
         repo_path = os.path.dirname(spack.repo.PATH.package_path(self.name))
-        for f in ["CMakeLists.txt", "saxpy.cc"]:
+        for f in ["CMakeLists.txt", "saxpy.cc", "config.hh.in"]:
             shutil.copy2(os.path.join(repo_path, f), self.stage.source_path)
 
     def setup_build_environment(self, env):
@@ -54,11 +57,7 @@ class Saxpy(CMakePackage, CudaPackage, ROCmPackage):
 
         args.append('-DCMAKE_CXX_COMPILER={0}'.format(spec["mpi"].mpicxx))
 
-        if '+openmp' in spec:
-            args.append('-DUSE_OPENMP=ON')
-        else:
-            args.append("-DUSE_OPENMP=OFF")
-
+        args.append(self.define_from_variant("USE_OPENMP", "openmp"))
         if '+cuda' in spec:
             args.append('-DCMAKE_CUDA_HOST_COMPILER={0}'.format(spec["mpi"].mpicxx))
             args.append('-DCMAKE_CUDA_COMPILER={0}'.format(spec["cuda"].prefix + "/bin/nvcc"))
@@ -79,5 +78,7 @@ class Saxpy(CMakePackage, CudaPackage, ROCmPackage):
                 rocm_arch_sorted = list(sorted(rocm_arch_vals, reverse=True))
                 rocm_arch = rocm_arch_sorted[0]
                 args.append("-DROCM_ARCH={0}".format(rocm_arch))
+
+        args.append(self.define_from_variant("USE_CALIPER", "caliper"))
 
         return args
