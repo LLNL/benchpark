@@ -37,6 +37,13 @@
 #define GLOBAL
 #endif
 
+#ifdef USE_CALIPER
+#include <caliper/cali.h>
+#include <adiak.h>
+#endif
+
+#include "config.hh"
+
 constexpr int NB = 4;
 constexpr int NT = 256;
 
@@ -94,6 +101,8 @@ int main(int argc, char** argv) {
     int opt;
     int N = 0;
 
+    MPI_Comm comm = MPI_COMM_WORLD;
+
     while ((opt = getopt(argc, argv, "n:")) != -1) {
         switch (opt) {
             case 'n':
@@ -110,8 +119,30 @@ int main(int argc, char** argv) {
 
     int rank, size;
     MPI_Init(&argc, &argv);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    MPI_Comm_rank(comm, &rank);
+    MPI_Comm_size(comm, &size);
+
+    #ifdef USE_CALIPER
+      /*-----------------------------------------------------------
+       * Set Caliper and Adiak metadata
+       *----------------------------------------------------------*/
+      adiak_init(&comm);
+      adiak_user();
+      adiak_uid();
+      adiak_launchdate();
+      adiak_executable();
+      adiak_executablepath();
+      adiak_libraries();
+      adiak_cmdline();
+      adiak_hostname();
+      adiak_clustername();
+      adiak_namevalue("compiler", adiak_general, NULL, "%s", SAXPY_COMPILER_ID);
+      adiak_namevalue("compiler version", adiak_general, NULL, "%s", SAXPY_COMPILER_VERSION);
+      CALI_MARK_BEGIN("main");
+
+      adiak_namevalue("Problem", adiak_general, NULL, "%s", "standard");
+      CALI_MARK_BEGIN("problem");
+    #endif
 
     DTYPE *h_x, *h_y, *h_r;
 
@@ -119,18 +150,37 @@ int main(int argc, char** argv) {
     h_y = new DTYPE[N];
     h_r = new DTYPE[N];
 
+    #ifdef USE_CALIPER
+      CALI_MARK_BEGIN("setup");
+    #endif
     for (int i = 0; i < N; ++i) {
       h_x[i] = i;
       h_y[i] = i*i;
     }
+    #ifdef USE_CALIPER
+      CALI_MARK_END("setup");
+    #endif
 
+    #ifdef USE_CALIPER
+      CALI_MARK_BEGIN("kernel");
+    #endif
     kernel_driver(h_r, h_x, h_y, N);
+    #ifdef USE_CALIPER
+      CALI_MARK_END("kernel");
+    #endif
 
     std::cout << "Kernel done (" << rank << "): " << N << std::endl;
 
     delete[] h_x;
     delete[] h_y;
     delete[] h_r;
+
+    #ifdef USE_CALIPER
+      CALI_MARK_END("problem");
+
+      CALI_MARK_END("main");
+      adiak_fini();
+    #endif
 
     MPI_Finalize();
     return 0;
