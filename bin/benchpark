@@ -284,8 +284,12 @@ def benchpark_setup_handler(args):
         )
 
         run_command(f"{ramble_exe} repo add --scope=site {source_dir}/repo")
-        run_command(f"{ramble_exe} config --scope=site add \"config:disable_progress_bar:true\"")
-        run_command(f"{ramble_exe} config --scope=site add \"config:spack:global:args:'-d'\"")
+        run_command(
+            f'{ramble_exe} config --scope=site add "config:disable_progress_bar:true"'
+        )
+        run_command(
+            f"{ramble_exe} config --scope=site add \"config:spack:global:args:'-d'\""
+        )
 
     if not initializer_script.exists():
         with open(initializer_script, "w") as f:
