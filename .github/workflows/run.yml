@@ -19,8 +19,7 @@ jobs:
 
       - name: Setup Ramble & Spack
         run: |
-          . workspace/spack/share/spack/setup-env.sh
-          . workspace/ramble/share/ramble/setup-env.sh
+          . workspace/setup.sh
 
           spack mirror add ci-buildcache oci://ghcr.io/llnl/benchpark-binary-cache
           spack config add "packages:all:target:[x86_64_v3]"
@@ -71,7 +70,7 @@ jobs:
 
       - name: Upload Workspace Archive as CI Artifact
         if: always()
-        uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
+        uses: actions/upload-artifact@1eb3cb2b3e0f29609092a73eb033bb759a334595
         with:
           name: workspace-archive
           path: './workspace/saxpy/openmp/x86_64/workspace/archive/**'
