@@ -18,7 +18,7 @@ DEBUG = False
 __version__ = "0.1.0"
 
 
-sysconfig_template = '''\
+sysconfig_template = """\
 # Copyright 2023 Lawrence Livermore National Security, LLC and other
 # Benchpark Project Developers. See the top-level COPYRIGHT file for details.
 #
@@ -66,7 +66,7 @@ system_definition:
   # FIXME: Add Top500 system(s) name and site.
   top500-system-instances:
     -
-'''
+"""
 
 
 def debug_print(message):
@@ -305,9 +305,10 @@ def benchpark_system_create_handler(args):
             for template_dir in templates:
                 copy_dir_contents(template_dir, new_config_dir)
 
-            # Write the new system definition file
-            write_sysconfig(new_config_path, system_config_name)
-            print("Created system definition file: {0}".format(new_config_dir))
+        # Write the new system definition file
+        system_defn_path = new_config_dir / "system_definition.yaml"
+        write_system_definition(system_defn_path, system_config_name)
+        debug_print("Created system definition file: {system_defn_path}")
     except:
         shutil.rmtree(new_config_dir)
         raise
