@@ -19,8 +19,7 @@ jobs:
 
       - name: Setup Ramble & Spack
         run: |
-          . workspace/spack/share/spack/setup-env.sh
-          . workspace/ramble/share/ramble/setup-env.sh
+          . workspace/setup.sh
 
           spack mirror add ci-buildcache oci://ghcr.io/llnl/benchpark-binary-cache
           spack config add "packages:all:target:[x86_64_v3]"
