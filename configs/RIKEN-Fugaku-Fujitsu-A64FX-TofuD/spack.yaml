@@ -1,0 +1,15 @@
+# Copyright 2023-2024 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+spack:
+  packages:
+    default-compiler:
+      spack_spec:
+    default-mpi:
+      spack_spec:
+    blas:
+      spack_spec:
+    lapack:
+      spack_spec:
