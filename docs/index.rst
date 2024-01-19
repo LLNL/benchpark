@@ -31,7 +31,8 @@
 
    add-a-benchmark
    add-an-experiment
-   add-a-system-config
+   add-a-generic-system-config
+   add-a-specific-system-config
 
 .. toctree::
    :maxdepth: 1
