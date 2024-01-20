@@ -17,7 +17,7 @@ The naming convention for the systems is as following::
 
 where::
 
-  SITE-SYSTEMNAME = generic | DATACENTERNAME-SYSTEMNAME
+  SITE-SYSTEMNAME = nosite | DATACENTERNAME-SYSTEMNAME
 
   INTEGRATOR = COMPANY[_PRODUCTNAME][...]
 
@@ -27,19 +27,26 @@ where::
 
   NETWORK = Network Product Name
 
-Benchpark has definitions for the following systems:
+Benchpark has definitions for the following (nosite) systems:
 
-- AWS_PCluster_Hpc7a-zen4-EFA
+- nosite-AWS_PCluster_Hpc7a-zen4-EFA
 
-- HPECray-zen3-MI250X-Slingshot	(Frontier, Lumi, Tioga)
+- nosite-HPECray-zen3-MI250X-Slingshot	(same hardware as Frontier, Lumi, Tioga)
 
-- IBM-power9-V100-Infiniband	(Sierra)
+- nosite-x86_64                        (nosite x86 CPU only platform)
 
-- Penguin-icelake-OmniPath
 
-- x86_64                        (generic x86 CPU only platform)
 
-The following files are required for each generic system ``benchpark/configs/${SYSTEM}``:
+Benchpark has definitions for the following site-specific systems:
+
+- LLNL-Magma-Penguin-icelake-OmniPath
+
+- LLNL-Sierra-IBM-power9-V100-Infiniband (Sierra, Lassen)
+
+- LLNL-Tioga-HPECray-zen3-MI250X-Slingshot
+
+
+The following files are required for each nosite system ``benchpark/configs/${SYSTEM}``:
 
 1. ``system_definition.yaml`` describes the system hardware, including the integrator (and the name of the product node or cluster type), the processor, (optionally) the accelerator, and the network; the information included here is what you will typically see recorded about the system on Top500.org.  We intend to make the system definitions in Benchpark searchable, and will add a schema to enforce consistency; until then, please copy the file and fill out all of the fields without changing the keys.  Also listed is the specific system the config was developed and tested on, as well as the known systems with the same hardware so that the users of those systems can find this system specification.
 
