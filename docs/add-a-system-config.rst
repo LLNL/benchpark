@@ -13,11 +13,13 @@ you can add a new directory with a name which identifies the system.
 
 The naming convention for the systems is as following::
 
-  [SITE-SYSTEMNAME-][INTEGRATOR]-MICROARCHITECTURE[-GPU][-NETWORK]
+  SITE-[SYSTEMNAME-][INTEGRATOR]-MICROARCHITECTURE[-GPU][-NETWORK]
 
 where::
 
-  SITE-SYSTEMNAME = nosite | DATACENTERNAME-SYSTEMNAME
+  SITE = nosite | DATACENTERNAME
+
+  SYSTEMNAME = the name of the specific system
 
   INTEGRATOR = COMPANY[_PRODUCTNAME][...]
 
@@ -31,9 +33,9 @@ Benchpark has definitions for the following (nosite) systems:
 
 - nosite-AWS_PCluster_Hpc7a-zen4-EFA
 
-- nosite-HPECray-zen3-MI250X-Slingshot	(same hardware as Frontier, Lumi, Tioga)
+- nosite-HPECray-zen3-MI250X-Slingshot (same hardware as Frontier, Lumi, Tioga)
 
-- nosite-x86_64                        (nosite x86 CPU only platform)
+- nosite-x86_64 (x86 CPU only platform)
 
 
 
@@ -53,7 +55,9 @@ The following files are required for each nosite system ``benchpark/configs/${SY
 .. code-block:: yaml
 
   system_definition:
-    name: HPECray-zen3-MI250X-Slingshot
+    name: HPECray-zen3-MI250X-Slingshot # or site-specific name, e.g., Frontier at ORNL
+    site:
+    system: HPECray-zen3-MI250X-Slingshot
     integrator:
       vendor: HPECray
       name: EX235a
