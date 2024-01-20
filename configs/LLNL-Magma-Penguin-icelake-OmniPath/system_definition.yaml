@@ -4,27 +4,29 @@
 # SPDX-License-Identifier: Apache-2.0
 
 system_definition:
-  name: AWS_PCluster_Hpc7a-zen4-EFA
+  name: Magma
+  site: LLNL
+  system: Penguin-icelake-OmniPath
   integrator:
-    vendor: AWS
-    name: ParallelCluster3.7.2-Hpc7a
+    vendor: PenguinComputing
+    name: RelionCluster
   processor:
-    vendor: AMD
-    name: EPYC-Zen4
+    vendor: Intel
+    name: XeonPlatinum924248C
     ISA: x86_64
-    uArch: zen4
+    uArch: icelake
   accelerator:
     vendor:
     name:
     ISA:
     uArch:
   interconnect:
-    vendor: AWS
-    name: EFA
+    vendor: Intel
+    name: OmniPath
   system-tested:
-    site: AWS
-    name:
-    installation-year:
-    description: aws/hpc7a <https://aws.amazon.com/ec2/instance-types/hpc7a>
+    site: LLNL
+    name: magma
+    installation-year: 2019
+    description: top500 <https://www.top500.org/system/179774>
   top500-system-instances:
-    -
+    - Magma (LLNL)
