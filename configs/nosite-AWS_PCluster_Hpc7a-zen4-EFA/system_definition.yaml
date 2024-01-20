@@ -5,6 +5,8 @@
 
 system_definition:
   name: AWS_PCluster_Hpc7a-zen4-EFA
+  site:
+  system: AWS_PCluster_Hpc7a-zen4-EFA
   integrator:
     vendor: AWS
     name: ParallelCluster3.7.2-Hpc7a

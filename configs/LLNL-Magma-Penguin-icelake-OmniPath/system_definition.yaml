@@ -4,7 +4,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 system_definition:
-  name: Penguin-icelake-OmniPath
+  name: Magma
+  site: LLNL
+  system: Penguin-icelake-OmniPath
   integrator:
     vendor: PenguinComputing
     name: RelionCluster

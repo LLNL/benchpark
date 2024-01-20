@@ -5,6 +5,8 @@
 
 system_definition:
   name: HPECray-zen3-MI250X-Slingshot
+  site:
+  system: HPECray-zen3-MI250X-Slingshot
   integrator:
     vendor: HPECray
     name: EX235a

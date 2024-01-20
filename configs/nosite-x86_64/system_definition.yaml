@@ -5,6 +5,8 @@
 
 system_definition:
   name: x86_64
+  site:
+  system: x86_64
   integrator:
     vendor:
     name:
