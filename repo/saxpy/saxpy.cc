@@ -127,11 +127,6 @@ int main(int argc, char** argv) {
        * Set Caliper and Adiak metadata
        *----------------------------------------------------------*/
       adiak_init(&comm);
-      adiak_user();
-      adiak_uid();
-      adiak_launchdate();
-      adiak_executable();
-      adiak_executablepath();
       adiak_collect_all();
       adiak_namevalue("compiler", adiak_general, NULL, "%s", SAXPY_COMPILER_ID);
       adiak_namevalue("compiler version", adiak_general, NULL, "%s", SAXPY_COMPILER_VERSION);
