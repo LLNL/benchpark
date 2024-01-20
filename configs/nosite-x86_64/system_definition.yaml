@@ -4,27 +4,29 @@
 # SPDX-License-Identifier: Apache-2.0
 
 system_definition:
-  name: Penguin-icelake-OmniPath
+  name: x86_64
+  site:
+  system: x86_64
   integrator:
-    vendor: PenguinComputing
-    name: RelionCluster
+    vendor:
+    name:
   processor:
-    vendor: Intel
-    name: XeonPlatinum924248C
+    vendor:
+    name:
     ISA: x86_64
-    uArch: icelake
+    uArch:
   accelerator:
     vendor:
     name:
     ISA:
     uArch:
   interconnect:
-    vendor: Intel
-    name: OmniPath
+    vendor:
+    name:
   system-tested:
-    site: LLNL
-    name: magma
-    installation-year: 2019
-    description: top500 <https://www.top500.org/system/179774>
+    site:
+    name:
+    installation-year:
+    description:
   top500-system-instances:
-    - Magma (LLNL)
+    -
