@@ -4,7 +4,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 system_definition:
-  name: IBM-power9-V100-Infiniband
+  name: Sierra
+  site: LLNL
+  system: IBM-power9-V100-Infiniband
   integrator:
     vendor: IBM
     name: AC922
