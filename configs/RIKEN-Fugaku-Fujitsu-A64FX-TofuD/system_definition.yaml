@@ -4,7 +4,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 system_definition:
-  name: RIKEN-Fugaku-Fujitsu-A64FX-TofuD
+  name: Fugaku
+  site: RIKEN
+  system: Fujitsu-A64FX-TofuD
   integrator:
     vendor: Fujitsu
     name:
