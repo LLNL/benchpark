@@ -12,13 +12,14 @@ import shlex
 import shutil
 import subprocess
 import sys
+import tempfile
 
 DEBUG = False
 
 __version__ = "0.1.0"
 
 
-sysconfig_template = """\
+system_definition_template = """\
 # Copyright 2023 Lawrence Livermore National Security, LLC and other
 # Benchpark Project Developers. See the top-level COPYRIGHT file for details.
 #
@@ -291,27 +292,28 @@ class BenchparkInstallation:
 
     @staticmethod
     def install_ramble_to(location):
+        debug_print(f"Cloning ramble to {location}")
         run_command(
             "git clone --depth=1 -c feature.manyFiles=true "
             "https://github.com/GoogleCloudPlatform/ramble.git "
             f"{location}"
         )
+        debug_print(f"Done cloning ramble ({location})")
 
-    def ramble_python(self):
+    def ramble(self):
         ramble_lib_location = self.root / "lib" / "ramble"
         if not ramble_lib_location.exists():
-            debug_print(f"Cloning ramble to {ramble_lib_location}")
             BenchparkInstallation.install_ramble_to(ramble_lib_location)
-        return ramble_lib_location / "bin" / "ramble-python"
+        return ramble_lib_location / "bin" / "ramble"
 
 class RambleConfigMergeResolver:
     def __init__(self, benchpark_installation):
         self.benchpark_installation = benchpark_installation
-        self.script = benchpark_installation / lib / scripts / "merge.py"
-        self.ramble_python = None
+        self.script = benchpark_installation.root / "lib" / "scripts" / "merge.py"
+        self.ramble = None
 
     def prepare(self):
-        self.ramble_python = self.benchpark_installation.ramble_python()
+        self.ramble = self.benchpark_installation.ramble()
 
     def __call__(self, path1, path2):
         """Merge config from path1 into path2
@@ -321,8 +323,9 @@ class RambleConfigMergeResolver:
 
             merged_config = temp_dir / pathlib.Path(path2).name
 
-            run_command(f"{self.ramble_python} {self.script} {path1} {path2} {merged_config}")
+            run_command(f"{self.ramble} python {self.script} {path1} {path2} {merged_config}")
 
+            debug_print(f"Overwrite {path2} with merged yaml from {merged_config}")
             # Overwrite the destination path with the merged result
             shutil.copy2(merged_config, path2)
 
@@ -361,7 +364,7 @@ def benchpark_system_create_handler(args):
         # Write the new system definition file
         system_defn_path = new_config_dir / "system_definition.yaml"
         write_system_definition(system_defn_path, system_config_name)
-        debug_print("Created system definition file: {system_defn_path}")
+        debug_print(f"Created system definition file: {system_defn_path}")
     except:
         shutil.rmtree(new_config_dir)
         raise
