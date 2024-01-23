@@ -261,7 +261,7 @@ def symlink_tree(src, dst):
             os.symlink(src_file, dst_symlink)
 
 
-def copy_dir_contents(srcdir, dstdir):
+def copy_dir_contents(srcdir, dstdir, merge_resolver=None):
     """
     Given srcdir/{a, b, c} and dstdir/ (which already exists), copy {a, b, c}
     into dstdir so it looks like dstdir/{a, b, c}.
@@ -274,7 +274,35 @@ def copy_dir_contents(srcdir, dstdir):
         if entry.is_dir():
             shutil.copytree(entry, dstdir / entry.name)
         elif not entry.is_symlink():
-            shutil.copy2(entry, dstdir / entry.name)
+            dst_path = dstdir / entry.name
+            if dst_path.exists() and merge_resolver:
+                merge_resolver(entry, dst_path)
+            else:
+                shutil.copy2(entry, dst_path)
+
+class BenchparkInstallation:
+    def __init__(self, root):
+        self.root = pathlib.Path(root)
+
+    @staticmethod
+    def from_benchpark_main_script(script_path):
+        script_path = pathlib.Path(script_path)
+        return BenchparkInstallation(script_path.parent.parent)
+
+    @staticmethod
+    def install_ramble_to(location):
+        run_command(
+            "git clone --depth=1 -c feature.manyFiles=true "
+            "https://github.com/GoogleCloudPlatform/ramble.git "
+            f"{location}"
+        )
+
+    def ramble_python(self):
+        ramble_lib_location = self.root / "lib" / "ramble"
+        if not ramble_lib_location.exists():
+            debug_print(f"Cloning ramble to {ramble_lib_location}")
+            BenchparkInstallation.install_ramble_to(ramble_lib_location)
+        return ramble_lib_location / "bin" / "ramble-python"
 
 
 def benchpark_system_create_handler(args):
@@ -405,11 +433,7 @@ def benchpark_setup_handler(args):
 
     if not ramble_location.exists():
         print(f"Cloning ramble into {ramble_location}")
-        run_command(
-            "git clone --depth=1 -c feature.manyFiles=true "
-            "https://github.com/GoogleCloudPlatform/ramble.git "
-            f"{ramble_location}"
-        )
+        BenchparkInstallation.install_ramble_to(ramble_location)
 
         run_command(f"{ramble_exe} repo add --scope=site {source_dir}/repo")
         run_command(
