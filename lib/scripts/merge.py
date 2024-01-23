@@ -2,6 +2,7 @@ import ramble.config as cfg
 import spack.util.spack_yaml as syaml
 import sys
 
+
 def main():
     """This ramble-python script can be used to merge two
     ramble YAML configs with overlapping sections into
@@ -15,6 +16,7 @@ def main():
     cfg.merge_yaml(c1, c2)
     with open(output, "w") as outstream:
         syaml.dump_config(c1, outstream)
+
 
 if __name__ == "__main__":
     main()
