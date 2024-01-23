@@ -281,6 +281,7 @@ def copy_dir_contents(srcdir, dstdir, merge_resolver=None):
             else:
                 shutil.copy2(entry, dst_path)
 
+
 class BenchparkInstallation:
     def __init__(self, root):
         self.root = pathlib.Path(root)
@@ -306,6 +307,7 @@ class BenchparkInstallation:
             BenchparkInstallation.install_ramble_to(ramble_lib_location)
         return ramble_lib_location / "bin" / "ramble"
 
+
 class RambleConfigMergeResolver:
     def __init__(self, benchpark_installation):
         self.benchpark_installation = benchpark_installation
@@ -316,24 +318,28 @@ class RambleConfigMergeResolver:
         self.ramble = self.benchpark_installation.ramble()
 
     def __call__(self, path1, path2):
-        """Merge config from path1 into path2
-        """
+        """Merge config from path1 into path2"""
         with tempfile.TemporaryDirectory() as temp_dir:
             temp_dir = pathlib.Path(temp_dir)
 
             merged_config = temp_dir / pathlib.Path(path2).name
 
-            run_command(f"{self.ramble} python {self.script} {path1} {path2} {merged_config}")
+            run_command(
+                f"{self.ramble} python {self.script} {path1} {path2} {merged_config}"
+            )
 
             debug_print(f"Overwrite {path2} with merged yaml from {merged_config}")
             # Overwrite the destination path with the merged result
             shutil.copy2(merged_config, path2)
 
+
 def benchpark_system_create_handler(args):
     system_config_name = args.name
 
     script_path = pathlib.Path(os.path.abspath(__file__))
-    benchpark_installation = BenchparkInstallation.from_benchpark_main_script(script_path)
+    benchpark_installation = BenchparkInstallation.from_benchpark_main_script(
+        script_path
+    )
     config_dir = benchpark_installation.root / "configs"
 
     new_config_dir = config_dir / system_config_name
@@ -358,8 +364,9 @@ def benchpark_system_create_handler(args):
             templates = list(pathlib.Path(x) for x in args.template)
 
             for template_dir in templates:
-                copy_dir_contents(template_dir, new_config_dir,
-                                  merge_resolver=cfg_merge_resolver)
+                copy_dir_contents(
+                    template_dir, new_config_dir, merge_resolver=cfg_merge_resolver
+                )
 
         # Write the new system definition file
         system_defn_path = new_config_dir / "system_definition.yaml"
