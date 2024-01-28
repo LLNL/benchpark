@@ -310,7 +310,6 @@ export SPACK_DISABLE_LOCAL_CONFIG=1
 export _BENCHPARK_INITIALIZED=true
 """
             )
->>>>>>> origin/develop
 
     instructions = f"""\
 To complete the benchpark setup, do the following:
