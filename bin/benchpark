@@ -258,6 +258,8 @@ def benchpark_setup_handler(args):
     ramble_exe = ramble_location / "bin" / "ramble"
     spack_cache_location = spack_location / "misc-cache"
 
+    initializer_script = experiments_root / "setup.sh"
+
     if not spack_location.exists():
         print(f"Cloning spack into {spack_location}")
         run_command(
@@ -283,16 +285,37 @@ def benchpark_setup_handler(args):
 
         run_command(f"{ramble_exe} repo add --scope=site {source_dir}/repo")
         run_command(
+            f'{ramble_exe} config --scope=site add "config:disable_progress_bar:true"'
+        )
+        run_command(
             f"{ramble_exe} repo add -t modifiers --scope=site {source_dir}/modifiers"
         )
+        run_command(
+            f"{ramble_exe} config --scope=site add \"config:spack:global:args:'-d'\""
+        )
+
+    if not initializer_script.exists():
+        with open(initializer_script, "w") as f:
+            f.write(
+                f"""\
+if [ -n "${{_BENCHPARK_INITIALIZED:-}}" ]; then
+    return 0
+fi
+
+. {spack_location}/share/spack/setup-env.sh
+. {ramble_location}/share/ramble/setup-env.sh
+
+export SPACK_DISABLE_LOCAL_CONFIG=1
+
+export _BENCHPARK_INITIALIZED=true
+"""
+            )
+>>>>>>> origin/develop
 
     instructions = f"""\
 To complete the benchpark setup, do the following:
 
-    . {spack_location}/share/spack/setup-env.sh
-    . {ramble_location}/share/ramble/setup-env.sh
-
-    export SPACK_DISABLE_LOCAL_CONFIG=1
+    . {initializer_script}
 
 Further steps are needed to build the experiments (ramble -P -D {ramble_workspace_dir} workspace setup) and run them (ramble -P -D {ramble_workspace_dir} on)
 """
