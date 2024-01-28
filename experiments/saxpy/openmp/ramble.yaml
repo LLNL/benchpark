@@ -7,7 +7,7 @@ ramble:
   include:
   - ./configs/spack.yaml
   - ./configs/variables.yaml
-  - ./configs/caliper_topdown.yaml
+  - ./configs/caliper.yaml
 
   config:
     deprecated: true
