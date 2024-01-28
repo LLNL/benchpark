@@ -21,7 +21,3 @@ spack:
       spack_spec: mvapich2@2.3.7-gcc1211
     mpi-intel:
       spack_spec: mvapich2@2.3.7-intel202160classic
-    caliper:
-      spack_spec: caliper+adiak+mpi~libunwind~libdw
-    caliper-topdown:
-      spack_spec: caliper+adiak+mpi~libunwind~libdw+papi
