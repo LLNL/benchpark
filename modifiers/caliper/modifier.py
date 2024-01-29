@@ -11,18 +11,23 @@ class Caliper(SpackModifier):
 
     name = "caliper"
 
-    tags('profiler', 'performance-analysis')
+    tags("profiler", "performance-analysis")
 
-    maintainers('olgapearce')
+    maintainers("pearce8")
 
-    mode('time', description='Mode for collecting time only')
+    mode("time", description="Platform-independent collection of time")
 
-    _cali_datafile = '{experiment_run_dir}/{experiment_name}.cali'
+    _cali_datafile = "{experiment_run_dir}/{experiment_name}.cali"
 
-    env_var_modification('CALI_CONFIG', 'spot(output={})'.format(_cali_datafile), method='set', modes=['time'])
+    env_var_modification(
+        "CALI_CONFIG",
+        "spot(output={})".format(_cali_datafile),
+        method="set",
+        modes=["time"],
+    )
 
     archive_pattern(_cali_datafile)
 
-    software_spec('caliper', spack_spec='caliper')
+    software_spec("caliper", spack_spec="caliper")
 
-    required_package('caliper')
+    required_package("caliper")
