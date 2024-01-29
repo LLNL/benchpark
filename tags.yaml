@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-benchparktags:
+benchpark-tags:
   application-domain:
     - asc # Advanced Simulation and Computing
     - astrophysics

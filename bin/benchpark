@@ -12,6 +12,7 @@ import shlex
 import shutil
 import subprocess
 import sys
+import yaml
 
 DEBUG = False
 
@@ -37,7 +38,8 @@ def main():
     actions = {}
     benchpark_list(subparsers, actions)
     benchpark_setup(subparsers, actions)
-
+    benchpark_tags(subparsers, actions)
+    
     args = parser.parse_args()
     no_args = True if len(sys.argv) == 1 else False
 
@@ -87,12 +89,43 @@ def benchpark_benchmarks():
     return benchmarks
 
 
+def benchpark_experiments():
+    source_dir = source_location() 
+    experiments = []
+    experiments_dir = source_dir / "experiments"
+    for x in os.listdir(experiments_dir):
+        experiments.append(f"{x}")
+    return experiments
+
+
 def benchpark_systems():
     source_dir = source_location()
     systems = []
     for x in os.listdir(source_dir / "configs"):
         systems.append(x)
     return systems
+
+
+def benchpark_get_tags():
+    f = source_location() / "tags.yaml"
+    tags = []
+    
+    with open(f, "r") as stream:
+        try:
+            data = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print(exc)
+            
+    for k0, v0 in data.items():
+        if k0 == 'benchpark-tags':
+            for k, v in v0.items():
+                if isinstance(v, list):
+                    for i in v:
+                        tags.append(i)
+        else:
+            print("ERROR file does not contain benchpark-tags")
+
+    return tags
 
 
 def benchpark_list_handler(args):
@@ -146,6 +179,17 @@ def benchpark_check_system(arg_str):
     return found
 
 
+def benchpark_check_tag(arg_str):
+    tags = benchpark_get_tags()
+    found = arg_str in tags
+    if not found:
+        out_str = f'Invalid tag "{arg_str}" - must choose one of: '
+        for tag in tags:
+            out_str += f"\n\t{tag}"
+        raise ValueError(out_str)
+    return found
+    
+
 def benchpark_setup(subparsers, actions_dict):
     create_parser = subparsers.add_parser(
         "setup", help="Set up an experiment and prepare it to build/run"
@@ -167,7 +211,7 @@ def benchpark_setup(subparsers, actions_dict):
 
 
 def run_command(command_str, env=None):
-    subprocess.run(
+    result = subprocess.run(
         shlex.split(command_str),
         env=env,
         check=True,
@@ -175,6 +219,22 @@ def run_command(command_str, env=None):
         stderr=subprocess.PIPE,
         text=True,
     )
+
+    return (result.stdout, result.stderr)
+
+
+def benchpark_tags(subparsers, actions_dict):
+    create_parser = subparsers.add_parser(
+        "tags", help="Tags in Benchpark experiments"
+    )
+    create_parser.add_argument(
+        "experiments_root",
+        type=str,
+        help="The experiments_root you specified during Benchpark setup.",
+    )
+    create_parser.add_argument("sublist", nargs="?")
+    actions_dict["tags"] = benchpark_tags_handler
+
 
 
 # Note: it would be nice to vendor spack.llnl.util.link_tree, but that
@@ -318,5 +378,51 @@ Further steps are needed to build the experiments (ramble -P -D {ramble_workspac
     print(instructions)
 
 
+def benchpark_tags_handler(args):
+    """
+    Filter ramble tags by benchpark experiments
+    """
+    source_dir = source_location()
+    sublist = args.sublist
+    experiments_root = pathlib.Path(os.path.abspath(args.experiments_root))
+    ramble_location = experiments_root / "ramble"
+    ramble_exe = ramble_location / "bin" / "ramble"
+    experiments = benchpark_experiments()
+
+    if sublist == None:
+        print("All tags that exist in Benchpark experiments:")
+
+        # find all tags in Ramble applications (both in Ramble built-in and in Benchpark/repo)
+        (tags_stdout, tags_stderr) = run_command(f"{ramble_exe} attributes --tags --all")
+
+        ramble_applications_tags = {}
+        lines = tags_stdout.splitlines()
+
+        for line in lines:
+            key_value = line.split(":")
+            ramble_applications_tags[key_value[0]] = key_value[1].split(",")
+
+        benchpark_experiments_tags = {}
+        for exp in experiments:
+            benchpark_experiments_tags[exp] = ramble_applications_tags[exp]
+        print(benchpark_experiments_tags)
+    else:
+        search_tag = sublist
+
+        if benchpark_check_tag(search_tag):
+            # find all applications in Ramble that have a given tag (both in Ramble built-in and in Benchpark/repo)
+            (tags_stdout, tags_stderr) = run_command(f"{ramble_exe} list -t {search_tag}")
+            lines = tags_stdout.splitlines()        
+            benchpark_experiments_with_tag = ""
+        
+            for line in lines:
+                if line in experiments:
+                    benchpark_experiments_with_tag += line + "\n"
+
+            print(benchpark_experiments_with_tag)
+
+
+    
+    
 if __name__ == "__main__":
     main()
