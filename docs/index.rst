@@ -21,8 +21,9 @@
 
 .. toctree::
    :maxdepth: 1
-   :caption: Available Specifications
+   :caption: Catalogue
 
+   catalogue-of-benchmarks
    available-system-specs
 
 .. toctree::

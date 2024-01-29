@@ -4,13 +4,40 @@
    SPDX-License-Identifier: Apache-2.0
 
 ==============
-Benchpark List
+Search Benchpark
 ==============
 
-To list all benchmarks and systems available in Benchpark::
+The user can search for available system and experiment specifications in Benchpark.
 
-    cd bin
-    benchpark list
+.. list-table:: Searching for specifications in Benchpark
+   :widths: 25 25 50
+   :header-rows: 1
 
+   * - Command
+     - Descrition
+     - Listing in the docs
+   * - benchpark list
+     - Lists all benchmarks and systems specified in Benchpark
+     - 
+   * - benchpark list systems
+     - Lists all system specified in Benchpark
+     - :doc:`available-system-specs.rst`
+   * - benchmark list benchmarks
+     - Lists all benchmarks specified in Benchpark
+     - 
+   * - benchpark list systems
+     - Lists all system specified in Benchpark
+     - :doc:`available-system-specs.rst`
+   * - benchpark tags workspace
+     - Lists all tags specified in Benchpark
+     - 
+   * - benchpark tags -a application workspace
+     - Lists all tags specified for a given application in Benchpark
+     - 
+   * - benchpark tags -t tag workspace
+     - Lists all experiments in Benchpark with a given tag
+     - 
+       
+      
 Once you have decided on a ``system`` you will use, and the ``benchmark/ProgrammingModel``
 to run, you can proceed to :doc:`4-benchpark-setup`.
