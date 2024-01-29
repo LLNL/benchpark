@@ -7,7 +7,7 @@ ramble:
   include:
   - ./configs/spack.yaml
   - ./configs/variables.yaml
-  - ./configs/caliper_cuda.yaml
+  - ./configs/caliper.yaml
 
   config:
     deprecated: true
