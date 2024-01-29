@@ -7,7 +7,7 @@ ramble:
   include:
   - ./configs/spack.yaml
   - ./configs/variables.yaml
-  - ./configs/modifier_variables.yaml
+  - ./configs/caliper.yaml
 
   config:
     deprecated: true
@@ -39,9 +39,6 @@ ramble:
             omp_num_threads: '{threads_per_node_core} * {n_nodes}'
           experiments:
             amg2023_omp_problem1_{n_nodes}_{omp_num_threads}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
-              modifiers:
-                - name: '{modifier_name}'
-                  mode: '{modifier_mode}'
               variables:
                 env_name: amg2023-omp
               matrices:
@@ -52,10 +49,10 @@ ramble:
     concretized: true
     packages:
       hypre-omp:
-        spack_spec: hypre@2.28.0 +mpi+openmp+mixedint{modifier_variant}
+        spack_spec: hypre@2.28.0 +mpi+openmp+mixedint{modifier_spack_variant}
         compiler: default-compiler
       amg2023-omp:
-        spack_spec: amg2023@develop +mpi+openmp{modifier_variant}
+        spack_spec: amg2023@develop +mpi+openmp{modifier_spack_variant}
         compiler: default-compiler
     environments:
       amg2023-omp:
@@ -64,4 +61,4 @@ ramble:
         - default-mpi
         - hypre-omp
         - amg2023-omp
-        - '{modifier_name}'
+        - '{modifier_spack_variant}'

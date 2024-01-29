@@ -19,7 +19,3 @@ spack:
       spack_spec: cublas@{default_cuda_version} 
     lapack:
       spack_spec: lapack-xl@3.9.0
-    caliper:
-      spack_spec: caliper+adiak+mpi~libunwind~libdw
-    caliper-cuda:
-      spack_spec: caliper+adiak+mpi~libunwind~libdw~papi+cuda cuda_arch=={cuda_arch}
