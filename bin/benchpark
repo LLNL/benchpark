@@ -244,13 +244,13 @@ def benchpark_tags(subparsers, actions_dict):
         "-a", 
         "--application", 
         action="store", 
-        help="The application for which to find Benchpark tags"
+        help="The application for which to find Benchpark tags",
     )
     create_parser.add_argument(
         "-t", 
         "--tag", 
         action="store", 
-        help="The tag for which to search in Benchpark experiments"
+        help="The tag for which to search in Benchpark experiments",
     )
     actions_dict["tags"] = benchpark_tags_handler
 
