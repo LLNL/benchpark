@@ -4,8 +4,13 @@
 # SPDX-License-Identifier: Apache-2.0
 
 variables:
-  batch_time: ''
+  batch_time: '02:00'
   mpi_command: 'mpirun -n {n_ranks} --oversubscribe'
+  batch_submit: 'qsub {execute_experiment}'
+  batch_nodes: '#PJM -L node={n_nodes}'
+  #batch_ranks: '#PJM --mpi max_proc_per_node=48' ## -n {n_ranks}
+  batch_timeout: '#PJM -L "elapse={batch_time}:00"'
+  
   batch_submit: '{execute_experiment}'
   batch_nodes: ''
   batch_ranks: ''
