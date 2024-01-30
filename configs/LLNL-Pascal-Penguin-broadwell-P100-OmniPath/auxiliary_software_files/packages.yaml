@@ -6,7 +6,7 @@
 packages:
   tar:
     externals:
-    - spec: tar@1.26
+    - spec: tar@1.30
       prefix: /usr
     buildable: false
   cmake:
@@ -21,53 +21,39 @@ packages:
     buildable: false
   automake:
     externals:
-    - spec: automake@1.13.4
+    - spec: automake@1.16.1
       prefix: /usr
   autoconf:
     externals:
     - spec: autoconf@2.69
       prefix: /usr
+  mpi:
+    buildable: false
+  mvapich2:
+    buildable: false
+    externals:
+    - spec: mvapich2@2.3.7%intel@2021.6.0
+      prefix: /usr/tce/packages/mvapich2/mvapich2-2.3.7-intel-classic-2021.6.0/
+  cuda:
+    buildable: false
+    externals:
+    - spec: cuda@11.8.0
+      prefix: /usr/tce/packages/cuda/cuda-11.8.0/
   curand:
     externals:
-    - spec: curand@10.1.243
-      prefix: /usr/tce/packages/cuda/cuda-10.1.243
     - spec: curand@11.8.0
       prefix: /usr/tce/packages/cuda/cuda-11.8.0
     buildable: false
   cusparse:
     externals:
-    - spec: cusparse@10.1.243
-      prefix: /usr/tce/packages/cuda/cuda-10.1.243
     - spec: cusparse@11.8.0
       prefix: /usr/tce/packages/cuda/cuda-11.8.0
     buildable: false
-  cuda:
-    externals:
-    - spec: cuda@10.1.243
-      prefix: /usr/tce/packages/cuda/cuda-10.1.243
-    - spec: cuda@11.8.0
-      prefix: /usr/tce/packages/cuda/cuda-11.8.0
-    buildable: false
   blas:
-    externals:
-    - spec: cublas@10.1.243
-      prefix: /usr/tce/packages/cuda/cuda-10.1.243
-    - spec: cublas@11.8.0
-      prefix: /usr/tce/packages/cuda/cuda-11.8.0
     buildable: false
   lapack:
-    externals:
-    - spec: lapack-xl@3.9.0
-      prefix: /usr/tcetmp/packages/lapack/lapack-3.9.0-xl-2020.03.18
     buildable: false
-  mpi:
+  intel-mkl:
     externals:
-    - spec: spectrum-mpi@2022.08.19-cuda-11.8.0
-      prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-xl-2022.08.19-cuda-11.8.0
-      extra_attributes:
-        ldflags: "-lmpiprofilesupport -lmpi_ibm_usempi -lmpi_ibm_mpifh -lmpi_ibm"
-    - spec: spectrum-mpi@2022.08.19-cuda-10.1.243
-      prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-xl-2022.08.19-cuda-10.1.243
-      extra_attributes:
-        ldflags: "-lmpiprofilesupport -lmpi_ibm_usempi -lmpi_ibm_mpifh -lmpi_ibm"
-    buildable: false
+    - spec: intel-mkl@2022.1.0
+      prefix: /usr/tce/packages/mkl/mkl-2022.1.0/
