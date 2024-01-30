@@ -6,10 +6,14 @@
 spack:
   packages:
     default-compiler:
-      spack_spec:
+      spack_spec: fcc # 
+    compiler-gcc:
+      spack_spec: gcc
+    compiler-intel:
+      spack_spec: intel
     default-mpi:
-      spack_spec:
+      spack_spec: fujitsu-mpi # mpifcc, mpich-tofu
     blas:
-      spack_spec:
+      spack_spec: blas
     lapack:
-      spack_spec:
+      spack_spec: lapack
