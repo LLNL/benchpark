@@ -24,6 +24,7 @@ author = "Olga Pearce, Alec Scott, Peter Scheibel, Greg Becker, Riyaz Haque, and
 
 extensions = [
     "sphinx_rtd_theme",
+    "sphinxcontrib.programoutput",
 ]
 
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", ".spack-env"]

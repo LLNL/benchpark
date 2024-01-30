@@ -3,9 +3,9 @@
 
    SPDX-License-Identifier: Apache-2.0
 
-==============
+================
 Search Benchpark
-==============
+================
 
 The user can search for available system and experiment specifications in Benchpark.
 
@@ -21,13 +21,13 @@ The user can search for available system and experiment specifications in Benchp
      - 
    * - benchpark list systems
      - Lists all system specified in Benchpark
-     - :doc:`available-system-specs.rst`
+     - :doc:`available-system-specs`
    * - benchmark list benchmarks
      - Lists all benchmarks specified in Benchpark
      - 
    * - benchpark list systems
      - Lists all system specified in Benchpark
-     - :doc:`available-system-specs.rst`
+     - :doc:`available-system-specs`
    * - benchpark tags workspace
      - Lists all tags specified in Benchpark
      - 
@@ -37,7 +37,14 @@ The user can search for available system and experiment specifications in Benchp
    * - benchpark tags -t tag workspace
      - Lists all experiments in Benchpark with a given tag
      - 
-       
-      
+
+
 Once you have decided on a ``system`` you will use, and the ``benchmark/ProgrammingModel``
 to run, you can proceed to :doc:`4-benchpark-setup`.
+
+Alternative idea to listing available commands in benchpark (won't have to manually update), though not as helpful::
+
+    $ benchpark --help
+
+.. program-output:: ../bin/benchpark --help
+

@@ -26,7 +26,7 @@ def benchpark_benchmarks(benchmarks):
 def main():
     f = "../bin/benchpark_tags.yaml"
     with open(f, "r") as stream:
-        try:	
+        try:
             data = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
             print(exc)
