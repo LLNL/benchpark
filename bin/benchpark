@@ -163,7 +163,10 @@ def benchpark_setup(subparsers, actions_dict):
         help="Where to install packages and store results for the experiments. Benchpark expects to manage this directory, and it should be empty/nonexistent the first time you run benchpark setup experiments.",
     )
     create_parser.add_argument(
-        "--modifier", type=str, default="caliper", help="The modifier to apply to the experiment (default caliper)"
+        "--modifier", 
+        type=str, 
+        default="caliper", 
+        help="The modifier to apply to the experiment (default caliper)",
     )
 
     actions_dict["setup"] = benchpark_setup_handler
