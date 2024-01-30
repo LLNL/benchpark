@@ -24,8 +24,8 @@ ramble:
             n_ranks: '{processes_per_node} * {n_nodes}'
             processes_per_node: '4'
             n_nodes: '2'
-            omp_num_threads: '16'
-            target: 'cpu'
+            omp_num_threads: '22'
+            target: 'gpu'
           experiments:
             gromacs_water_gmx50_adac_size{size}_dlb{dlb}_pin{pin}_target{target}_maxh{maxh}_nsteps{nsteps}_nstlist{nstlist}_npme{npme}:
               variables:
@@ -48,7 +48,7 @@ ramble:
         spack_spec: fftw@3.3.10 +mpi+openmp
         compiler: default-compiler
       gromacs:
-        spack_spec: gromacs@main +mpi+openmp~hwloc
+        spack_spec: gromacs@2023.3 +mpi+openmp+cuda~hwloc cuda_arch=={cuda_arch} ^cuda@{default_cuda_version}
         compiler: default-compiler
     environments:
       gromacs:

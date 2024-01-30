@@ -31,6 +31,11 @@ class Gromacs(SpackApplication):
     executable('execute-nsteps', 'gmx_mpi mdrun -notunepme ' +
                '-v -resethway -noconfout -nsteps 4000 ' +
                '-s {input_path}', use_mpi=True)
+    executable('execute-adac', 'gmx_mpi mdrun ' +
+               '-resethway -noconfout -dlb {dlb} -pin {pin} -nb {nb} -pme {pme} -bonded {bonded} -update {update} ' +
+               '-maxh {maxh} -nsteps {nsteps} -notunepme -nstlist {nstlist} -npme {npme} ' +
+               '-v -s exp_input.tpr', use_mpi=True)
+
     input_file('water_gmx50_bare', url='https://ftp.gromacs.org/pub/benchmarks/water_GMX50_bare.tar.gz',
                sha256='2219c10acb97787f80f6638132bad3ff2ca1e68600eef1bc8b89d9560e74c66a',
                description='')
@@ -70,6 +75,8 @@ class Gromacs(SpackApplication):
                sha256='82449291f44f4d5b7e5c192d688b57b7c2a2e267fe8b12e7a15b5d68f96c7b20',
                description='GROMACS_heterogeneous_parallelization_benchmark_info_and_systems_JCP')
 
+    workload('water_gmx50_adac', executables=['pre-process', 'execute-adac'],
+             input='water_gmx50_bare')
     workload('water_gmx50', executables=['pre-process', 'execute-gen'],
              input='water_gmx50_bare')
     workload('water_bare', executables=['pre-process', 'execute-gen'],
@@ -95,20 +102,51 @@ class Gromacs(SpackApplication):
     workload('ion_channel', executables=['pre-process', 'execute-gen'],
              input='JCP_benchmarks')
 
+    workload_variable('dlb', default='no',
+                      description='Dynamic load balancing (with DD): auto, no, yes',
+                      workloads=['water_gmx50_adac'])
+    workload_variable('pin', default='off',
+                      description='Whether mdrun should try to set thread affinities: auto, on, off',
+                      workloads=['water_gmx50_adac'])
+    workload_variable('nb', default='auto',
+                      description='Calculate non-bonded interactions on: auto, cpu, gpu',
+                      workloads=['water_gmx50_adac'])
+    workload_variable('pme', default='auto',
+                      description='Perform PME calculations on: auto, cpu, gpu',
+                      workloads=['water_gmx50_adac'])
+    workload_variable('bonded', default='auto',
+                      description='Perform bonded calculations on: auto, cpu, gpu',
+                      workloads=['water_gmx50_adac'])
+    workload_variable('update', default='auto',
+                      description='Perform update and constraints on: auto, cpu, gpu',
+                      workloads=['water_gmx50_adac'])
+    workload_variable('maxh', default='0.05',
+                      description='Terminate after 0.99 times this time (hours)',
+                      workloads=['water_gmx50_adac'])
+    workload_variable('nsteps', default='-1',
+                      description='Run this number of steps (-1 means infinite, -2 means use mdp option, smaller is invalid)',
+                      workloads=['water_gmx50_adac'])
+    workload_variable('nstlist', default='200',
+                      description='Set nstlist when using a Verlet buffer tolerance (0 is guess)',
+                      workloads=['water_gmx50_adac'])
+    workload_variable('npme', default='0',
+                      description='Number of separate ranks to be used for PME, -1 is guess',
+                      workloads=['water_gmx50_adac'])
+
     workload_variable('size', default='1536',
                       values=['0000.65', '0000.96', '0001.5',
                               '0003', '0006', '0012', '0024',
                               '0048', '0096', '0192', '0384',
                               '0768', '1536', '3072'],
                       description='Workload size',
-                      workloads=['water_gmx50', 'water_bare'])
+                      workloads=['water_gmx50', 'water_bare', 'water_gmx50_adac'])
     workload_variable('type', default='pme',
                       description='Workload type.',
                       values=['pme', 'rf'],
-                      workloads=['water_gmx50', 'water_bare'])
+                      workloads=['water_gmx50', 'water_bare', 'water_gmx50_adac'])
     workload_variable('input_path', default='{water_gmx50_bare}/{size}',
                       description='Input path for water GMX50',
-                      workload='water_gmx50')
+                      workloads=['water_gmx50', 'water_gmx50_adac'])
     workload_variable('input_path', default='{water_bare_hbonds}/{size}',
                       description='Input path for water bare hbonds',
                       workload='water_bare')
