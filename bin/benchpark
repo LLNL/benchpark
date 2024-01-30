@@ -90,7 +90,7 @@ def benchpark_benchmarks():
 
 
 def benchpark_experiments():
-    source_dir = source_location() 
+    source_dir = source_location()
     experiments = []
     experiments_dir = source_dir / "experiments"
     for x in os.listdir(experiments_dir):
@@ -109,15 +109,15 @@ def benchpark_systems():
 def benchpark_get_tags():
     f = source_location() / "tags.yaml"
     tags = []
-    
+
     with open(f, "r") as stream:
         try:
             data = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
             print(exc)
-            
+
     for k0, v0 in data.items():
-        if k0 == 'benchpark-tags':
+        if k0 == "benchpark-tags":
             for k, v in v0.items():
                 if isinstance(v, list):
                     for i in v:
@@ -235,23 +235,25 @@ def run_command(command_str, env=None):
 
 
 def benchpark_tags(subparsers, actions_dict):
-    create_parser = subparsers.add_parser(
-        "tags", help="Tags in Benchpark experiments"
-    )
+    create_parser = subparsers.add_parser("tags", help="Tags in Benchpark experiments")
     create_parser.add_argument(
         "experiments_root",
         type=str,
         help="The experiments_root you specified during Benchpark setup.",
     )
     create_parser.add_argument(
-        "-t", "--tag", action="store", help="The tag for which to search in Benchpark experiments"
+        "-t", 
+        "--tag", 
+        action="store", 
+        help="The tag for which to search in Benchpark experiments"
     )
     create_parser.add_argument(
-        "-a", "--application", action="store", help="The application for which to find Benchpark tags"
+        "-a", 
+        "--application", 
+        action="store", 
+        help="The application for which to find Benchpark tags"
     )
-    #create_parser.add_argument("sublist", nargs="?")
     actions_dict["tags"] = benchpark_tags_handler
-
 
 
 # Note: it would be nice to vendor spack.llnl.util.link_tree, but that
@@ -395,7 +397,7 @@ Further steps are needed to build the experiments (ramble -P -D {ramble_workspac
     print(instructions)
 
 
-def helper_experiments_tags(ramble_exe,experiments):
+def helper_experiments_tags(ramble_exe, experiments):
     # find all tags in Ramble applications (both in Ramble built-in and in Benchpark/repo)
     (tags_stdout, tags_stderr) = run_command(f"{ramble_exe} attributes --tags --all")
     ramble_applications_tags = {}
@@ -425,18 +427,18 @@ def benchpark_tags_handler(args):
         if benchpark_check_tag(args.tag):
             # find all applications in Ramble that have a given tag (both in Ramble built-in and in Benchpark/repo)
             (tag_stdout, tag_stderr) = run_command(f"{ramble_exe} list -t {args.tag}")
-            lines = tag_stdout.splitlines()        
-        
+            lines = tag_stdout.splitlines()
+
             for line in lines:
                 if line in experiments:
                     print(line)
 
     elif args.application:
         if benchpark_check_experiment(args.application):
-            benchpark_experiments_tags = helper_experiments_tags(ramble_exe,experiments)
+            benchpark_experiments_tags = helper_experiments_tags(ramble_exe, experiments)
             print(benchpark_experiments_tags[args.application])
     else:
-        benchpark_experiments_tags = helper_experiments_tags(ramble_exe,experiments)
+        benchpark_experiments_tags = helper_experiments_tags(ramble_exe, experiments)
         print("All tags that exist in Benchpark experiments:")
         print(benchpark_experiments_tags)
 
