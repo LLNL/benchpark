@@ -14,7 +14,7 @@ The user can search for available system and experiment specifications in Benchp
    :header-rows: 1
 
    * - Command
-     - Descrition
+     - Description
      - Listing in the docs
    * - benchpark list
      - Lists all benchmarks and systems specified in Benchpark
