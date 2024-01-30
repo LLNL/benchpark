@@ -39,7 +39,7 @@ def main():
     benchpark_list(subparsers, actions)
     benchpark_setup(subparsers, actions)
     benchpark_tags(subparsers, actions)
-    
+
     args = parser.parse_args()
     no_args = True if len(sys.argv) == 1 else False
 
@@ -62,7 +62,6 @@ def main():
 
 def get_version():
     benchpark_version = __version__
-
     return benchpark_version
 
 
@@ -242,16 +241,16 @@ def benchpark_tags(subparsers, actions_dict):
         help="The experiments_root you specified during Benchpark setup.",
     )
     create_parser.add_argument(
-        "-t", 
-        "--tag", 
-        action="store", 
-        help="The tag for which to search in Benchpark experiments"
-    )
-    create_parser.add_argument(
         "-a", 
         "--application", 
         action="store", 
         help="The application for which to find Benchpark tags"
+    )
+    create_parser.add_argument(
+        "-t", 
+        "--tag", 
+        action="store", 
+        help="The tag for which to search in Benchpark experiments"
     )
     actions_dict["tags"] = benchpark_tags_handler
 
@@ -411,7 +410,7 @@ def helper_experiments_tags(ramble_exe, experiments):
     for exp in experiments:
         benchpark_experiments_tags[exp] = ramble_applications_tags[exp]
     return benchpark_experiments_tags
-    
+
 
 def benchpark_tags_handler(args):
     """
@@ -435,7 +434,9 @@ def benchpark_tags_handler(args):
 
     elif args.application:
         if benchpark_check_experiment(args.application):
-            benchpark_experiments_tags = helper_experiments_tags(ramble_exe, experiments)
+            benchpark_experiments_tags = helper_experiments_tags(
+                ramble_exe, experiments
+            )
             print(benchpark_experiments_tags[args.application])
     else:
         benchpark_experiments_tags = helper_experiments_tags(ramble_exe, experiments)
@@ -443,7 +444,5 @@ def benchpark_tags_handler(args):
         print(benchpark_experiments_tags)
 
 
-    
-    
 if __name__ == "__main__":
     main()
