@@ -16,6 +16,6 @@ spack:
     cublas-cuda-10:
       spack_spec: cublas@{cuda10_version}
     cublas-cuda-default:
-      spack_spec: cublas@{cuda_default_version}
+      spack_spec: cublas@{default_cuda_version}
     lapack:
       spack_spec: intel-oneapi-mkl@2022.1.0

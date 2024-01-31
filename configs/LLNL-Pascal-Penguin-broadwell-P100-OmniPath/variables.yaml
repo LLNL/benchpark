@@ -7,7 +7,7 @@ variables:
   gtl_flag: ''  # to be overwritten by tests that need GTL
   cuda_arch: '70'
   cuda10_version: '10.2.89'
-  cuda_default_version: '11.8.0'
+  default_cuda_version: '11.8.0'
   batch_time: '120m'
   mpi_command: 'flux run -N {n_nodes} -n {n_ranks}'
   batch_submit: 'flux batch {execute_experiment}'
