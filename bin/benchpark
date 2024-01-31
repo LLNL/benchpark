@@ -441,7 +441,9 @@ def benchpark_tags_handler(args):
     else:
         benchpark_experiments_tags = helper_experiments_tags(ramble_exe, experiments)
         print("All tags that exist in Benchpark experiments:")
-        print(benchpark_experiments_tags)
+        for k, v in benchpark_experiments_tags.items():
+            print(k)
+        #print(benchpark_experiments_tags)
 
 
 if __name__ == "__main__":

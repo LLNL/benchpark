@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-import glob
-
 import pandas as pd
 import yaml
 import os
+import re
+
 
 def construct_tag_groups(tag_groups, tag_dicts, dictionary):
     # everything is a dict
@@ -24,7 +24,18 @@ def benchpark_benchmarks(benchmarks):
 
 
 def main():
-    f = "../bin/benchpark_tags.yaml"
+    benchmarks = list()
+    benchpark_benchmarks(benchmarks)
+
+    for i in benchmarks:
+        application_file = "../repo/%s/application.py" % i
+        if os.path.exists(application_file):
+            with open(application_file) as f:
+                for line in f.readlines():
+                    if re.search(r'tags = \[', line):
+                        print(line)
+
+    f = "../tags.yaml"
     with open(f, "r") as stream:
         try:
             data = yaml.safe_load(stream)
@@ -34,7 +45,7 @@ def main():
     tag_groups = []
     tag_dicts = {}
     for k, v in data.items():
-        if k == 'benchpark-tags':
+        if k == "benchpark-tags":
             construct_tag_groups(tag_groups, tag_dicts, v)
         else:
             print("ERROR in top level construct_tag_groups")
@@ -44,12 +55,16 @@ def main():
         print(k + ": " + str(v))
     print("\n")
 
+    df = pd.DataFrame({
+        #"benchmarks": benchmarks,
+        "tag group": tag_dicts.keys(),
+    })
+    print(df)
 
     #################
     # Tables
     # rows: benchmarks (i.e., amg2023)
     # columns: tag groups (i.e., application domain).  Each cell should hopefully have a tag - and some might have multiple
-
 
 
 if __name__ == "__main__":
