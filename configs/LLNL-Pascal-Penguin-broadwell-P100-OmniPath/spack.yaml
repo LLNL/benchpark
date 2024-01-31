@@ -13,5 +13,9 @@ spack:
       spack_spec: gcc@=11.2.1
     compiler-cuda10:
       spack_spec: intel@=2021.6.0
+    cublas-cuda-10:
+      spack_spec: cublas@{cuda10_version}
+    cublas-cuda-default:
+      spack_spec: cublas@{cuda_default_version}
     lapack:
       spack_spec: intel-mkl@2022.1.0

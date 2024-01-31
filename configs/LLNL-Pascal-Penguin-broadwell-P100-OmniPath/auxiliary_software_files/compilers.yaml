@@ -5,28 +5,28 @@
 
 compilers:
 - compiler:
-  spec: intel@=2021.6.0
-  paths:
-    cc: /usr/tce/packages/intel/intel-2022.1.0/compiler/2022.1.0/linux/bin/intel64/icc
-    cxx: /usr/tce/packages/intel/intel-2022.1.0/compiler/2022.1.0/linux/bin/intel64/icpc
-    f77: /usr/tce/packages/intel/intel-2022.1.0/compiler/2022.1.0/linux/bin/intel64/ifort
-    fc: /usr/tce/packages/intel/intel-2022.1.0/compiler/2022.1.0/linux/bin/intel64/ifort
-  flags: {}
-  operating_system: rhel8
-  target: x86_64
-  modules: []
-  environment: {}
-  extra_rpaths: []
+    spec: intel@=2021.6.0
+    paths:
+      cc: /usr/tce/packages/intel/intel-2022.1.0/compiler/2022.1.0/linux/bin/intel64/icc
+      cxx: /usr/tce/packages/intel/intel-2022.1.0/compiler/2022.1.0/linux/bin/intel64/icpc
+      f77: /usr/tce/packages/intel/intel-2022.1.0/compiler/2022.1.0/linux/bin/intel64/ifort
+      fc: /usr/tce/packages/intel/intel-2022.1.0/compiler/2022.1.0/linux/bin/intel64/ifort
+    flags: {}
+    operating_system: rhel8
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
 - compiler:
-  spec: gcc@=11.2.1
-  paths:
-    cc: /usr/tce/packages/gcc/gcc-11.2.1/bin/gcc
-    cxx: /usr/tce/packages/gcc/gcc-11.2.1/bin/g++
-    f77: /usr/tce/packages/gcc/gcc-11.2.1/bin/gfortran
-    fc: /usr/tce/packages/gcc/gcc-11.2.1/bin/gfortran
-  flags: {}
-  operating_system: rhel8
-  target: x86_64
-  modules: []
-  environment: {}
-  extra_rpaths: []
+    spec: gcc@=11.2.1
+    paths:
+      cc: /usr/tce/packages/gcc/gcc-11.2.1/bin/gcc
+      cxx: /usr/tce/packages/gcc/gcc-11.2.1/bin/g++
+      f77: /usr/tce/packages/gcc/gcc-11.2.1/bin/gfortran
+      fc: /usr/tce/packages/gcc/gcc-11.2.1/bin/gfortran
+    flags: {}
+    operating_system: rhel8
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
