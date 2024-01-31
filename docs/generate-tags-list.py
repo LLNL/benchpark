@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import glob
-
 import pandas as pd
 import yaml
 import os
@@ -23,8 +21,17 @@ def benchpark_benchmarks(benchmarks):
     return benchmarks
 
 
+def join_dicts(dict1, dict2):
+    print(dict1)
+    print(dict2)
+    return(dict2.update(dict1))
+
+
 def main():
-    f = "../bin/benchpark_tags.yaml"
+    benchmarks = list()
+    benchpark_benchmarks(benchmarks)
+
+    f = "../tags.yaml"
     with open(f, "r") as stream:
         try:
             data = yaml.safe_load(stream)
@@ -34,15 +41,26 @@ def main():
     tag_groups = []
     tag_dicts = {}
     for k, v in data.items():
-        if k == 'benchpark-tags':
+        if k == "benchpark-tags":
             construct_tag_groups(tag_groups, tag_dicts, v)
         else:
             print("ERROR in top level construct_tag_groups")
 
+    df_list = []
+
     print("Tags in benchpark_tags:")
     for k, v in tag_dicts.items():
-        print(k + ": " + str(v))
-    print("\n")
+        benchmarks_dict = {}
+        for i in benchmarks:
+            benchmarks_dict[i] = [""] * len(v)
+
+        d = {"": v}
+        x = {**d, **benchmarks_dict}
+        tmp_df = pd.DataFrame(x)
+        df_list.append(tmp_df)
+        print(tmp_df)
+
+    #print("\n")
 
 
     #################
