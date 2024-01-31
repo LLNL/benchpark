@@ -42,9 +42,4 @@ The user can search for available system and experiment specifications in Benchp
 Once you have decided on a ``system`` you will use, and the ``benchmark/ProgrammingModel``
 to run, you can proceed to :doc:`4-benchpark-setup`.
 
-Alternative idea to listing available commands in benchpark (won't have to manually update), though not as helpful::
-
-    $ benchpark --help
-
-.. program-output:: ../bin/benchpark --help
-
+For a complete list of options, see the help menu in :doc:`benchpark-help`.

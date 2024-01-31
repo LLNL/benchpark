@@ -25,6 +25,7 @@
 
    catalogue-of-benchmarks
    available-system-specs
+   benchpark-help
 
 .. toctree::
    :maxdepth: 1
