@@ -55,11 +55,18 @@ packages:
     - spec: cusparse@10.2.89
       prefix: /usr/tce/packages/cuda/cuda-10.2.89/
     buildable: false
+  cublas:
+    externals:
+    - spec: cublas@11.8.0
+      prefix: /usr/tce/packages/cuda/cuda-11.8.0
+    - spec: cublas@10.2.89
+      prefix: /usr/tce/packages/cuda/cuda-10.2.89/
+    buildable: false
   blas:
     buildable: false
   lapack:
     buildable: false
-  intel-mkl:
+  intel-oneapi-mkl:
     externals:
-    - spec: intel-mkl@2022.1.0
+    - spec: intel-oneapi-mkl@2022.1.0
       prefix: /usr/tce/packages/mkl/mkl-2022.1.0/
