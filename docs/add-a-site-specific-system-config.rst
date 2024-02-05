@@ -3,9 +3,9 @@
 
    SPDX-License-Identifier: Apache-2.0
 
-=============================
+======================================
 Adding a Specific System Configuration
-=============================
+======================================
 
 For a specific system, one can (optionally) add more information about the software installed on the system
 by adding Spack config files in ``benchpark/configs/$SITE/SYSTEMNAME-GENERICSYSTEM/auxiliary_software_files/``.
