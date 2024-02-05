@@ -39,28 +39,20 @@ packages:
     externals:
     - spec: cuda@11.8.0
       prefix: /usr/tce/packages/cuda/cuda-11.8.0/
-    - spec: cuda@10.2.89
-      prefix: /usr/tce/packages/cuda/cuda-10.2.89/
   curand:
     externals:
     - spec: curand@11.8.0
       prefix: /usr/tce/packages/cuda/cuda-11.8.0
-    - spec: curand@10.2.89
-      prefix: /usr/tce/packages/cuda/cuda-10.2.89/
     buildable: false
   cusparse:
     externals:
     - spec: cusparse@11.8.0
       prefix: /usr/tce/packages/cuda/cuda-11.8.0
-    - spec: cusparse@10.2.89
-      prefix: /usr/tce/packages/cuda/cuda-10.2.89/
     buildable: false
   cublas:
     externals:
     - spec: cublas@11.8.0
       prefix: /usr/tce/packages/cuda/cuda-11.8.0
-    - spec: cublas@10.2.89
-      prefix: /usr/tce/packages/cuda/cuda-10.2.89/
     buildable: false
   blas:
     buildable: false
