@@ -63,8 +63,8 @@ def main():
 
     #################
     # Tables
-    # rows: benchmarks (i.e., amg2023)
-    # columns: tag groups (i.e., application domain).  Each cell should hopefully have a tag - and some might have multiple
+    # columns: benchmarks (i.e., amg2023)
+    # rows: tag groups (i.e., application domain).  Each cell should hopefully have a tag - and some might have multiple
 
 
 if __name__ == "__main__":
