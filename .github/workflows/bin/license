@@ -24,7 +24,7 @@ licensed_files = [
     r"^configs\/[^\/]*\/[^\/]*",
     r"^docs\/[^\/]*\.rst$",
     r"^experiments\/[^\/]*\/[^\/]*",
-    r"^repo\/[^\/]*\/[^\/]*",
+    r"^repo\/[^\/]*\/[^\/]*(?<!\.patch)$",
 ]
 
 
