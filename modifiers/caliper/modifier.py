@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-from ramble.modkit import SpackModifier
+from ramble.modkit import *
 
 
 class Caliper(SpackModifier):
