@@ -34,7 +34,7 @@ ramble:
           experiments:
             scaling_{n_nodes}nodes_{size_name}:
               variables:
-                env_name: lammps_omp
+                env_name: lammps
                 processes_per_node: ['36']
               zips:
                 problems:
@@ -48,12 +48,12 @@ ramble:
   spack:
     concretized: true
     packages:
-      lammps_omp:
-        spack_spec: lammps@20230802.1 +opt+manybody+molecule+kspace+rigid+openmp+openmp-package+asphere+dpd-basic+dpd-meso+dpd-react+dpd-smooth+reaxff
+      lammps:
+        spack_spec: lammps@20231121 +opt+manybody+molecule+kspace+rigid+openmp+openmp-package+asphere+dpd-basic+dpd-meso+dpd-react+dpd-smooth+reaxff
         compiler: default-compiler
     environments:
-      lammps_omp:
+      lammps:
         packages:
         - lapack
         - default-mpi
-        - lammps_omp
+        - lammps
