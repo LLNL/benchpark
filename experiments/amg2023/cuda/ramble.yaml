@@ -29,7 +29,6 @@ ramble:
             nx: '{n}'
             ny: '{n}'
             nz: '{n}'
-            experiment_setup: ''
             gtl: ['gtl', 'nogtl']
             gtlflag: ['-M"-gpu"', '']
           experiments:
