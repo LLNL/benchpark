@@ -13,32 +13,51 @@ you can add a new directory with a name which identifies the system.
 
 The naming convention for the systems is as following::
 
-  [INTEGRATOR]-MICROARCHITECTURE[-GPU][-NETWORK]
+  SITE-[SYSTEMNAME-][INTEGRATOR]-MICROARCHITECTURE[-GPU][-NETWORK]
 
 where::
 
+  SITE = nosite | DATACENTERNAME
+
+  SYSTEMNAME = the name of the specific system
+
   INTEGRATOR = COMPANY[_PRODUCTNAME][...]
 
-Benchpark has definitions for the following systems:
+  MICROARCHITECTURE = CPU Microarchitecture
 
-- AWS_PCluster_Hpc7a-zen4-EFA
+  GPU = GPU Product Name
 
-- HPECray-zen3-MI250X-Slingshot	(Frontier, Lumi, Tioga)
+  NETWORK = Network Product Name
 
-- IBM-power9-V100-Infiniband	(Sierra)
+Benchpark has definitions for the following (nosite) systems:
 
-- Penguin-icelake-OmniPath
+- nosite-AWS_PCluster_Hpc7a-zen4-EFA
 
-- x86_64                        (generic x86 CPU only platform)
+- nosite-HPECray-zen3-MI250X-Slingshot (same hardware as Frontier, Lumi, Tioga)
 
-The following files are required for each system ``benchpark/configs/${SYSTEM}``:
+- nosite-x86_64 (x86 CPU only platform)
+
+
+
+Benchpark has definitions for the following site-specific systems:
+
+- LLNL-Magma-Penguin-icelake-OmniPath
+
+- LLNL-Sierra-IBM-power9-V100-Infiniband (Sierra, Lassen)
+
+- LLNL-Tioga-HPECray-zen3-MI250X-Slingshot
+
+
+The following files are required for each nosite system ``benchpark/configs/${SYSTEM}``:
 
 1. ``system_definition.yaml`` describes the system hardware, including the integrator (and the name of the product node or cluster type), the processor, (optionally) the accelerator, and the network; the information included here is what you will typically see recorded about the system on Top500.org.  We intend to make the system definitions in Benchpark searchable, and will add a schema to enforce consistency; until then, please copy the file and fill out all of the fields without changing the keys.  Also listed is the specific system the config was developed and tested on, as well as the known systems with the same hardware so that the users of those systems can find this system specification.
 
 .. code-block:: yaml
 
   system_definition:
-    name: HPECray-zen3-MI250X-Slingshot
+    name: HPECray-zen3-MI250X-Slingshot # or site-specific name, e.g., Frontier at ORNL
+    site:
+    system: HPECray-zen3-MI250X-Slingshot
     integrator:
       vendor: HPECray
       name: EX235a
@@ -91,8 +110,5 @@ spack section in the `Ramble configuration file
       batch_ranks: ''
       batch_timeout: ''
 
-4. Optionally, one can add more information about the software installed on the system
-by adding Spack config files in ``benchpark/configs/${SYSTEM}/auxiliary_software_files/``.
-
-- ``compilers.yaml`` defines the `compilers <https://spack.readthedocs.io/en/latest/getting_started.html#compiler-config>`_  installed on the system.
-- ``packages.yaml`` defines the pre-installed `packages <https://spack.readthedocs.io/en/latest/build_settings.html#package-settings-packages-yaml>`_   (e.g., system MPI) on the system.  One way to populate this list is to find available external packages: `spack external <https://spack.readthedocs.io/en/v0.21.0/command_index.html#spack-external>`_. 
+If defining a specific system, one can be more specific with available software versions
+and packages, as demonstrated in :doc:`add-a-site-specific-system-config`.

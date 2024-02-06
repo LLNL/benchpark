@@ -1,18 +1,20 @@
-,HPECray-zen3-MI250X-Slingshot,AWS_PCluster_Hpc7a-zen4-EFA,Penguin-icelake-OmniPath,x86_64,IBM-power9-V100-Infiniband
-**integrator.vendor**,HPECray,AWS,PenguinComputing,,IBM
-**integrator.name**,EX235a,ParallelCluster3.7.2-Hpc7a,RelionCluster,,AC922
-**processor.vendor**,AMD,AMD,Intel,,IBM
-**processor.name**,EPYC-Zen3,EPYC-Zen4,XeonPlatinum924248C,,POWER9
-**processor.ISA**,x86_64,x86_64,x86_64,x86_64,ppc64le
-**processor.uArch**,zen3,zen4,icelake,,power9
-**accelerator.vendor**,AMD,,,,NVIDIA
-**accelerator.name**,MI250X,,,,V100
-**accelerator.ISA**,GCN,,,,PTX
-**accelerator.uArch**,gfx90a,,,,sm_70
-**interconnect.vendor**,HPECray,AWS,Intel,,Mellanox
-**interconnect.name**,Slingshot11,EFA,OmniPath,,EDR-Infiniband
-**system-tested.site**,LLNL,AWS,LLNL,,LLNL
-**system-tested.name**,tioga,,magma,,lassen
-**system-tested.installation-year**,2022,,2019,,2018
-**system-tested.description**,`top500 <https://www.top500.org/system/180052>`_,`aws/hpc7a <https://aws.amazon.com/ec2/instance-types/hpc7a>`_,`top500 <https://www.top500.org/system/179774>`_,,`top500 <https://www.top500.org/system/179398>`_
-**top500-system-instances**,"Frontier (ORNL), Lumi     (CSC), Tioga    (LLNL)",,Magma (LLNL),,Sierra (LLNL)
+,Sierra,AWS_PCluster_Hpc7a-zen4-EFA,HPECray-zen3-MI250X-Slingshot,Magma,Tioga,x86_64
+**site**,LLNL,,,LLNL,LLNL,
+**system**,IBM-power9-V100-Infiniband,AWS_PCluster_Hpc7a-zen4-EFA,HPECray-zen3-MI250X-Slingshot,Penguin-icelake-OmniPath,HPECray-zen3-MI250X-Slingshot,x86_64
+**integrator.vendor**,IBM,AWS,HPECray,PenguinComputing,HPECray,
+**integrator.name**,AC922,ParallelCluster3.7.2-Hpc7a,EX235a,RelionCluster,EX235a,
+**processor.vendor**,IBM,AMD,AMD,Intel,AMD,
+**processor.name**,POWER9,EPYC-Zen4,EPYC-Zen3,XeonPlatinum924248C,EPYC-Zen3,
+**processor.ISA**,ppc64le,x86_64,x86_64,x86_64,x86_64,x86_64
+**processor.uArch**,power9,zen4,zen3,icelake,zen3,
+**accelerator.vendor**,NVIDIA,,AMD,,AMD,
+**accelerator.name**,V100,,MI250X,,MI250X,
+**accelerator.ISA**,PTX,,GCN,,GCN,
+**accelerator.uArch**,sm_70,,gfx90a,,gfx90a,
+**interconnect.vendor**,Mellanox,AWS,HPECray,Intel,HPECray,
+**interconnect.name**,EDR-Infiniband,EFA,Slingshot11,OmniPath,Slingshot11,
+**system-tested.site**,LLNL,AWS,LLNL,LLNL,LLNL,
+**system-tested.name**,lassen,,tioga,magma,tioga,
+**system-tested.installation-year**,2018,,2022,2019,2022,
+**system-tested.description**,`top500 <https://www.top500.org/system/179398>`_,`aws/hpc7a <https://aws.amazon.com/ec2/instance-types/hpc7a>`_,`top500 <https://www.top500.org/system/180052>`_,`top500 <https://www.top500.org/system/179774>`_,`top500 <https://www.top500.org/system/180052>`_,
+**top500-system-instances**,Sierra (LLNL),,"Frontier (ORNL), Lumi     (CSC), Tioga    (LLNL)",Magma (LLNL),"Frontier (ORNL), Lumi     (CSC), Tioga    (LLNL)",

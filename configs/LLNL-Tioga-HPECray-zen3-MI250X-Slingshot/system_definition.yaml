@@ -4,7 +4,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 system_definition:
-  name: HPECray-zen3-MI250X-Slingshot
+  name: Tioga
+  site: LLNL
+  system: HPECray-zen3-MI250X-Slingshot
   integrator:
     vendor: HPECray
     name: EX235a
