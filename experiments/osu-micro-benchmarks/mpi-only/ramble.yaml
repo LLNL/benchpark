@@ -19,14 +19,60 @@ ramble:
       workloads:
         osu_latency:
           variables:
+            n_ranks: [2]
+            size_name: ['internode']
+            n_nodes: [2]
+          experiments:
+            scaling_{n_nodes}nodes_{size_name}:
+              variables:
+                processes_per_node: ['1']
+        osu_latency:
+          variables:
+            n_ranks: [2]
+            size_name: ['intranode']
+            n_nodes: [1]
+          experiments:
+            scaling_{n_nodes}nodes_{size_name}:
+              variables:
+                processes_per_node: ['2']
+        osu_bibw:
+          variables:
+            n_ranks: [2]
+            size_name: ['internode']
+            n_nodes: [2]
+          experiments:
+            scaling_{n_nodes}nodes_{size_name}:
+              variables:
+                processes_per_node: ['1']
+        osu_bibw:
+          variables:
+            n_ranks: [2]
+            size_name: ['intranode']
+            n_nodes: [1]
+          experiments:
+            scaling_{n_nodes}nodes_{size_name}:
+              variables:
+                processes_per_node: ['2']
+        osu_mbw_mr:
+          variables:
             n_ranks: '{processes_per_node} * {n_nodes}'
             size_name: ['medium']
-            scaling_nodes: [1]
+            scaling_nodes: [2]
             n_nodes: '{scaling_nodes}'
           experiments:
             scaling_{n_nodes}nodes_{size_name}:
               variables:
-                processes_per_node: ['36']
+                processes_per_node: ['56']
+        osu_multi_lat:
+          variables:
+            n_ranks: '{processes_per_node} * {n_nodes}'
+            size_name: ['medium']
+            scaling_nodes: [2]
+            n_nodes: '{scaling_nodes}'
+          experiments:
+            scaling_{n_nodes}nodes_{size_name}:
+              variables:
+                processes_per_node: ['56']
   spack:
     concretized: true
     packages:
