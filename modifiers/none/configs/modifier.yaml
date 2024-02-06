@@ -1,0 +1,13 @@
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+variables:
+  modifier_package_name: 'zero-modifier'
+  modifier_spack_variant: ''
+
+spack:
+  packages:
+    zero-modifier:
+      spack_spec: 'zero-modifier'

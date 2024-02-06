@@ -165,8 +165,8 @@ def benchpark_setup(subparsers, actions_dict):
     create_parser.add_argument(
         "--modifier",
         type=str,
-        default="caliper",
-        help="The modifier to apply to the experiment (default caliper)",
+        default="none",
+        help="The modifier to apply to the experiment (default none)",
     )
 
     actions_dict["setup"] = benchpark_setup_handler
