@@ -116,75 +116,68 @@ packages:
     - spec: bison@3.0.4
       prefix: /usr
   rocprim:
+    buildable: false
     externals:
     - spec: rocprim@5.4.3
       prefix: /opt/rocm-5.4.3
-      buildable: false
     - spec: rocprim@5.5.1
       prefix: /opt/rocm-5.5.1
-      buildable: false
   rocrand:
+    buildable: false
     externals:
     - spec: rocrand@5.4.3
       prefix: /opt/rocm-5.4.3/hiprand
-      buildable: false
     - spec: rocrand@5.5.1
       prefix: /opt/rocm-5.5.1/hiprand
-      buildable: false
   rocsparse:
+    buildable: false
     externals:
     - spec: rocsparse@5.4.3
       prefix: /opt/rocm-5.4.3
-      buildable: false
     - spec: rocsparse@5.5.1
       prefix: /opt/rocm-5.5.1
-      buildable: false
   rocthrust:
+    buildable: false
     externals:
     - spec: rocthrust@5.4.3
       prefix: /opt/rocm-5.4.3
     - spec: rocthrust@5.5.1
       prefix: /opt/rocm-5.5.1
-    buildable: false
   hip:
+    buildable: false
     externals:
     - spec: hip@5.4.3
       prefix: /opt/rocm-5.4.3
     - spec: hip@5.5.1
       prefix: /opt/rocm-5.5.1
-    buildable: false
   hsa-rocr-dev:
+    buildable: false
     externals:
     - spec: hsa-rocr-dev@5.4.3
       prefix: /opt/rocm-5.4.3
-      buildable: false
     - spec: hsa-rocr-dev@5.5.1
       prefix: /opt/rocm-5.5.1
-      buildable: false
   llvm-amdgpu:
+    buildable: false
     externals:
     - spec: llvm-amdgpu@5.4.3
       prefix: /opt/rocm-5.4.3/llvm
-      buildable: false
     - spec: llvm-amdgpu@5.5.1
       prefix: /opt/rocm-5.5.1/llvm
-      buildable: false
   rocblas:
+    buildable: false
     externals:
     - spec: rocblas@5.4.3
       prefix: /opt/rocm-5.4.3
-      buildable: false
     - spec: rocblas@5.5.1
       prefix: /opt/rocm-5.5.1
-      buildable: false
   rocsolver:
+    buildable: false
     externals:
     - spec: rocsolver@5.4.3
       prefix: /opt/rocm-5.4.3
-      buildable: false
     - spec: rocsolver@5.5.1
       prefix: /opt/rocm-5.5.1
-      buildable: false
   cray-libsci:
     externals:
     - spec: cray-libsci@23.05.1.4%cce
