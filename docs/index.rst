@@ -25,6 +25,7 @@
 
    catalogue-of-benchmarks
    available-system-specs
+   benchmark-tags
    benchpark-help
 
 .. toctree::

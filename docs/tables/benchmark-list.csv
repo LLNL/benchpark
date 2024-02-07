@@ -1,0 +1,12 @@
+,hpcc,md-test,saxpy,hpl,hpcg,lammps,osu-micro-benchmarks,streamc,amg2023,raja-perf
+application-domain,[],[],[],[],[],['molecular-dynamics'],[],[],"['asc', 'engineering']",['asc']
+benchmark-scale,[],[],['single-node'],[],[],[],[],[],"['large-scale', 'multi-node', 'single-node', 'sub-node']","['single-node', 'sub-node']"
+communication,[],[],[],[],[],[],[],[],['mpi'],['mpi']
+communication-performance-characteristics,[],[],[],[],[],[],[],[],"['network-collectives', 'network-latency-bound']","['network-latency-bound', 'network-point-to-point']"
+compute-performance-characteristics,[],[],[],[],[],[],[],[],"['high-branching', 'mixed-precision']","['atomics', 'register-pressure', 'simd', 'vectorization']"
+math-libraries,[],[],[],[],[],[],[],[],['hypre'],[]
+memory-access-characteristics,[],[],"['high-memory-bandwidth', 'regular-memory-access']",[],[],[],[],[],"['high-memory-bandwidth', 'irregular-memory-access', 'large-memory-footprint', 'regular-memory-access']","['high-memory-bandwidth', 'regular-memory-access']"
+mesh-representation,[],[],[],[],[],[],[],[],['block-structured-grid'],['structured-grid']
+method-type,[],[],[],[],[],[],[],[],"['solver', 'sparse-linear-algebra']",[]
+programming-language,[],[],['c++'],[],[],[],[],[],['c'],['c++']
+programming-model,[],[],"['cuda', 'hip', 'openmp']",[],[],[],[],[],"['cuda', 'hip', 'openmp']","['cuda', 'hip', 'openmp', 'raja', 'sycl']"

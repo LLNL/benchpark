@@ -27,14 +27,6 @@ def main():
     benchmarks = list()
     benchpark_benchmarks(benchmarks)
 
-    for i in benchmarks:
-        application_file = "../repo/%s/application.py" % i
-        if os.path.exists(application_file):
-            with open(application_file) as f:
-                for line in f.readlines():
-                    if re.search(r'tags = \[', line):
-                        print(line)
-
     f = "../tags.yaml"
     with open(f, "r") as stream:
         try:
@@ -55,11 +47,80 @@ def main():
         print(k + ": " + str(v))
     print("\n")
 
-    df = pd.DataFrame({
-        #"benchmarks": benchmarks,
-        "tag group": tag_dicts.keys(),
-    })
-    print(df)
+    tags_benchmark_map = {}
+    tags_benchmark_map["hpcc"] = ['DGEMM', 'benchmark', 'benchmark-app', 'mini-app']
+    tags_benchmark_map["md-test"] = ['IO', 'synthetic-benchmarks']
+    tags_benchmark_map["saxpy"] = ['c++', 'cuda', 'high-memory-bandwidth', 'hip', 'openmp', 'regular-memory-access', 'single-node']
+    tags_benchmark_map["hpl"] = ['benchmark', 'benchmark-app', 'linpack']
+    tags_benchmark_map["hpcg"] = ['benchmark', 'benchmark-app', 'mini-app']
+    tags_benchmark_map["lammps"] = ['molecular-dynamics']
+    tags_benchmark_map["osu-micro-benchmarks"] = ['synthetic-benchmarks']
+    tags_benchmark_map["streamc"] = ['memory-benchmark', 'memorybenchmark', 'micro-benchmark', 'microbenchmark']
+    tags_benchmark_map["amg2023"] = ['asc', 'block-structured-grid', 'c', 'cuda', 'engineering', 'high-branching', 'high-memory-bandwidth', 'hip', 'hypre', 'irregular-memory-access', 'large-memory-footprint', 'large-scale', 'mixed-precision', 'mpi', 'multi-node', 'network-collectives', 'network-latency-bound', 'openmp', 'regular-memory-access', 'single-node', 'solver', 'sparse-linear-algebra', 'sub-node']
+    tags_benchmark_map["raja-perf"] = ['asc', 'atomics', 'c++', 'cuda', 'high-memory-bandwidth', 'hip', 'mpi', 'network-latency-bound', 'network-point-to-point', 'openmp', 'raja', 'register-pressure', 'regular-memory-access', 'simd', 'single-node', 'structured-grid', 'sub-node', 'sycl', 'vectorization']
+
+    main = dict()
+
+#d["amg"] = {
+#    "appliation-domain": [asc, engineering],
+#    "benchmark-scale": []
+#}
+
+    tags_taggroups = {}
+    for bmark in benchmarks:
+        tags_taggroups[bmark] = {}
+        for k, v in tag_dicts.items():
+            tags_taggroups[bmark][k] = []
+
+#    for bmark, tags in tags_benchmark_map.items():
+#        for t in tags:
+#            for k, v in tag_dicts.items():
+#                print(bmark, t, k, "filling tags_taggroups dict")
+#        print("zero out tags_taggroups dict")
+#        print("save to benchmark dict")
+
+    for bmark, tags in tags_benchmark_map.items():
+        for t in tags:
+            for k, v in tag_dicts.items():
+                if t in v:
+                    print("appending", t, "at key", k)
+                    tags_taggroups[bmark][k].append(t)
+        main[bmark] = tags_taggroups[bmark]
+        #tags_taggroups = tags_taggroups.fromkeys(tags_taggroups, [])
+
+#    for bmark, v in main.items():
+#        print(bmark)
+#        print(v)
+#        print("\n")
+
+    df = pd.DataFrame(main)
+    df.to_csv("tables/benchmark-list.csv")
+
+#    df_list = []
+#    for bmark, tags in tags_taggroups.items():
+#        print(bmark)
+#        print(tags)
+#        #df_list.append(tags)
+#        print(tags_benchmark_map[bmark])
+#        print("")
+#
+
+    #df = pd.DataFrame(df_list, columns=benchmarks)
+    #print(df)
+
+    #for i in benchmarks:
+    #    application_file = "../repo/%s/application.py" % i
+    #    if os.path.exists(application_file):
+    #        with open(application_file) as f:
+    #            for line in f.readlines():
+    #                if re.search(r'tags = \[', line):
+    #                    print(line)
+
+    #df2 = pd.DataFrame({
+    #    "tag group": pd.Series(tag_groups),
+    #})
+    #res = df2.join(df)
+    #print(res)
 
     #################
     # Tables
