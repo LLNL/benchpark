@@ -31,7 +31,6 @@ ramble:
             nx: '{n}'
             ny: '{n}'
             nz: '{n}'
-            experiment_setup: ''
             processes_per_node: ['8', '4']
             n_nodes: ['1', '2']
             threads_per_node_core: ['8', '10', '13'] #TODO: Specify n_threads according to available n_nodes and n_ranks

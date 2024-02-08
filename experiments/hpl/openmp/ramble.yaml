@@ -30,7 +30,6 @@ ramble:
             Ns: 10000
             N-NBs: 1
             NBs: 128
-            experiment_setup: ''
             processes_per_node: '8'
             n_nodes: '1'
             omp_num_threads: ['2', '4', '8']

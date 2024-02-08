@@ -23,7 +23,6 @@ ramble:
             nx: '{n}'
             ny: '{n}'
             nz: '{n}'
-            experiment_setup: ''
             gtl: ['gtl', 'nogtl']
             gtlflag: ['-M"-gpu"', '']
           experiments:
@@ -47,7 +46,7 @@ ramble:
         spack_spec: hypre@2.28.0 +mpi+cuda+mixedint cuda_arch=={cuda_arch} ^cuda@{default_cuda_version}
         compiler: default-compiler
       amg2023:
-        spack_spec: amg2023@develop +mpi+cuda ^cuda@{default_cuda_version}
+        spack_spec: amg2023@develop +mpi+cuda cuda_arch=={cuda_arch} ^cuda@{default_cuda_version}
         compiler: default-compiler
     environments:
       amg2023:
