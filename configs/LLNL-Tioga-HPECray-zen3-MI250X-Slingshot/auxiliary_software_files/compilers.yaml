@@ -18,8 +18,10 @@ compilers:
     operating_system: rhel8
     target: x86_64
     modules: []
-    environment: {}
-    extra_rpaths: [/opt/cray/pe/gcc-libs/]
+    environment:
+      prepend_path:
+        LD_LIBRARY_PATH: /opt/cray/pe/cce/16.0.0/cce/x86_64/lib
+    extra_rpaths: [/opt/cray/pe/cce/16.0.0/cce/x86_64/lib/, /opt/cray/pe/gcc-libs/]
 - compiler:
     spec: gcc@12.2.0
     paths:
