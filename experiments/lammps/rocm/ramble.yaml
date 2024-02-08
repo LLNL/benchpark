@@ -32,7 +32,7 @@ ramble:
                 size_z: [32]
                 timesteps: 100
                 input_file: '{input_path}/in.reaxc.hns'
-                lammps_flags: '-k on g 1 -sf kk -pk kokkos gpu/aware on neigh half comm device neigh/qeq full newton on -v x {size_x} -v y {size_y} -v z {size_z} -nocite'
+                lammps_flags: '-k on g 1 -sf kk -pk kokkos gpu/aware off neigh half comm device neigh/qeq full newton on -v x {size_x} -v y {size_y} -v z {size_z} -nocite'
               zips:
                 problems:
                 - size_name
