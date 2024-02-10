@@ -22,8 +22,8 @@ ramble:
           variables:
             experiment_setup: ''
             n_ranks: '{processes_per_node} * {n_nodes}'
-            processes_per_node: '4'
-            n_nodes: '2'
+            processes_per_node: '2'
+            n_nodes: '4'
             omp_num_threads: '22'
             target: 'gpu'
           experiments:
@@ -44,15 +44,13 @@ ramble:
   spack:
     concretized: true
     packages:
-      fftw:
-        spack_spec: fftw@3.3.10 +mpi+openmp
-        compiler: default-compiler
       gromacs:
-        spack_spec: gromacs@2023.3 +mpi+openmp+cuda~hwloc cuda_arch=={cuda_arch} ^cuda@{default_cuda_version}
+        spack_spec: gromacs@2023.3 +mpi+openmp+cuda~hwloc~double cuda_arch=={cuda_arch} ^cuda@{default_cuda_version}
         compiler: default-compiler
     environments:
       gromacs:
         packages:
+        - blas
         - lapack
         - default-mpi
         - fftw
