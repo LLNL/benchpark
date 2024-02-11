@@ -8,10 +8,14 @@ spack:
     default-compiler:
       spack_spec: gcc@=11.2.1
     default-mpi:
-      spack_spec: mvapich2@2.3.7
+      spack_spec: mvapich2@2.3.7-gcc1121
     compiler-gcc:
       spack_spec: gcc@=11.2.1
+    blas:
+      spack_spec: intel-oneapi-mkl@2022.1.0
     cublas-cuda:
       spack_spec: cublas@{default_cuda_version}
     lapack:
+      spack_spec: intel-oneapi-mkl@2022.1.0
+    fftw:
       spack_spec: intel-oneapi-mkl@2022.1.0

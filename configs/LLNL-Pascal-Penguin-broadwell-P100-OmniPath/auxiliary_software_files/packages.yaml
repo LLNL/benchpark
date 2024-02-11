@@ -27,18 +27,6 @@ packages:
     externals:
     - spec: autoconf@2.69
       prefix: /usr
-  mpi:
-    buildable: false
-  mvapich2:
-    buildable: false
-    externals:
-    - spec: mvapich2@2.3.7%intel@2021.6.0
-      prefix: /usr/tce/packages/mvapich2/mvapich2-2.3.7-intel-classic-2021.6.0/
-  cuda:
-    buildable: false
-    externals:
-    - spec: cuda@11.8.0
-      prefix: /usr/tce/packages/cuda/cuda-11.8.0/
   curand:
     externals:
     - spec: curand@11.8.0
@@ -49,16 +37,47 @@ packages:
     - spec: cusparse@11.8.0
       prefix: /usr/tce/packages/cuda/cuda-11.8.0
     buildable: false
+  cuda:
+    externals:
+    - spec: cuda@11.8.0
+      prefix: /usr/tce/packages/cuda/cuda-11.8.0
+    buildable: false
   cublas:
     externals:
     - spec: cublas@11.8.0
       prefix: /usr/tce/packages/cuda/cuda-11.8.0
     buildable: false
+  cusolver:
+    externals:
+    - spec: cusolver@11.8.0
+      prefix: /usr/tce/packages/cuda/cuda-11.8.0
+    buildable: false
   blas:
+    externals:
+    - spec: intel-oneapi-mkl@2022.1.0
+      prefix: /usr/tce/packages/mkl/mkl-2022.1.0
+    buildable: false
+  fftw:
+    externals:
+    - spec: intel-oneapi-mkl@2022.1.0
+      prefix: /usr/tce/packages/mkl/mkl-2022.1.0
     buildable: false
   lapack:
+    externals:
+    - spec: intel-oneapi-mkl@2022.1.0
+      prefix: /usr/tce/packages/mkl/mkl-2022.1.0
     buildable: false
   intel-oneapi-mkl:
     externals:
     - spec: intel-oneapi-mkl@2022.1.0
       prefix: /usr/tce/packages/mkl/mkl-2022.1.0/
+    buildable: false
+  mpi:
+    buildable: false
+  mvapich2:
+    externals:
+    - spec: mvapich2@2.3.7-gcc1121
+      prefix: /usr/tce/packages/mvapich2/mvapich2-2.3.7-gcc-11.2.1
+    - spec: mvapich2@2.3.7-intel202160
+      prefix: /usr/tce/packages/mvapich2/mvapich2-2.3.7-intel-classic-2021.6.0/
+    buildable: false
