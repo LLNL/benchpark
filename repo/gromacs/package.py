@@ -494,6 +494,7 @@ class CMakeBuilder(spack.build_systems.cmake.CMakeBuilder):
             else:
                 options.append("-DGMX_GPLUSPLUS_PATH=%s/g++" % self.spec["gcc"].prefix.bin)
 
+        target = self.spec.target
         if target.family == "ppc64le":
             options.append("-DGMX_GPLUSPLUS_PATH=%s/g++" % '/usr/tce/packages/gcc/gcc-11.2.1/bin')
 
