@@ -4,10 +4,5 @@
 # SPDX-License-Identifier: Apache-2.0
 
 variables:
-  modifier_package_name: 'zero-modifier'
+  modifier_package_name: ''
   modifier_spack_variant: ''
-
-spack:
-  packages:
-    zero-modifier:
-      spack_spec: 'zero-modifier'

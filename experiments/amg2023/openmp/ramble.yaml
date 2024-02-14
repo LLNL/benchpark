@@ -60,4 +60,4 @@ ramble:
         - default-mpi
         - hypre-omp
         - amg2023-omp
-        - '{modifier_spack_variant}'
+        - '{modifier_package_name}'
