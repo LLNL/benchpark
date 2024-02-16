@@ -494,10 +494,6 @@ class CMakeBuilder(spack.build_systems.cmake.CMakeBuilder):
             else:
                 options.append("-DGMX_GPLUSPLUS_PATH=%s/g++" % self.spec["gcc"].prefix.bin)
 
-        target = self.spec.target
-        if target.family == "ppc64le":
-            options.append("-DGMX_GPLUSPLUS_PATH=%s/g++" % '/usr/tce/packages/gcc/gcc-11.2.1/bin')
-
         if "+double" in self.spec:
             options.append("-DGMX_DOUBLE:BOOL=ON")
 
@@ -543,13 +539,20 @@ class CMakeBuilder(spack.build_systems.cmake.CMakeBuilder):
         if "+cuda" in self.spec:
             options.append("-DCUDA_TOOLKIT_ROOT_DIR:STRING=" + self.spec["cuda"].prefix)
 
-        options.append("-DGMX_EXTERNAL_LAPACK:BOOL=ON")
-        if self.spec["lapack"].libs:
-            options.append("-DGMX_LAPACK_USER={0}".format(self.spec["lapack"].libs.joined(";")))
+        target = self.spec.target
+        if "+cuda" in self.spec and target.family == "ppc64le":
+            options.append("-DGMX_EXTERNAL_LAPACK:BOOL=OFF")
+        else:
+            options.append("-DGMX_EXTERNAL_LAPACK:BOOL=ON")
+            if self.spec["lapack"].libs:
+                options.append("-DGMX_LAPACK_USER={0}".format(self.spec["lapack"].libs.joined(";")))
 
-        options.append("-DGMX_EXTERNAL_BLAS:BOOL=ON")
-        if self.spec["blas"].libs:
-            options.append("-DGMX_BLAS_USER={0}".format(self.spec["blas"].libs.joined(";")))
+        if "+cuda" in self.spec and target.family == "ppc64le":
+            options.append("-DGMX_EXTERNAL_BLAS:BOOL=OFF")
+        else:
+            options.append("-DGMX_EXTERNAL_BLAS:BOOL=ON")
+            if self.spec["blas"].libs:
+                options.append("-DGMX_BLAS_USER={0}".format(self.spec["blas"].libs.joined(";")))
 
         if "+cp2k" in self.spec:
             options.append("-DGMX_CP2K:BOOL=ON")

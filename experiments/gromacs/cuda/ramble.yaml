@@ -24,7 +24,7 @@ ramble:
             n_ranks: '{processes_per_node} * {n_nodes}'
             processes_per_node: '2'
             n_nodes: '4'
-            omp_num_threads: '22'
+            omp_num_threads: '10'
             target: 'gpu'
           experiments:
             gromacs_water_gmx50_adac_size{size}_dlb{dlb}_pin{pin}_target{target}_maxh{maxh}_nsteps{nsteps}_nstlist{nstlist}_npme{npme}:
@@ -33,23 +33,27 @@ ramble:
                 pin: 'off'
                 nb: '{target}'
                 pme: 'auto'
-                bonded: '{target}'
+                bonded: 'cpu'
                 update: '{target}'
                 maxh: '0.05'
                 nsteps: '1000'
                 nstlist: '200'
-                npme: '0'
+                npme: '1'
                 size: '1536'
 
   spack:
     concretized: true
     packages:
       gromacs:
-        spack_spec: gromacs@2023.3 +mpi+openmp+cuda~hwloc~double cuda_arch=={cuda_arch} ^cuda@{default_cuda_version}
+        spack_spec: gromacs@2023.3 +mpi+openmp+cuda~hwloc~double cuda_arch=={cuda_arch}
+        compiler: default-compiler
+      cuda:
+        spack_spec: cuda@{default_cuda_version}+allow-unsupported-compilers
         compiler: default-compiler
     environments:
       gromacs:
         packages:
+        - cuda
         - blas
         - lapack
         - default-mpi
