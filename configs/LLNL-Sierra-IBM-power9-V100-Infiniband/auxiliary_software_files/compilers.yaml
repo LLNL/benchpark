@@ -79,7 +79,5 @@ compilers:
     operating_system: rhel7
     target: ppc64le
     modules: []
-    environment:
-      set:
-        GXX_PREFIX: "/usr/tce/packages/gcc/gcc-11.2.1"
+    environment: {}
     extra_rpaths: []
