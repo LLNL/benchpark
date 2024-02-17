@@ -46,16 +46,16 @@ ramble:
     packages:
       gromacs:
         spack_spec: gromacs@2023.3 +mpi+openmp+cuda~hwloc~double cuda_arch=={cuda_arch}
-        compiler: default-compiler
+        compiler: compiler-clang
       cuda:
         spack_spec: cuda@{default_cuda_version}+allow-unsupported-compilers
-        compiler: default-compiler
+        compiler: compiler-clang
     environments:
       gromacs:
         packages:
         - cuda
         - blas
         - lapack
-        - default-mpi
+        - mpi-clang
         - fftw
         - gromacs
