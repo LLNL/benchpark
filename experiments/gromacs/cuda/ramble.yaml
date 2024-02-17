@@ -17,7 +17,7 @@ ramble:
           env_vars:
             set:
               OMP_PROC_BIND: close
-              OMP_PLACES: threads
+              OMP_PLACES: cores
               OMP_NUM_THREADS: '{omp_num_threads}'
           variables:
             experiment_setup: ''
@@ -46,16 +46,16 @@ ramble:
     packages:
       gromacs:
         spack_spec: gromacs@2023.3 +mpi+openmp+cuda~hwloc~double cuda_arch=={cuda_arch}
-        compiler: compiler-clang
+        compiler: default-compiler
       cuda:
         spack_spec: cuda@{default_cuda_version}+allow-unsupported-compilers
-        compiler: compiler-clang
+        compiler: default-compiler
     environments:
       gromacs:
         packages:
         - cuda
         - blas
         - lapack
-        - mpi-clang
+        - default-mpi
         - fftw
         - gromacs

@@ -17,7 +17,7 @@ ramble:
           env_vars:
             set:
               OMP_PROC_BIND: close
-              OMP_PLACES: threads
+              OMP_PLACES: cores
               OMP_NUM_THREADS: '{omp_num_threads}'
           variables:
             experiment_setup: ''
