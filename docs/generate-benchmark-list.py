@@ -4,6 +4,8 @@ import pandas as pd
 import yaml
 import os
 import re
+import sys
+import subprocess
 
 
 def construct_tag_groups(tag_groups, tag_dicts, dictionary):
@@ -23,7 +25,7 @@ def benchpark_benchmarks(benchmarks):
     return benchmarks
 
 
-def main():
+def main(workspace):
     benchmarks = list()
     benchpark_benchmarks(benchmarks)
 
@@ -79,7 +81,12 @@ def main():
 #        print("zero out tags_taggroups dict")
 #        print("save to benchmark dict")
 
-    for bmark, tags in tags_benchmark_map.items():
+    for bmark in benchmarks:
+        # call benchpark tags -a bmark workspace
+        cmd = ["benchpark", "tags", "-a", bmark, workspace]
+        print("RRR", cmd)
+        tags = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+    #for bmark, tags in tags_benchmark_map.items():
         for t in tags:
             for k, v in tag_dicts.items():
                 if t in v:
@@ -129,4 +136,10 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        workspace = sys.argv[1]
+    except IndexError:
+        print("Usage: " + os.path.basename(__file__) + " <workspace>")
+        sys.exit(1)
+
+    main(workspace)
