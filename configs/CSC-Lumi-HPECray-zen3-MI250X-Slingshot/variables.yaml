@@ -12,7 +12,6 @@ variables:
   batch_nodes: '#SBATCH -N {n_nodes}'
   batch_ranks: '#SBATCH -n {n_ranks}'
   batch_timeout: '#SBATCH -t {batch_time}:00'
-  allocation: '#SBATCH -A project_465000810'
   cpu_partition: '#SBATCH -p small'
   gpu_partition: '#SBATCH -p small-g' 
   gpu_config: '#SBATCH --gpus-per-task=1'
