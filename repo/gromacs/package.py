@@ -274,6 +274,7 @@ class Gromacs(CMakePackage, CudaPackage, ROCmPackage):
     depends_on("sycl", when="+sycl")
     depends_on("lapack")
     depends_on("blas")
+    depends_on("hipsycl", when="+rocm")
     depends_on("gcc", when="%oneapi ~intel_provided_gcc")
     depends_on("gcc", when="%intel ~intel_provided_gcc")
 
