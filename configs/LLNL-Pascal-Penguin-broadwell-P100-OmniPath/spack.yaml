@@ -6,12 +6,12 @@
 spack:
   packages:
     default-compiler:
-      spack_spec: xl@16.1.1-2022.08.19-cuda{default_cuda_version}
+      spack_spec: gcc@=11.2.1
     default-mpi:
-      spack_spec: spectrum-mpi@2022.08.19
+      spack_spec: mvapich2@2.3.7
     compiler-gcc:
-      spack_spec: gcc@8.3.1
+      spack_spec: gcc@=11.2.1
     cublas-cuda:
-      spack_spec: cublas@{default_cuda_version} 
+      spack_spec: cublas@{default_cuda_version}
     lapack:
-      spack_spec: lapack-xl@3.9.0
+      spack_spec: intel-oneapi-mkl@2022.1.0

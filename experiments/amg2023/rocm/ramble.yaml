@@ -23,7 +23,6 @@ ramble:
             nx: '{n}'
             ny: '{n}'
             nz: '{n}'
-            experiment_setup: ''
           experiments:
             '{env_name}_problem1_{n_nodes}_{px}_{py}_{pz}_{nx}_{ny}_{nz}':
               variables:

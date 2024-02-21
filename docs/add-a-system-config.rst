@@ -111,4 +111,4 @@ spack section in the `Ramble configuration file
       batch_timeout: ''
 
 If defining a specific system, one can be more specific with available software versions
-and packages, as demonstrated in :doc:`add-a-specific-system-config.rst`.
+and packages, as demonstrated in :doc:`add-a-site-specific-system-config`.

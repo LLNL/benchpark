@@ -21,7 +21,6 @@ ramble:
           variables:
             n_ranks: ['1', '2', '4', '8']
             n_nodes: '1'
-            experiment_setup: ''
           experiments:
             mdtest_multifile_{num-objects}_{iterations}_{additional-args}_{n_nodes}_{n_ranks}:
               variables:

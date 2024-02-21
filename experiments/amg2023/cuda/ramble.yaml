@@ -23,25 +23,14 @@ ramble:
             nx: '{n}'
             ny: '{n}'
             nz: '{n}'
-            experiment_setup: ''
             gtl: ['gtl', 'nogtl']
             gtlflag: ['-M"-gpu"', '']
           experiments:
-            # because MPS only works for cuda<=v10
-            amg2023_cuda_10_problem1_{gtl}_{n_nodes}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
+            amg2023_cuda_problem1_{gtl}_{n_nodes}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
               variables:
-                experiment_setup: '{enable_mps}'
-                env_name: amg2023-cuda-10
-                processes_per_node: '8'
-                n_nodes: '1'
-              matrices:
-                - size:
-                  - n
-            amg2023_cuda_default_problem1_{gtl}_{n_nodes}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
-              variables:
-                env_name: amg2023-cuda-default
-                processes_per_node: ['4', '2']
-                n_nodes: ['2', '4']
+                env_name: amg2023
+                processes_per_node: '4'
+                n_nodes: '2'
               zips:
                 gtl_info:
                 - gtl
@@ -52,22 +41,18 @@ ramble:
                   - gtl_info
   spack:
     concretized: true
-    variables:
-      cuda_version: ['{cuda10_version}', '{default_cuda_version}']
-      cuda_compiler: ['compiler-cuda10', 'default-compiler']
-      versions: ['10', 'default']
     packages:
-      hypre-cuda-{versions}:
-        spack_spec: 'hypre@2.28.0 +mpi+cuda+mixedint cuda_arch=={cuda_arch} ^cuda@{cuda_version}'
-        compiler: '{cuda_compiler}'
-      amg2023-cuda-{versions}:
-        spack_spec: 'amg2023@develop +mpi+cuda ^cuda@{cuda_version}'
-        compiler: '{cuda_compiler}'
+      hypre:
+        spack_spec: hypre@2.28.0 +mpi+cuda+mixedint cuda_arch=={cuda_arch} ^cuda@{default_cuda_version}
+        compiler: default-compiler
+      amg2023:
+        spack_spec: amg2023@develop +mpi+cuda cuda_arch=={cuda_arch} ^cuda@{default_cuda_version}
+        compiler: default-compiler
     environments:
-      amg2023-cuda-{versions}:
+      amg2023:
         packages:
-        - cublas-cuda-{versions}
+        - cublas-cuda
         - lapack
         - default-mpi
-        - hypre-cuda-{versions}
-        - amg2023-cuda-{versions}
+        - hypre
+        - amg2023
