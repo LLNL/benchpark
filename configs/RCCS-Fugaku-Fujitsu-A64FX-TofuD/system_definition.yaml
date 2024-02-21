@@ -1,5 +1,10 @@
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: Apache-2.0
+
 system_definition:
-  name: Supercomputer Fugaku
+  name: Fugaku
   site: RIKEN Center for Computational Science
   system: Fujitsu-A64FX-TofuD
   integrator:
@@ -17,7 +22,7 @@ system_definition:
     uArch:
   interconnect:
     vendor: Fujitsu
-    name: Tofu Interconnect D
+    name: TofuInterconnectD
   system-tested:
     site: R-CCS
     name: Fugaku
