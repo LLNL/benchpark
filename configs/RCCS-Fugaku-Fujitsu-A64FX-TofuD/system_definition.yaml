@@ -5,16 +5,16 @@
 
 system_definition:
   name: Fugaku
-  site: RIKEN
+  site: RIKEN Center for Computational Science
   system: Fujitsu-A64FX-TofuD
   integrator:
     vendor: Fujitsu
-    name:
+    name: FX1000
   processor:
-    vendor: ARM
+    vendor: Fujitsu
     name: A64FX
     ISA: Armv8.2-A-SVE
-    uArch: aarch
+    uArch: aarch64
   accelerator:
     vendor:
     name:
@@ -22,11 +22,11 @@ system_definition:
     uArch:
   interconnect:
     vendor: Fujitsu
-    name: TofuD
+    name: TofuInterconnectD
   system-tested:
-    site: RIKEN
+    site: R-CCS
     name: Fugaku
-    installation-year: 2019
-    description: top500 <https://www.top500.org/system/179807>
+    installation-year: 2020
+    description: top500 <https://www.top500.org/system/179807/>
   top500-system-instances:
-    - Fugaku (RIKEN)
+    - Fugaku (R-CCS)

@@ -6,14 +6,18 @@
 spack:
   packages:
     default-compiler:
-      spack_spec: fcc # 
-    compiler-gcc:
-      spack_spec: gcc
-    compiler-intel:
-      spack_spec: intel
+      spack_spec: fj@{default_fujitsu_version}
     default-mpi:
-      spack_spec: fujitsu-mpi # mpifcc, mpich-tofu
+      spack_spec: fujitsu-mpi@head%fj@{default_fujitsu_version}
+    compiler-gcc:
+      spack_spec: gcc@12.2.0
+    compiler-fujitsu:
+      spack_spec: fj@{default_fujitsu_version}
     blas:
-      spack_spec: blas
+      spack_spec: fujitsu-ssl2@head%fj@{default_fujitsu_version}
     lapack:
-      spack_spec: lapack
+      spack_spec: fujitsu-ssl2@head%fj@{default_fujitsu_version}
+    mpi-gcc:
+      spack_spec: fujitsu-mpi@head%gcc@12.2.0
+    mpi-fujitsu:
+      spack_spec: fujitsu-mpi@head%fj@{default_fujitsu_version}
