@@ -3,7 +3,6 @@
 import pandas as pd
 import yaml
 import os
-import re
 import sys
 import subprocess
 
