@@ -1,0 +1,13 @@
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+variables:
+  batch_time: '02:00'
+  mpi_command: 'mpiexec'
+  batch_submit: 'pjsub {execute_experiment}'
+  batch_nodes: '#PJM -L "node={n_nodes}"'
+  batch_ranks: '#PJM --mpi proc={n_ranks}'
+  batch_timeout: '#PJM -L "elapse={batch_time}:00"'
+  default_fujitsu_version: '4.8.1'
