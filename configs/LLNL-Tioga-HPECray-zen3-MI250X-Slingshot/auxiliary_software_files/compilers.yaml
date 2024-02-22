@@ -21,21 +21,55 @@ compilers:
     environment: {}
     extra_rpaths: [/opt/cray/pe/gcc-libs/]
 - compiler:
-    spec: clang@16.0.0-rocm5.5.1
+    spec: rocmcc@5.5.1
     paths:
       cc:  /opt/rocm-5.5.1/bin/amdclang
       cxx:  /opt/rocm-5.5.1/bin/amdclang++
       f77: /opt/rocm-5.5.1/bin/amdflang 
       fc:  /opt/rocm-5.5.1/bin/amdflang
     flags:
-      cflags: -g -O2 --gcc-toolchain=/opt/rh/gcc-toolset-12/root/usr
-      cxxflags: -g -O2 -std=c++17 --gcc-toolchain=/opt/rh/gcc-toolset-12/root/usr
-      fflags: -g -O2 -hnopattern
+      cflags: -g -O2
+      cxxflags: -g -O2
     operating_system: rhel8
     target: x86_64
     modules: []
-    environment: {}
-    extra_rpaths: []
+    environment:
+      set:
+        RFE_811452_DISABLE: '1'
+      append_path:
+        LD_LIBRARY_PATH: /opt/cray/pe/gcc-libs
+      prepend_path:
+        LD_LIBRARY_PATH: "/opt/cray/pe/cce/16.0.0/cce/x86_64/lib:/opt/cray/pe/pmi/6.1.12/lib"
+        LIBRARY_PATH: /opt/rocm-5.5.1/lib
+    extra_rpaths:
+    - /opt/rocm-5.5.1/lib
+    - /opt/cray/pe/gcc-libs
+    - /opt/cray/pe/cce/16.0.0/cce/x86_64/lib
+- compiler:
+    spec: rocmcc@5.4.3
+    paths:
+      cc:  /opt/rocm-5.4.3/bin/amdclang
+      cxx:  /opt/rocm-5.4.3/bin/amdclang++
+      f77: /opt/rocm-5.4.3/bin/amdflang 
+      fc:  /opt/rocm-5.4.3/bin/amdflang
+    flags:
+      cflags: -g -O2
+      cxxflags: -g -O2
+    operating_system: rhel8
+    target: x86_64
+    modules: []
+    environment:
+      set:
+        RFE_811452_DISABLE: '1'
+      append_path:
+        LD_LIBRARY_PATH: /opt/cray/pe/gcc-libs
+      prepend_path:
+        LD_LIBRARY_PATH: "/opt/cray/pe/cce/16.0.0/cce/x86_64/lib:/opt/cray/pe/pmi/6.1.12/lib"
+        LIBRARY_PATH: /opt/rocm-5.4.3/lib
+    extra_rpaths:
+    - /opt/rocm-5.4.3/lib
+    - /opt/cray/pe/gcc-libs
+    - /opt/cray/pe/cce/16.0.0/cce/x86_64/lib
 - compiler:
     spec: gcc@12.2.0
     paths:

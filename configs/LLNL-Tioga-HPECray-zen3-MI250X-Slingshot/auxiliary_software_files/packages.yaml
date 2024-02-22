@@ -166,6 +166,27 @@ packages:
     - spec: hsa-rocr-dev@5.5.1
       prefix: /opt/rocm-5.5.1
       buildable: false
+  comgr:
+    buildable: false
+    externals:
+    - spec: comgr@5.4.3
+      prefix: /opt/rocm-5.4.3/
+    - spec: comgr@5.5.1
+      prefix: /opt/rocm-5.5.1/
+  hipsparse:
+    buildable: false
+    externals:
+    - spec: hipsparse@5.4.3
+      prefix: /opt/rocm-5.4.3
+    - spec: hipsparse@5.5.1
+      prefix: /opt/rocm-5.5.1
+  hipblas:
+    buildable: false
+    externals:
+    - spec: hipblas@5.4.3
+      prefix: /opt/rocm-5.4.3/
+    - spec: hipblas@5.5.1
+      prefix: /opt/rocm-5.5.1/
   llvm-amdgpu:
     externals:
     - spec: llvm-amdgpu@5.4.3
@@ -198,6 +219,13 @@ packages:
       prefix: /opt/cray/pe/libsci/23.05.1.4/gnu/10.3/x86_64/
   lapack:
     buildable: false
+  blas:
+    buildable: false
+  unzip:
+    buildable: false
+    externals:
+    - spec: unzip@6.0
+      prefix: /usr
   hypre:
     variants: amdgpu_target=gfx90a
   hwloc:

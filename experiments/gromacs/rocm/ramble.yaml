@@ -33,29 +33,31 @@ ramble:
                 pin: 'off'
                 nb: '{target}'
                 pme: 'auto'
-                bonded: '{target}'
+                bonded: 'cpu'
                 update: '{target}'
                 maxh: '0.05'
                 nsteps: '1000'
                 nstlist: '200'
-                npme: '0'
+                npme: '1'
                 size: '1536'
 
   spack:
     concretized: true
     packages:
       hipsycl:
-        spack_spec: hipsycl@23.10.0
-        compiler: default-compiler
+        spack_spec: hipsycl@0.9.4+rocm
+        compiler: compiler-rocmcc
       gromacs:
-        spack_spec: gromacs@2023.3 +mpi+openmp+rocm~hwloc~double amdgpu_target={rocm_arch}
-        compiler: default-compiler
+        spack_spec: gromacs@2023.3 +mpi+openmp+sycl+rocm~hwloc~double amdgpu_target={rocm_arch}
+        compiler: compiler-rocmcc
     environments:
       gromacs:
         packages:
+        - hip543
+        - hsa-rocr-dev543
+        - blas-rocm543
+        - lapack-rocm543
+        - mpi-rocm-no-gtl
         - hipsycl
-        - blas-rocm
-        - lapack-rocm
-        - mpi-rocm-gtl
         - fftw
         - gromacs
