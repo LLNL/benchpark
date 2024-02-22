@@ -7,6 +7,8 @@ packages:
       blas: [openblas,cray-libsci@23.09.1.1]
       lapack: [openblas,cray-libsci@23.09.1.1]
       scalapack: [netlib-scalapack,cray-libsci@23.09.1.1]
+  mpi:
+    buildable: false
   cray-mpich:
     externals:
     - spec: cray-mpich@8.1.27%gcc
@@ -21,6 +23,10 @@ packages:
       prefix: /opt/cray/pe/mpich/8.1.27/ofi/amd/5.0
       modules:
       - libfabric/1.15.2.0
+    buildable: false
+  blas:
+    buildable: false
+  lapack:
     buildable: false
   cray-libsci:
     externals:
