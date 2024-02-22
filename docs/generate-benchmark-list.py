@@ -83,10 +83,10 @@ def main(workspace):
 
     for bmark in benchmarks:
         # call benchpark tags -a bmark workspace
-        cmd = ["benchpark", "tags", "-a", bmark, workspace]
-        print("RRR", cmd)
-        tags = subprocess.run(cmd, shell=True, capture_output=True, text=True)
-    #for bmark, tags in tags_benchmark_map.items():
+        cmd = ["../bin/benchpark", "tags", "-a", bmark, workspace]
+        byte_data = subprocess.run(cmd, capture_output=True)
+        tags = str(byte_data.stdout, "utf-8")
+        tags = tags.replace("[", "").replace("]", "").replace("'", "").replace(" ", "").replace("\n", "").split(",")
         for t in tags:
             for k, v in tag_dicts.items():
                 if t in v:
