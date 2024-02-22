@@ -28,3 +28,7 @@ system_definition:
     name: LUMI
     installation-year: 2023
     description: top500 <https://www.top500.org/system/180048>
+  top500-system-instances:
+    - Frontier (ORNL)
+    - Lumi     (CSC)
+    - Tioga    (LLNL)
