@@ -4,9 +4,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ramble:
-  include:
-  - ./configs/spack.yaml
-  - ./configs/variables.yaml
   config:
     deprecated: true
     spack_flags:
@@ -16,39 +13,47 @@ ramble:
   applications:
     gromacs:
       workloads:
-        water_gmx50:
+        water_gmx50_adac:
           env_vars:
             set:
+              OMP_PROC_BIND: close
+              OMP_PLACES: cores
               OMP_NUM_THREADS: '{omp_num_threads}'
           variables:
-            n_ranks: '{processes_per_node} * {n_nodes}'
-            size: ['1536', '3072']
             experiment_setup: ''
-            processes_per_node: ['8', '4']
-            n_nodes: ['1', '2']
-            threads_per_node_core: ['2', '4']
-            omp_num_threads: '{threads_per_node_core} * {n_nodes}'
+            n_ranks: '{processes_per_node} * {n_nodes}'
+            processes_per_node: '4'
+            n_nodes: '2'
+            omp_num_threads: '16'
+            target: 'cpu'
           experiments:
-            gromacs_omp_water_gmx50_{n_nodes}_{omp_num_threads}_{size}:
+            gromacs_water_gmx50_adac_size{size}_dlb{dlb}_pin{pin}_target{target}_maxh{maxh}_nsteps{nsteps}_nstlist{nstlist}_npme{npme}:
               variables:
-                env_name: gromacs-omp
-              matrices:
-                - size_threads:
-                  - size
-                  - threads_per_node_core
+                dlb: 'no'
+                pin: 'off'
+                nb: '{target}'
+                pme: 'auto'
+                bonded: '{target}'
+                update: '{target}'
+                maxh: '0.05'
+                nsteps: '1000'
+                nstlist: '200'
+                npme: '0'
+                size: '1536'
+
   spack:
     concretized: true
     packages:
-      fftw-omp:
+      fftw:
         spack_spec: fftw@3.3.10 +mpi+openmp
         compiler: default-compiler
-      gromacs-omp:
+      gromacs:
         spack_spec: gromacs@main +mpi+openmp~hwloc
         compiler: default-compiler
     environments:
-      gromacs-omp:
+      gromacs:
         packages:
         - lapack
         - default-mpi
-        - fftw-omp
-        - gromacs-omp
+        - fftw
+        - gromacs
