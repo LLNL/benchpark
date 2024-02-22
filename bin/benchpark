@@ -198,7 +198,7 @@ def benchpark_check_tag(arg_str):
             out_str += f"\n\t{tag}"
         raise ValueError(out_str)
     return found
-    
+
 
 def benchpark_setup(subparsers, actions_dict):
     create_parser = subparsers.add_parser(
@@ -241,15 +241,15 @@ def benchpark_tags(subparsers, actions_dict):
         help="The experiments_root you specified during Benchpark setup.",
     )
     create_parser.add_argument(
-        "-a", 
-        "--application", 
-        action="store", 
+        "-a",
+        "--application",
+        action="store",
         help="The application for which to find Benchpark tags",
     )
     create_parser.add_argument(
-        "-t", 
-        "--tag", 
-        action="store", 
+        "-t",
+        "--tag",
+        action="store",
         help="The tag for which to search in Benchpark experiments",
     )
     actions_dict["tags"] = benchpark_tags_handler
@@ -443,7 +443,6 @@ def benchpark_tags_handler(args):
         print("All tags that exist in Benchpark experiments:")
         for k, v in benchpark_experiments_tags.items():
             print(k)
-        #print(benchpark_experiments_tags)
 
 
 if __name__ == "__main__":

@@ -57,7 +57,14 @@ def main(workspace):
         cmd = ["../bin/benchpark", "tags", "-a", bmark, workspace]
         byte_data = subprocess.run(cmd, capture_output=True)
         tags = str(byte_data.stdout, "utf-8")
-        tags = tags.replace("[", "").replace("]", "").replace("'", "").replace(" ", "").replace("\n", "").split(",")
+        tags = (
+            tags.replace("[", "")
+            .replace("]", "")
+            .replace("'", "")
+            .replace(" ", "")
+            .replace("\n", "")
+            .split(",")
+        )
         for t in tags:
             for k, v in tag_dicts.items():
                 if t in v:
