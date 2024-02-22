@@ -1,0 +1,23 @@
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+spack:
+  packages:
+    default-compiler:
+      spack_spec: fj@{default_fujitsu_version}
+    default-mpi:
+      spack_spec: fujitsu-mpi@head%fj@{default_fujitsu_version}
+    compiler-gcc:
+      spack_spec: gcc@12.2.0
+    compiler-fujitsu:
+      spack_spec: fj@{default_fujitsu_version}
+    blas:
+      spack_spec: fujitsu-ssl2@head%fj@{default_fujitsu_version}
+    lapack:
+      spack_spec: fujitsu-ssl2@head%fj@{default_fujitsu_version}
+    mpi-gcc:
+      spack_spec: fujitsu-mpi@head%gcc@12.2.0
+    mpi-fujitsu:
+      spack_spec: fujitsu-mpi@head%fj@{default_fujitsu_version}
