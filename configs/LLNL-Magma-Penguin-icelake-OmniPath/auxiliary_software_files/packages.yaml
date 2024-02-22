@@ -28,6 +28,16 @@ packages:
     - spec: intel-oneapi-mkl@2022.1.0
       prefix: /usr/tce/backend/installations/linux-rhel8-x86_64/intel-19.0.4/intel-oneapi-mkl-2022.1.0-sksz67twjxftvwchnagedk36gf7plkrp
       buildable: false
+  hwloc:
+    externals:
+    - spec: hwloc@2.9.1
+      prefix: /usr
+      buildable: false
+  fftw:
+    externals:
+    - spec: fftw@3.3.10
+      prefix: /usr/tce/packages/fftw/fftw-3.3.10
+      buildable: false
   mpi:
     externals:
     - spec: mvapich2@2.3.7-gcc1211
