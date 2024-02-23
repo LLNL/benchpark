@@ -9,5 +9,6 @@ variables:
   batch_submit: 'pjsub {execute_experiment}'
   batch_nodes: '#PJM -L "node={n_nodes}"'
   batch_ranks: '#PJM --mpi proc={n_ranks}'
-  batch_timeout: '#PJM -L "elapse={batch_time}:00"'
-  default_fujitsu_version: '4.8.1'
+  batch_timeout: '#PJM -L "elapse={batch_time}:00" -x PJM_LLIO_GFSCACHE="/vol0001:/vol0002:/vol0003:/vol0004:/vol0005:/vol0006"'
+  default_fj_version: '4.8.1'
+  default_gnu_version: '12.2.0'
