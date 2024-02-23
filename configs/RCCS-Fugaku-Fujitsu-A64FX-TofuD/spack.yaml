@@ -6,18 +6,20 @@
 spack:
   packages:
     default-compiler:
-      spack_spec: fj@{default_fujitsu_version}
+      spack_spec: fj@{default_fj_version}
     default-mpi:
-      spack_spec: fujitsu-mpi@head%fj@{default_fujitsu_version}
+      spack_spec: fujitsu-mpi@{default_fj_version}%fj arch=linux-rhel8-a64fx
     compiler-gcc:
-      spack_spec: gcc@12.2.0
+      spack_spec: gcc@{default_gnu_version}
     compiler-fujitsu:
-      spack_spec: fj@{default_fujitsu_version}
+      spack_spec: fj@{default_fj_version}
     blas:
-      spack_spec: fujitsu-ssl2@head%fj@{default_fujitsu_version}
+      spack_spec: fujitsu-ssl2@head%fj arch=linux-rhel8-a64fx
     lapack:
-      spack_spec: fujitsu-ssl2@head%fj@{default_fujitsu_version}
+      spack_spec: fujitsu-ssl2@head%fj arch=linux-rhel8-a64fx
     mpi-gcc:
-      spack_spec: fujitsu-mpi@head%gcc@12.2.0
+      spack_spec: fujitsu-mpi@head%gcc@{default_gnu_version} arch=linux-rhel8-a64fx
     mpi-fujitsu:
-      spack_spec: fujitsu-mpi@head%fj@{default_fujitsu_version}
+      spack_spec: fujitsu-mpi@{default_fj_version}%fj arch=linux-rhel8-a64fx
+    gmake:
+      spack_spec: gmake@4.2.1 arch=linux-rhel8-a64fx
