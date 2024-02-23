@@ -584,3 +584,8 @@ packages:
       - spec: "pmlib@9.0-trad-power arch=linux-rhel8-a64fx"
         prefix: /vol0004/apps/oss/pmlib-v9.0/9.0-trad-power
     buildable: False
+  cmake:
+    externals:
+      - spec: "cmake@3.20.2 arch=linux-rhel8-a64fx"
+        prefix: /usr
+
