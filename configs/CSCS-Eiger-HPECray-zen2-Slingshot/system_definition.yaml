@@ -23,3 +23,10 @@ system_definition:
   interconnect:
     vendor: HPECray
     name: Slingshot
+  system-tested:
+    site: CSCS
+    name: daint
+    installation-year: 2017
+    description: top500 <https://www.top500.org/system/177824>
+  top500-system-instances:
+    -
