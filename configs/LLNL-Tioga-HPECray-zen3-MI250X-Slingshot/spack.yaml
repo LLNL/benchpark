@@ -11,10 +11,14 @@ spack:
       spack_spec: cray-mpich@8.1%cce ~gtl
     compiler-rocm:
       spack_spec: cce@16
+    compiler-amdclang:
+      spack_spec: clang@16.0.0-rocm5.5.1
     blas-rocm:
       spack_spec: rocblas@5.5
     blas:
       spack_spec: rocblas@5.5
+    lapack-rocm:
+      spack_spec: rocsolver@5.5
     lapack:
       spack_spec: cray-libsci@23
     mpi-rocm-gtl:
@@ -23,3 +27,5 @@ spack:
       spack_spec: cray-mpich@8.1%cce ~gtl
     mpi-gcc:
       spack_spec: cray-mpich@8.1%gcc ~gtl
+    fftw:
+      spack_spec: intel-oneapi-mkl@2023.2.0 
