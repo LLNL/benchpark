@@ -14,5 +14,4 @@ variables:
   batch_timeout: '#SBATCH -t {batch_time}:00'
   cpu_partition: '#SBATCH -p small'
   gpu_partition: '#SBATCH -p small-g' 
-  gpu_config: '#SBATCH --gpus-per-task=1'
 
