@@ -17,4 +17,4 @@
 **system-tested.name**,lassen,,tioga,magma,daint,Fugaku,pascal,daint,LUMI,tioga,
 **system-tested.installation-year**,2018,,2022,2019,2017,2020,2018,2017,2023,2022,
 **system-tested.description**,`top500 <https://www.top500.org/system/179398>`_,`aws/hpc7a <https://aws.amazon.com/ec2/instance-types/hpc7a>`_,`top500 <https://www.top500.org/system/180052>`_,`top500 <https://www.top500.org/system/179774>`_,`top500 <https://www.top500.org/system/177824>`_,`top500 <https://www.top500.org/system/179807/>`_,,`top500 <https://www.top500.org/system/177824>`_,`top500 <https://www.top500.org/system/180048>`_,`top500 <https://www.top500.org/system/180052>`_,
-**top500-system-instances**,Sierra (LLNL),,"Frontier (ORNL), Lumi     (CSC), Tioga    (LLNL)",Magma (LLNL),Piz Daint (CSCS),Fugaku (R-CCS),,,"Frontier (ORNL), Lumi     (CSC), Tioga    (LLNL)","Frontier (ORNL), Lumi     (CSC), Tioga    (LLNL)",
+**top500-system-instances**,Sierra (LLNL),,"Frontier (ORNL), LUMI     (CSC), Tioga    (LLNL)",Magma (LLNL),Piz Daint (CSCS),Fugaku (R-CCS),,,"Frontier (ORNL), LUMI     (CSC), Tioga    (LLNL)","Frontier (ORNL), LUMI     (CSC), Tioga    (LLNL)",
