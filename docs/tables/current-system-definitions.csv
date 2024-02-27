@@ -1,6 +1,6 @@
-,Sierra,AWS_PCluster_Hpc7a-zen4-EFA,HPECray-zen3-MI250X-Slingshot,Magma,Piz Daint,Fugaku,Pascal,Eiger,LUMI-zen3-MI250X-Slingshot,Tioga,x86_64
+,Sierra,AWS_PCluster_Hpc7a-zen4-EFA,HPECray-zen3-MI250X-Slingshot,Magma,Piz Daint,Fugaku,Pascal,Eiger,LUMI,Tioga,x86_64
 **site**,LLNL,,,LLNL,CSCS,RIKEN Center for Computational Science,LLNL,CSCS,CSC,LLNL,
-**system**,IBM-power9-V100-Infiniband,AWS_PCluster_Hpc7a-zen4-EFA,HPECray-zen3-MI250X-Slingshot,Penguin-icelake-OmniPath,HPECray-haswell-P100-Infiniband,Fujitsu-A64FX-TofuD,Penguin-broadwell-P100-OmniPath,HPECray-zen2-Slingshot,LUMI-zen3-MI250X-Slingshot,HPECray-zen3-MI250X-Slingshot,x86_64
+**system**,IBM-power9-V100-Infiniband,AWS_PCluster_Hpc7a-zen4-EFA,HPECray-zen3-MI250X-Slingshot,Penguin-icelake-OmniPath,HPECray-haswell-P100-Infiniband,Fujitsu-A64FX-TofuD,Penguin-broadwell-P100-OmniPath,HPECray-zen2-Slingshot,HPECray-zen3-MI250X-Slingshot,HPECray-zen3-MI250X-Slingshot,x86_64
 **integrator.vendor**,IBM,AWS,HPECray,PenguinComputing,HPECray,Fujitsu,Penguin,HPECray,HPECray,HPECray,
 **integrator.name**,AC922,ParallelCluster3.7.2-Hpc7a,EX235a,RelionCluster,,FX1000,,,EX235a,EX235a,
 **processor.vendor**,IBM,AMD,AMD,Intel,Intel,Fujitsu,Intel,AMD,AMD,AMD,
