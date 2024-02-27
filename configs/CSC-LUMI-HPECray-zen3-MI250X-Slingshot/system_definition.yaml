@@ -30,5 +30,5 @@ system_definition:
     description: top500 <https://www.top500.org/system/180048>
   top500-system-instances:
     - Frontier (ORNL)
-    - Lumi     (CSC)
+    - LUMI     (CSC)
     - Tioga    (LLNL)
