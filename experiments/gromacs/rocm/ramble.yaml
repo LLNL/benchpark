@@ -53,10 +53,6 @@ ramble:
     environments:
       gromacs:
         packages:
-        - hip543
-        - hsa-rocr-dev543
-        - blas-rocm543
-        - lapack-rocm543
         - mpi-rocm-no-gtl
         - hipsycl
         - fftw
