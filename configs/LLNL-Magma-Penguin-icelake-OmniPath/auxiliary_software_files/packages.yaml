@@ -33,6 +33,16 @@ packages:
     - spec: python@3.9.12
       prefix: /usr/tce/packages/python/python-3.9.12/
       buildable: false
+  hwloc:
+    externals:
+    - spec: hwloc@2.9.1
+      prefix: /usr
+      buildable: false
+  fftw:
+    externals:
+    - spec: fftw@3.3.10
+      prefix: /usr/tce/packages/fftw/fftw-3.3.10
+      buildable: false
   mpi:
     externals:
     - spec: mvapich2@2.3.7-gcc1211

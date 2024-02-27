@@ -6,20 +6,20 @@
 spack:
   packages:
     default-compiler:
-      spack_spec: xl@16.1.1-2022.08.19-cuda{default_cuda_version}
+      spack_spec: gcc@=11.2.1
     default-mpi:
-      spack_spec: spectrum-mpi@2022.08.19
+      spack_spec: mvapich2@2.3.7-gcc-11.2.1
     compiler-gcc:
-      spack_spec: gcc@8.3.1
+      spack_spec: gcc@=11.2.1
     compiler-clang:
-      spack_spec: clang@16.0.6-cuda{default_cuda_version}
+      spack_spec: clang@=14.0.6
     mpi-clang:
-      spack_spec: spectrum-mpi@2022.08.19-clang16.0.6-cuda-{default_cuda_version}
+      spack_spec: mvapich2@2.3.7-clang-14.0.6
     blas:
-      spack_spec: cublas@11.8.0
+      spack_spec: intel-oneapi-mkl@2022.1.0
     cublas-cuda:
       spack_spec: cublas@{default_cuda_version}
     lapack:
-      spack_spec: lapack-xl@3.9.0
+      spack_spec: intel-oneapi-mkl@2022.1.0
     fftw:
-      spack_spec: fftw@3.3.10
+      spack_spec: intel-oneapi-mkl@2022.1.0
