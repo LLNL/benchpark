@@ -187,6 +187,27 @@ packages:
       prefix: /opt/rocm-5.4.3/
     - spec: hipblas@5.5.1
       prefix: /opt/rocm-5.5.1/
+  hsakmt-roct:
+    buildable: false
+    externals:
+    - spec: hsakmt-roct@5.4.3
+      prefix: /opt/rocm-5.4.3/
+    - spec: hsakmt-roct@5.5.1
+      prefix: /opt/rocm-5.5.1/
+  roctracer-dev-api:
+    buildable: false
+    externals:
+    - spec: roctracer-dev-api@5.4.3
+      prefix: /opt/rocm-5.4.3/
+    - spec: roctracer-dev-api@5.5.1
+      prefix: /opt/rocm-5.5.1/
+  rocminfo:
+    buildable: false
+    externals:
+    - spec: rocminfo@5.4.3
+      prefix: /opt/rocm-5.4.3/
+    - spec: rocminfo@5.5.1
+      prefix: /opt/rocm-5.5.1/
   llvm-amdgpu:
     externals:
     - spec: llvm-amdgpu@5.4.3
