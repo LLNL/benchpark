@@ -53,5 +53,3 @@ class Amg2023(SpackApplication):
     #TODO: Fix the FOM success_criteria(...)
     success_criteria('pass', mode='string', match=r'Figure of Merit \(FOM\)', file='{experiment_run_dir}/{experiment_name}.out')
 
-    def evaluate_success(self):
-      return True
