@@ -4,9 +4,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 system_definition:
-  name: LUMI-zen3-MI250X-Slingshot
+  name: LUMI
   site: CSC
-  system: LUMI-zen3-MI250X-Slingshot
+  system: HPECray-zen3-MI250X-Slingshot
   integrator:
     vendor: HPECray
     name: EX235a
