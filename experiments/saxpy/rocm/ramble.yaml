@@ -7,12 +7,14 @@ ramble:
   include:
   - ./configs/spack.yaml
   - ./configs/variables.yaml
+  - ./configs/modifier.yaml
 
   config:
     deprecated: true
     spack_flags:
       install: '--add --keep-stage'
       concretize: '-U -f'
+
   applications:
     saxpy:
       workloads:
@@ -31,10 +33,11 @@ ramble:
     concretized: true
     packages:
       saxpy:
-        spack_spec: saxpy@1.0.0 +rocm amdgpu_target={rocm_arch}
+        spack_spec: saxpy@1.0.0 +rocm{modifier_spack_variant} amdgpu_target={rocm_arch}
         compiler: default-compiler
     environments:
       saxpy:
         packages:
         - default-mpi
         - saxpy
+        - '{modifier_package_name}'

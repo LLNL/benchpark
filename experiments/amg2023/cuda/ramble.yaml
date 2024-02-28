@@ -4,11 +4,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ramble:
+  include:
+  - ./configs/spack.yaml
+  - ./configs/variables.yaml
+  - ./configs/modifier.yaml
+
   config:
     deprecated: true
     spack_flags:
       install: '--add --keep-stage'
       concretize: '-U -f'
+
   applications:
     amg2023:
       workloads:
@@ -43,10 +49,10 @@ ramble:
     concretized: true
     packages:
       hypre:
-        spack_spec: hypre@2.28.0 +mpi+cuda+mixedint cuda_arch=={cuda_arch} ^cuda@{default_cuda_version}
+        spack_spec: hypre@2.28.0 +mpi+cuda+mixedint{modifier_spack_variant} cuda_arch=={cuda_arch} ^cuda@{default_cuda_version}
         compiler: default-compiler
       amg2023:
-        spack_spec: amg2023@develop +mpi+cuda cuda_arch=={cuda_arch} ^cuda@{default_cuda_version}
+        spack_spec: amg2023@develop +mpi+cuda{modifier_spack_variant} cuda_arch=={cuda_arch} ^cuda@{default_cuda_version}
         compiler: default-compiler
     environments:
       amg2023:
@@ -56,3 +62,4 @@ ramble:
         - default-mpi
         - hypre
         - amg2023
+        - '{modifier_package_name}'
