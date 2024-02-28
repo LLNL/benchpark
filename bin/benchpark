@@ -248,7 +248,9 @@ def benchpark_setup_handler(args):
 
     ramble_workspace_dir = workspace_dir / "workspace"
     ramble_configs_dir = ramble_workspace_dir / "configs"
-    ramble_spack_experiment_configs_dir = ramble_configs_dir / "auxiliary_software_files"
+    ramble_spack_experiment_configs_dir = (
+        ramble_configs_dir / "auxiliary_software_files"
+    )
 
     print(f"Setting up configs for Ramble workspace {ramble_configs_dir}")
 
