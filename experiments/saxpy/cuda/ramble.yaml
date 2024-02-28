@@ -7,13 +7,14 @@ ramble:
   include:
   - ./configs/spack.yaml
   - ./configs/variables.yaml
-  - ./configs/caliper_cuda.yaml
+  - ./configs/modifier.yaml
 
   config:
     deprecated: true
     spack_flags:
       install: '--add --keep-stage'
       concretize: '-U -f'
+
   applications:
     saxpy:
       workloads:

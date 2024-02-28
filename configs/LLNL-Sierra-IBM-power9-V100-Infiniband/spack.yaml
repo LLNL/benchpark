@@ -11,11 +11,15 @@ spack:
       spack_spec: spectrum-mpi@2022.08.19
     compiler-gcc:
       spack_spec: gcc@8.3.1
-    compiler-cuda10:
-      spack_spec: xl@16.1.1-2022.08.19-cuda{cuda10_version}
-    cublas-cuda-10:
-      spack_spec: cublas@{cuda10_version}
-    cublas-cuda-default:
-      spack_spec: cublas@{default_cuda_version} 
+    compiler-clang:
+      spack_spec: clang@16.0.6-cuda{default_cuda_version}
+    mpi-clang:
+      spack_spec: spectrum-mpi@2022.08.19-clang16.0.6-cuda-{default_cuda_version}
+    blas:
+      spack_spec: cublas@11.8.0
+    cublas-cuda:
+      spack_spec: cublas@{default_cuda_version}
     lapack:
       spack_spec: lapack-xl@3.9.0
+    fftw:
+      spack_spec: fftw@3.3.10

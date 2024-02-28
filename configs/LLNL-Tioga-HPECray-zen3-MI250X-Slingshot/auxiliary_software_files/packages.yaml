@@ -115,6 +115,11 @@ packages:
     externals:
     - spec: bison@3.0.4
       prefix: /usr
+  python:
+    externals:
+    - spec: python@3.9.12
+      prefix: /usr/tce/packages/python/python-3.9.12
+      buildable: false
   rocprim:
     externals:
     - spec: rocprim@5.4.3
@@ -192,6 +197,20 @@ packages:
     - spec: cray-libsci@23.05.1.4%gcc
       prefix: /opt/cray/pe/libsci/23.05.1.4/gnu/10.3/x86_64/
   lapack:
+    buildable: false
+  hypre:
+    variants: amdgpu_target=gfx90a
+  hwloc:
+    externals:
+    - spec: hwloc@2.9.1
+      prefix: /usr
+      buildable: false
+  fftw:
+    buildable: false
+  intel-oneapi-mkl:
+    externals:
+    - spec: intel-oneapi-mkl@2023.2.0
+      prefix: /opt/intel/oneapi
     buildable: false
   mpi:
     buildable: false
