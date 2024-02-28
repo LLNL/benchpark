@@ -241,15 +241,18 @@ def benchpark_setup_handler(args):
 
     ramble_workspace_dir = workspace_dir / "workspace"
     ramble_configs_dir = ramble_workspace_dir / "configs"
+    ramble_spack_experiment_configs_dir = ramble_configs_dir / "auxiliary_software_files"
 
     print(f"Setting up configs for Ramble workspace {ramble_configs_dir}")
 
     configs_src_dir = source_dir / "configs" / str(system)
     experiment_src_dir = source_dir / "experiments" / benchmark
 
-    ramble_configs_dir.mkdir(parents=True)
+    ramble_spack_experiment_configs_dir.mkdir(parents=True)
+
     symlink_tree(configs_src_dir, ramble_configs_dir)
     symlink_tree(experiment_src_dir, ramble_configs_dir)
+    symlink_tree(source_dir / "configs" / "common", ramble_spack_experiment_configs_dir)
 
     spack_location = experiments_root / "spack"
     ramble_location = experiments_root / "ramble"
