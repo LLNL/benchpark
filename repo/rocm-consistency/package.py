@@ -28,6 +28,7 @@ class RocmConsistency(PackageBase):
             "6.0.0",
             "6.0.2",
         ]:
+            depends_on(f"hip@{ver}", when=f"%rocmcc@{ver} ^hip")
             depends_on(f"hsakmt-roct@{ver}", when=f"^hip@{ver}")
             depends_on(f"hsa-rocr-dev@{ver}", when=f"^hip@{ver}")
             depends_on(f"comgr@{ver}", when=f"^hip@{ver}")
