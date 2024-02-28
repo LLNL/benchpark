@@ -1,4 +1,4 @@
 packages:
   blt:
     require:
-    - one_of ["%gcc", "%clang"]
+    - one_of: ["%gcc", "%clang"]
