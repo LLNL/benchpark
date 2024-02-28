@@ -162,6 +162,12 @@ def benchpark_setup(subparsers, actions_dict):
         type=str,
         help="Where to install packages and store results for the experiments. Benchpark expects to manage this directory, and it should be empty/nonexistent the first time you run benchpark setup experiments.",
     )
+    create_parser.add_argument(
+        "--modifier",
+        type=str,
+        default="none",
+        help="The modifier to apply to the experiment (default none)",
+    )
 
     actions_dict["setup"] = benchpark_setup_handler
 
@@ -212,6 +218,7 @@ def benchpark_setup_handler(args):
     benchmark = args.benchmark
     system = args.system
     experiments_root = pathlib.Path(os.path.abspath(args.experiments_root))
+    modifier = args.modifier
     source_dir = source_location()
     debug_print(f"source_dir = {source_dir}")
     debug_print(f"specified benchmark/ProgrammingModel = {benchmark}")
@@ -246,10 +253,12 @@ def benchpark_setup_handler(args):
 
     configs_src_dir = source_dir / "configs" / str(system)
     experiment_src_dir = source_dir / "experiments" / benchmark
+    modifier_config_dir = source_dir / "modifiers" / modifier / "configs"
 
     ramble_configs_dir.mkdir(parents=True)
     symlink_tree(configs_src_dir, ramble_configs_dir)
     symlink_tree(experiment_src_dir, ramble_configs_dir)
+    symlink_tree(modifier_config_dir, ramble_configs_dir)
 
     spack_location = experiments_root / "spack"
     ramble_location = experiments_root / "ramble"
@@ -286,6 +295,9 @@ def benchpark_setup_handler(args):
         run_command(f"{ramble_exe} repo add --scope=site {source_dir}/repo")
         run_command(
             f'{ramble_exe} config --scope=site add "config:disable_progress_bar:true"'
+        )
+        run_command(
+            f"{ramble_exe} repo add -t modifiers --scope=site {source_dir}/modifiers"
         )
         run_command(
             f"{ramble_exe} config --scope=site add \"config:spack:global:args:'-d'\""
