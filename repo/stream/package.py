@@ -14,7 +14,9 @@ class Stream(MakefilePackage):
     homepage = "https://www.cs.virginia.edu/stream/ref.html"
     git = "https://github.com/jeffhammond/STREAM.git"
 
-    version("5.10")
+    version("5.10-caliper", git="https://github.com/daboehme/STREAM.git",
+            branch="caliper-support")
+    version("5.10", preferred=True)
 
     variant("openmp", default=False, description="Build with OpenMP support")
 
@@ -31,6 +33,12 @@ class Stream(MakefilePackage):
         values=("none", "float", "double", "int", "long"),
         description="Datatype of arrays elements",
     )
+    variant("caliper", default=False, description="Enable Caliper/Adiak support")
+
+    requires("@5.10-caliper", when="+caliper")
+
+    depends_on("caliper", when="+caliper")
+    depends_on("adiak@0.4:", when="+caliper")
 
     def edit(self, spec, prefix):
         makefile = FileFilter("Makefile")
@@ -46,6 +54,12 @@ class Stream(MakefilePackage):
             fflags += " " + self.compiler.openmp_flag
         if "%aocc" in self.spec:
             cflags += " -mcmodel=large -ffp-contract=fast -fnt-store"
+        if "+caliper" in self.spec:
+            cflags += " -DSTREAM_ENABLE_CALIPER"
+            cflags += " -I{0}".format(self.spec["adiak"].prefix.include)
+            cflags += " -I{0}".format(self.spec["caliper"].prefix.include)
+            cflags += " -L{0} -ladiak".format(self.spec["adiak"].prefix.lib)
+            cflags += " -L{0} -lcaliper".format(self.spec["caliper"].prefix.lib64)
 
         if self.spec.variants["stream_array_size"].value != "none":
             cflags += " -DSTREAM_ARRAY_SIZE={0}".format(
