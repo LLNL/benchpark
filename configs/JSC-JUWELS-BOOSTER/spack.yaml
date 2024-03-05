@@ -13,5 +13,7 @@ spack:
       spack_spec: gcc@=12.3.0
     cublas-cuda:
       spack_spec: cublas@{default_cuda_version}
+    blas:
+      spack_spec: openblas@0.3.23
     lapack:
       spack_spec: openblas@0.3.23

@@ -73,6 +73,9 @@ packages:
     externals:
     - spec: openblas@0.3.23%gcc@12.3.0
       prefix: /p/software/juwelsbooster/stages/2024/software/OpenBLAS/0.3.23-GCC-12.3.0
+      modules: 
+        - Stages/2024
+        - OpenBLAS
   all:
       providers:
         mpi:
