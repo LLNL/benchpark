@@ -5,457 +5,205 @@
 
 packages:
   all:
-    compiler: [fj, gcc]
+    compiler: [fj, clang, gcc]
     providers:
       mpi: [fujitsu-mpi, openmpi, mpich]
       blas: [fujitsu-ssl2, openblas]
       lapack: [fujitsu-ssl2, openblas]
       scalapack: [fujitsu-ssl2, netlib-scalapack]
-      fftw-api: [fujitsu-fftw, fftw, rist-fftw]
+      fftw-api: [fujitsu-ssl2, fftw, rist-fftw]
     permissions:
       write: group
   htslib:
     version: [1.12]
   python:
     externals:
-      - spec: "python@3.10.8%fj +ssl arch=linux-rhel8-a64fx"
-        prefix: /vol0004/apps/oss/spack-v0.19/opt/spack/linux-rhel8-a64fx/fj-4.8.1/python-3.10.8-7q66snjvhvy7im57hncbgpirmddrb5sk
-      - spec: "python@3.10.8%fj +ssl+tkinter arch=linux-rhel8-a64fx"
+      - spec: "python@3.10.8%fj@4.8.1 +ssl+tkinter arch=linux-rhel8-a64fx"
         prefix: /vol0004/apps/oss/spack-v0.19/opt/spack/linux-rhel8-a64fx/fj-4.8.1/python-3.10.8-5q3ncyl2my7oomopsmukduqo36u6pnkg
-      - spec: "python@3.10.8%gcc +ssl arch=linux-rhel8-cascadelake"
-        prefix: /vol0004/apps/oss/spack-v0.19/opt/spack/linux-rhel8-cascadelake/gcc-12.2.0/python-3.10.8-yt6afcnywa36aebxovs3ldscknyzlva3
-      - spec: "python@3.10.8%gcc +ssl+tkinter arch=linux-rhel8-cascadelake"
-        prefix: /vol0004/apps/oss/spack-v0.19/opt/spack/linux-rhel8-cascadelake/gcc-12.2.0/python-3.10.8-a5u7ucknpzdipu2dd3d7hf2ybkdyprly
   openssh:
     permissions:
       write: user
   fujitsu-mpi:
-    version: [head, 4.8.1, 4.8.0, 4.7.0]
     externals:
-      - spec: "fujitsu-mpi@head%fj arch=linux-rhel8-a64fx"
-        prefix: /opt/FJSVxtclanga/tcsds-mpi-latest
-      - spec: "fujitsu-mpi@4.8.1%fj arch=linux-rhel8-a64fx"
+      - spec: "fujitsu-mpi@4.8.1%fj@4.8.1 arch=linux-rhel8-a64fx"
         prefix: /opt/FJSVxtclanga/tcsds-mpi-1.2.36
-      - spec: "fujitsu-mpi@4.8.0%fj arch=linux-rhel8-a64fx"
-        prefix: /opt/FJSVxtclanga/tcsds-mpi-1.2.35
-      - spec: "fujitsu-mpi@4.7.0%fj arch=linux-rhel8-a64fx"
-        prefix: /opt/FJSVxtclanga/tcsds-1.2.34
-      - spec: "fujitsu-mpi@head%gcc@12.2.0 arch=linux-rhel8-a64fx"
+      - spec: "fujitsu-mpi@4.8.1%clang@15.0.3 arch=linux-rhel8-a64fx"
+        prefix: /opt/FJSVxtclanga/tcsds-mpi-1.2.36
+      - spec: "fujitsu-mpi@4.8.1%gcc@12.2.0 arch=linux-rhel8-a64fx"
         prefix: /vol0004/apps/oss/mpigcc/fjmpi-gcc12
-      - spec: "fujitsu-mpi@head%gcc@10.4.0 arch=linux-rhel8-a64fx"
-        prefix: /vol0004/apps/oss/mpigcc/fjmpi-gcc10
-      - spec: "fujitsu-mpi@head%gcc@8.5.0 arch=linux-rhel8-a64fx"
-        prefix: /vol0004/apps/oss/mpigcc/fjmpi-gcc8
     buildable: False
   fujitsu-ssl2:
-    version: [head, 4.8.1, 4.8.0, 4.7.0]
     externals:
-      - spec: "fujitsu-ssl2@head%fj arch=linux-rhel8-a64fx"
-        prefix: /opt/FJSVxtclanga/tcsds-ssl2-latest
-      - spec: "fujitsu-ssl2@4.8.1%fj arch=linux-rhel8-a64fx"
+      - spec: "fujitsu-ssl2@4.8.1%fj@4.8.1 arch=linux-rhel8-a64fx"
         prefix: /opt/FJSVxtclanga/tcsds-ssl2-1.2.36
-      - spec: "fujitsu-ssl2@4.8.0%fj arch=linux-rhel8-a64fx"
-        prefix: /opt/FJSVxtclanga/tcsds-ssl2-1.2.35
-      - spec: "fujitsu-ssl2@4.7.0%fj arch=linux-rhel8-a64fx"
-        prefix: /opt/FJSVxtclanga/tcsds-1.2.34
-    buildable: False
-  rist-fftw:
-    externals:
-       - spec: "rist-fftw@3.3.9-272-g63d6bd70 arch=linux-rhel8-a64fx"
-         prefix: /vol0004/share/rist/fftw/gcc-10.3.0/3.3.9-272-g63d6bd70
-    buildable: False
-  ntchem:
-    externals:
-      - spec: "ntchem@13.0.0%fj@4.8.1 arch=linux-rhel8-a64fx"
-        prefix: /vol0004/apps/opt/ntchem/aarch64/NTChem2013/13.0.0/tcsds-1.2.36/release_mpiomp
-      - spec: "ntchem@12.2.0%fj arch=linux-rhel8-a64fx"
-        prefix: /vol0004/apps/opt/ntchem/aarch64/NTChem2013/12.2.0/tcsds-1.2.34/release_mpiomp
-    buildable: False
-  abinitmp:
-    externals:
-      - spec: "abinitmp@1-22%fj@4.8.1 arch=linux-rhel8-a64fx"
-        prefix: /vol0004/apps/opt/SPACK-Feb2023-ABINIT-MP-VER1-REV22
-      - spec: "abinitmp@2-4%fj@4.8.1 arch=linux-rhel8-a64fx"
-        prefix: /vol0004/apps/opt/SPACK-Feb2023-ABINIT-MP-VER2-REV4
-      - spec: "abinitmp@2-8%fj@4.8.1 arch=linux-rhel8-a64fx"
-        prefix: /vol0004/apps/opt/SPACK-Jan2024-ABINIT-MP-VER2-REV8
-    buildable: False
-  fds:
-    externals:
-      - spec: "fds@6.7.7%fj@4.8.0 arch=linux-rhel8-a64fx"
-        prefix: /vol0004/apps/opt/FDS/fds-FDS6.7.7/Build/mpi_fugaku
-      - spec: "fds@6.7.9%fj@4.8.1 arch=linux-rhel8-a64fx"
-        prefix: /vol0004/apps/opt/FDS/fds-FDS6.7.9/Build/mpi_fugaku
-    buildable: False
-  ffvhc-ace:
-    externals:
-      - spec: "ffvhc-ace@0.1%fj@4.8.1 arch=linux-rhel8-a64fx"
-        prefix: /vol0004/apps/opt/FFVHC-ACE/0.1/bin
-    buildable: False
-  quantum-espresso:
-    externals:
-      - spec: "quantum-espresso@6.5%fj@4.10.0 arch=linux-rhel8-a64fx"
-        prefix: /vol0004/apps/opt/qe-6.5/bin
-      - spec: "quantum-espresso@6.6%fj@4.10.0 arch=linux-rhel8-a64fx"
-        prefix: /vol0004/apps/opt/qe-6.6/bin
-      - spec: "quantum-espresso@6.7%fj@4.10.0 arch=linux-rhel8-a64fx"
-        prefix: /vol0004/apps/opt/qe-6.7/bin
-      - spec: "quantum-espresso@6.8%fj@4.10.0 arch=linux-rhel8-a64fx"
-        prefix: /vol0004/apps/opt/qe-6.8/bin
-      - spec: "quantum-espresso@7.0%fj@4.10.0 arch=linux-rhel8-a64fx"
-        prefix: /vol0004/apps/opt/qe-7.0/bin
-      - spec: "quantum-espresso@7.1%fj@4.10.0 arch=linux-rhel8-a64fx"
-        prefix: /vol0004/apps/opt/qe-7.1/bin
-      - spec: "quantum-espresso@7.2%fj@4.10.0 arch=linux-rhel8-a64fx"
-        prefix: /vol0004/apps/opt/qe-7.2/bin
-      - spec: "quantum-espresso@7.3%fj@4.10.0 arch=linux-rhel8-a64fx"
-        prefix: /vol0004/apps/opt/qe-7.3/bin
+      - spec: "fujitsu-ssl2@4.8.1%clang@15.0.3 arch=linux-rhel8-a64fx"
+        prefix: /opt/FJSVxtclanga/tcsds-ssl2-1.2.36
+      - spec: "fujitsu-ssl2@4.8.1%gcc@12.2.0 arch=linux-rhel8-a64fx"
+        prefix: /opt/FJSVxtclanga/tcsds-ssl2-1.2.36
     buildable: False
   autoconf:
     externals:
       - spec: "autoconf@2.69 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "autoconf@2.69 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "autoconf@2.69 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   automake:
     externals:
       - spec: "automake@1.16.1 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "automake@1.16.1 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "automake@1.16.1 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   binutils:
     externals:
       - spec: "binutils@2.30 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "binutils@2.30 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "binutils@2.30 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   bzip2:
     externals:
       - spec: "bzip2@1.0.6 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "bzip2@1.0.6 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "bzip2@1.0.6 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   curl:
     externals:
       - spec: "curl@7.61.1 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "curl@7.61.1 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "curl@7.61.1 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   dbus:
     externals:
       - spec: "dbus@1.12.8 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "dbus@1.12.8 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "dbus@1.12.8 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   elfutils:
     externals:
-      - spec: "elfutils@0.186 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "elfutils@0.182 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "elfutils@0.182 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "elfutils@0.182 arch=linux-rhel8-skylake_avx512"
+      - spec: "elfutils@0.188 arch=linux-rhel8-a64fx"
         prefix: /usr
   expat:
     externals:
       - spec: "expat@2.2.5 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "expat@2.2.5 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "expat@2.2.5 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   findutils:
     externals:
       - spec: "findutils@4.6.0 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "findutils@4.6.0 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "findutils@4.6.0 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   fontconfig:
     externals:
       - spec: "fontconfig@2.13.1 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "fontconfig@2.13.1 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "fontconfig@2.13.1 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   freetype:
     externals:
       - spec: "freetype@2.9.1 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "freetype@2.9.1 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "freetype@2.9.1 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   gmake:
     externals:
       - spec: "gmake@4.2.1 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "gmake@4.2.1 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "gmake@4.2.1 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   gdbm:
     externals:
       - spec: "gdbm@1.18 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "gdbm@1.18 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "gdbm@1.18 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   gettext:
     externals:
       - spec: "gettext@0.19.8.1 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "gettext@0.19.8.1 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "gettext@0.19.8.1 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   gmp:
     externals:
       - spec: "gmp@6.1.2 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "gmp@6.1.2 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "gmp@6.1.2 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   gnutls:
     externals:
       - spec: "gnutls@3.6.16 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "gnutls@3.6.14 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "gnutls@3.6.14 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "gnutls@3.6.14 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   hwloc:
     externals:
       - spec: "hwloc@2.2.0 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "hwloc@2.2.0 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "hwloc@2.2.0 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   jansson:
     externals:
       - spec: "jansson@2.14 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "jansson@2.11 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "jansson@2.11 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   libaio:
     externals:
       - spec: "libaio@0.3.112 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "libaio@0.3.112 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "libaio@0.3.112 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   libcap:
     externals:
       - spec: "libcap@2.48 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "libcap@2.26 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "libcap@2.26 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   libdrm:
     externals:
-      - spec: "libdrm@2.4.108 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "libdrm@2.4.103 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "libdrm@2.4.103 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "libdrm@2.4.103 arch=linux-rhel8-skylake_avx512"
+      - spec: "libdrm@2.4.114 arch=linux-rhel8-a64fx"
         prefix: /usr
   libedit:
     externals:
       - spec: "libedit@3.1 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "libedit@3.1 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "libedit@3.1 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   libevent:
     externals:
       - spec: "libevent@2.1.8 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "libevent@2.1.8 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "libevent@2.1.8 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   libfabric:
     externals:
       - spec: "libfabric@1.14.0 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "libfabric@1.11.2 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "libfabric@1.11.2 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   libffi:
     externals:
       - spec: "libffi@3.1 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "libffi@3.1 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "libffi@3.1 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   libglvnd:
     externals:
       - spec: "libglvnd@1.3.4 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "libglvnd@1.3.2 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "libglvnd@1.3.2 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
-  libibumad:
-    externals:
-      - spec: "libibumad@37.2 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "libibumad@32.0 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "libibumad@54mlnx1 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "libibumad@54mlnx1 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   libpciaccess:
     externals:
       - spec: "libpciaccess@0.14 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "libpciaccess@0.14 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "libpciaccess@0.14 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   libpng:
     externals:
       - spec: "libpng@1.6.34 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "libpng@1.6.34 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "libpng@1.6.34 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   libtasn1:
     externals:
       - spec: "libtasn1@4.13 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "libtasn1@4.13 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "libtasn1@4.13 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   libtirpc:
     externals:
       - spec: "libtirpc@1.1.4 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "libtirpc@1.1.4 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "libtirpc@1.1.4 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   libtool:
     externals:
       - spec: "libtool@2.4.6 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "libtool@2.4.6 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "libtool@2.4.6 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   libuuid:
     externals:
       - spec: "libuuid@2.32.1 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "libuuid@2.32.1 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "libuuid@2.32.1 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   libxcb:
     externals:
       - spec: "libxcb@1.13.1 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "libxcb@1.13.1 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "libxcb@1.13.1 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   libxkbcommon:
     externals:
       - spec: "libxkbcommon@0.9.1 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "libxkbcommon@0.9.1 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "libxkbcommon@0.9.1 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   libxml2:
     externals:
       - spec: "libxml2@2.9.7 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "libxml2@2.9.7 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "libxml2@2.9.7 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   lz4:
     externals:
       - spec: "lz4@1.8.3 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "lz4@1.8.3 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "lz4@1.8.3 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   m4:
     externals:
       - spec: "m4@1.4.18 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "m4@1.4.18 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "m4@1.4.18 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   ncurses:
     externals:
       - spec: "ncurses@6.1 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "ncurses@6.1 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "ncurses@6.1 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   nettle:
     externals:
       - spec: "nettle@3.4.1 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "nettle@3.4.1 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "nettle@3.4.1 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   nspr:
     externals:
-      - spec: "nspr@4.32.0 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "nspr@4.25.0 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "nspr@4.25.0 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "nspr@4.25.0 arch=linux-rhel8-skylake_avx512"
+      - spec: "nspr@4.34.0 arch=linux-rhel8-a64fx"
         prefix: /usr
   numactl:
     externals:
       - spec: "numactl@2.0.12 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "numactl@2.0.12 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "numactl@2.0.12 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   opengl:
     buildable: False
@@ -467,114 +215,51 @@ packages:
     externals:
       - spec: "openssl@1.1.1k arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "openssl@1.1.1g arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "openssl@1.1.1k arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "openssl@1.1.1k arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   papi:
     externals:
       - spec: "papi@5.6.0 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "papi@5.6.0 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "papi@5.6.0 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   pcre:
     externals:
       - spec: "pcre@8.42 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "pcre@8.42 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "pcre@8.42 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   perl:
     externals:
       - spec: "perl@5.26.3 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "perl@5.26.3 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "perl@5.26.3 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   pkgconf:
     externals:
       - spec: "pkgconf@1.4.2 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "pkgconf@1.4.2 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "pkgconf@1.4.2 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   popt:
     externals:
       - spec: "popt@1.18 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "popt@1.18 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "popt@1.18 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   readline:
     externals:
       - spec: "readline@7.0 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "readline@7.0 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "readline@7.0 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   sqlite:
     externals:
       - spec: "sqlite@3.26.0 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "sqlite@3.26.0 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "sqlite@3.26.0 arch=linux-rhel8-skylake_avx512"
         prefix: /usr
   tcl:
     externals:
       - spec: "tcl@8.6.8 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "tcl@8.6.8 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "tcl@8.6.8 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
-  ucx:
-    externals:
-      - spec: "ucx@1.11.2 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "ucx@1.9.0 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "ucx@1.11.0 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "ucx@1.11.0 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   valgrind:
     externals:
-      - spec: "valgrind@3.18.1 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "valgrind@3.16.0 arch=linux-rhel8-a64fx"
-        prefix: /usr
-      - spec: "valgrind@3.16.0 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "valgrind@3.16.0 arch=linux-rhel8-skylake_avx512"
+      - spec: "valgrind@3.19.0 arch=linux-rhel8-a64fx"
         prefix: /usr
   xz:
     externals:
       - spec: "xz@5.2.4 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "xz@5.2.4 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "xz@5.2.4 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
   zlib:
     externals:
       - spec: "zlib@1.2.11 arch=linux-rhel8-a64fx"
         prefix: /usr
-      - spec: "zlib@1.2.11 arch=linux-rhel8-cascadelake"
-        prefix: /usr
-      - spec: "zlib@1.2.11 arch=linux-rhel8-skylake_avx512"
-        prefix: /usr
     buildable: False
-  # pmlib: had problems with spack. so far binary packages only. 2023/3/20 mikami
   pmlib:
     externals:
       - spec: "pmlib@9.0-clang-precise arch=linux-rhel8-a64fx"
