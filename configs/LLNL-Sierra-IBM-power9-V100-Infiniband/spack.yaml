@@ -15,6 +15,8 @@ spack:
       spack_spec: clang@16.0.6-cuda{default_cuda_version}
     mpi-clang:
       spack_spec: spectrum-mpi@2022.08.19-clang16.0.6-cuda-{default_cuda_version}
+    mpi-gcc:
+      spack_spec: spectrum-mpi@2022.08.19-gcc-8.3.1
     blas:
       spack_spec: cublas@11.8.0
     cublas-cuda:
