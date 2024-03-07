@@ -182,6 +182,7 @@ def run_command(command_str, env=None):
         text=True,
     )
 
+
 # Note: it would be nice to vendor spack.llnl.util.link_tree, but that
 # involves pulling in most of llnl/util/ and spack/util/
 def symlink_tree(src, dst, include_fn=None):
