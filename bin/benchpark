@@ -12,10 +12,62 @@ import shlex
 import shutil
 import subprocess
 import sys
+import tempfile
 
 DEBUG = False
 
 __version__ = "0.1.0"
+
+
+system_definition_template = """\
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: Apache-2.0
+# ----------------------------------------------------------------------------
+# If you submit this system configuration back to Benchpark as a pull request,
+# please first remove this boilerplate and all FIXME comments.
+#
+# This is a template system configuration file for Benchpark. We've put "FIXME"
+# next to all the things you'll want to change. If not applicable, the fields
+# can be left blank.
+#
+# See the Benchpark documentation for more information on adding system
+# configurations.
+# ----------------------------------------------------------------------------
+system_definition:
+  name: {system_name}
+  # FIXME: Add vendor and name of system integrator.
+  integrator:
+    vendor:
+    name:
+  # FIXME: Add vendor, name, ISA, and microarchitecture of system CPU.
+  processor:
+    vendor:
+    name:
+    ISA:
+    uArch:
+  # FIXME: Add vendor, name, ISA, and microarchitecture of system accelerator.
+  accelerator:
+    vendor:
+    name:
+    ISA:
+    uArch:
+  # FIXME: Add vendor and name of system interconnect.
+  interconnect:
+    vendor:
+    name:
+  # FIXME: Add site, name, installation year, and description of systems tested
+  # with this description in Benchpark.
+  system-tested:
+    site:
+    name:
+    installation-year:
+    description:
+  # FIXME: Add Top500 system(s) name and site.
+  top500-system-instances:
+    -
+"""
 
 
 def debug_print(message):
@@ -169,7 +221,21 @@ def benchpark_setup(subparsers, actions_dict):
         help="The modifier to apply to the experiment (default none)",
     )
 
+    system_create_parser = subparsers.add_parser(
+        "system-create", help="Initialize a system config"
+    )
+    system_create_parser.add_argument(
+        "--template",
+        action="append",
+        help="Choose common config settings in templates/",
+    )
+    system_create_parser.add_argument(
+        "--from", dest="use_existing", type=str, help="Copy an existing system config"
+    )
+    system_create_parser.add_argument("name", type=str, help="Name of the new system")
+
     actions_dict["setup"] = benchpark_setup_handler
+    actions_dict["system-create"] = benchpark_system_create_handler
 
 
 def run_command(command_str, env=None):
@@ -200,6 +266,131 @@ def symlink_tree(src, dst):
             dst_symlink = dst_dir / x
             src_file = os.path.join(src_subdir, x)
             os.symlink(src_file, dst_symlink)
+
+
+def copy_dir_contents(srcdir, dstdir, merge_resolver=None):
+    """
+    Given srcdir/{a, b, c} and dstdir/ (which already exists), copy {a, b, c}
+    into dstdir so it looks like dstdir/{a, b, c}.
+
+    Skip copying symlinks.
+    """
+    srcdir = pathlib.Path(srcdir)
+    dstdir = pathlib.Path(dstdir)
+    for entry in srcdir.iterdir():
+        if entry.is_dir():
+            shutil.copytree(entry, dstdir / entry.name)
+        elif not entry.is_symlink():
+            dst_path = dstdir / entry.name
+            if dst_path.exists() and merge_resolver:
+                merge_resolver(entry, dst_path)
+            else:
+                shutil.copy2(entry, dst_path)
+
+
+class BenchparkInstallation:
+    def __init__(self, root):
+        self.root = pathlib.Path(root)
+
+    @staticmethod
+    def from_benchpark_main_script(script_path):
+        script_path = pathlib.Path(script_path)
+        return BenchparkInstallation(script_path.parent.parent)
+
+    @staticmethod
+    def install_ramble_to(location):
+        debug_print(f"Cloning ramble to {location}")
+        run_command(
+            "git clone --depth=1 -c feature.manyFiles=true "
+            "https://github.com/GoogleCloudPlatform/ramble.git "
+            f"{location}"
+        )
+        debug_print(f"Done cloning ramble ({location})")
+
+    def ramble(self):
+        ramble_lib_location = self.root / "lib" / "ramble"
+        if not ramble_lib_location.exists():
+            BenchparkInstallation.install_ramble_to(ramble_lib_location)
+        return ramble_lib_location / "bin" / "ramble"
+
+
+class RambleConfigMergeResolver:
+    def __init__(self, benchpark_installation):
+        self.benchpark_installation = benchpark_installation
+        self.script = benchpark_installation.root / "lib" / "scripts" / "merge.py"
+        self.ramble = None
+
+    def prepare(self):
+        self.ramble = self.benchpark_installation.ramble()
+
+    def __call__(self, path1, path2):
+        """Merge config from path1 into path2"""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_dir = pathlib.Path(temp_dir)
+
+            merged_config = temp_dir / pathlib.Path(path2).name
+
+            run_command(
+                f"{self.ramble} python {self.script} {path1} {path2} {merged_config}"
+            )
+
+            debug_print(f"Overwrite {path2} with merged yaml from {merged_config}")
+            # Overwrite the destination path with the merged result
+            shutil.copy2(merged_config, path2)
+
+
+def benchpark_system_create_handler(args):
+    system_config_name = args.name
+
+    script_path = pathlib.Path(os.path.abspath(__file__))
+    benchpark_installation = BenchparkInstallation.from_benchpark_main_script(
+        script_path
+    )
+    config_dir = benchpark_installation.root / "configs"
+
+    new_config_dir = config_dir / system_config_name
+
+    if new_config_dir.exists():
+        raise Exception(f"{new_config_dir} already exists")
+
+    cfg_merge_resolver = RambleConfigMergeResolver(benchpark_installation)
+    cfg_merge_resolver.prepare()
+
+    try:
+        new_config_dir.mkdir()
+
+        if args.use_existing:
+            src_config_dir = config_dir / args.use_existing
+            if not src_config_dir.exists():
+                raise Exception(
+                    f"Specified --from={src_config_dir}, but that does not exist"
+                )
+            copy_dir_contents(src_config_dir, new_config_dir)
+        if args.template:
+            templates = list(pathlib.Path(x) for x in args.template)
+
+            for template_dir in templates:
+                copy_dir_contents(
+                    template_dir, new_config_dir, merge_resolver=cfg_merge_resolver
+                )
+
+        # Write the new system definition file
+        system_defn_path = new_config_dir / "system_definition.yaml"
+        write_system_definition(system_defn_path, system_config_name)
+        debug_print(f"Created system definition file: {system_defn_path}")
+    except:
+        shutil.rmtree(new_config_dir)
+        raise
+
+
+def write_system_definition(system_definition_path, sys_name):
+    """Writes the new system definition file."""
+
+    # Write out a template for the file
+    with open(system_definition_path, "w") as system_definition_file:
+        system_definition_file.write(
+            system_definition_template.format(system_name=sys_name)
+        )
 
 
 def benchpark_setup_handler(args):
@@ -286,11 +477,7 @@ def benchpark_setup_handler(args):
 
     if not ramble_location.exists():
         print(f"Cloning ramble into {ramble_location}")
-        run_command(
-            "git clone --depth=1 -c feature.manyFiles=true "
-            "https://github.com/GoogleCloudPlatform/ramble.git "
-            f"{ramble_location}"
-        )
+        BenchparkInstallation.install_ramble_to(ramble_location)
 
         run_command(f"{ramble_exe} repo add --scope=site {source_dir}/repo")
         run_command(
