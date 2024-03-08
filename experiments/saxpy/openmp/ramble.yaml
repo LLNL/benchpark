@@ -47,4 +47,3 @@ ramble:
         packages:
         - default-mpi
         - saxpy
-        - '{modifier_package_name}'
