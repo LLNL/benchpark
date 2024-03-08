@@ -215,11 +215,7 @@ def working_dir(location):
 
 
 def git_clone_commit(url, commit, destination):
-    run_command(
-        "git clone -c feature.manyFiles=true "
-        f"{url} "
-        f"{destination}"
-    )
+    run_command(f"git clone -c feature.manyFiles=true {url} {destination}")
 
     with working_dir(destination):
         run_command(f"git checkout {commit}")
@@ -314,7 +310,9 @@ def benchpark_setup_handler(args):
     if not ramble_location.exists():
         print(f"Cloning ramble into {ramble_location}")
         git_clone_commit(
-            "https://github.com/GoogleCloudPlatform/ramble.git", ramble_commit, ramble_location
+            "https://github.com/GoogleCloudPlatform/ramble.git",
+            ramble_commit,
+            ramble_location,
         )
 
         run_command(f"{ramble_exe} repo add --scope=site {source_dir}/repo")
