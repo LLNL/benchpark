@@ -22,11 +22,19 @@ class Hpl(AutotoolsPackage):
 
     version("2.3", sha256="32c5c17d22330e6f2337b681aded51637fb6008d3f0eb7c277b163fadd612830")
     version("2.2", sha256="ac7534163a09e21a5fa763e4e16dfc119bc84043f6e6a807aba666518f8df440")
+    version("2.3-caliper", git="https://github.com/daboehme/HPL-caliper", branch="master",
+            preferred=False)
 
     variant("openmp", default=False, description="Enable OpenMP support")
+    variant("caliper", default=False, description="Enable Caliper support")
 
     depends_on("mpi@1.1:")
     depends_on("blas")
+
+    depends_on("caliper", when="+caliper")
+    depends_on("adiak@0.4:", when="+caliper")
+
+    requires("@2.3-caliper", when="+caliper")
 
     # 2.3 adds support for openmpi 4
     conflicts("^openmpi@4.0.0:", when="@:2.2")
@@ -122,6 +130,10 @@ class Hpl(AutotoolsPackage):
             if "%aocc@4:" in self.spec:
                 amd_ldflags += "-lamdalloc "
             config.append("LDFLAGS=" + amd_ldflags)
+
+        if "+caliper" in self.spec:
+            config.append("--with-adiak={0}".format(self.spec["adiak"].prefix))
+            config.append("--with-caliper={0}".format(self.spec["caliper"].prefix))
 
         return config
 
