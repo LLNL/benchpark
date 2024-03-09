@@ -296,8 +296,8 @@ def benchpark_setup_handler(args):
     symlink_tree(experiment_src_dir, ramble_configs_dir, include_fn)
     symlink_tree(modifier_config_dir, ramble_configs_dir, include_fn)
     symlink_tree(
-        source_dir / "configs" / "common", 
-        ramble_spack_experiment_configs_dir, 
+        source_dir / "configs" / "common",
+        ramble_spack_experiment_configs_dir,
         include_fn,
     )
 
