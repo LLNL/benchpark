@@ -7,6 +7,7 @@ ramble:
   include:
   - ./configs/spack.yaml
   - ./configs/variables.yaml
+  - ./configs/modifier.yaml
 
   config:
     deprecated: true
@@ -15,8 +16,8 @@ ramble:
       concretize: '-U -f'
 
   variables:
-    n_times: ['20', '35']
-    array_size: ['80000000', '1280000000']
+    n_times: ['35']
+    array_size: ['128000000']
 
   applications:
     streamc:
@@ -33,7 +34,7 @@ ramble:
                 env_name: 'stream_{array_size}_{n_times}'
                 processes_per_node: '1'
                 n_nodes: '1'
-                n_threads: ['8', '16', '32']
+                n_threads: ['32']
               matrix:
                 - n_threads
 
@@ -41,9 +42,11 @@ ramble:
     concretized: true
     packages:
       stream_{array_size}_{n_times}:
-        spack_spec: 'stream@5.10 +openmp stream_array_size={array_size} ntimes={n_times} cflags="-mcmodel=medium -Ofast -flto"'
-        compiler: default-compiler
+        spack_spec: 'stream@5.10 +openmp{modifier_spack_variant} stream_array_size={array_size} ntimes={n_times}'
+        compiler: compiler-gcc
     environments:
       stream_{array_size}_{n_times}:
         packages:
         - stream_{array_size}_{n_times}
+        - mpi-gcc
+        - '{modifier_package_name}'

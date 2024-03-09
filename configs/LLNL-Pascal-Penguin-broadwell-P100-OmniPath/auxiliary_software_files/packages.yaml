@@ -27,6 +27,11 @@ packages:
     externals:
     - spec: autoconf@2.69
       prefix: /usr
+  python:
+    externals:
+    - spec: python@3.10.8
+      prefix: /usr/tce/packages/python/python-3.10.8
+      buildable: false
   mpi:
     buildable: false
   mvapich2:

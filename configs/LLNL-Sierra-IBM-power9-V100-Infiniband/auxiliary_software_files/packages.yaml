@@ -84,4 +84,6 @@ packages:
       prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-clang-16.0.6-cuda-11.8.0-gcc-11.2.1
       extra_attributes:
         ldflags: "-lmpiprofilesupport -lmpi_ibm_usempi -lmpi_ibm_mpifh -lmpi_ibm"
+    - spec: spectrum-mpi@2022.08.19-gcc-8.3.1
+      prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-gcc-8.3.1
     buildable: false
