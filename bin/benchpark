@@ -187,10 +187,12 @@ def run_command(command_str, env=None):
 
 # Note: it would be nice to vendor spack.llnl.util.link_tree, but that
 # involves pulling in most of llnl/util/ and spack/util/
-def symlink_tree(src, dst):
+def symlink_tree(src, dst, include_fn=None):
     """Like ``cp -R`` but instead of files, create symlinks"""
     src = os.path.abspath(src)
     dst = os.path.abspath(dst)
+    # By default, we include all filenames
+    include_fn = include_fn or (lambda f: True)
     for x in [src, dst]:
         if not os.path.isdir(x):
             raise ValueError(f"Not a directory: {x}")
@@ -199,6 +201,8 @@ def symlink_tree(src, dst):
         dst_dir = pathlib.Path(dst) / relative_src_dir
         dst_dir.mkdir(parents=True, exist_ok=True)
         for x in files:
+            if not include_fn(x):
+                continue
             dst_symlink = dst_dir / x
             src_file = os.path.join(src_subdir, x)
             os.symlink(src_file, dst_symlink)
@@ -275,9 +279,19 @@ def benchpark_setup_handler(args):
     modifier_config_dir = source_dir / "modifiers" / modifier / "configs"
 
     ramble_configs_dir.mkdir(parents=True)
-    symlink_tree(configs_src_dir, ramble_configs_dir)
-    symlink_tree(experiment_src_dir, ramble_configs_dir)
-    symlink_tree(modifier_config_dir, ramble_configs_dir)
+
+    def include_fn(fname):
+        # Only include .yaml and .tpl files
+        # Always exclude files that start with "."
+        if fname.startswith("."):
+            return False
+        if fname.endswith(".yaml") or fname.endswith(".tpl"):
+            return True
+        return False
+
+    symlink_tree(configs_src_dir, ramble_configs_dir, include_fn)
+    symlink_tree(experiment_src_dir, ramble_configs_dir, include_fn)
+    symlink_tree(modifier_config_dir, ramble_configs_dir, include_fn)
 
     spack_location = experiments_root / "spack"
     ramble_location = experiments_root / "ramble"
