@@ -30,8 +30,7 @@ jobs:
 
     - name: Build with sphinx
       run: |
-        sphinx-build docs/ _build
-        # make html WORKSPACE_PATH=/tmp/workspace
+        make html WORKSPACE_PATH=/tmp/workspace
 
     - name: Check for Typos using Codespell
       run: |
