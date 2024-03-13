@@ -7,6 +7,7 @@ SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = .
 BUILDDIR      = _build
+BENCHPARK_WORKSPACE ?=
 
 # Put it first so that "make" without argument is like "make help".
 help:
@@ -14,6 +15,9 @@ help:
 
 systemconfigs:
 	./generate-sys-defs-list.py
+
+tags:
+	./generate-benchmark-list.py $(BENCHPARK_WORKSPACE)
 
 .PHONY: help sysconfigs Makefile
 
