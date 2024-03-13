@@ -15,6 +15,13 @@ subprocess.call(
     ]
 )
 
+subprocess.call(
+    [
+        "make",
+        "tags",
+    ]
+)
+
 project = "Benchpark"
 copyright = "2023, LLNS LLC"
 author = "Olga Pearce, Alec Scott, Peter Scheibel, Greg Becker, Riyaz Haque, and Nathan Hanford"

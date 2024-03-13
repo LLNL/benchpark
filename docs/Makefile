@@ -19,7 +19,7 @@ systemconfigs:
 tags:
 	./generate-benchmark-list.py $(WORKSPACE_PATH)
 
-.PHONY: help sysconfigs tags Makefile
+.PHONY: help systemconfigs tags Makefile
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
