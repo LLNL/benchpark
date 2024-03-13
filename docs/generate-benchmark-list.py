@@ -72,7 +72,7 @@ def main(workspace):
         main[bmark] = tags_taggroups[bmark]
 
     df = pd.DataFrame(main)
-    df.to_csv("tables/benchmark-list.csv")
+    df.to_csv("benchmark-list.csv")
 
     #################
     # Tables

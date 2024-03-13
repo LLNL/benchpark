@@ -8,6 +8,6 @@ Benchmark List
 ==============
 
 .. csv-table:: Current Benchpark tags by benchmark and tag groups.
-   :file: tables/benchmark-list.csv
+   :file: benchmark-list.csv
    :header-rows: 1
    :align: left
