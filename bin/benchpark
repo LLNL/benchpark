@@ -300,6 +300,7 @@ def benchpark_setup_handler(args):
         ramble_spack_experiment_configs_dir,
         include_fn,
     )
+    shutil.copy(source_dir / "lib" / "scripts" / "generate-batch", ramble_workspace_dir)
 
     spack_location = experiments_root / "spack"
     ramble_location = experiments_root / "ramble"

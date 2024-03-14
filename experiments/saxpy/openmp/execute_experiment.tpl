@@ -4,10 +4,17 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-{batch_nodes}
-{batch_ranks}
-{batch_timeout}
-
 cd {experiment_run_dir}
 
+export N_TASKS={n_ranks}
+export N_NODES={n_nodes}
+export GPUS_PER_NODE={gpus_per_node}
+export EXPERIMENT_RUN_DIR={experiment_run_dir}
+
+output_script=`{workload_run_dir}/../../../generate-batch`
+
+cat <<EOF >> output_script
 {command}
+EOF
+
+output_script

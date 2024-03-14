@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+
+import os
+
+def main():
+    print("batch-generateor")
+    print(os.environ["EXPERIMENT_RUN_DIR"])
+
+if __name__ == "__main__":
+    main()
