@@ -41,7 +41,7 @@ jobs:
       uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa
       if: github.ref == 'refs/heads/develop'
       with:
-        path: ./docs/_build
+        path: ./docs/_build/html
 
   deploy:
     needs: build
