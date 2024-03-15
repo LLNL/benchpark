@@ -16,10 +16,17 @@ export BATCH_SUBMIT="{batch_submit}"
 export EXPERIMENT_RUN_DIR="{experiment_run_dir}"
 export SETUP_AND_RUN={experiment_run_dir}/setup_and_run.txt
 
+echo "step 1"
+
 cat <<EOF >> "$SETUP_AND_RUN"
 {command}
 EOF
 
+echo "step 2"
+
 output_script=`{workload_run_dir}/../../../generate-batch`
+
+echo "step 3"
+
 chmod +x "$output_script"
 #{batch_submit} "$output_script"

@@ -39,8 +39,9 @@ def sbatch_directives(opts):
     n_nodes = opts[AllocOpt.N_NODES]
 
     directives = [
-        f"SBATCH -N {n_nodes}"
+        f"#SBATCH -N {n_nodes}"
     ]
+    return directives
 
 def main():
     experiment_run_dir = os.environ["EXPERIMENT_RUN_DIR"]
@@ -70,9 +71,9 @@ def main():
     if batch_submit == "sbatch":
         batch_directives = sbatch_directives(allocation_options)
     header_comments = [
-        f"#Expanded variables: {n_tasks}/{n_nodes}/{gpus_per_node}",
+        f"#Expanded variables: {str(allocation_options)}",
     ]
-    new_commands = batch_directives + header_comments + commands[:-1] + new_run_command]
+    new_commands = batch_directives + header_comments + commands[:-1] + [new_run_command]
 
     with open(output_script, "w") as f:
         f.write("\n".join(new_commands))

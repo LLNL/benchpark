@@ -6,7 +6,7 @@
 variables:
   batch_time: ''
   mpi_command: 'mpirun'
-  batch_submit: '{execute_experiment}'
+  batch_submit: 'sbatch'
   batch_nodes: ''
   batch_ranks: ''
   batch_timeout: ''
