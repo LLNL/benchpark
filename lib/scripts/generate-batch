@@ -10,7 +10,6 @@ def main():
     n_nodes = os.environ["N_NODES"]
     gpus_per_node = os.environ["GPUS_PER_NODE"]
 
-
     batch_submit = os.environ["BATCH_SUBMIT"]
 
     with open(setup_and_run, "r") as f:
