@@ -60,10 +60,12 @@ def main():
     original_run_args = list(original_run_command.split())
 
     # TODO: incomplete - Ramble wants to generate the mpirun command, but I
-    # want to do that myself in this script, so I pull it apart and put it
-    # back together with the options I want to set. Depending on the system
-    # this could be an srun or flux run
-    new_run_args = ["mpirun"] + original_run_args[2:]
+    # want to do that myself in this script (e.g. to set allocation options for
+    # srun). This logic could pull it apart and put it back together with the
+    # options I want to set. Depending on the system this could be an srun,
+    # flux run, or mpirun
+    app_runner_opts = []
+    new_run_args = [original_run_args[0]] + app_runner_opts  + original_run_args[1:]
     # TODO: Don't actually run anything for now (prepend "#" to make it a comment)
     new_run_command = "#" + " ".join(new_run_args)
 
