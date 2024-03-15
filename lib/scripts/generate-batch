@@ -62,7 +62,9 @@ def main():
     # want to do that myself in this script, so I pull it apart and put it
     # back together with the options I want to set. Depending on the system
     # this could be an srun or flux run
-    new_run_command = ["mpirun"] + original_run_args[2:]
+    new_run_args = ["mpirun"] + original_run_args[2:]
+    # TODO: Don't actually run anything for now (prepend "#" to make it a comment)
+    new_run_command = "#" + " ".join(new_run_args)
 
     batch_directives = []
     if batch_submit == "sbatch":
@@ -70,7 +72,7 @@ def main():
     header_comments = [
         f"#Expanded variables: {n_tasks}/{n_nodes}/{gpus_per_node}",
     ]
-    new_commands = batch_directives + header_comments + commands[:-1] + [" ".join(new_run_command)]
+    new_commands = batch_directives + header_comments + commands[:-1] + new_run_command]
 
     with open(output_script, "w") as f:
         f.write("\n".join(new_commands))

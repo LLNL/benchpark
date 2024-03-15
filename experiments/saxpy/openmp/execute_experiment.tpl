@@ -22,4 +22,4 @@ EOF
 
 output_script=`{workload_run_dir}/../../../generate-batch`
 chmod +x "$output_script"
-{batch_submit} "$output_script"
+#{batch_submit} "$output_script"
