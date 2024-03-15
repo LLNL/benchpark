@@ -6,15 +6,18 @@
 
 cd {experiment_run_dir}
 
-export N_TASKS={n_ranks}
-export N_NODES={n_nodes}
-export GPUS_PER_NODE={gpus_per_node}
-export EXPERIMENT_RUN_DIR={experiment_run_dir}
+export N_TASKS="{n_ranks}"
+export N_NODES="{n_nodes}"
+export GPUS_PER_NODE="{gpus_per_node}"
+export EXPERIMENT_RUN_DIR="{experiment_run_dir}"
+export BATCH_SUBMIT="{batch_submit}"
 
-output_script=`{workload_run_dir}/../../../generate-batch`
+export SETUP_AND_RUN={experiment_run_dir}/setup_and_run.txt
 
-cat <<EOF >> output_script
+cat <<EOF >> "$SETUP_AND_RUN"
 {command}
 EOF
 
-output_script
+{workload_run_dir}/../../../generate-batch
+chmod +x output_script
+#output_script

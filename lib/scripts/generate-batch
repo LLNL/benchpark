@@ -3,8 +3,36 @@
 import os
 
 def main():
-    print("batch-generateor")
-    print(os.environ["EXPERIMENT_RUN_DIR"])
+    experiment_run_dir = os.environ["EXPERIMENT_RUN_DIR"]
+    setup_and_run = os.environ["SETUP_AND_RUN"]
+
+    n_tasks = os.environ["N_TASKS"]
+    n_nodes = os.environ["N_NODES"]
+    gpus_per_node = os.environ["GPUS_PER_NODE"]
+
+
+    batch_submit = os.environ["BATCH_SUBMIT"]
+
+    with open(setup_and_run, "r") as f:
+        commands = list(x.strip() for x in f.readlines())
+
+    output_script = Path(experiment_run_dir) / "generated.sh"
+
+    run_command = "mpirun -n {n_tasks} -c {cores_per_task}"
+
+    original_run_command = commands[-1]
+    original_run_args = list(original_run_command.split())
+    new_run_command = ["mpirun", "-n", f"{n_tasks}", "-c", f"{cores_per_task}"] + original_run_args[2:]
+
+    header_comments = [
+        f"#Expanded variables: {n_tasks}/{n_nodes}/{gpus_per_node}",
+    ]
+    new_commands = header_comments + commands[:-1] + [" ".join(new_run_command)]
+
+    with open(output_script, "w") as f:
+        f.write("\n".join(new_commands))
+
+    print(output_script)
 
 if __name__ == "__main__":
     main()
