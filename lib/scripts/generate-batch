@@ -4,13 +4,6 @@ import os
 from enum import Enum
 from pathlib import Path
 
-def _maybe_int_opt(optname, optvalue):
-    try:
-        int_val = int(optvalue)
-        return [optname, f"{optvalue}"]
-    except ValueError:
-        return []
-
 class AllocOpt(Enum):
     N_TASKS = 1
     N_NODES = 2
