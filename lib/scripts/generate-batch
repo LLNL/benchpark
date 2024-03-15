@@ -9,6 +9,7 @@ class AllocOpt(Enum):
     N_NODES = 2
     GPUS_PER_NODE = 3
     CORES_PER_TASK = 4
+    N_OMP_THREADS_PER_TASK = 5
 
 def defined_allocation_options():
     """For each possible allocation option, check if it was filled in by
@@ -35,6 +36,12 @@ def sbatch_directives(opts):
         f"#SBATCH -N {n_nodes}"
     ]
     return directives
+
+def openmp_settings(opts):
+    if AllocOpt.N_OMP_THREADS_PER_TASK in opts:
+        return [f"export OMP_NUM_THREADS={opts[AllocOpt.N_OMP_THREADS_PER_TASK]}"]
+    else:
+        return []
 
 def main():
     experiment_run_dir = os.environ["EXPERIMENT_RUN_DIR"]
@@ -68,7 +75,10 @@ def main():
     header_comments = [
         f"#Expanded variables: {str(allocation_options)}",
     ]
-    new_commands = batch_directives + header_comments + commands[:-1] + [new_run_command]
+    new_commands = (
+        batch_directives + header_comments + commands[:-1]
+        + openmp_settings(allocation_options) + [new_run_command]
+    )
 
     with open(output_script, "w") as f:
         f.write("\n".join(new_commands))
