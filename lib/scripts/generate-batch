@@ -1,15 +1,52 @@
 #!/usr/bin/env python3
 
 import os
+from enum import Enum
 from pathlib import Path
+
+def _maybe_int_opt(optname, optvalue):
+    try:
+        int_val = int(optvalue)
+        return [optname, f"{optvalue}"]
+    except ValueError:
+        return []
+
+class AllocOpt(Enum):
+    N_TASKS = 1
+    N_NODES = 2
+    GPUS_PER_NODE = 3
+    CORES_PER_TASK = 4
+
+def defined_allocation_options():
+    """For each possible allocation option, check if it was filled in by
+       Ramble: in that case it will be an integer; if not, it will remain
+       a string with "{}".
+    """
+    defined = {}
+    for alloc_opt in AllocOpt:
+        env_def = os.environ[alloc_opt.name]
+        try:
+            int_val = int(env_def)
+        except ValueError:
+            continue
+        defined[alloc_opt] = env_def
+    return defined
+
+def sbatch_directives(opts):
+    # TODO: this is incomplete, it is intended that this would be able to
+    # accommodate the possibility that N_NODES is unset, and we could calculate
+    # N_NODES from N_GPUS and GPUS_PER_NODE, for example
+    n_nodes = opts[AllocOpt.N_NODES]
+
+    directives = [
+        f"SBATCH -N {n_nodes}"
+    ]
 
 def main():
     experiment_run_dir = os.environ["EXPERIMENT_RUN_DIR"]
     setup_and_run = os.environ["SETUP_AND_RUN"]
 
-    n_tasks = os.environ["N_TASKS"]
-    n_nodes = os.environ["N_NODES"]
-    gpus_per_node = os.environ["GPUS_PER_NODE"]
+    allocation_options = defined_allocation_options()
 
     batch_submit = os.environ["BATCH_SUBMIT"]
 
@@ -18,16 +55,22 @@ def main():
 
     output_script = Path(experiment_run_dir) / "generated.sh"
 
-    run_command = "mpirun -n {n_tasks} -c {cores_per_task}"
-
     original_run_command = commands[-1]
     original_run_args = list(original_run_command.split())
-    new_run_command = ["mpirun", "-n", f"{n_tasks}", "-c", f"{cores_per_task}"] + original_run_args[2:]
 
+    # TODO: incomplete - Ramble wants to generate the mpirun command, but I
+    # want to do that myself in this script, so I pull it apart and put it
+    # back together with the options I want to set. Depending on the system
+    # this could be an srun or flux run
+    new_run_command = ["mpirun"] + original_run_args[2:]
+
+    batch_directives = []
+    if batch_submit == "sbatch":
+        batch_directives = sbatch_directives(allocation_options)
     header_comments = [
         f"#Expanded variables: {n_tasks}/{n_nodes}/{gpus_per_node}",
     ]
-    new_commands = header_comments + commands[:-1] + [" ".join(new_run_command)]
+    new_commands = batch_directives + header_comments + commands[:-1] + [" ".join(new_run_command)]
 
     with open(output_script, "w") as f:
         f.write("\n".join(new_commands))
