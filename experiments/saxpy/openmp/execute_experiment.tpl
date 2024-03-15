@@ -11,7 +11,7 @@ export N_NODES="{n_nodes}"
 export GPUS_PER_NODE="{gpus_per_node}"
 export CORES_PER_TASK="{cores_per_task}"
 
-export BATCH_SUBMIT="{batch_submit}"
+export SCHEDULER="{scheduler}"
 
 export EXPERIMENT_RUN_DIR="{experiment_run_dir}"
 export SETUP_AND_RUN={experiment_run_dir}/setup_and_run.txt
@@ -24,9 +24,10 @@ EOF
 
 echo "step 2"
 
-output_script=`{workload_run_dir}/../../../generate-batch`
+result=`{workload_run_dir}/../../../generate-batch`
+read invoke_with output_script <<< "$result"
 
 echo "step 3"
 
 chmod +x "$output_script"
-#{batch_submit} "$output_script"
+#"$invoke_with" "$output_script"

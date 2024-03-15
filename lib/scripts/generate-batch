@@ -49,7 +49,7 @@ def main():
 
     allocation_options = defined_allocation_options()
 
-    batch_submit = os.environ["BATCH_SUBMIT"]
+    scheduler = os.environ["SCHEDULER"]
 
     with open(setup_and_run, "r") as f:
         commands = list(x.strip() for x in f.readlines())
@@ -68,7 +68,9 @@ def main():
     new_run_command = "#" + " ".join(new_run_args)
 
     batch_directives = []
-    if batch_submit == "sbatch":
+    invoke_with = "bash"
+    if scheduler == "slurm":
+        invoke_with = "sbatch"
         batch_directives = sbatch_directives(allocation_options)
     header_comments = [
         f"#Expanded variables: {str(allocation_options)}",
@@ -78,7 +80,7 @@ def main():
     with open(output_script, "w") as f:
         f.write("\n".join(new_commands))
 
-    print(output_script)
+    print(f"{invoke_with} {output_script}")
 
 if __name__ == "__main__":
     main()
