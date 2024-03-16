@@ -12,7 +12,11 @@ class RajaPerf(SpackApplication):
     """RAJA Performance suite"""
     name = "raja-perf"
 
-    tags = ["raja-perf"]
+    tags = ['asc','single-node','sub-node','structured-grid',
+            'atomics','simd','vectorization','register-pressure',
+            'high-memory-bandwidth','regular-memory-access',
+            'mpi','network-point-to-point','network-latency-bound',
+            'c++','raja','cuda','hip','openmp','sycl']
 
     executable('run', 'raja-perf.exe', use_mpi=True)
 
