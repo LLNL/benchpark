@@ -8,8 +8,9 @@ class AllocOpt(Enum):
     N_TASKS = 1
     N_NODES = 2
     GPUS_PER_NODE = 3
-    CORES_PER_TASK = 4
+    N_CORES_PER_TASK = 4
     N_OMP_THREADS_PER_TASK = 5
+    N_TASKS_PER_NODE = 6
 
 def defined_allocation_options():
     """For each possible allocation option, check if it was filled in by
@@ -64,7 +65,9 @@ def main():
     # srun). This logic could pull it apart and put it back together with the
     # options I want to set. Depending on the system this could be an srun,
     # flux run, or mpirun
-    app_runner_opts = []
+    app_runner_opts = [
+        "-n", allocation_options[AllocOpt.N_TASKS]
+    ]
     new_run_args = [original_run_args[0]] + app_runner_opts  + original_run_args[1:]
     # TODO: Don't actually run anything for now (prepend "#" to make it a comment)
     new_run_command = "#" + " ".join(new_run_args)

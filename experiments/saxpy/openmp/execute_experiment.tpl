@@ -9,8 +9,9 @@ cd {experiment_run_dir}
 export N_TASKS="{n_ranks}"
 export N_NODES="{n_nodes}"
 export GPUS_PER_NODE="{gpus_per_node}"
-export CORES_PER_TASK="{cores_per_task}"
+export N_CORES_PER_TASK="{n_cores_per_task}"
 export N_OMP_THREADS_PER_TASK="{n_omp_threads_per_task}"
+export N_TASKS_PER_NODE="{processes_per_node}"
 
 export SCHEDULER="{scheduler}"
 
