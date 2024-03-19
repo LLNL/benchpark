@@ -22,7 +22,7 @@ jobs:
           . workspace/setup.sh
 
           spack mirror add ci-buildcache oci://ghcr.io/llnl/benchpark-binary-cache
-          spack config add "packages:all:target:[nosite-x86_64_v3]"
+          spack config add "packages:all:target:[x86_64_v3]"
 
           env | grep SPACK >> "$GITHUB_ENV"
           env | grep RAMBLE >> "$GITHUB_ENV"
