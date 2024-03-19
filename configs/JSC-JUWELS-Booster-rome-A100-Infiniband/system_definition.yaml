@@ -8,7 +8,7 @@ system_definition:
   site: JSC
   system: JUWELS-Booster-rome-A100-Infiniband
   integrator:
-    vendor: tba
+    vendor: Atos
     name: tba
   processor: 
     vendor: AMD
