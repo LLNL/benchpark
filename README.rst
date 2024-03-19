@@ -1,6 +1,14 @@
-==================================================
-Benchpark
-==================================================
+.. raw:: html
+
+    <div align="left">
+      <h2>
+        <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/LLNL/benchpark/develop/docs/_static/images/benchpark-dark.svg" width="400">
+        <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/LLNL/benchpark/develop/docs/_static/images/benchpark-light.svg" width="400">
+        <img alt="Benchpark" src="https://raw.githubusercontent.com/LLNL/benchpark/develop/docs/_static/images/benchpark-light.svg" width="400">
+        </picture>
+      </h2>
+    </div>
 
 You can find detailed documentation at `software.llnl.gov/benchpark
 <https://software.llnl.gov/benchpark>`_. Benchpark can also be found on `GitHub
