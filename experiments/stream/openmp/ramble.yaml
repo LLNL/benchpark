@@ -31,7 +31,7 @@ ramble:
           experiments:
             stream_{array_size}_{n_times}_{n_threads}:
               variables:
-                env_name: 'stream_{array_size}_{n_times}'
+                env_name: 'stream'
                 processes_per_node: '1'
                 n_nodes: '1'
                 n_threads: ['32']
@@ -41,12 +41,12 @@ ramble:
   spack:
     concretized: true
     packages:
-      stream_{array_size}_{n_times}:
-        spack_spec: 'stream@5.10 +openmp{modifier_spack_variant} stream_array_size={array_size} ntimes={n_times}'
+      stream:
+        spack_spec: 'stream@5.10-caliper'
         compiler: compiler-gcc
     environments:
-      stream_{array_size}_{n_times}:
+      stream:
         packages:
-        - stream_{array_size}_{n_times}
+        - stream
         - mpi-gcc
         - '{modifier_package_name}'
