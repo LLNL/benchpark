@@ -11,7 +11,7 @@ compilers:
         cxx: /p/software/juwelsbooster/stages/2024/software/NVHPC/23.7-CUDA-12/Linux_aarch64/23.7/compilers/bin/nvc++
         f77: /p/software/juwelsbooster/stages/2024/software/NVHPC/23.7-CUDA-12/Linux_aarch64/23.7/compilers/bin/nvfortran
         fc: /p/software/juwelsbooster/stages/2024/software/NVHPC/23.7-CUDA-12/Linux_aarch64/23.7/compilers/bin/nvfortran
-      operating_system: rocky9
+      operating_system: rocky8
       target: x86_64
       modules:
       - Stages/2024
