@@ -26,15 +26,11 @@ ramble:
   spack:
     concretized: true
     packages:
-      blt:
-        spack_spec: 'blt@0.5.2:'
-        compiler: compiler-gcc
       raja-perf:
         spack_spec: raja-perf@develop +cuda~openmp+mpi cuda_arch=={cuda_arch} ^cuda@{default_cuda_version}
         compiler: default-compiler
     environments:
       raja-perf:
         packages:
-        - blt
         - default-mpi
         - raja-perf
