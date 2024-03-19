@@ -1,6 +1,8 @@
-==================================================
-Benchpark
-==================================================
+.. image:: https://raw.githubusercontent.com/LLNL/benchpark/develop/docs/_static/images/benchpark-light.svg
+  :width: 200
+  :alt: Benchpark Logo
+
+------------
 
 You can find detailed documentation at `software.llnl.gov/benchpark
 <https://software.llnl.gov/benchpark>`_. Benchpark can also be found on `GitHub
