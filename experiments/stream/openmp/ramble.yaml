@@ -16,20 +16,21 @@ ramble:
       concretize: '-U -f'
 
   variables:
-    n_times: ['35']
-    array_size: ['128000000']
+    n: ['35']
+    s: ['128000000']
+    o: ['0']
 
   applications:
-    streamc:
+    stream:
       workloads:
-        streamc:
+        stream:
           env_vars:
             set:
               OMP_NUM_THREADS: '{n_threads}'
           variables:
             n_ranks: '1'
           experiments:
-            stream_{array_size}_{n_times}_{n_threads}:
+            stream_{s}_{o}_{n}_{n_threads}:
               variables:
                 env_name: 'stream'
                 processes_per_node: '1'
@@ -42,7 +43,7 @@ ramble:
     concretized: true
     packages:
       stream:
-        spack_spec: 'stream@5.10-caliper'
+        spack_spec: 'stream@5.10-caliper{modifier_spack_variant}'
         compiler: compiler-gcc
     environments:
       stream:
