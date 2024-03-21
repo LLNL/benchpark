@@ -54,3 +54,11 @@ If you would like to modify a specification of your benchmark,
 you can do so by upstreaming changes to Spack and/or Ramble,
 or working on your benchmark specification in ``benchpark/repo/${BENCHMARK}`` 
 (see :doc:`add-a-benchmark` for details).
+
+Caliper modifier
+----------------
+
+caliper docs
+ramble modifier docs
+
+directions to turn on caliper modifier
