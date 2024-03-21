@@ -20,19 +20,19 @@ reproducible, working specifications for the following:
 
 1. **System specifications**
 
-- location of system compilers and system MPI
-- system scheduler and launcher
+* location of system compilers and system MPI
+* system scheduler and launcher
 
 2. **Benchmark specifications**
 
-- source repo and version
-- build (Spack) configuration
-- run (Ramble) configuration
+* source repo and version
+* build (Spack) configuration
+* run (Ramble) configuration
 
 3. **Experiment specifications**
 
-- programming models to use for benchmarks on a given system type
-- valid experiments for benchmarks on a given system (scientific parameter studies, performance parameter studies, etc.)
+* programming models to use for benchmarks on a given system type
+* valid experiments for benchmarks on a given system (scientific parameter studies, performance parameter studies, etc.)
 
 Dependencies
 ------------
