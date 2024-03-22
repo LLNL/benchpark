@@ -10,6 +10,8 @@
       </h2>
     </div>
 
+Overview
+--------
 You can find detailed documentation at `software.llnl.gov/benchpark
 <https://software.llnl.gov/benchpark>`_. Benchpark can also be found on `GitHub
 <https://github.com/llnl/benchpark>`_.
