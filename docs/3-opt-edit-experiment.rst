@@ -58,7 +58,10 @@ or working on your benchmark specification in ``benchpark/repo/${BENCHMARK}``
 Caliper modifier
 ----------------
 
-caliper docs
-ramble modifier docs
+Documentation on `Caliper <https://software.llnl.gov/Caliper>`_
+Documentation on `Ramble Modifier <https://googlecloudplatform.github.io/ramble/tutorials/10_using_modifiers.html#modifiers>`_
 
-directions to turn on caliper modifier
+To turn on the caliper modifier, add ``--modifier=caliper`` to the Benchpark
+setup step::
+
+    ./benchpark setup benchmark/programmingmodel system --modifier=caliper <workspace-dir>
