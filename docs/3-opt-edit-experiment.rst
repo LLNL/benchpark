@@ -73,7 +73,7 @@ setup step::
     ./benchpark setup benchmark/programmingmodel system --modifier=caliper <workspace-dir>
 
 After the experiments in the workspace have completed running, a ``.cali`` file
-is created which contains the time metrics:
+is created which contains the following time metrics:
 
 * Min time/rank: Minimum time (in seconds) across all ranks
 * Max time/rank: Maximum time (in seconds) across all ranks
