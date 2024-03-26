@@ -72,7 +72,6 @@ setup step::
 
     ./benchpark setup benchmark/programmingmodel system --modifier=caliper <workspace-dir>
 
-
 After the experiments in the workspace have completed running, a ``.cali`` file
 is created which contains the time metrics:
 
