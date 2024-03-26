@@ -11,7 +11,7 @@ jobs:
           sudo apt-get remove -y gcc-13
 
       - name: Checkout Benchpark
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
 
       - name: Build Saxpy Workspace
         run: |
@@ -22,7 +22,7 @@ jobs:
           . workspace/setup.sh
 
           spack mirror add ci-buildcache oci://ghcr.io/llnl/benchpark-binary-cache
-          spack config add "packages:all:target:[nosite-x86_64_v3]"
+          spack config add "packages:all:target:[x86_64_v3]"
 
           env | grep SPACK >> "$GITHUB_ENV"
           env | grep RAMBLE >> "$GITHUB_ENV"
@@ -42,12 +42,12 @@ jobs:
         working-directory: ./workspace/saxpy/openmp/nosite-x86_64/workspace/
         run: |
           ramble \
-            -c variables:n_nodes:1 \
-            -c variables:n_ranks:1 \
             --workspace-dir . \
             --disable-progress-bar \
             --disable-logger \
-            on
+            on \
+            --executor '{execute_experiment}' \
+            --where '{n_nodes} == 1'
 
       - name: Analyze Saxpy Results
         working-directory: ./workspace/saxpy/openmp/nosite-x86_64/workspace/

@@ -15,6 +15,13 @@ subprocess.call(
     ]
 )
 
+subprocess.call(
+    [
+        "make",
+        "tags",
+    ]
+)
+
 project = "Benchpark"
 copyright = "2023, LLNS LLC"
 author = "Olga Pearce, Alec Scott, Peter Scheibel, Greg Becker, Riyaz Haque, and Nathan Hanford"
@@ -24,6 +31,7 @@ author = "Olga Pearce, Alec Scott, Peter Scheibel, Greg Becker, Riyaz Haque, and
 
 extensions = [
     "sphinx_rtd_theme",
+    "sphinxcontrib.programoutput",
 ]
 
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", ".spack-env"]
@@ -34,3 +42,4 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", ".spack-env"]
 html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 html_css_files = ["css/custom.css"]
+html_logo = "_static/images/benchpark-dark.svg"
