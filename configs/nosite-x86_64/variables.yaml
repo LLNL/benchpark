@@ -5,7 +5,8 @@
 
 variables:
   batch_time: ''
-  mpi_command: 'mpirun -n {n_nodes} -c {n_ranks} --oversubscribe'
+  mpi_command: 'mpirun'
+  scheduler: 'slurm'
   batch_submit: '{execute_experiment}'
   batch_nodes: ''
   batch_ranks: ''
