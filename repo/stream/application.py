@@ -27,7 +27,7 @@ class Stream(SpackApplication):
 
     required_package('stream')
 
-    executable('execute', 'stream')
+    executable('execute', 'stream -n {n} -s {s} -o {o}', use_mpi=True)
 
     workload('stream', executable='execute')
 
