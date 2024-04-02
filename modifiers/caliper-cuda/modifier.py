@@ -11,7 +11,10 @@ class CaliperCuda(CaliperBase):
 
     name = "caliper-cuda"
 
-    mode("cuda", description="Profile CUDA API functions")
+    mode(
+        "cuda",
+        description="Profile CUDA API functions",
+    )
 
     _cali_datafile = CaliperBase._cali_datafile
 
