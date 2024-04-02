@@ -6,6 +6,7 @@
 from ramble.modkit import *
 from ramble.mod.benchpark.caliper import Caliper as CaliperBase
 
+
 class CaliperCuda(CaliperBase):
     """Define a modifier for Caliper"""
 
