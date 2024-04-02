@@ -11,8 +11,13 @@ class CaliperCuda(CaliperBase):
 
     name = "caliper-cuda"
 
-    mode('cuda', description='Profile CUDA API functions')
+    mode("cuda", description="Profile CUDA API functions")
 
     _cali_datafile = CaliperBase._cali_datafile
 
-    env_var_modification('CALI_CONFIG', 'spot(output={}, profile.cuda)'.format(_cali_datafile), method='set', modes=['cuda'])
+    env_var_modification(
+        "CALI_CONFIG",
+        "spot(output={}, profile.cuda)".format(_cali_datafile),
+        method="set",
+        modes=["cuda"],
+    )
