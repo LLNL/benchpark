@@ -30,6 +30,15 @@ def defined_allocation_options(expander):
     """For each possible allocation option, check if it was filled in by
        Ramble: in that case it will be an integer.
     """
+    test = [
+        "n_ranks_per_node",
+        "n_cores_per_task",
+        "n_threads",
+    ]
+    for x in test:
+        print(f"Expanded ({x}): " + expander.expand_var(f"{{{x}}}" + " " + expander.expand_var(expander.expansion_str(f"{{{x}}}"))))
+        print("    " + expander.expand_var(expander.expansion_str(f"{x}")))
+
     defined = {}
     for alloc_opt in AllocOpt:
         var_def = expander.expand_var(f"{{{alloc_opt.name.lower()}}}")
@@ -39,7 +48,7 @@ def defined_allocation_options(expander):
             continue
         if int_val == SENTINEL_UNDEFINED_VALUE:
             continue
-        defined[alloc_opt] = var_def
+        defined[alloc_opt] = int_val
 
     return defined
 
@@ -66,14 +75,14 @@ class Allocation(BasicModifier):
     def inherit_from_application(self, app):
         super().inherit_from_application(app)
 
-        var_defs = defined_allocation_options(self.expander)
+        var_defs = defined_allocation_options(app.expander)
 
         # Calculate unset values (e.g. determine n_nodes if not set)
         self.determine_allocation(var_defs)
 
         # Definitions
         for var, val in var_defs.items():
-            app.define_variable(var.name.lower(), val)
+            app.define_variable(var.name.lower(), str(val))
 
     def determine_allocation(self, var_defs):
         v = AttrDict()
@@ -82,6 +91,7 @@ class Allocation(BasicModifier):
 
         if not v.n_ranks:
             if v.n_ranks_per_node and v.n_nodes:
+                print(f"{str(v.n_nodes)} {type(v.n_nodes)} {str(v.n_ranks_per_node)} {type(v.n_ranks_per_node)}")
                 v.n_ranks = v.n_nodes * v.n_ranks_per_node
 
         if not v.n_nodes:
@@ -100,4 +110,7 @@ class Allocation(BasicModifier):
         for alloc_opt in AllocOpt:
             local_val = getattr(v, alloc_opt.name.lower(), None)
             if (alloc_opt not in var_defs) and local_val:
+                print(f"Setting {str(alloc_opt)} to {local_val}")
                 var_defs[alloc_opt] = local_val
+            else:
+                print(f"Not setting {str(alloc_opt)}/{var_defs.get(alloc_opt, None)}/{local_val}")
