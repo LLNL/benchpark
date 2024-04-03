@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import math
+from contextlib import contextmanager
 from enum import Enum
 from ramble.modkit import *
 
@@ -15,16 +16,35 @@ class AllocOpt(Enum):
     N_CORES_PER_TASK = 3
     N_THREADS = 4 # number of OMP threads per task
     N_RANKS_PER_NODE = 5
+    N_GPUS = 6
 
     # Descriptions of resources available on systems
     GPUS_PER_NODE = 100
     CPUS_PER_NODE = 101
 
+    # Scheduler identification
+    SCHEDULER = 200
+
+    @staticmethod
+    def as_type(enumval, input):
+        if enumval == AllocOpt.SCHEDULER:
+            parsed_str = str(input)
+            if parsed_str == SENTINEL_UNDEFINED_VALUE_STR:
+                return None
+            else:
+                return parsed_str
+        else:
+            parsed_int = int(input)
+            if parsed_int == SENTINEL_UNDEFINED_VALUE_INT:
+                return None
+            else:
+                return parsed_int
 
 # If we see this value, we assume the user wants us to substitute it.
-# Ramble expects n_ranks and n_nodes to be set.
-SENTINEL_UNDEFINED_VALUE = 7
-
+# Ramble expects n_ranks and n_nodes to be set to *something* so even
+# if we want to fill those in ourselves, we have to supply something.
+SENTINEL_UNDEFINED_VALUE_INT = 7
+SENTINEL_UNDEFINED_VALUE_STR = "placeholder"
 
 def defined_allocation_options(expander):
     """For each possible allocation option, check if it was filled in by
@@ -34,12 +54,10 @@ def defined_allocation_options(expander):
     for alloc_opt in AllocOpt:
         var_def = expander.expand_var(f"{{{alloc_opt.name.lower()}}}")
         try:
-            int_val = int(var_def)
+            val = AllocOpt.as_type(alloc_opt, var_def)
         except ValueError:
             continue
-        if int_val == SENTINEL_UNDEFINED_VALUE:
-            continue
-        defined[alloc_opt] = int_val
+        defined[alloc_opt] = val
 
     return defined
 
@@ -71,33 +89,74 @@ class Allocation(BasicModifier):
         # Calculate unset values (e.g. determine n_nodes if not set)
         self.determine_allocation(var_defs)
 
+        self.determine_scheduler_instructions(var_defs)
+
         # Definitions
         for var, val in var_defs.items():
             app.define_variable(var.name.lower(), str(val))
 
-    def determine_allocation(self, var_defs):
+    @staticmethod
+    @contextmanager
+    def as_attrs(var_defs):
         v = AttrDict()
         for alloc_opt in AllocOpt:
             setattr(v, alloc_opt.name.lower(), var_defs.get(alloc_opt, None))
 
-        if not v.n_ranks:
-            if v.n_ranks_per_node and v.n_nodes:
-                v.n_ranks = v.n_nodes * v.n_ranks_per_node
-
-        if not v.n_nodes:
-            if v.n_ranks:
-                cpus_request_per_task = 1
-                multi_cpus_per_task = n_cores_per_task or n_threads or 0
-                cpus_request_per_task = max(multi_cpus_per_task, 1)
-                tasks_per_node = math.floor(cpus_per_node / cpus_request_per_task)
-                v.n_nodes = math.ceil(v.n_ranks / tasks_per_node)
-            if v.n_gpus and v.gpus_per_node:
-                v.n_nodes = math.ceil(v.n_gpus / float(v.gpus_per_node))
-
-        if not v.n_threads:
-            v.n_threads = 1
+        yield v
 
         for alloc_opt in AllocOpt:
             local_val = getattr(v, alloc_opt.name.lower(), None)
             if (alloc_opt not in var_defs) and local_val:
                 var_defs[alloc_opt] = local_val
+
+    def determine_allocation(self, var_defs):
+        with Allocation.as_attrs(var_defs) as v:
+            if not v.n_ranks:
+                if v.n_ranks_per_node and v.n_nodes:
+                    v.n_ranks = v.n_nodes * v.n_ranks_per_node
+
+            if not v.n_nodes:
+                if v.n_ranks:
+                    cpus_request_per_task = 1
+                    multi_cpus_per_task = n_cores_per_task or n_threads or 0
+                    cpus_request_per_task = max(multi_cpus_per_task, 1)
+                    tasks_per_node = math.floor(cpus_per_node / cpus_request_per_task)
+                    v.n_nodes = math.ceil(v.n_ranks / tasks_per_node)
+                if v.n_gpus and v.gpus_per_node:
+                    v.n_nodes = math.ceil(v.n_gpus / float(v.gpus_per_node))
+
+            if not v.n_threads:
+                v.n_threads = 1
+
+    def slurm_instructions(self, v):
+        srun_opts = []
+
+        if v.n_ranks:
+            srun_opts.append(f"-n {v.n_ranks}")
+        if v.n_gpus:
+            srun_opts.append(f"-n {v.n_gpus}")
+        if v.n_nodes:
+            srun_opts.append(f"-n {v.n_nodes}")
+
+        sbatch_directives = list(f"# SBATCH {x}" for x in srun_opts)
+
+        v.mpi_command = f"srun {' '.join(srun_opts)}"
+        v.batch_submit = "sbatch {execute_experiment}"
+        v.allocation_directives = "\n".join(sbatch_directives)
+
+    def flux_instructions(self, v):
+        pass
+
+    def mpi_instructions(self, v):
+        v.mpi_command = f"mpirun -n {v.n_ranks} --oversubscribe"
+        v.batch_submit = "{execute_experiment}"
+        v.allocation_directives = ""
+
+    def determine_scheduler_instructions(self, var_defs):
+        handler = {
+            "slurm": self.slurm_instructions,
+            "flux": self.flux_instructions,
+            "mpi": self.mpi_instructions
+        }
+        with Allocation.as_attrs(var_defs) as v:
+            handler[v.scheduler](v)
