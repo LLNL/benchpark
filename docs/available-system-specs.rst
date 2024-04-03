@@ -13,6 +13,6 @@ use as the ``system`` parameter in Benchpark setup. See
 :doc:`4-benchpark-setup` for more details.
 
 .. csv-table:: Current system definitions in Benchpark.
-   :file: tables/current-system-definitions.csv
+   :file: current-system-definitions.csv
    :header-rows: 1
    :align: left

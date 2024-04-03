@@ -7,6 +7,7 @@ ramble:
   include:
   - ./configs/spack.yaml
   - ./configs/variables.yaml
+  - ./configs/modifier.yaml
 
   config:
     deprecated: true
@@ -33,7 +34,7 @@ ramble:
             nz: '{n}'
             processes_per_node: ['8', '4']
             n_nodes: ['1', '2']
-            threads_per_node_core: ['4', '6', '12'] #TODO: Specify n_threads according to available n_nodes and n_ranks
+            threads_per_node_core: ['4', '6', '12']
             omp_num_threads: '{threads_per_node_core} * {n_nodes}'
           experiments:
             amg2023_omp_problem1_{n_nodes}_{omp_num_threads}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
@@ -41,16 +42,16 @@ ramble:
                 env_name: amg2023-omp
               matrices:
                 - size_threads:
-                  - n # TODO: Filter matrix
-                  - threads_per_node_core # TODO: Filter matrix
+                  - n
+                  - threads_per_node_core
   spack:
     concretized: true
     packages:
       hypre-omp:
-        spack_spec: hypre@2.28.0 +mpi+openmp+mixedint
+        spack_spec: hypre@2.28.0 +mpi+openmp+mixedint{modifier_spack_variant}
         compiler: default-compiler
       amg2023-omp:
-        spack_spec: amg2023@develop +mpi+openmp
+        spack_spec: amg2023@develop +mpi+openmp{modifier_spack_variant}
         compiler: default-compiler
     environments:
       amg2023-omp:
@@ -59,3 +60,4 @@ ramble:
         - default-mpi
         - hypre-omp
         - amg2023-omp
+        - '{modifier_package_name}'

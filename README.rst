@@ -1,7 +1,17 @@
-==================================================
-Benchpark
-==================================================
+.. raw:: html
 
+    <div align="left">
+      <h2>
+        <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/LLNL/benchpark/develop/docs/_static/images/benchpark-dark.svg" width="400">
+        <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/LLNL/benchpark/develop/docs/_static/images/benchpark-light.svg" width="400">
+        <img alt="Benchpark" src="https://raw.githubusercontent.com/LLNL/benchpark/develop/docs/_static/images/benchpark-light.svg" width="400">
+        </picture>
+      </h2>
+    </div>
+
+Overview
+--------
 You can find detailed documentation at `software.llnl.gov/benchpark
 <https://software.llnl.gov/benchpark>`_. Benchpark can also be found on `GitHub
 <https://github.com/llnl/benchpark>`_.
@@ -12,19 +22,19 @@ reproducible, working specifications for the following:
 
 1. **System specifications**
 
-- location of system compilers and system MPI
-- system scheduler and launcher
+* location of system compilers and system MPI
+* system scheduler and launcher
 
 2. **Benchmark specifications**
 
-- source repo and version
-- build (Spack) configuration
-- run (Ramble) configuration
+* source repo and version
+* build (Spack) configuration
+* run (Ramble) configuration
 
 3. **Experiment specifications**
 
-- programming models to use for benchmarks on a given system type
-- valid experiments for benchmarks on a given system (scientific parameter studies, performance parameter studies, etc.)
+* programming models to use for benchmarks on a given system type
+* valid experiments for benchmarks on a given system (scientific parameter studies, performance parameter studies, etc.)
 
 Dependencies
 ------------

@@ -21,9 +21,12 @@
 
 .. toctree::
    :maxdepth: 1
-   :caption: Available Specifications
+   :caption: Catalogue
 
+   catalogue-of-benchmarks
    available-system-specs
+   benchmark-list
+   benchpark-help
 
 .. toctree::
    :maxdepth: 1
