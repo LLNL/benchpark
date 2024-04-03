@@ -44,6 +44,12 @@ def defined_allocation_options(expander):
     return defined
 
 
+class AttrDict(dict):
+    __getattr__ = dict.__getitem__
+    __setattr__ = dict.__setitem__
+    __delattr__ = dict.__delitem__
+
+
 class Allocation(BasicModifier):
 
     name = "allocation"
@@ -70,37 +76,28 @@ class Allocation(BasicModifier):
             app.define_variable(var.name.lower(), val)
 
     def determine_allocation(self, var_defs):
-        # Define e.g. "n_ranks" as local variables based on what is currently
-        # defined in Ramble configs
+        v = AttrDict()
         for alloc_opt in AllocOpt:
-            locals()[alloc_opt.name.lower()] = var_defs.get(alloc_opt, None)
-            if alloc_opt == AllocOpt.N_RANKS:
-                import pdb; pdb.set_trace()
-                print("hi")
+            setattr(v, alloc_opt.name.lower(), var_defs.get(alloc_opt, None))
 
-        try:
-            n_ranks += 1
-        except Exception as e:
-            raise Exception(str(locals()))
+        if not v.n_ranks:
+            if v.n_ranks_per_node and v.n_nodes:
+                v.n_ranks = v.n_nodes * v.n_ranks_per_node
 
-        if not n_ranks:
-            if n_ranks_per_node and n_nodes:
-                n_ranks = n_nodes * n_ranks_per_node
-
-        if not n_nodes:
-            if n_ranks:
+        if not v.n_nodes:
+            if v.n_ranks:
                 cpus_request_per_task = 1
                 multi_cpus_per_task = n_cores_per_task or n_threads or 0
                 cpus_request_per_task = max(multi_cpus_per_task, 1)
                 tasks_per_node = math.floor(cpus_per_node / cpus_request_per_task)
-                n_nodes = math.ceil(n_ranks / tasks_per_node)
-            if n_gpus and gpus_per_node:
-                n_nodes = math.ceil(n_gpus / float(gpus_per_node))
+                v.n_nodes = math.ceil(v.n_ranks / tasks_per_node)
+            if v.n_gpus and v.gpus_per_node:
+                v.n_nodes = math.ceil(v.n_gpus / float(v.gpus_per_node))
 
-        if not n_threads:
-            n_threads = 1
+        if not v.n_threads:
+            v.n_threads = 1
 
         for alloc_opt in AllocOpt:
-            local_val = locals()[alloc_opt.name.lower()]
+            local_val = getattr(v, alloc_opt.name.lower(), None)
             if (alloc_opt not in var_defs) and local_val:
                 var_defs[alloc_opt] = local_val
