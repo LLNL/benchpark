@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import math
-
+from enum import Enum
 from ramble.modkit import *
 
 
@@ -13,7 +13,7 @@ class AllocOpt(Enum):
     N_RANKS = 1
     N_NODES = 2
     N_CORES_PER_TASK = 3
-    N_OMP_THREADS_PER_TASK = 4
+    N_THREADS = 4 # number of OMP threads per task
     N_RANKS_PER_NODE = 5
 
     # Descriptions of resources available on systems
@@ -44,11 +44,18 @@ def defined_allocation_options(expander):
     return defined
 
 
-class Allocation(BaseModifier):
+class Allocation(BasicModifier):
 
     name = "allocation"
 
     tags("infrastructure")
+
+    # Currently there is only one mode. The only behavior supported right
+    # now is to attempt to request "enough" resources for a given
+    # request (e.g. to make sure we request enough nodes, assuming we
+    # know how many CPUs we want)"
+    mode('standard', description='Standard execution mode for allocation')
+    default_mode('standard')
 
     def inherit_from_application(self, app):
         super().inherit_from_application(app)
@@ -56,18 +63,25 @@ class Allocation(BaseModifier):
         var_defs = defined_allocation_options(self.expander)
 
         # Calculate unset values (e.g. determine n_nodes if not set)
-        determine_allocation(var_defs)
+        self.determine_allocation(var_defs)
 
         # Definitions
         for var, val in var_defs.items():
             app.define_variable(var.name.lower(), val)
 
-
-    def determine_allocation(var_defs):
+    def determine_allocation(self, var_defs):
         # Define e.g. "n_ranks" as local variables based on what is currently
         # defined in Ramble configs
         for alloc_opt in AllocOpt:
             locals()[alloc_opt.name.lower()] = var_defs.get(alloc_opt, None)
+            if alloc_opt == AllocOpt.N_RANKS:
+                import pdb; pdb.set_trace()
+                print("hi")
+
+        try:
+            n_ranks += 1
+        except Exception as e:
+            raise Exception(str(locals()))
 
         if not n_ranks:
             if n_ranks_per_node and n_nodes:
@@ -76,12 +90,15 @@ class Allocation(BaseModifier):
         if not n_nodes:
             if n_ranks:
                 cpus_request_per_task = 1
-                multi_cpus_per_task = n_cores_per_task or n_omp_threads_per_task or 0
+                multi_cpus_per_task = n_cores_per_task or n_threads or 0
                 cpus_request_per_task = max(multi_cpus_per_task, 1)
                 tasks_per_node = math.floor(cpus_per_node / cpus_request_per_task)
                 n_nodes = math.ceil(n_ranks / tasks_per_node)
             if n_gpus and gpus_per_node:
                 n_nodes = math.ceil(n_gpus / float(gpus_per_node))
+
+        if not n_threads:
+            n_threads = 1
 
         for alloc_opt in AllocOpt:
             local_val = locals()[alloc_opt.name.lower()]

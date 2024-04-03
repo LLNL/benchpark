@@ -15,6 +15,9 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
+  modifiers:
+  - name: allocation
+
   applications:
     saxpy:
       workloads:
@@ -23,11 +26,11 @@ ramble:
             set:
               OMP_NUM_THREADS: '{n_threads}'
           variables:
-            n_ranks: '8'
+            n_cores_per_task: '1'
           experiments:
             saxpy_{n}_{n_nodes}_{n_ranks}_{n_threads}:
               variables:
-                processes_per_node: ['8', '4']
+                ranks_per_node: ['8', '4']
                 n_nodes: ['1', '2']
                 n_threads: ['2', '4']
                 n: ['512', '1024']
