@@ -28,7 +28,7 @@ ramble:
           variables:
             n_cores_per_task: '1'
           experiments:
-            saxpy_{n}_{n_nodes}_{n_ranks}_{n_threads}:
+            saxpy_{n}_{n_nodes}_{n_threads}:
               variables:
                 n_ranks_per_node: ['8', '4']
                 n_nodes: ['1', '2']
