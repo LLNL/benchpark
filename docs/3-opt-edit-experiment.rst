@@ -87,15 +87,21 @@ is created which contains the collected performance metrics.
    :widths: 20 20 50
    :header-rows: 1
 
-   * - Caliper modifier
-     - Where applicable
-     - Metrics collected
+   * - Caliper Modifier
+     - Where Applicable
+     - Metrics Collected
    * - Base
      - Platform-independent
-     - Min time/rank: Minimum time (in seconds) across all ranks, Max time/rank: Maximum time (in seconds) across all ranks, Avg time/rank: Average time (in seconds) across all ranks, Total time: Aggregated time (in seconds) over all ranks
+     - | - Min time/rank: Minimum time (in seconds) across all ranks
+       | - Max time/rank: Maximum time (in seconds) across all ranks
+       | - Avg time/rank: Average time (in seconds) across all ranks
+       | - Total time: Aggregated time (in seconds) over all ranks
    * - Top-down
      - x86 CPUs
-     - Retiring, Bad speculation, Front end bound, Back end bound
+     - | - Retiring
+       | - Bad speculation
+       | - Front end bound
+       | - Back end bound
    * - CUDA
      - CUDA GPUs
-     - time.gpu
+     - | - time.gpu
