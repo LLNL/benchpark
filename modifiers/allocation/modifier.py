@@ -88,6 +88,15 @@ class AttrDict(dict):
     def defined(self):
         return list((k, self[k]) for k in self["_attributes"])
 
+    @staticmethod
+    def from_predefined_variables(var_defs):
+        v = AttrDict()
+        for alloc_opt in AllocOpt:
+            setattr(v, alloc_opt.name.lower(), var_defs.get(alloc_opt, None))
+
+        return v
+
+
 class Allocation(BasicModifier):
 
     name = "allocation"
@@ -105,25 +114,16 @@ class Allocation(BasicModifier):
         super().inherit_from_application(app)
 
         var_defs = defined_allocation_options(app.expander)
+        v = AttrDict.from_predefined_variables(var_defs)
 
-        with Allocation.as_attrs(var_defs) as v:
-            # Calculate unset values (e.g. determine n_nodes if not set)
-            self.determine_allocation(v)
+        # Calculate unset values (e.g. determine n_nodes if not set)
+        self.determine_allocation(v)
 
-            self.determine_scheduler_instructions(v)
+        self.determine_scheduler_instructions(v)
 
-            # Definitions
-            for var, val in v.defined():
-                app.define_variable(var, str(val))
-
-    @staticmethod
-    @contextmanager
-    def as_attrs(var_defs):
-        v = AttrDict()
-        for alloc_opt in AllocOpt:
-            setattr(v, alloc_opt.name.lower(), var_defs.get(alloc_opt, None))
-
-        yield v
+        # Definitions
+        for var, val in v.defined():
+            app.define_variable(var, str(val))
 
     def determine_allocation(self, v):
         if not v.n_ranks:
