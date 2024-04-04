@@ -55,17 +55,24 @@ you can do so by upstreaming changes to Spack and/or Ramble,
 or working on your benchmark specification in ``benchpark/repo/${BENCHMARK}`` 
 (see :doc:`add-a-benchmark` for details).
 
-Applying the Caliper modifier
------------------------------
-In Benchpark, a modifier follows `Ramble Modifier
+Modifiers
+---------
+In Benchpark, a ``modifier`` follows the `Ramble Modifier
 <https://googlecloudplatform.github.io/ramble/tutorials/10_using_modifiers.html#modifiers>`_
 and is an abstract object that can be applied to a large set of reproducible
-specifications, such as injecting performance analysis. In Benchpark, we have
-implemented a Caliper modifier to build the specifications with the
-instrumentation and profiling library, Caliper, in a platform-independent
-manner. With the modifier enabled, Caliper is configured to use the SPOT
-built-in configuration, which records a time profile. More documentation
-on Caliper can be found `here <https://software.llnl.gov/Caliper>`_.
+specifications. Modifiers are intended to encasulate reusable patterns that
+perform a specific configuration of an experiment. This may include injecting
+performance analysis or setting up system resources.
+
+Applying the Caliper modifier
+-----------------------------
+We have implemented a Caliper modifier to build the specifications with the
+instrumentation and profiling library in a platform-independent
+manner. More documentation on Caliper can be found `here
+<https://software.llnl.gov/Caliper>`_.
+
+With the modifier enabled, Caliper is configured to one of the specified
+configurations as shown in the table below.
 
 To turn on the Caliper modifier, add ``--modifier=caliper`` to the Benchpark
 setup step::
@@ -73,9 +80,22 @@ setup step::
     ./benchpark setup benchmark/programmingmodel system --modifier=caliper <workspace-dir>
 
 After the experiments in the workspace have completed running, a ``.cali`` file
-is created which contains the following time metrics:
+is created which contains the collected performance metrics.
 
-* Min time/rank: Minimum time (in seconds) across all ranks
-* Max time/rank: Maximum time (in seconds) across all ranks
-* Avg time/rank: Average time (in seconds) across all ranks
-* Total time: Aggregated time (in seconds) over all ranks
+
+.. list-table:: Available caliper modifiers
+   :widths: 20 20 50
+   :header-rows: 1
+
+   * - Caliper modifier
+     - Where applicable
+     - Metrics collected
+   * - Base
+     - Platform-independent
+     - Min time/rank: Minimum time (in seconds) across all ranks, Max time/rank: Maximum time (in seconds) across all ranks, Avg time/rank: Average time (in seconds) across all ranks, Total time: Aggregated time (in seconds) over all ranks
+   * - Top-down
+     - x86 CPUs
+     - Retiring, Bad speculation, Front end bound, Back end bound
+   * - CUDA
+     - CUDA GPUs
+     - time.gpu
