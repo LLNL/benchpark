@@ -22,8 +22,9 @@ class AllocOpt(Enum):
     GPUS_PER_NODE = 100
     CPUS_PER_NODE = 101
 
-    # Scheduler identification
+    # Scheduler identification and other high-level instructions
     SCHEDULER = 200
+    TIMEOUT = 201  # This is assumed to be in minutes
 
     @staticmethod
     def as_type(enumval, input):
@@ -145,6 +146,7 @@ class Allocation(BasicModifier):
 
     def slurm_instructions(self, v):
         srun_opts = []
+        sbatch_opts = []  # opts just for the sbatch script
 
         if v.n_ranks:
             srun_opts.append(f"-n {v.n_ranks}")
@@ -153,14 +155,32 @@ class Allocation(BasicModifier):
         if v.n_nodes:
             srun_opts.append(f"-N {v.n_nodes}")
 
-        sbatch_directives = list(f"# SBATCH {x}" for x in srun_opts)
+        if v.timeout:
+            sbatch_opts.append(f"--time {v.timeout}")
+
+        sbatch_directives = list(f"#SBATCH {x}" for x in (srun_opts + sbatch_opts))
 
         v.mpi_command = f"srun {' '.join(srun_opts)}"
         v.batch_submit = "sbatch {execute_experiment}"
         v.allocation_directives = "\n".join(sbatch_directives)
 
     def flux_instructions(self, v):
-        pass
+        cmd_opts = []
+        batch_opts = []
+
+        if v.n_ranks:
+            cmd_opts.append(f"-n {v.n_ranks}")
+        if v.n_nodes:
+            cmd_opts.append(f"-N {v.n_nodes}")
+
+        if v.timeout:
+            batch_opts.append("-t {v.timeout}m")
+
+        batch_directives = list(f"# flux: {x}" for x in (cmd_opts + batch_opts))
+
+        v.mpi_command = f"flux run {' '.join(cmd_opts)}"
+        v.batch_submit = "flux batch {execute_experiment}"
+        v.allocation_directives = "\n".join(batch_directives)
 
     def mpi_instructions(self, v):
         v.mpi_command = f"mpirun -n {v.n_ranks} --oversubscribe"
@@ -178,4 +198,8 @@ class Allocation(BasicModifier):
                 f"scheduler ({v.scheduler}) must be one of : "
                 + " ".join(handler.keys())
             )
+
+        if not v.timeout:
+            v.timeout = 120
+
         handler[v.scheduler](v)
