@@ -6,7 +6,6 @@
 variables:
   n_ranks: '7'
   n_nodes: '7'
-  n_threads: '7'
   scheduler: "slurm"
   batch_submit: "placeholder"
   mpi_command: "placeholder"
