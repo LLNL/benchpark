@@ -14,7 +14,7 @@ class AllocOpt(Enum):
     N_RANKS = 1
     N_NODES = 2
     N_CORES_PER_TASK = 3
-    N_THREADS = 4 # number of OMP threads per task
+    N_THREADS = 4  # number of OMP threads per task
     N_RANKS_PER_NODE = 5
     N_GPUS = 6
 
@@ -40,15 +40,17 @@ class AllocOpt(Enum):
             else:
                 return parsed_int
 
+
 # If we see this value, we assume the user wants us to substitute it.
 # Ramble expects n_ranks and n_nodes to be set to *something* so even
 # if we want to fill those in ourselves, we have to supply something.
 SENTINEL_UNDEFINED_VALUE_INT = 7
 SENTINEL_UNDEFINED_VALUE_STR = "placeholder"
 
+
 def defined_allocation_options(expander):
     """For each possible allocation option, check if it was filled in by
-       Ramble: in that case it will be an integer.
+    Ramble.
     """
     defined = {}
     for alloc_opt in AllocOpt:
@@ -67,7 +69,7 @@ def defined_allocation_options(expander):
 class AttrDict(dict):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self['_attributes'] = set()
+        self["_attributes"] = set()
 
     def __getattr__(self, *args, **kwargs):
         return self.__getitem__(*args, **kwargs)
@@ -81,10 +83,10 @@ class AttrDict(dict):
     def __setitem__(self, key, value):
         super().__setitem__(key, value)
         if key != "_attributes":
-            self['_attributes'].add(key)
+            self["_attributes"].add(key)
 
     def defined(self):
-        return list((k, self[k]) for k in self['_attributes'])
+        return list((k, self[k]) for k in self["_attributes"])
 
 class Allocation(BasicModifier):
 
@@ -96,8 +98,8 @@ class Allocation(BasicModifier):
     # now is to attempt to request "enough" resources for a given
     # request (e.g. to make sure we request enough nodes, assuming we
     # know how many CPUs we want)"
-    mode('standard', description='Standard execution mode for allocation')
-    default_mode('standard')
+    mode("standard", description="Standard execution mode for allocation")
+    default_mode("standard")
 
     def inherit_from_application(self, app):
         super().inherit_from_application(app)
@@ -169,8 +171,11 @@ class Allocation(BasicModifier):
         handler = {
             "slurm": self.slurm_instructions,
             "flux": self.flux_instructions,
-            "mpi": self.mpi_instructions
+            "mpi": self.mpi_instructions,
         }
         if v.scheduler not in handler:
-            raise ValueError(f"scheduler ({v.scheduler}) must be one of : " + " ".join(handler.keys()))
+            raise ValueError(
+                f"scheduler ({v.scheduler}) must be one of : "
+                + " ".join(handler.keys())
+            )
         handler[v.scheduler](v)
