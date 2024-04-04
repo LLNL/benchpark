@@ -4,10 +4,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 variables:
-  mpi_command: 'mpirun -n {n_ranks} --oversubscribe'
   n_ranks: '7'
   n_nodes: '7'
   n_threads: '7'
   scheduler: "slurm"
   batch_submit: "placeholder"
   mpi_command: "placeholder"
+  cpus_per_node: "1"
+  #  gpus_per_node unset

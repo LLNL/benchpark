@@ -25,8 +25,6 @@ ramble:
           env_vars:
             set:
               OMP_NUM_THREADS: '{n_threads}'
-          variables:
-            n_cores_per_task: '1'
           experiments:
             saxpy_{n}_{n_nodes}_{n_threads}:
               variables:

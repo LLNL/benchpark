@@ -135,9 +135,9 @@ class Allocation(BasicModifier):
                 cpus_request_per_task = 1
                 multi_cpus_per_task = v.n_cores_per_task or v.n_threads or 0
                 cpus_request_per_task = max(multi_cpus_per_task, 1)
-                tasks_per_node = math.floor(cpus_per_node / cpus_request_per_task)
+                tasks_per_node = math.floor(v.cpus_per_node / cpus_request_per_task)
                 v.n_nodes = math.ceil(v.n_ranks / tasks_per_node)
-            if v.n_gpus and v.gpus_per_node:
+            if v.n_gpus:
                 v.n_nodes = math.ceil(v.n_gpus / float(v.gpus_per_node))
 
         if not v.n_threads:
