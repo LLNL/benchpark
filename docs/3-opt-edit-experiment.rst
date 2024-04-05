@@ -31,7 +31,7 @@ Benchpark configuration files are organized as follows::
      │  └── package.py 
      └── repo.yaml 
 
-You can edit any of them to change the behavior of your experiments.
+You can edit these configuration files to change the behavior of your experiments.
 
 System specification
 --------------------
@@ -66,23 +66,19 @@ performance analysis or setting up system resources.
 
 Applying the Caliper modifier
 -----------------------------
-We have implemented a Caliper modifier to build the specifications with the
-instrumentation and profiling library in a platform-independent
-manner. More documentation on Caliper can be found `here
+We have implemented a Caliper modifier to enable profiling of Caliper-instrumented 
+benchmarks in Benchpark. More documentation on Caliper can be found `here
 <https://software.llnl.gov/Caliper>`_.
 
-With the modifier enabled, Caliper is configured to one of the specified
-configurations as shown in the table below.
-
-To turn on the Caliper modifier, add ``--modifier=<caliper_modifier>`` to the Benchpark
+To turn on profiling with Caliper, add ``--modifier=<caliper_modifier>`` to the Benchpark
 setup step::
 
     ./benchpark setup benchmark/programmingmodel system --modifier=<caliper_modifier> <workspace-dir>
 
 Valid values for ``<caliper_modifier>`` are found in the **Caliper Modifier**
-column of the table below.
-
-After the experiments in the workspace have completed running, a ``.cali`` file
+column of the table below.  Benchpark will link the experiment to Caliper,
+and inject appropriate Caliper configuration at runtime.  After the experiments 
+in the workspace have completed running, a ``.cali`` file
 is created which contains the collected performance metrics.
 
 .. list-table:: Available caliper modifiers
@@ -99,11 +95,11 @@ is created which contains the collected performance metrics.
        | - Avg time/rank: Average time (in seconds) across all ranks
        | - Total time: Aggregated time (in seconds) over all ranks
    * - caliper-topdown
-     - x86 CPUs
+     - x86 Intel CPUs
      - | - Retiring
        | - Bad speculation
        | - Front end bound
        | - Back end bound
    * - caliper-cuda
-     - CUDA GPUs
-     - | - time.gpu
+     - NVIDIA GPUs
+     - | - CUDA API functions (e.g., time.gpu)
