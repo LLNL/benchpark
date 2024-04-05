@@ -74,14 +74,16 @@ manner. More documentation on Caliper can be found `here
 With the modifier enabled, Caliper is configured to one of the specified
 configurations as shown in the table below.
 
-To turn on the Caliper modifier, add ``--modifier=caliper`` to the Benchpark
+To turn on the Caliper modifier, add ``--modifier=<caliper_modifier>`` to the Benchpark
 setup step::
 
-    ./benchpark setup benchmark/programmingmodel system --modifier=caliper <workspace-dir>
+    ./benchpark setup benchmark/programmingmodel system --modifier=<caliper_modifier> <workspace-dir>
+
+Valid values for ``<caliper_modifier>`` are found in the **Caliper Modifier**
+column of the table below.
 
 After the experiments in the workspace have completed running, a ``.cali`` file
 is created which contains the collected performance metrics.
-
 
 .. list-table:: Available caliper modifiers
    :widths: 20 20 50
@@ -90,18 +92,18 @@ is created which contains the collected performance metrics.
    * - Caliper Modifier
      - Where Applicable
      - Metrics Collected
-   * - Base
+   * - caliper
      - Platform-independent
      - | - Min time/rank: Minimum time (in seconds) across all ranks
        | - Max time/rank: Maximum time (in seconds) across all ranks
        | - Avg time/rank: Average time (in seconds) across all ranks
        | - Total time: Aggregated time (in seconds) over all ranks
-   * - Top-down
+   * - caliper-topdown
      - x86 CPUs
      - | - Retiring
        | - Bad speculation
        | - Front end bound
        | - Back end bound
-   * - CUDA
+   * - caliper-cuda
      - CUDA GPUs
      - | - time.gpu
