@@ -3,7 +3,7 @@ pyyaml
 pytest
 flake8
 google-cloud-storage # for gcs fetch test
-google-api-core # for gcs fetch error .execptions
+google-api-core # for gcs fetch error .exceptions
 coverage
 pre-commit
 graphlib-backport;python_version<"3.9"
