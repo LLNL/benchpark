@@ -242,7 +242,7 @@ def run_command(command_str, env=None):
             f"Output: {stdout}\n"
             f"Error: {stderr}"
         )
-        
+
     return (stdout, stderr)
 
 
