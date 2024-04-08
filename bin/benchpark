@@ -238,9 +238,7 @@ def run_command(command_str, env=None):
     stdout, stderr = proc.communicate()
     if proc.returncode != 0:
         raise RuntimeError(
-            f"Failed command: {command_str}\n"
-            f"Output: {stdout}\n"
-            f"Error: {stderr}"
+            f"Failed command: {command_str}\nOutput: {stdout}\nError: {stderr}"
         )
 
     return (stdout, stderr)
