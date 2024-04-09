@@ -45,10 +45,10 @@ ramble:
     concretized: true
     packages:
       hipsycl:
-        spack_spec: hipsycl@0.9.4+rocm
+        spack_spec: hipsycl@23.10.0+rocm
         compiler: compiler-rocmcc
       gromacs:
-        spack_spec: gromacs@2023.3 +mpi+openmp+sycl+rocm~hwloc~double amdgpu_target={rocm_arch}
+        spack_spec: gromacs@2024 +mpi+openmp+sycl+rocm~hwloc~double amdgpu_target={rocm_arch}
         compiler: compiler-rocmcc
     environments:
       gromacs:
