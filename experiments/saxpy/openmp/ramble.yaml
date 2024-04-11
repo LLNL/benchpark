@@ -22,20 +22,17 @@ ramble:
     saxpy:
       workloads:
         problem:
-          env_vars:
-            set:
-              OMP_NUM_THREADS: '{n_omp_threads_per_task}'
           experiments:
-            saxpy_{n}_{n_nodes}_{n_omp_threads_per_task}:
+            saxpy_{n}_{n_nodes}_{n_threads_per_proc}:
               variables:
                 n_ranks_per_node: ['8', '4']
                 n_nodes: ['1', '2']
-                n_omp_threads_per_task: ['2', '4']
+                n_threads_per_proc: ['2', '4']
                 n: ['512', '1024']
               matrices:
                 - size_threads:
                   - n
-                  - n_omp_threads_per_task
+                  - n_threads_per_proc
 
   spack:
     concretized: true

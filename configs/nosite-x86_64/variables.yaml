@@ -4,10 +4,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 variables:
-  n_ranks: '7'
-  n_nodes: '7'
+  n_ranks: '1000001'  # placeholder value
+  n_nodes: '1000001'  # placeholder value
   scheduler: "slurm"
   batch_submit: "placeholder"
   mpi_command: "placeholder"
-  cpus_per_node: "1"
-  #  gpus_per_node unset
+  sys_cpus_per_node: "1"
+  #  sys_gpus_per_node unset
+  max_request: "1000"  # n_ranks/n_nodes cannot exceed this

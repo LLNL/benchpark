@@ -12,18 +12,19 @@ class AllocOpt(Enum):
     # Experiment resource requests
     N_RANKS = 1
     N_NODES = 2
-    N_CORES_PER_TASK = 3
-    N_THREADS = 4  # number of OMP threads per task
+    N_CORES_PER_RANK = 3
+    N_THREADS_PER_PROC = 4  # number of OMP threads per rank
     N_RANKS_PER_NODE = 5
     N_GPUS = 6
 
     # Descriptions of resources available on systems
-    GPUS_PER_NODE = 100
-    CPUS_PER_NODE = 101
+    SYS_GPUS_PER_NODE = 100
+    SYS_CPUS_PER_NODE = 101
 
     # Scheduler identification and other high-level instructions
     SCHEDULER = 200
     TIMEOUT = 201  # This is assumed to be in minutes
+    MAX_REQUEST = 202
 
     @staticmethod
     def as_type(enumval, input):
@@ -34,17 +35,12 @@ class AllocOpt(Enum):
             else:
                 return parsed_str
         else:
-            parsed_int = int(input)
-            if parsed_int == SENTINEL_UNDEFINED_VALUE_INT:
-                return None
-            else:
-                return parsed_int
+            return int(input)
 
 
 # If we see this value, we assume the user wants us to substitute it.
-# Ramble expects n_ranks and n_nodes to be set to *something* so even
-# if we want to fill those in ourselves, we have to supply something.
-SENTINEL_UNDEFINED_VALUE_INT = 7
+# For integers, values exceeding max_request are presumed to be
+# placeholders.
 SENTINEL_UNDEFINED_VALUE_STR = "placeholder"
 
 
@@ -132,16 +128,25 @@ class Allocation(BasicModifier):
 
         if not v.n_nodes:
             if v.n_ranks:
-                cpus_request_per_task = 1
-                multi_cpus_per_task = v.n_cores_per_task or v.n_threads or 0
-                cpus_request_per_task = max(multi_cpus_per_task, 1)
-                tasks_per_node = math.floor(v.cpus_per_node / cpus_request_per_task)
-                v.n_nodes = math.ceil(v.n_ranks / tasks_per_node)
+                multi_cpus_per_rank = v.n_cores_per_rank or v.n_threads_per_proc or 0
+                cpus_request_per_rank = max(multi_cpus_per_rank, 1)
+                ranks_per_node = math.floor(v.sys_cpus_per_node / cpus_request_per_rank)
+                v.n_nodes = math.ceil(v.n_ranks / ranks_per_node)
             if v.n_gpus:
                 v.n_nodes = math.ceil(v.n_gpus / float(v.gpus_per_node))
 
-        if not v.n_threads:
-            v.n_threads = 1
+        if not v.n_threads_per_proc:
+            v.n_threads_per_proc = 1
+
+        max_request = v.max_request or 1000
+        for var, val in v.defined():
+            try:
+                int(val)
+            except ValueError:
+                continue
+            if val > max_request:
+                raise ValueError(f"Request exceeds maximum: {var}/{val}/{max_request}")
+
 
     def slurm_instructions(self, v):
         srun_opts = []
@@ -196,6 +201,13 @@ class Allocation(BasicModifier):
             raise ValueError(
                 f"scheduler ({v.scheduler}) must be one of : "
                 + " ".join(handler.keys())
+            )
+
+        if v.n_threads_per_proc:
+            self.environment_variable_modification(
+                'OMP_NUM_THREADS',
+                method='set',
+                modification='{n_threads_per_proc}'
             )
 
         if not v.timeout:
