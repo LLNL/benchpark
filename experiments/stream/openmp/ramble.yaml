@@ -43,11 +43,10 @@ ramble:
     concretized: true
     packages:
       stream:
-        spack_spec: 'stream@5.10-caliper{modifier_spack_variant}'
+        spack_spec: 'stream@5.10-caliper+mpi{modifier_spack_variant}'
         compiler: compiler-gcc
     environments:
       stream:
         packages:
         - stream
-        - mpi-gcc
         - '{modifier_package_name}'
