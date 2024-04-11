@@ -29,18 +29,11 @@ class AllocOpt(Enum):
     @staticmethod
     def as_type(enumval, input):
         if enumval == AllocOpt.SCHEDULER:
-            parsed_str = str(input)
-            if parsed_str == SENTINEL_UNDEFINED_VALUE_STR:
-                return None
-            else:
-                return parsed_str
+            return str(input)
         else:
             return int(input)
 
 
-# If we see this value, we assume the user wants us to substitute it.
-# For integers, values exceeding max_request are presumed to be
-# placeholders.
 SENTINEL_UNDEFINED_VALUE_STR = "placeholder"
 
 
@@ -85,11 +78,35 @@ class AttrDict(dict):
         return list((k, self[k]) for k in self["_attributes"])
 
     @staticmethod
+    def nullify_placeholders(v):
+        # If we see a string variable set to "placeholder" we assume the
+        # user wants us to set it.
+        # For integers, values exceeding max_request are presumed to be
+        # placeholders.
+        max_request_int = v.max_request or 1000
+        placeholder_checks = {
+            int: lambda x: x > max_request_int,
+            str: lambda x: x == SENTINEL_UNDEFINED_VALUE_STR,
+        }
+        for var, val in v.defined():
+            if val is None:
+                continue
+
+            for t, remove_fn in placeholder_checks.items():
+                try:
+                    read_as = t(val)
+                    if remove_fn(read_as):
+                        v[var] = None
+                except ValueError:
+                    pass
+
+    @staticmethod
     def from_predefined_variables(var_defs):
         v = AttrDict()
         for alloc_opt in AllocOpt:
             setattr(v, alloc_opt.name.lower(), var_defs.get(alloc_opt, None))
 
+        AttrDict.nullify_placeholders(v)
         return v
 
 
@@ -121,6 +138,15 @@ class Allocation(BasicModifier):
         for var, val in v.defined():
             app.define_variable(var, str(val))
 
+        if v.n_threads_per_proc:
+            import pdb; pdb.set_trace()
+            self.environment_variable_modification(
+                'OMP_NUM_THREADS',
+                method='set',
+                modification='{n_threads_per_proc}'
+            )
+
+
     def determine_allocation(self, v):
         if not v.n_ranks:
             if v.n_ranks_per_node and v.n_nodes:
@@ -139,10 +165,12 @@ class Allocation(BasicModifier):
             v.n_threads_per_proc = 1
 
         max_request = v.max_request or 1000
+        # Final check, make sure the above arithmetic didn't result in an
+        # unreasonable allocation request.
         for var, val in v.defined():
             try:
                 int(val)
-            except ValueError:
+            except (ValueError, TypeError):
                 continue
             if val > max_request:
                 raise ValueError(f"Request exceeds maximum: {var}/{val}/{max_request}")
@@ -201,13 +229,6 @@ class Allocation(BasicModifier):
             raise ValueError(
                 f"scheduler ({v.scheduler}) must be one of : "
                 + " ".join(handler.keys())
-            )
-
-        if v.n_threads_per_proc:
-            self.environment_variable_modification(
-                'OMP_NUM_THREADS',
-                method='set',
-                modification='{n_threads_per_proc}'
             )
 
         if not v.timeout:
