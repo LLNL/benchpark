@@ -68,7 +68,7 @@ def main():
     df_tpose.set_index([""], inplace=True)
 
     # Write out current system definitions to CSV format
-    df_tpose.to_csv("tables/current-system-definitions.csv")
+    df_tpose.to_csv("current-system-definitions.csv")
 
 
 if __name__ == "__main__":
