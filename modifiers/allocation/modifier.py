@@ -16,6 +16,7 @@ class AllocOpt(Enum):
     N_THREADS_PER_PROC = 4  # number of OMP threads per rank
     N_RANKS_PER_NODE = 5
     N_GPUS = 6
+    N_CORES_PER_NODE = 7
 
     # Descriptions of resources available on systems
     SYS_GPUS_PER_NODE = 100
