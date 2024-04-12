@@ -139,11 +139,11 @@ class Allocation(BasicModifier):
             app.define_variable(var, str(val))
 
         if v.n_threads_per_proc:
-            import pdb; pdb.set_trace()
-            self.environment_variable_modification(
+            self.env_var_modification(
                 'OMP_NUM_THREADS',
                 method='set',
-                modification='{n_threads_per_proc}'
+                modification='{n_threads_per_proc}',
+                mode="standard"
             )
 
 
