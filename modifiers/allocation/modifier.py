@@ -141,12 +141,11 @@ class Allocation(BasicModifier):
 
         if v.n_threads_per_proc:
             self.env_var_modification(
-                'OMP_NUM_THREADS',
-                method='set',
-                modification='{n_threads_per_proc}',
-                mode="standard"
+                "OMP_NUM_THREADS",
+                method="set",
+                modification="{n_threads_per_proc}",
+                mode="standard",
             )
-
 
     def determine_allocation(self, v):
         if not v.n_ranks:
@@ -175,7 +174,6 @@ class Allocation(BasicModifier):
                 continue
             if val > max_request:
                 raise ValueError(f"Request exceeds maximum: {var}/{val}/{max_request}")
-
 
     def slurm_instructions(self, v):
         srun_opts = []
