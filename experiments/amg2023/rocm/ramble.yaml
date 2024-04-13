@@ -20,7 +20,6 @@ ramble:
       workloads:
         problem1:
           variables:
-            n_ranks: '{processes_per_node} * {n_nodes}'
             p: 2
             px: '{p}'
             py: '{p}'
@@ -35,7 +34,7 @@ ramble:
                 gtl: ["gtl", "no-gtl"]
                 env_name: 'amg2023-gpu-{gtl}'
                 processes_per_node: ['8', '4']
-                n_nodes: ['1', '2']
+                n_gpus: '8'
               matrices:
                 - size_gtl:
                   - n

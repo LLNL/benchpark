@@ -19,12 +19,10 @@ ramble:
     saxpy:
       workloads:
         problem:
-          variables:
-            n_ranks: '{processes_per_node} * {n_nodes}'
           experiments:
-            saxpy_{n}_{n_nodes}_{processes_per_node}_{n_ranks}:
+            saxpy_{n}_{n_nodes}_{n_ranks_per_node}:
               variables:
-                processes_per_node: '4'
+                n_ranks_per_node: '4'
                 n_nodes: '1'
                 n: ['128', '256', '512', '1024']
               matrix:

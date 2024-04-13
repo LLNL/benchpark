@@ -19,11 +19,7 @@ ramble:
     amg2023:
       workloads:
         problem1:
-          env_vars:
-            set:
-              OMP_NUM_THREADS: '{omp_num_threads}'
           variables:
-            n_ranks: '{processes_per_node} * {n_nodes}'
             p: 2
             px: '{p}'
             py: '{p}'
@@ -32,10 +28,9 @@ ramble:
             nx: '{n}'
             ny: '{n}'
             nz: '{n}'
-            processes_per_node: ['8', '4']
+            n_ranks_per_node: ['8', '4']
             n_nodes: ['1', '2']
-            threads_per_node_core: ['4', '6', '12']
-            omp_num_threads: '{threads_per_node_core} * {n_nodes}'
+            n_threads_per_proc: ['4', '6', '12']
           experiments:
             amg2023_omp_problem1_{n_nodes}_{omp_num_threads}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
               variables:
@@ -43,7 +38,7 @@ ramble:
               matrices:
                 - size_threads:
                   - n
-                  - threads_per_node_core
+                  - n_threads_per_proc
   spack:
     concretized: true
     packages:
