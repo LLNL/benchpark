@@ -30,7 +30,7 @@ class AllocOpt(Enum):
 
     @staticmethod
     def as_type(enumval, input):
-        if enumval == AllocOpt.SCHEDULER:
+        if enumval in [AllocOpt.SCHEDULER, AllocOpt.QUEUE]:
             return str(input)
         else:
             return int(input)
@@ -134,10 +134,10 @@ class TimeFormat:
         return (hours, minutes, seconds)
 
     def as_hhmm(minutes):
-        return ":".join(str(x) for x in TimeFormat.hhmmss_tuple(minutes)[:2])
+        return ":".join(str(x).zfill(2) for x in TimeFormat.hhmmss_tuple(minutes)[:2])
 
     def as_hhmmss(minutes):
-        return ":".join(str(x) for x in TimeFormat.hhmmss_tuple(minutes))
+        return ":".join(str(x).zfill(2) for x in TimeFormat.hhmmss_tuple(minutes))
 
 
 class Allocation(BasicModifier):
