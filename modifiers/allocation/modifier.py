@@ -38,25 +38,16 @@ class AllocOpt(Enum):
 SENTINEL_UNDEFINED_VALUE_STR = "placeholder"
 
 
-def defined_allocation_options(expander):
-    """For each possible allocation option, check if it was filled in by
-    Ramble.
-    """
-    defined = {}
-    for alloc_opt in AllocOpt:
-        var_def = expander.expand_var(f"{{{alloc_opt.name.lower()}}}")
-        try:
-            val = AllocOpt.as_type(alloc_opt, var_def)
-        except ValueError:
-            continue
-
-        if val is not None:
-            defined[alloc_opt] = val
-
-    return defined
-
-
 class AttrDict(dict):
+    """Takes variables defined in AllocOpt, and collects them into a single
+    object where, for a given attribute v, and an AttrDict instance x, that
+    variable is accessible as "x.v" in Python.
+
+    This is intended to be the most succinct form of access, and not require
+    dict access (i.e. `[]`) or string quotation, and also provides the
+    benefit that if you try to access a variable not defined in AllocOpt,
+    there will be an attribute error.
+    """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self["_attributes"] = set()
@@ -102,13 +93,35 @@ class AttrDict(dict):
                     pass
 
     @staticmethod
-    def from_predefined_variables(var_defs):
+    def from_predefined_variables(expander):
+        var_defs = AttrDict._defined_allocation_options(expander)
         v = AttrDict()
         for alloc_opt in AllocOpt:
             setattr(v, alloc_opt.name.lower(), var_defs.get(alloc_opt, None))
 
         AttrDict.nullify_placeholders(v)
         return v
+
+    @staticmethod
+    def _defined_allocation_options(expander):
+        """For each possible allocation option, check if it was defined as a
+        variable by the user.
+
+        This includes placeholders (those values are not treated differently
+        for this step).
+        """
+        defined = {}
+        for alloc_opt in AllocOpt:
+            var_def = expander.expand_var(f"{{{alloc_opt.name.lower()}}}")
+            try:
+                val = AllocOpt.as_type(alloc_opt, var_def)
+            except ValueError:
+                continue
+
+            if val is not None:
+                defined[alloc_opt] = val
+
+        return defined
 
 
 class TimeFormat:
@@ -142,8 +155,7 @@ class Allocation(BasicModifier):
     def inherit_from_application(self, app):
         super().inherit_from_application(app)
 
-        var_defs = defined_allocation_options(app.expander)
-        v = AttrDict.from_predefined_variables(var_defs)
+        v = AttrDict.from_predefined_variables(app.expander)
 
         # Calculate unset values (e.g. determine n_nodes if not set)
         self.determine_allocation(v)
