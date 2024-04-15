@@ -1,3 +1,87 @@
+a {
+    color: #6a984e
+}
+
+a:hover {
+    color: #7fa866
+}
+
+a:visited {
+    color: #9b59b6
+}
+
 .wy-nav-content {
     max-width: 1200px !important;
+}
+
+.wy-side-nav-search, .wy-nav-top {
+    background: #7fa866
+}
+
+.wy-nav .wy-menu-vertical header {
+    color: #7fa866
+}
+
+.wy-menu-vertical a {
+    color:#d9d9d9
+}
+
+.wy-nav .wy-menu-vertical a:hover {
+    background-color: #7fa866
+}
+
+.wy-menu-vertical header, .wy-menu-vertical p.caption {
+    color: #a1ca7b
+}
+
+.wy-nav-top {
+    background: #7fa866
+}
+
+.rst-content .wy-alert-neutral.admonition-todo a, .rst-content .wy-alert-neutral.admonition a, .rst-content .wy-alert-neutral.attention a, .rst-content .wy-alert-neutral.caution a, .rst-content .wy-alert-neutral.danger a, .rst-content .wy-alert-neutral.error a, .rst-content .wy-alert-neutral.hint a, .rst-content .wy-alert-neutral.important a, .rst-content .wy-alert-neutral.note a, .rst-content .wy-alert-neutral.seealso a, .rst-content .wy-alert-neutral.tip a, .rst-content .wy-alert-neutral.warning a, .wy-alert.wy-alert-neutral a {
+    color: #7fa866
+}
+
+.wy-tray-container li.wy-tray-item-info {
+    background: #7fa866
+}
+
+.btn-info {
+    background-color: #7fa866 !important
+}
+
+.btn-link {
+    color: #7fa866;
+}
+
+.wy-dropdown-menu > dd > a:hover {
+    background: #7fa866
+}
+
+.wy-dropdown.wy-dropdown-bubble .wy-dropdown-menu a:hover {
+    background: #7fa866
+}
+
+.wy-inline-validate.wy-inline-validate-info .wy-input-context {
+    color: #7fa866
+}
+
+.wy-text-info {
+    color:#7fa866 !important
+}
+
+.wy-side-nav-search {
+    background-color: #7fa866
+}
+
+.wy-side-nav-search input[type=text] {
+    border-color: #7fa866
+}
+
+.wy-side-nav-search img {
+    background-color: #7fa866
+}
+
+html.writer-html4 .rst-content dl:not(.docutils) > dt, html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.citation):not(.glossary):not(.simple) > dt {
+    color: #7fa866
 }

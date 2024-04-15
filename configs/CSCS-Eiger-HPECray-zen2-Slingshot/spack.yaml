@@ -3,15 +3,11 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-#!/bin/bash
-{batch_nodes}
-{batch_ranks}
-{batch_timeout}
-
-cd {experiment_run_dir}
-
-{spack_setup}
-
-{experiment_setup}
-
-{command}
+spack:
+  packages:
+    default-compiler:
+      spack_spec: gcc@12.3.0
+    default-mpi:
+      spack_spec: cray-mpich@8.1.28
+    compiler-gcc:
+      spack_spec: gcc@12.3.0
