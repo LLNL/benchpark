@@ -7,6 +7,7 @@ ramble:
   include:
   - ./configs/spack.yaml
   - ./configs/variables.yaml
+  - ./configs/modifier.yaml
 
   config:
     deprecated: true
@@ -39,10 +40,11 @@ ramble:
     concretized: true
     packages:
       saxpy:
-        spack_spec: saxpy@1.0.0 +openmp ^cmake@3.23.1
+        spack_spec: saxpy@1.0.0 +openmp{modifier_spack_variant} ^cmake@3.23.1
         compiler: default-compiler
     environments:
       saxpy:
         packages:
         - default-mpi
         - saxpy
+        - '{modifier_package_name}'
