@@ -26,6 +26,7 @@ class AllocOpt(Enum):
     SCHEDULER = 200
     TIMEOUT = 201  # This is assumed to be in minutes
     MAX_REQUEST = 202
+    QUEUE = 203
 
     @staticmethod
     def as_type(enumval, input):
@@ -252,7 +253,7 @@ class Allocation(BasicModifier):
         if v.n_ranks:
             cmd_opts.append(f"-n {v.n_ranks}")
         if v.n_nodes:
-            batch_opts.append(f"-nnodes {n_nodes}")
+            batch_opts.append(f"-nnodes {v.n_nodes}")
         if v.n_ranks_per_node:
             cmd_opts.append(f"-T {v.n_ranks_per_node}")
         # TODO: this might have to be an option on the batch_submit vs.
