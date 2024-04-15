@@ -218,11 +218,42 @@ class Allocation(BasicModifier):
         v.batch_submit = "{execute_experiment}"
         v.allocation_directives = ""
 
+    def sierra_instructions(self, v):
+        cmd_opts = []
+        batch_opts = []
+
+        if v.n_ranks:
+            cmd_opts.append(f"-n {v.n_ranks}")
+        if v.n_nodes:
+            batch_opts.append(f"-nnodes {n_nodes}")
+        if v.n_ranks_per_node:
+            cmd_opts.append(f"-T {v.n_ranks_per_node}")
+        # TODO: this might have to be an option on the batch_submit vs.
+        # a batch directive
+        if v.queue:
+            batch_opts.append(f"-q {v.queue}")
+        # TODO: might need to convert to HH:mm format
+        if v.timeout:
+            batch_opts.append(f"-W {v.timeout}")
+
+        batch_directives = list(f"#BSUB {x}" for x in batch_opts)
+
+        v.mpi_command = f"lrun {' '.join(cmd_opts)}"
+        v.batch_submit = f"bsub {execute_experiment"
+        v.allocation_directives = "\n".join(batch_directives)
+
+    def fugaku_instructions(self, v):
+
+        v.mpi_command = f""
+        v.batch_submit = f""
+        v.allocation_directives = ""
+
     def determine_scheduler_instructions(self, v):
         handler = {
             "slurm": self.slurm_instructions,
             "flux": self.flux_instructions,
             "mpi": self.mpi_instructions,
+            "sierra": self.sierra_instructions,
         }
         if v.scheduler not in handler:
             raise ValueError(
