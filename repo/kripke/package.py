@@ -22,8 +22,7 @@ class Kripke(CMakePackage, CudaPackage, ROCmPackage):
 
     version("develop", branch="develop", submodules=False)
     version(
-        "1.2.7", submodules=False, tag="v1.2.7", commit="ddcac43"
-    )
+        "updateRCU2024.02", branch="task/chen59/updateRCU2024.02", submodules=False)
     version(
         "1.2.4", submodules=False, tag="v1.2.4", commit="d85c6bc462f17a2382b11ba363059febc487f771"
     )
@@ -54,11 +53,12 @@ class Kripke(CMakePackage, CudaPackage, ROCmPackage):
     variant("caliper", default=False, description="Build with Caliper support enabled.")
 
     depends_on("mpi", when="+mpi")
-    depends_on("blt", type="build")
+    depends_on("blt@0.6.2", type="build")
     depends_on("caliper", when="+caliper")
-    depends_on("chai~examples+raja")
-    depends_on("raja~exercises~examples")
-    depends_on("umpire~examples")
+    depends_on("adiak@0.4:", when="+caliper")
+    depends_on("chai@2024.02~examples+raja")
+    depends_on("raja@2024.02~exercises~examples")
+    depends_on("umpire@2024.02~examples")
     conflicts("^blt@:0.3.6", when="+rocm")
 
     def cmake_args(self):
