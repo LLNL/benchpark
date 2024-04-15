@@ -265,7 +265,7 @@ class Allocation(BasicModifier):
         batch_directives = list(f"#BSUB {x}" for x in batch_opts)
 
         v.mpi_command = f"lrun {' '.join(cmd_opts)}"
-        v.batch_submit = f"bsub {execute_experiment"
+        v.batch_submit = f"bsub {execute_experiment}"
         v.allocation_directives = "\n".join(batch_directives)
 
     def fugaku_instructions(self, v):
