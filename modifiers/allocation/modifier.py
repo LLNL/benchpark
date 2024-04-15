@@ -49,6 +49,7 @@ class AttrDict(dict):
     benefit that if you try to access a variable not defined in AllocOpt,
     there will be an attribute error.
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self["_attributes"] = set()
