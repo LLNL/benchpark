@@ -133,10 +133,10 @@ class TimeFormat:
         return (hours, minutes, seconds)
 
     def as_hhmm(minutes):
-        return ":".join(hhmmss_tuple(minutes)[:2])
+        return ":".join(str(x) for x in TimeFormat.hhmmss_tuple(minutes)[:2])
 
     def as_hhmmss(minutes):
-        return ":".join(hhmmss_tuple(minutes))
+        return ":".join(str(x) for x in TimeFormat.hhmmss_tuple(minutes))
 
 
 class Allocation(BasicModifier):
@@ -265,7 +265,7 @@ class Allocation(BasicModifier):
         batch_directives = list(f"#BSUB {x}" for x in batch_opts)
 
         v.mpi_command = f"lrun {' '.join(cmd_opts)}"
-        v.batch_submit = f"bsub {execute_experiment}"
+        v.batch_submit = "bsub {execute_experiment}"
         v.allocation_directives = "\n".join(batch_directives)
 
     def fugaku_instructions(self, v):
@@ -274,7 +274,7 @@ class Allocation(BasicModifier):
         if v.n_ranks:
             batch_opts.append(f"--mpi proc={v.n_ranks}")
         if v.n_nodes:
-            batch_opts.append(f'-L "node={n_nodes}"')
+            batch_opts.append(f'-L "node={v.n_nodes}"')
         if v.timeout:
             batch_opts.append(f'-L "elapse={TimeFormat.as_hhmmss(v.timeout)}"')
         batch_opts.append(
@@ -283,8 +283,8 @@ class Allocation(BasicModifier):
 
         batch_directives = list(f"#PJM {x}" for x in batch_opts)
 
-        v.mpi_command = f"mpiexec"
-        v.batch_submit = f"pjsub {execute_experiment}"
+        v.mpi_command = "mpiexec"
+        v.batch_submit = "pjsub {execute_experiment}"
         v.allocation_directives = "\n".join(batch_directives)
 
     def determine_scheduler_instructions(self, v):
@@ -293,6 +293,7 @@ class Allocation(BasicModifier):
             "flux": self.flux_instructions,
             "mpi": self.mpi_instructions,
             "sierra": self.sierra_instructions,
+            "fugaku": self.fugaku_instructions,
         }
         if v.scheduler not in handler:
             raise ValueError(
