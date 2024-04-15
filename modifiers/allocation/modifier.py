@@ -111,6 +111,21 @@ class AttrDict(dict):
         return v
 
 
+class TimeFormat:
+    @staticmethod
+    def hhmmss_tuple(minutes):
+        hours = int(minutes / 60)
+        minutes = minutes % 60
+        seconds = 0
+        return (hours, minutes, seconds)
+
+    def as_hhmm(minutes):
+        return ":".join(hhmmss_tuple(minutes)[:2])
+
+    def as_hhmmss(minutes):
+        return ":".join(hhmmss_tuple(minutes))
+
+
 class Allocation(BasicModifier):
 
     name = "allocation"
@@ -232,9 +247,8 @@ class Allocation(BasicModifier):
         # a batch directive
         if v.queue:
             batch_opts.append(f"-q {v.queue}")
-        # TODO: might need to convert to HH:mm format
         if v.timeout:
-            batch_opts.append(f"-W {v.timeout}")
+            batch_opts.append(f"-W {TimeFormat.as_hhmm(v.timeout)}")
 
         batch_directives = list(f"#BSUB {x}" for x in batch_opts)
 
@@ -243,10 +257,23 @@ class Allocation(BasicModifier):
         v.allocation_directives = "\n".join(batch_directives)
 
     def fugaku_instructions(self, v):
+        batch_opts = []
 
-        v.mpi_command = f""
-        v.batch_submit = f""
-        v.allocation_directives = ""
+        if v.n_ranks:
+            batch_opts.append(f"--mpi proc={v.n_ranks}")
+        if v.n_nodes:
+            batch_opts.append(f'-L "node={n_nodes}"')
+        if v.timeout:
+            batch_opts.append(f'-L "elapse={TimeFormat.as_hhmmss(v.timeout)}"')
+        batch_opts.append(
+            '-x PJM_LLIO_GFSCACHE="/vol0001:/vol0002:/vol0003:/vol0004:/vol0005:/vol0006"'
+        )
+
+        batch_directives = list(f"#PJM {x}" for x in batch_opts)
+
+        v.mpi_command = f"mpiexec"
+        v.batch_submit = f"pjsub {execute_experiment}"
+        v.allocation_directives = "\n".join(batch_directives)
 
     def determine_scheduler_instructions(self, v):
         handler = {
