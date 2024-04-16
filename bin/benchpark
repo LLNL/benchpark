@@ -84,8 +84,7 @@ def benchpark_benchmarks():
     benchmarks = []
     experiments_dir = source_dir / "experiments"
     for x in os.listdir(experiments_dir):
-        for y in os.listdir(experiments_dir / x):
-            benchmarks.append(f"{x}/{y}")
+        benchmarks.append(f"{x}")
     return benchmarks
 
 
@@ -94,7 +93,8 @@ def benchpark_experiments():
     experiments = []
     experiments_dir = source_dir / "experiments"
     for x in os.listdir(experiments_dir):
-        experiments.append(f"{x}")
+        for y in os.listdir(experiments_dir / x):
+            experiments.append(f"{x}/{y}")
     return experiments
 
 
@@ -139,43 +139,49 @@ def benchpark_get_tags():
 def benchpark_list_handler(args):
     source_dir = source_location()
     sublist = args.sublist
+    benchmarks = benchpark_benchmarks()
     experiments = benchpark_experiments()
     systems = benchpark_systems()
     modifiers = benchpark_modifiers()
 
     if sublist == None:
-        print("experiments:")
+        print("Experiments:")
         for experiment in experiments:
             print(f"\t{experiment}")
         print("Systems:")
         for system in systems:
             print(f"\t{system}")
     else:
-        if sublist == "experiments":
-            print("Experiments:")
-            for experiment in experiments:
-                print(f"\t{experiment}")
+        if sublist == "benchmarks":
+            print("Benchmarks:")
+            for benchmark in benchmarks:
+                print(f"\t{benchmark}")
         else:
-            if sublist == "systems":
-                print("Systems:")
-                for system in systems:
-                    print(f"\t{system}")
+            if sublist == "experiments":
+                print("Experiments:")
+                for experiment in experiments:
+                    print(f"\t{experiment}")
             else:
-                if sublist == "modifiers":
-                    print("Modifiers:")
-                    for modifier in modifiers:
-                        print(f"\t{modifier}")
+                if sublist == "systems":
+                    print("Systems:")
+                    for system in systems:
+                        print(f"\t{system}")
                 else:
-                    raise ValueError(
-                        f'Invalid benchpark list "{sublist}" - must choose [experiments], [systems], [modifiers] or leave empty'
-                    )
+                    if sublist == "modifiers":
+                        print("Modifiers:")
+                        for modifier in modifiers:
+                            print(f"\t{modifier}")
+                    else:
+                        raise ValueError(
+                            f'Invalid benchpark list "{sublist}" - must choose [experiments], [systems], [modifiers] or leave empty'
+                        )
 
 
 def benchpark_check_benchmark(arg_str):
     benchmarks = benchpark_benchmarks()
     found = arg_str in benchmarks
     if not found:
-        out_str = f'Invalid benchmark/experiment "{arg_str}" - must choose one of: '
+        out_str = f'Invalid benchmark "{arg_str}" - must choose one of: '
         for benchmark in benchmarks:
             out_str += f"\n\t{benchmark}"
         raise ValueError(out_str)
@@ -186,7 +192,7 @@ def benchpark_check_experiment(arg_str):
     experiments = benchpark_experiments()
     found = arg_str in experiments
     if not found:
-        out_str = f'Invalid experiment "{arg_str}" - must choose one of: '
+        out_str = f'Invalid experiment (benchmark/ProgrammingModel) "{arg_str}" - must choose one of: '
         for experiment in experiments:
             out_str += f"\n\t{experiment}"
         raise ValueError(out_str)
@@ -232,7 +238,7 @@ def benchpark_setup(subparsers, actions_dict):
     )
 
     create_parser.add_argument(
-        "benchmark", type=str, help="The experiment (benchmark/ProgrammingModel) to run"
+        "experiment", type=str, help="The experiment (benchmark/ProgrammingModel) to run"
     )
     create_parser.add_argument(
         "system", type=str, help="The system on which to run the experiment"
@@ -336,34 +342,34 @@ def benchpark_setup_handler(args):
     experiments_root/
         spack/
         ramble/
-        <benchmark>/
+        <experiment>/
             <system>/
                 workspace/
                     configs/
                         (everything from source/configs/<system>)
-                        (everything from source/experiments/<benchmark>)
+                        (everything from source/experiments/<experiment>)
     """
 
-    benchmark = args.benchmark
+    experiment = args.experiment
     system = args.system
     experiments_root = pathlib.Path(os.path.abspath(args.experiments_root))
     modifier = args.modifier
     source_dir = source_location()
     debug_print(f"source_dir = {source_dir}")
-    debug_print(f"specified benchmark/ProgrammingModel = {benchmark}")
-    valid_benchmark = benchpark_check_benchmark(benchmark)
+    debug_print(f"specified experiment (benchmark/ProgrammingModel) = {experiment}")
+    valid_experiment = benchpark_check_experiment(experiment)
     debug_print(f"specified system = {system}")
     valid_system = benchpark_check_system(system)
     debug_print(f"specified modifier = {modifier}")
     valid_modifier = benchpark_check_modifier(modifier)
-    if not (valid_benchmark and valid_system and valid_modifier):
+    if not (valid_experiment and valid_system and valid_modifier):
         raise ValueError(
             "Invalid experiment, system, or modifier provided: {0} {1} {2}".format(
-                benchmark, system, modifier
+                experiment, system, modifier
             )
         )
 
-    workspace_dir = experiments_root / str(benchmark) / str(system)
+    workspace_dir = experiments_root / str(experiment) / str(system)
 
     if workspace_dir.exists():
         if workspace_dir.is_dir():
@@ -387,7 +393,7 @@ def benchpark_setup_handler(args):
     print(f"Setting up configs for Ramble workspace {ramble_configs_dir}")
 
     configs_src_dir = source_dir / "configs" / str(system)
-    experiment_src_dir = source_dir / "experiments" / benchmark
+    experiment_src_dir = source_dir / "experiments" / experiment
     modifier_config_dir = source_dir / "modifiers" / modifier / "configs"
     ramble_configs_dir.mkdir(parents=True)
     ramble_logs_dir.mkdir(parents=True)
