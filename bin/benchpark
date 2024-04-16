@@ -73,7 +73,7 @@ def source_location():
 
 def benchpark_list(subparsers, actions_dict):
     list_parser = subparsers.add_parser(
-        "list", help="List available benchmarks and systems"
+        "list", help="List available experiments, systems, and modifiers"
     )
     list_parser.add_argument("sublist", nargs="?")
     actions_dict["list"] = benchpark_list_handler
@@ -106,6 +106,14 @@ def benchpark_systems():
     return systems
 
 
+def benchpark_modifiers():
+    source_dir = source_location()
+    modifiers = []
+    for x in os.listdir(source_dir / "modifiers"):
+        modifiers.append(x)
+    return modifiers
+
+
 def benchpark_get_tags():
     f = source_location() / "tags.yaml"
     tags = []
@@ -131,30 +139,36 @@ def benchpark_get_tags():
 def benchpark_list_handler(args):
     source_dir = source_location()
     sublist = args.sublist
-    benchmarks = benchpark_benchmarks()
+    experiments = benchpark_experiments()
     systems = benchpark_systems()
+    modifiers = benchpark_modifiers()
 
     if sublist == None:
-        print("Benchmarks/ProgrammingModel:")
-        for benchmark in benchmarks:
-            print(f"\t{benchmark}")
+        print("experiments:")
+        for experiment in experiments:
+            print(f"\t{experiment}")
         print("Systems:")
         for system in systems:
             print(f"\t{system}")
     else:
-        if sublist == "benchmarks":
-            print("Benchmarks:")
-            for benchmark in benchmarks:
-                print(f"\t{benchmark}")
+        if sublist == "experiments":
+            print("Experiments:")
+            for experiment in experiments:
+                print(f"\t{experiment}")
         else:
             if sublist == "systems":
                 print("Systems:")
                 for system in systems:
                     print(f"\t{system}")
             else:
-                raise ValueError(
-                    f'Invalid benchpark list "{sublist}" - must choose [benchmarks], [systems], or leave empty'
-                )
+                if sublist == "modifiers":
+                    print("Modifiers:")
+                    for modifier in modifiers:
+                        print(f"\t{modifier}")
+                else:
+                    raise ValueError(
+                        f'Invalid benchpark list "{sublist}" - must choose [experiments], [systems], [modifiers] or leave empty'
+                    )
 
 
 def benchpark_check_benchmark(arg_str):
@@ -172,7 +186,7 @@ def benchpark_check_experiment(arg_str):
     experiments = benchpark_experiments()
     found = arg_str in experiments
     if not found:
-        out_str = f'Invalid benchmark/experiment "{arg_str}" - must choose one of: '
+        out_str = f'Invalid experiment "{arg_str}" - must choose one of: '
         for experiment in experiments:
             out_str += f"\n\t{experiment}"
         raise ValueError(out_str)
@@ -197,6 +211,17 @@ def benchpark_check_tag(arg_str):
         out_str = f'Invalid tag "{arg_str}" - must choose one of: '
         for tag in tags:
             out_str += f"\n\t{tag}"
+        raise ValueError(out_str)
+    return found
+
+
+def benchpark_check_modifier(arg_str):
+    modifiers = benchpark_modifiers()
+    found = arg_str in modifiers
+    if not found:
+        out_str = f'Invalid modifier "{arg_str}" - must choose one of: '
+        for modifier in modifiers:
+            out_str += f"\n\t{modifier}"
         raise ValueError(out_str)
     return found
 
@@ -329,10 +354,12 @@ def benchpark_setup_handler(args):
     valid_benchmark = benchpark_check_benchmark(benchmark)
     debug_print(f"specified system = {system}")
     valid_system = benchpark_check_system(system)
-    if not (valid_benchmark and valid_system):
+    debug_print(f"specified modifier = {modifier}")
+    valid_modifier = benchpark_check_modifier(modifier)
+    if not (valid_benchmark and valid_system and valid_modifier):
         raise ValueError(
-            "Invalid benchmark/experiment and system provided: {0} {1}".format(
-                benchmark, system
+            "Invalid experiment, system, or modifier provided: {0} {1} {2}".format(
+                benchmark, system, modifier
             )
         )
 
