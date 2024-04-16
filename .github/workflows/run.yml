@@ -13,6 +13,10 @@ jobs:
       - name: Checkout Benchpark
         uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
 
+      - name: Add needed Python libs
+        run: |
+          pip install -r ./requirements.txt
+
       - name: Build Saxpy Workspace
         run: |
           ./bin/benchpark setup saxpy/openmp nosite-x86_64 workspace/
