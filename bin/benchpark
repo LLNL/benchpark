@@ -238,7 +238,9 @@ def benchpark_setup(subparsers, actions_dict):
     )
 
     create_parser.add_argument(
-        "experiment", type=str, help="The experiment (benchmark/ProgrammingModel) to run"
+        "experiment",
+        type=str,
+        help="The experiment (benchmark/ProgrammingModel) to run",
     )
     create_parser.add_argument(
         "system", type=str, help="The system on which to run the experiment"
