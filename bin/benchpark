@@ -228,16 +228,20 @@ def benchpark_setup(subparsers, actions_dict):
 
 
 def run_command(command_str, env=None):
-    result = subprocess.run(
+    proc = subprocess.Popen(
         shlex.split(command_str),
         env=env,
-        check=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
     )
+    stdout, stderr = proc.communicate()
+    if proc.returncode != 0:
+        raise RuntimeError(
+            f"Failed command: {command_str}\nOutput: {stdout}\nError: {stderr}"
+        )
 
-    return (result.stdout, result.stderr)
+    return (stdout, stderr)
 
 
 def benchpark_tags(subparsers, actions_dict):
@@ -348,6 +352,7 @@ def benchpark_setup_handler(args):
 
     ramble_workspace_dir = workspace_dir / "workspace"
     ramble_configs_dir = ramble_workspace_dir / "configs"
+    ramble_logs_dir = ramble_workspace_dir / "logs"
     ramble_spack_experiment_configs_dir = (
         ramble_configs_dir / "auxiliary_software_files"
     )
@@ -358,6 +363,7 @@ def benchpark_setup_handler(args):
     experiment_src_dir = source_dir / "experiments" / benchmark
     modifier_config_dir = source_dir / "modifiers" / modifier / "configs"
     ramble_configs_dir.mkdir(parents=True)
+    ramble_logs_dir.mkdir(parents=True)
     ramble_spack_experiment_configs_dir.mkdir(parents=True)
 
     def include_fn(fname):
