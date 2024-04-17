@@ -48,6 +48,7 @@ jobs:
               - '.github/**'
               - 'bin/**'
               - 'configs/**'
+              - 'checkout-versions.yaml'
               - 'experiments/**'
               - 'repo/**'
             license:
