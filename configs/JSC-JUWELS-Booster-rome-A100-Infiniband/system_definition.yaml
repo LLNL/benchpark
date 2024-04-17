@@ -9,7 +9,7 @@ system_definition:
   system: JUWELS-Booster-rome-A100-Infiniband
   integrator:
     vendor: Atos
-    name: tba
+    name: XH2000
   processor: 
     vendor: AMD
     name: EPYC-Zen2
