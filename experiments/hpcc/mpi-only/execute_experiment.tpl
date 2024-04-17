@@ -10,8 +10,4 @@
 
 cd {experiment_run_dir}
 
-{spack_setup}
-
-{experiment_setup}
-
 {command}

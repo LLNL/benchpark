@@ -20,7 +20,6 @@ ramble:
         standard:
           variables:
             n_ranks: ['1', '2', '4', '8']
-            experiment_setup: ''
           experiments:
             hpcc_standard_{n_nodes}_{n_ranks}:
               variables:
