@@ -53,12 +53,19 @@ class Kripke(CMakePackage, CudaPackage, ROCmPackage):
     variant("caliper", default=False, description="Build with Caliper support enabled.")
 
     depends_on("mpi", when="+mpi")
-    depends_on("blt@0.6.2", type="build")
     depends_on("caliper", when="+caliper")
     depends_on("adiak@0.4:", when="+caliper")
-    depends_on("chai@2024.02~examples+raja")
-    depends_on("raja@2024.02~exercises~examples")
-    depends_on("umpire@2024.02~examples")
+    
+    aligned_versions = ["2024.02"]
+    constrain_chai = list(f"^chai@{v}" for v in aligned_versions)
+    requires(*aligned_versions, policy="one_of", msg="Pick a chai version with proper alignment w/RAJA & Umpire")
+    
+    for v in aligned_versions:
+      depends_on(f"raja@{v}~exercises~examples", when=f"^chai@{v}")
+      depends_on(f"umpire@{v}~examples", when=f"^chai@{v}")
+      depends_on(f"chai@{v}~examples+raja", when=f"^chai@{v}")
+    
+    depends_on("blt@0.6.2", type="build")
     conflicts("^blt@:0.3.6", when="+rocm")
 
     def cmake_args(self):
