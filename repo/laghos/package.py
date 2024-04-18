@@ -73,10 +73,6 @@ class Laghos(MakefilePackage):
     def install(self, spec, prefix):
         mkdirp(prefix.bin)
         install("laghos", prefix.bin)
-
-    @run_after("install")
-    def copy_test_files(self):
-        srcs = ["data"]
-        cache_extra_test_sources(self, srcs)
+        install_tree("data", prefix.data)
 
     install_time_test_callbacks = []  # type: List[str]
