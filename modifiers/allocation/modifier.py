@@ -247,7 +247,7 @@ class Allocation(BasicModifier):
         v.batch_submit = "{execute_experiment}"
         v.allocation_directives = ""
 
-    def sierra_instructions(self, v):
+    def lsf_instructions(self, v):
         cmd_opts = []
         batch_opts = []
 
@@ -294,7 +294,7 @@ class Allocation(BasicModifier):
             "slurm": self.slurm_instructions,
             "flux": self.flux_instructions,
             "mpi": self.mpi_instructions,
-            "sierra": self.sierra_instructions,
+            "lsf": self.lsf_instructions,
             "fugaku": self.fugaku_instructions,
         }
         if v.scheduler not in handler:
