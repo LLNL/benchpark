@@ -17,6 +17,7 @@ class AllocOpt(Enum):
     N_RANKS_PER_NODE = 5
     N_GPUS = 6
     N_CORES_PER_NODE = 7
+    OMP_NUM_THREADS = 8
 
     # Descriptions of resources available on systems
     SYS_GPUS_PER_NODE = 100
@@ -28,12 +29,19 @@ class AllocOpt(Enum):
     MAX_REQUEST = 202
     QUEUE = 203
 
+
     @staticmethod
     def as_type(enumval, input):
         if enumval in [AllocOpt.SCHEDULER, AllocOpt.QUEUE]:
             return str(input)
         else:
             return int(input)
+
+
+class AllocAlias:
+    match = {
+        AllocOpt.OMP_NUM_THREADS: AllocOpt.N_THREADS_PER_PROC,
+    }
 
 
 SENTINEL_UNDEFINED_VALUE_STR = "placeholder"
@@ -72,7 +80,7 @@ class AttrDict(dict):
         return list((k, self[k]) for k in self["_attributes"])
 
     @staticmethod
-    def nullify_placeholders(v):
+    def _nullify_placeholders(v):
         # If we see a string variable set to "placeholder" we assume the
         # user wants us to set it.
         # For integers, values exceeding max_request are presumed to be
@@ -101,7 +109,8 @@ class AttrDict(dict):
         for alloc_opt in AllocOpt:
             setattr(v, alloc_opt.name.lower(), var_defs.get(alloc_opt, None))
 
-        AttrDict.nullify_placeholders(v)
+        AttrDict._nullify_placeholders(v)
+        AttrDict._propagate_aliases(v)
         return v
 
     @staticmethod
@@ -124,6 +133,17 @@ class AttrDict(dict):
                 defined[alloc_opt] = val
 
         return defined
+
+    @staticmethod
+    def _propagate_aliases(attr_dict):
+        for alt_var, target in AllocAlias.match.items():
+            src_name = alt_var.name.lower()
+            dst_name = target.name.lower()
+            if getattr(attr_dict, src_name):
+                if getattr(attr_dict, dst_name):
+                    raise RuntimeError(f"Configs set {src_name} and {dst_name}")
+                src_val = getattr(attr_dict, src_name)
+                setattr(attr_dict, dst_name, src_val)
 
 
 class TimeFormat:
