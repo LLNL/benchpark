@@ -29,7 +29,6 @@ class AllocOpt(Enum):
     MAX_REQUEST = 202
     QUEUE = 203
 
-
     @staticmethod
     def as_type(enumval, input):
         if enumval in [AllocOpt.SCHEDULER, AllocOpt.QUEUE]:
