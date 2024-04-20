@@ -8,7 +8,7 @@ variables:
   default_llvm_version: '15.0.3'
   default_gnu_version: '12.2.0'
   timeout: "120"
-  scheduler: "fugaku"
+  scheduler: "pjm"
   sys_cpus_per_node: "1"
   #  sys_gpus_per_node unset
   max_request: "1000"  # n_ranks/n_nodes cannot exceed this

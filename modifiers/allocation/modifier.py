@@ -302,7 +302,7 @@ class Allocation(BasicModifier):
         v.batch_submit = "bsub {execute_experiment}"
         v.allocation_directives = "\n".join(batch_directives)
 
-    def fugaku_instructions(self, v):
+    def pjm_instructions(self, v):
         batch_opts = []
 
         if v.n_ranks:
@@ -327,7 +327,7 @@ class Allocation(BasicModifier):
             "flux": self.flux_instructions,
             "mpi": self.mpi_instructions,
             "lsf": self.lsf_instructions,
-            "fugaku": self.fugaku_instructions,
+            "pjm": self.pjm_instructions,
         }
         if v.scheduler not in handler:
             raise ValueError(
