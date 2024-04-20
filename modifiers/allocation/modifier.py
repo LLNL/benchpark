@@ -39,6 +39,9 @@ class AllocOpt(Enum):
 
 
 class AllocAlias:
+    # Key options, if set, are used to set value options. Type inference
+    # occurs before that step, so type inference must be applied to aliases
+    # too.
     match = {
         AllocOpt.OMP_NUM_THREADS: AllocOpt.N_THREADS_PER_PROC,
     }
@@ -136,13 +139,23 @@ class AttrDict(dict):
 
     @staticmethod
     def _propagate_aliases(attr_dict):
+        # This assumes that placeholder nullification has already taken place
+        # (if it runs before, it may erroneously think that there is a
+        # duplicated/conflicting setting when the target is in fact just a
+        # placeholder value)
         for alt_var, target in AllocAlias.match.items():
             src_name = alt_var.name.lower()
             dst_name = target.name.lower()
-            if getattr(attr_dict, src_name):
-                if getattr(attr_dict, dst_name):
+            src_val = getattr(attr_dict, src_name, None)
+            dst_val = getattr(attr_dict, dst_name, None)
+
+            if src_val is not None:
+                if dst_val is not None and dst_val != src_val:
+                    # Both the variable and its alias were set, and to
+                    # different values. Note this modifier can be run
+                    # multiple times so just looking for whether they
+                    # are set would falsely trigger an error
                     raise RuntimeError(f"Configs set {src_name} and {dst_name}")
-                src_val = getattr(attr_dict, src_name)
                 setattr(attr_dict, dst_name, src_val)
 
 
