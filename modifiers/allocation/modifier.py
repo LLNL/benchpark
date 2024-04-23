@@ -291,7 +291,7 @@ class Allocation(BasicModifier):
         if v.n_nodes:
             cmd_opts.append(f"-N {v.n_nodes}")
         if v.n_gpus:
-            if v.n_gpus >= v.n_ranks
+            if v.n_gpus >= v.n_ranks:
                 quotient, remainder = divide_into(v.n_gpus, v.n_ranks)
                 if remainder == 0:
                     cmd_opts.append(f"--gpus-per-task={quotient}")
