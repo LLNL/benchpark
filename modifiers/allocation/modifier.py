@@ -188,7 +188,7 @@ def divide_into(dividend, divisor):
     remainder.
     """
     if divisor > dividend:
-        raise ValueError(f"Dividend must be larger than divisor")
+        raise ValueError("Dividend must be larger than divisor")
     for x in [dividend, divisor]:
         if not isinstance(x, int):
             raise ValueError("Both values must be integers")
