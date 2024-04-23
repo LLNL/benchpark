@@ -310,8 +310,10 @@ class Allocation(BasicModifier):
         # This error message can come up in multiple scenarios, so pre
         # define it if it's needed (it might not be true except where the
         # error is raised)
-        err_msg = (f"Cannot express GPUs ({v.n_gpus}) as an integer "
-                   f"multiple of ranks ({v.n_ranks})")
+        err_msg = (
+            f"Cannot express GPUs ({v.n_gpus}) as an integer "
+            f"multiple of ranks ({v.n_ranks})"
+        )
 
         if v.n_gpus >= v.n_ranks:
             quotient, remainder = divide_into(v.n_gpus, v.n_ranks)
