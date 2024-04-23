@@ -187,8 +187,8 @@ def divide_into(dividend, divisor):
     Attempt to identify cases where a rounding error produces a nonzero
     remainder.
     """
-    if divisor >= dividend:
-        raise ValueError("")
+    if divisor > dividend:
+        raise ValueError(f"Dividend must be larger than divisor")
     for x in [dividend, divisor]:
         if not isinstance(x, int):
             raise ValueError("Both values must be integers")
@@ -302,6 +302,26 @@ class Allocation(BasicModifier):
         v.batch_submit = "sbatch {execute_experiment}"
         v.allocation_directives = "\n".join(sbatch_directives)
 
+    def gpus_as_gpus_per_rank(self, v):
+        """Some systems don't have a mechanism for directly requesting a
+        total number of GPUs: they just have an option that specifies how
+        many GPUs are required for each rank.
+        """
+        # This error message can come up in multiple scenarios, so pre
+        # define it if it's needed (it might not be true except where the
+        # error is raised)
+        err_msg = (f"Cannot express GPUs ({v.n_gpus}) as an integer "
+                   f"multiple of ranks ({v.n_ranks})")
+
+        if v.n_gpus >= v.n_ranks:
+            quotient, remainder = divide_into(v.n_gpus, v.n_ranks)
+            if remainder == 0:
+                return quotient
+            else:
+                raise ValueError(err_msg)
+        else:
+            raise ValueError(err_msg)
+
     def flux_instructions(self, v):
         cmd_opts = []
         batch_opts = []
@@ -311,16 +331,8 @@ class Allocation(BasicModifier):
         if v.n_nodes:
             cmd_opts.append(f"-N {v.n_nodes}")
         if v.n_gpus:
-            if v.n_gpus >= v.n_ranks:
-                quotient, remainder = divide_into(v.n_gpus, v.n_ranks)
-                if remainder == 0:
-                    cmd_opts.append(f"--gpus-per-task={quotient}")
-                else:
-                    # TODO: a jobspec would be necessary to specify this
-                    raise ValueError()
-            else:
-                # TODO: a jobspec would be necessary to specify this
-                raise ValueError()
+            gpus_per_rank = self.gpus_as_gpus_per_rank(v)
+            cmd_opts.append(f"--gpus-per-task={gpus_per_rank}")
 
         if v.timeout:
             batch_opts.append("-t {v.timeout}m")
@@ -344,6 +356,9 @@ class Allocation(BasicModifier):
             cmd_opts.append(f"-n {v.n_ranks}")
         if v.n_nodes:
             batch_opts.append(f"-nnodes {v.n_nodes}")
+        if v.n_gpus:
+            gpus_per_rank = self.gpus_as_gpus_per_rank(v)
+            batch_opts.append(f"-g {gpus_per_rank}")
         if v.n_ranks_per_node:
             cmd_opts.append(f"-T {v.n_ranks_per_node}")
         # TODO: this might have to be an option on the batch_submit vs.
