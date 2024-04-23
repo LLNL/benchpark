@@ -189,7 +189,7 @@ def divide_into(dividend, divisor):
     quotient = math.floor(multi_part)
     # Python 3.7 has math.remainder
     remainder = multi_part - quotient
-    rounding_err_threshold = 1/float(dividend)
+    rounding_err_threshold = 1 / float(dividend)
     if remainder < rounding_err_threshold:
         remainder = 0
 
