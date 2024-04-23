@@ -126,7 +126,14 @@ class AttrDict(dict):
         """
         defined = {}
         for alloc_opt in AllocOpt:
-            var_def = expander.expand_var(f"{{{alloc_opt.name.lower()}}}")
+            # print(f"<---- Expanding {str(alloc_opt)}")
+            expansion_vref = f"{{{alloc_opt.name.lower()}}}"
+            var_def = expander.expand_var(expansion_vref)
+            # print(f"    = {str(var_def)}")
+            if var_def == expansion_vref:
+                # If "{x}" expands to literal "{x}", that means it wasn't
+                # defined
+                continue
             try:
                 val = AllocOpt.as_type(alloc_opt, var_def)
             except ValueError:
@@ -222,6 +229,7 @@ class Allocation(BasicModifier):
 
         # Definitions
         for var, val in v.defined():
+            # print(f"<--- Define {str(var)} = {str(val)}")
             app.define_variable(var, str(val))
 
         if v.n_threads_per_proc:
@@ -241,13 +249,24 @@ class Allocation(BasicModifier):
                 v.n_ranks = v.n_gpus
 
         if not v.n_nodes:
+            if not any((v.n_ranks, v.n_gpus)):
+                raise ValueError("Must specify one of: n_nodes, n_ranks, n_gpus")
+            cpus_node_request = None
             if v.n_ranks:
                 multi_cpus_per_rank = v.n_cores_per_rank or v.n_threads_per_proc or 0
                 cpus_request_per_rank = max(multi_cpus_per_rank, 1)
                 ranks_per_node = math.floor(v.sys_cpus_per_node / cpus_request_per_rank)
-                v.n_nodes = math.ceil(v.n_ranks / ranks_per_node)
-            elif v.n_gpus:
-                v.n_nodes = math.ceil(v.n_gpus / float(v.gpus_per_node))
+                cpus_node_request = math.ceil(v.n_ranks / ranks_per_node)
+            gpus_node_request = None
+            if v.n_gpus:
+                if v.sys_gpus_per_node:
+                    gpus_node_request = math.ceil(v.n_gpus / float(v.sys_gpus_per_node))
+                else:
+                    raise ValueError(
+                        "Experiment requests GPUs, but sys_gpus_per_nodei "
+                        "is not specified for the system"
+                    )
+            v.n_nodes = max(cpus_node_request or 0, gpus_node_request or 0)
 
         if not v.n_threads_per_proc:
             v.n_threads_per_proc = 1
