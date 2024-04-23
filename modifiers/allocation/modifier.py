@@ -174,6 +174,11 @@ class TimeFormat:
 
 
 def divide_into(dividend, divisor):
+    """For x/y, return the quotient and remainder.
+
+    Attempt to identify cases where a rounding error produces a nonzero
+    remainder.
+    """
     if divisor >= dividend:
         raise ValueError("")
     for x in [dividend, divisor]:
