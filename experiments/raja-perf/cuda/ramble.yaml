@@ -13,6 +13,10 @@ ramble:
     spack_flags:
       install: '--add --keep-stage'
       concretize: '-U -f'
+
+  modifiers:
+  - name: allocation
+
   applications:
     raja-perf:
       workloads:

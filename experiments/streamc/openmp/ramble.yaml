@@ -18,6 +18,9 @@ ramble:
     n_times: ['20', '35']
     array_size: ['80000000', '1280000000']
 
+  modifiers:
+  - name: allocation
+
   applications:
     streamc:
       workloads:
