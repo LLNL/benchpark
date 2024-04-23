@@ -37,7 +37,6 @@ ramble:
             amg2023_cuda_problem1_{gtl}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
               variables:
                 env_name: amg2023
-                n_ranks_per_node: '4'
                 n_gpus: '8'
               zips:
                 gtl_info:

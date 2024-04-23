@@ -32,11 +32,10 @@ ramble:
             ny: '{n}'
             nz: '{n}'
           experiments:
-            '{env_name}_problem1_{n_nodes}_{px}_{py}_{pz}_{nx}_{ny}_{nz}':
+            '{env_name}_problem1_{px}_{py}_{pz}_{nx}_{ny}_{nz}':
               variables:
                 gtl: ["gtl", "no-gtl"]
                 env_name: 'amg2023-gpu-{gtl}'
-                processes_per_node: ['8', '4']
                 n_gpus: '8'
               matrices:
                 - size_gtl:
