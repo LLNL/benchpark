@@ -22,6 +22,7 @@ class AllocOpt(Enum):
     # Descriptions of resources available on systems
     SYS_GPUS_PER_NODE = 100
     SYS_CPUS_PER_NODE = 101
+    SYS_MEM_PER_NODE = 102
 
     # Scheduler identification and other high-level instructions
     SCHEDULER = 200

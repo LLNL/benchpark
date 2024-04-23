@@ -9,8 +9,8 @@ variables:
   default_gnu_version: '12.2.0'
   timeout: "120"
   scheduler: "pjm"
-  sys_cpus_per_node: "1"
-  #  sys_gpus_per_node unset
+  sys_cpus_per_node: "48"
+  sys_mem_per_node: "32"
   max_request: "1000"  # n_ranks/n_nodes cannot exceed this
   n_ranks: '1000001'  # placeholder value
   n_nodes: '1000001'  # placeholder value
