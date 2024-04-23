@@ -173,6 +173,24 @@ class TimeFormat:
         return ":".join(str(x).zfill(2) for x in TimeFormat.hhmmss_tuple(minutes))
 
 
+def divide_into(dividend, divisor):
+    if divisor >= dividend:
+        raise ValueError("")
+    for x in [dividend, divisor]:
+        if not isinstance(x, int):
+            raise ValueError("Both values must be integers")
+    multi_part = dividend / float(divisor)
+
+    quotient = math.floor(multi_part)
+    # Python 3.7 has math.remainder
+    remainder = multi_part - quotient
+    rounding_err_threshold = 1/float(dividend)
+    if remainder < rounding_err_threshold:
+        remainder = 0
+
+    return quotient, remainder
+
+
 class Allocation(BasicModifier):
 
     name = "allocation"
@@ -267,6 +285,17 @@ class Allocation(BasicModifier):
             cmd_opts.append(f"-n {v.n_ranks}")
         if v.n_nodes:
             cmd_opts.append(f"-N {v.n_nodes}")
+        if v.n_gpus:
+            if v.n_gpus >= v.n_ranks
+                quotient, remainder = divide_into(v.n_gpus, v.n_ranks)
+                if remainder == 0:
+                    cmd_opts.append(f"--gpus-per-task={quotient}")
+                else:
+                    # TODO: a jobspec would be necessary to specify this
+                    raise ValueError()
+            else:
+                # TODO: a jobspec would be necessary to specify this
+                raise ValueError()
 
         if v.timeout:
             batch_opts.append("-t {v.timeout}m")
