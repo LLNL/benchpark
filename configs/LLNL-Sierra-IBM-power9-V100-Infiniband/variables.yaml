@@ -9,6 +9,7 @@ variables:
   cuda_arch: '70'
   timeout: "120"
   scheduler: "lsf"
+  queue: "pdebug"
   sys_cpus_per_node: "44"
   sys_gpus_per_node: "4"
   max_request: "1000"  # n_ranks/n_nodes cannot exceed this
