@@ -212,6 +212,9 @@ class Allocation(BasicModifier):
         if not v.n_ranks:
             if v.n_ranks_per_node and v.n_nodes:
                 v.n_ranks = v.n_nodes * v.n_ranks_per_node
+            # TODO: elif n_gpus_per_node and n_nodes
+            elif v.n_gpus:
+                v.n_ranks = v.n_gpus
 
         if not v.n_nodes:
             if v.n_ranks:
@@ -219,7 +222,7 @@ class Allocation(BasicModifier):
                 cpus_request_per_rank = max(multi_cpus_per_rank, 1)
                 ranks_per_node = math.floor(v.sys_cpus_per_node / cpus_request_per_rank)
                 v.n_nodes = math.ceil(v.n_ranks / ranks_per_node)
-            if v.n_gpus:
+            elif v.n_gpus:
                 v.n_nodes = math.ceil(v.n_gpus / float(v.gpus_per_node))
 
         if not v.n_threads_per_proc:
