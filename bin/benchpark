@@ -151,30 +151,26 @@ def benchpark_list_handler(args):
         print("Systems:")
         for system in systems:
             print(f"\t{system}")
+    elif sublist == "benchmarks":
+        print("Benchmarks:")
+        for benchmark in benchmarks:
+            print(f"\t{benchmark}")
+    elif sublist == "experiments":
+        print("Experiments:")
+        for experiment in experiments:
+            print(f"\t{experiment}")
+    elif sublist == "systems":
+        print("Systems:")
+        for system in systems:
+            print(f"\t{system}")
+    elif sublist == "modifiers":
+        print("Modifiers:")
+        for modifier in modifiers:
+            print(f"\t{modifier}")
     else:
-        if sublist == "benchmarks":
-            print("Benchmarks:")
-            for benchmark in benchmarks:
-                print(f"\t{benchmark}")
-        else:
-            if sublist == "experiments":
-                print("Experiments:")
-                for experiment in experiments:
-                    print(f"\t{experiment}")
-            else:
-                if sublist == "systems":
-                    print("Systems:")
-                    for system in systems:
-                        print(f"\t{system}")
-                else:
-                    if sublist == "modifiers":
-                        print("Modifiers:")
-                        for modifier in modifiers:
-                            print(f"\t{modifier}")
-                    else:
-                        raise ValueError(
-                            f'Invalid benchpark list "{sublist}" - must choose [experiments], [systems], [modifiers] or leave empty'
-                        )
+        raise ValueError(
+            f'Invalid benchpark list "{sublist}" - must choose [experiments], [systems], [modifiers] or leave empty'
+        )
 
 
 def benchpark_check_benchmark(arg_str):
@@ -364,12 +360,6 @@ def benchpark_setup_handler(args):
     valid_system = benchpark_check_system(system)
     debug_print(f"specified modifier = {modifier}")
     valid_modifier = benchpark_check_modifier(modifier)
-    if not (valid_experiment and valid_system and valid_modifier):
-        raise ValueError(
-            "Invalid experiment, system, or modifier provided: {0} {1} {2}".format(
-                experiment, system, modifier
-            )
-        )
 
     workspace_dir = experiments_root / str(experiment) / str(system)
 
