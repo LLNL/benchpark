@@ -22,7 +22,7 @@ class Laghos(SpackApplication):
 
     figure_of_merit('Major kernels total time',
                     log_file='{experiment_run_dir}/{experiment_name}.out',
-                    fom_regex=r'Major kernels total time (seconds): (?P<num>[0-9]+)',
-                    group_name='time', units='seconds')
+                    fom_regex=r'Major kernels total time \(seconds\):\s+(?P<fom>[0-9]+\.[0-9]*(e^[0-9]*)?)',
+                    group_name='fom', units='seconds')
 
     success_criteria('pass', mode='string', match=r'Major kernels total time', file='{experiment_run_dir}/{experiment_name}.out')
