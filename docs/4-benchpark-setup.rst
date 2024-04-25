@@ -15,7 +15,7 @@ Also choose a directory for your experiment::
 where:
 
 - ``benchmark/ProgrammingModel``: amg2023/openmp | amg2023/cuda | saxpy/openmp (available choices in ``benchpark/experiments``)
-- ``system``: x86_64 | HPECray-zen3-MI250X-Slingshot | AWS_PCluster_Hpc7a-zen4-EFA (available choices in :doc:`available-system-specs`)
+- ``system``: nosite-x86_64 | LLNL-Sierra-IBM-power9-V100-Infiniband | RCCS-Fugaku-Fujitsu-A64FX-TofuD | nosite-AWS_PCluster_Hpc7a-zen4-EFA (available choices in :doc:`available-system-specs`)
 
 This command will assemble a Ramble workspace per experiment
 with a configuration for the specified benchmark and system
@@ -34,9 +34,11 @@ with the following directory structure::
 
 ``benchpark setup`` will output instructions to follow::
 
-   . <experiments_root>/spack/share/spack/setup-env.sh
-   . <experiments_root>/ramble/share/ramble/setup-env.sh
+   . <experiments_root>/setup.sh
 
-   export SPACK_DISABLE_LOCAL_CONFIG=1
+The ``setup.sh`` script calls the Spack and Ramble setup scripts.  It optionally accepts
+parameters to ``ramble workspace setup`` as `documented in Ramble
+<https://googlecloudplatform.github.io/ramble/workspace.html#setting-up-a-workspace>`_,
+including ``--dry-run`` and ``--phases make_experiments``.
 
 Now you are ready to compile your experiments as described in :doc:`5-build-experiment`.
