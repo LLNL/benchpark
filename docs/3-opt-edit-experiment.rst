@@ -31,7 +31,7 @@ Benchpark configuration files are organized as follows::
      │  └── package.py 
      └── repo.yaml 
 
-You can edit any of them to change the behavior of your experiments.
+You can edit these configuration files to change the behavior of your experiments.
 
 System specification
 --------------------
@@ -54,3 +54,52 @@ If you would like to modify a specification of your benchmark,
 you can do so by upstreaming changes to Spack and/or Ramble,
 or working on your benchmark specification in ``benchpark/repo/${BENCHMARK}`` 
 (see :doc:`add-a-benchmark` for details).
+
+Modifiers
+---------
+In Benchpark, a ``modifier`` follows the `Ramble Modifier
+<https://googlecloudplatform.github.io/ramble/tutorials/10_using_modifiers.html#modifiers>`_
+and is an abstract object that can be applied to a large set of reproducible
+specifications. Modifiers are intended to encasulate reusable patterns that
+perform a specific configuration of an experiment. This may include injecting
+performance analysis or setting up system resources.
+
+Applying the Caliper modifier
+-----------------------------
+We have implemented a Caliper modifier to enable profiling of Caliper-instrumented 
+benchmarks in Benchpark. More documentation on Caliper can be found `here
+<https://software.llnl.gov/Caliper>`_.
+
+To turn on profiling with Caliper, add ``--modifier=<caliper_modifier>`` to the Benchpark
+setup step::
+
+    ./benchpark setup benchmark/programmingmodel system --modifier=<caliper_modifier> <workspace-dir>
+
+Valid values for ``<caliper_modifier>`` are found in the **Caliper Modifier**
+column of the table below.  Benchpark will link the experiment to Caliper,
+and inject appropriate Caliper configuration at runtime.  After the experiments 
+in the workspace have completed running, a ``.cali`` file
+is created which contains the collected performance metrics.
+
+.. list-table:: Available caliper modifiers
+   :widths: 20 20 50
+   :header-rows: 1
+
+   * - Caliper Modifier
+     - Where Applicable
+     - Metrics Collected
+   * - caliper
+     - Platform-independent
+     - | - Min time/rank: Minimum time (in seconds) across all ranks
+       | - Max time/rank: Maximum time (in seconds) across all ranks
+       | - Avg time/rank: Average time (in seconds) across all ranks
+       | - Total time: Aggregated time (in seconds) over all ranks
+   * - caliper-topdown
+     - x86 Intel CPUs
+     - | - Retiring
+       | - Bad speculation
+       | - Front end bound
+       | - Back end bound
+   * - caliper-cuda
+     - NVIDIA GPUs
+     - | - CUDA API functions (e.g., time.gpu)

@@ -65,6 +65,11 @@ packages:
     - spec: lapack-xl@3.9.0
       prefix: /usr/tcetmp/packages/lapack/lapack-3.9.0-xl-2020.03.18
     buildable: false
+  python:
+    externals:
+    - spec: python@3.8.2
+      prefix: /usr/tce/packages/python/python-3.8.2
+      buildable: false
   mpi:
     externals:
     - spec: spectrum-mpi@2022.08.19-cuda-11.8.0
