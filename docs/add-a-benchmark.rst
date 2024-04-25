@@ -33,3 +33,8 @@ where ``application.py`` is a Ramble specification for the benchmark,
 Benchpark will use this benchmark specification in its experiments.
 If the specification also exists in Spack and/or Ramble,
 the specification in ``benchpark/repo`` will overwrite it.
+
+Once the experiment is working and merged into the develop branch of Benchpark,
+we would like to encourage the contributors to upstream the ``package.py`` to Spack,
+and the ``application.py`` to Ramble.  When those PRs are approved and merged,
+please submit a PR to remove the duplicated specification from ``benchpark/repo``.
