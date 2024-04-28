@@ -7,6 +7,7 @@ ramble:
   include:
   - ./configs/spack.yaml
   - ./configs/variables.yaml
+  - ./configs/modifier.yaml
 
   config:
     deprecated: true
@@ -17,41 +18,40 @@ ramble:
   applications:
     kripke:
       workloads:
-        problem1:
+        kripke:
           env_vars:
             set:
               OMP_NUM_THREADS: '{omp_num_threads}'
           variables:
             n_ranks: '{processes_per_node} * {n_nodes}'
-            p: 2
-            px: '{p}'
-            py: '{p}'
-            pz: '{p}'
-            n: ['55', '110']
-            nx: '{n}'
-            ny: '{n}'
-            nz: '{n}'
             experiment_setup: ''
-            processes_per_node: ['8', '4']
-            n_nodes: ['1', '2']
-            threads_per_node_core: ['8', '10', '13'] #TODO: Specify n_threads according to available n_nodes and n_ranks
-            omp_num_threads: '{threads_per_node_core} * {n_nodes}'
+            processes_per_node: ['1', '16']
+            n_nodes: '1'
+            omp_num_threads: ['32', '2']
+            arch: 'OpenMP'
           experiments:
-            kripke_omp_problem1_{n_nodes}_{omp_num_threads}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
+            kripke_omp_{n_nodes}_{omp_num_threads}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}:
               variables:
-                env_name: kripke
-              matrices:
-                - size_threads:
-                  - n # TODO: Filter matrix
-                  - threads_per_node_core # TODO: Filter matrix
+                ngroups: 64
+                gs: 1
+                nquad: 128
+                ds: 128
+                lorder: 4
+                nzx: '64'
+                nzy: '32'
+                nzz: '32'
+                npx: ['1', '4']
+                npy: ['1', '2']
+                npz: ['1', '2']
   spack:
     concretized: true
     packages:
-      kripke-omp:
-        spack_spec: kripke@develop +mpi+openmp
+      kripke:
+        spack_spec: kripke@develop +mpi+openmp{modifier_spack_variant} ^chai@2024.02
         compiler: default-compiler
     environments:
-      kripke-omp:
+      kripke:
         packages:
         - default-mpi
-        - kripke-omp
+        - kripke
+        - '{modifier_package_name}'
