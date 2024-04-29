@@ -22,7 +22,7 @@ so that you can test them together with your experiment specification on a given
 
   benchpark
   └── repo
-     ├── ${BENCHMARK1}
+     ├── ${Benchmark1}
      │  ├── application.py
      │  └── package.py
      └── repo.yaml
