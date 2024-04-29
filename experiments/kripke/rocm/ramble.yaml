@@ -44,7 +44,7 @@ ramble:
     concretized: true
     packages:
       kripke:
-        spack_spec: kripke@develop +mpi+rocm{modifier_spack_variant} ^chai@2024.02
+        spack_spec: kripke@1.2.7.0 +mpi+rocm{modifier_spack_variant} ^chai@2024.02
         compiler: default-compiler
     environments:
       kripke:
