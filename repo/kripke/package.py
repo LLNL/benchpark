@@ -59,8 +59,6 @@ class Kripke(CMakePackage, CudaPackage, ROCmPackage):
     conflicts("^blt@:0.3.6", when="+rocm")
 
     aligned_versions = ["2024.02"]
-    #constrain_chai = list(f"^chai@{v}" for v in aligned_versions)
-    #requires(*constrain_chai, policy="one_of", msg="Pick a chai version with proper alignment w/RAJA & Umpire")
     for v in aligned_versions:
       depends_on(f"raja@{v}~exercises~examples", when=f"^chai@{v}")
       depends_on(f"umpire@{v}~examples", when=f"^chai@{v}")
