@@ -33,7 +33,7 @@ ramble:
     concretized: true
     packages:
       raja-perf:
-        spack_spec: raja-perf@develop +openmp +mpi ^cmake@3.23.1
+        spack_spec: raja-perf@develop +openmp +mpi 
         compiler: default-compiler
     environments:
       raja-perf:
