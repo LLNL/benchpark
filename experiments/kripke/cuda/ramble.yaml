@@ -23,8 +23,8 @@ ramble:
           variables:
             n_ranks: '{processes_per_node} * {n_nodes}'
             experiment_setup: ''
-            processes_per_node: ['4']
-            n_nodes: '1'
+            processes_per_node: '2'
+            n_nodes: '2'
             arch: 'CUDA'
           experiments:
             kripke_cuda_{n_nodes}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}:
