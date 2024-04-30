@@ -40,7 +40,7 @@ ramble:
     concretized: true
     packages:
       saxpy:
-        spack_spec: saxpy@1.0.0 +openmp{modifier_spack_variant} ^cmake@3.23.1
+        spack_spec: saxpy@1.0.0 +openmp{modifier_spack_variant}
         compiler: default-compiler
     environments:
       saxpy:
