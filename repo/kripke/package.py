@@ -22,7 +22,8 @@ class Kripke(CMakePackage, CudaPackage, ROCmPackage):
 
     version("develop", branch="develop", submodules=False)
     version(
-        "updateRCU2024.02", branch="task/chen59/updateRCU2024.02", submodules=False)
+        "1.2.7.0", submodules=False, commit="db920c1f5e1dcbb9e949d120e7d86efcdb777635"
+    )
     version(
         "1.2.4", submodules=False, tag="v1.2.4", commit="d85c6bc462f17a2382b11ba363059febc487f771"
     )
@@ -55,18 +56,35 @@ class Kripke(CMakePackage, CudaPackage, ROCmPackage):
     depends_on("mpi", when="+mpi")
     depends_on("caliper", when="+caliper")
     depends_on("adiak@0.4:", when="+caliper")
-    
+    conflicts("^blt@:0.3.6", when="+rocm")
+
     aligned_versions = ["2024.02"]
-    constrain_chai = list(f"^chai@{v}" for v in aligned_versions)
-    requires(*aligned_versions, policy="one_of", msg="Pick a chai version with proper alignment w/RAJA & Umpire")
-    
     for v in aligned_versions:
       depends_on(f"raja@{v}~exercises~examples", when=f"^chai@{v}")
       depends_on(f"umpire@{v}~examples", when=f"^chai@{v}")
       depends_on(f"chai@{v}~examples+raja", when=f"^chai@{v}")
-    
-    depends_on("blt@0.6.2", type="build")
-    conflicts("^blt@:0.3.6", when="+rocm")
+      depends_on(f"camp@{v}", when=f"^chai@{v}")
+
+    depends_on("blt@0.6.2:", type="build", when=f"@1.2.7:")
+
+    depends_on("chai+openmp", when="+openmp")
+    depends_on("chai~openmp", when="~openmp")
+    depends_on("chai+cuda", when="+cuda")
+    depends_on("chai~cuda", when="~cuda")
+    depends_on("chai+rocm", when="+rocm")
+    depends_on("chai~rocm", when="~rocm")
+
+    depends_on("umpire+openmp", when="+openmp")
+    depends_on("umpire~openmp", when="~openmp")
+    depends_on("umpire+cuda", when="+cuda")
+    depends_on("umpire~cuda", when="~cuda")
+    depends_on("umpire+rocm", when="+rocm")
+    depends_on("umpire~rocm", when="~rocm")
+
+    def setup_build_environment(self, env):
+        spec = self.spec
+        if "+cuda" in spec:
+            env.set("CUDAHOSTCXX", self.spec["mpi"].mpicxx)
 
     def cmake_args(self):
         spec = self.spec
@@ -82,6 +100,9 @@ class Kripke(CMakePackage, CudaPackage, ROCmPackage):
                 "-DENABLE_CHAI=ON",
             ]
         )
+
+        if "+openmp" in spec:
+            args.append("-DENABLE_OPENMP=ON")
 
         if "+caliper" in spec:
             args.append("-DENABLE_CALIPER=ON")
@@ -109,10 +130,10 @@ class Kripke(CMakePackage, CudaPackage, ROCmPackage):
                 cuda_arch = spec.variants["cuda_arch"].value
                 args.append("-DCUDA_ARCH={0}".format(cuda_arch[0]))
                 args.append("-DCMAKE_CUDA_ARCHITECTURES={0}".format(cuda_arch[0]))
-                args.append(
-                    "-DCMAKE_CUDA_FLAGS=--expt-extended-lambda -I%s -I=%s"
-                    % (self.spec["cub"].prefix.include, self.spec["mpi"].prefix.include)
-                )
+            args.append(
+                "-DCMAKE_CUDA_FLAGS=--extended-lambda -I%s -I=%s"
+                % (self.spec["cub"].prefix.include, self.spec["mpi"].prefix.include)
+            )
         else:
             args.append("-DENABLE_CUDA=OFF")
 
