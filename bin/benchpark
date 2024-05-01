@@ -329,7 +329,7 @@ def working_dir(location):
 
 
 def git_clone_commit(url, commit, destination):
-    run_command(f"git clone -c feature.manyFiles=true {url} {destination}")
+    run_command(f"git clone --depth=1 -c feature.manyFiles=true {url} {destination}")
 
     with working_dir(destination):
         run_command(f"git checkout {commit}")
