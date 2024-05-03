@@ -29,10 +29,11 @@ ramble:
     concretized: true
     packages:
       laghos:
-        spack_spec: laghos@develop +metis
+        spack_spec: laghos@develop +metis ^zlib
         compiler: default-compiler
     environments:
       laghos:
         packages:
         - default-mpi
+        - blas
         - laghos
