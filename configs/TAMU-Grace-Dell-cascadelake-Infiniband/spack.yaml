@@ -6,12 +6,14 @@
 spack:
   packages:
     default-compiler:
-      spack_spec: gcc@12.2.0
+      spack_spec: intel@2020b
     compiler-gcc:
       spack_spec: gcc@12.2.0
     compiler-intel:
       spack_spec: intel@2020b
     default-mpi:
+      spack_spec: intel@2020b
+    mpi-gcc:
       spack_spec: openmpi@4.1.4
     blas:
       spack_spec: openblas@0.3.5
