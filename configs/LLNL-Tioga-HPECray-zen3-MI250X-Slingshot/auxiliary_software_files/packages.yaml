@@ -41,6 +41,8 @@ packages:
       prefix: /usr
     - spec: cmake@3.23.1
       prefix: /usr/tce
+    - spec: cmake@3.24.2
+      prefix: /usr/tce
     buildable: false
   pkgconf:
     externals:
