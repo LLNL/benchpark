@@ -7,11 +7,22 @@
 Running benchpark on Fugaku
 ==============================
 
+Git is needed to clone Benchpark, and Python 3.8+ is needed to run Benchpark:
+
+.. code:: bash
+
+    git clone https://github.com/LLNL/benchpark.git
+    cd benchpark
+
+
 Get in interactive shell
+
+.. code:: bash
 
     pjsub --interact ...
 
-Load newer python environment
+
+Load newer python environment and install dependencies:
 
 .. code:: bash
 
@@ -21,10 +32,10 @@ Load newer python environment
         source /vol0004/apps/oss/spack/share/spack/setup-env.sh
     fi
     spack load python@3.10.8 /mzi2ihx; spack load py-pip@23.1.2 /4hkqlma
+    pip install -r requirements.txt
 
-Follow instructions in :doc:`1-getting-started`.
 
-Set up the directory structure for your experiment
+Set up the directory structure for your experiment:
 
 .. code:: bash
 
@@ -32,7 +43,8 @@ Set up the directory structure for your experiment
     export SYS='RCCS-Fugaku-Fujitsu-A64FX-TofuD'
     ./bin/benchpark setup ${BM} ${SYS} workspace
 
-Patch some files in various repos
+
+Patch some files in various repos:
 
 .. code:: bash
 
@@ -43,7 +55,8 @@ Patch some files in various repos
     wget https://raw.githubusercontent.com/jdomke/spack/RIKEN_CCS_fugaku8/var/spack/repos/builtin/packages/fujitsu-mpi/package.py -O workspace/spack/var/spack/repos/builtin/packages/fujitsu-mpi/package.py
     wget https://raw.githubusercontent.com/jdomke/spack/RIKEN_CCS_fugaku9/var/spack/repos/builtin/packages/fujitsu-ssl2/package.py -O workspace/spack/var/spack/repos/builtin/packages/fujitsu-ssl2/package.py
 
-Build the benchmark
+
+Build the benchmark:
 
 .. code:: bash
 
@@ -52,7 +65,8 @@ Build the benchmark
     export TMPDIR=/local
     ramble -P -D $(readlink -f $(pwd)/workspace/${BM}/${SYS}/workspace) workspace setup
 
-Submit benchmarks from login node (not interactive shell)
+
+Go back to login node and submit benchmarks:
 
 .. code:: bash
 
@@ -61,8 +75,9 @@ Submit benchmarks from login node (not interactive shell)
     else
         source /vol0004/apps/oss/spack/share/spack/setup-env.sh
     fi
-    spack load python@3.11.6 /yjlixq5
+    spack load python@3.11.6 /yjlixq5; spack load py-pip@23.1.2 /sa5bbab
+    pip install -r requirements.txt
     export BM='saxpy/openmp'
     export SYS='RCCS-Fugaku-Fujitsu-A64FX-TofuD'
-    ramble -P -D $(readlink -f $(pwd)/workspace/${BM}/${SYS}/workspace) on
+    ./workspace/ramble/bin/ramble -P -D $(readlink -f $(pwd)/workspace/${BM}/${SYS}/workspace) on
 
