@@ -10,7 +10,9 @@ variables:
   batch_nodes: '#PJM -L "node={n_nodes}"'
   batch_ranks: '#PJM --mpi proc={n_ranks}'
   batch_timeout: '#PJM -L "elapse={batch_time}:00" -x PJM_LLIO_GFSCACHE="/vol0001:/vol0002:/vol0003:/vol0004:/vol0005:/vol0006"'
-  default_fj_version: '4.8.1'
-  default_llvm_version: '15.0.3'
-  default_gnu_version: '12.2.0'
+  default_comp: 'clang@17.0.2'
+  #default_comp: 'fj@4.10.0'
+  #default_comp: 'gcc@13.2.0'
+  fj_comp_version: '4.10.0'
+  sys_arch: 'arch=linux-rhel8-a64fx'
 
