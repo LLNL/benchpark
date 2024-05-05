@@ -13,10 +13,12 @@ Get in interactive shell
 
 Load newer python environment
 
+.. code:: bash
+
     if [ -f ~/spack/share/spack/setup-env.sh ]; then
-        source ~/spack/share/spack/setup-env.sh;
+        source ~/spack/share/spack/setup-env.sh
     else
-        source /vol0004/apps/oss/spack/share/spack/setup-env.sh;
+        source /vol0004/apps/oss/spack/share/spack/setup-env.sh
     fi
     spack load python@3.10.8 /mzi2ihx; spack load py-pip@23.1.2 /4hkqlma
 
@@ -24,11 +26,15 @@ Follow instructions in :doc:`1-getting-started`.
 
 Set up the directory structure for your experiment
 
+.. code:: bash
+
     export BM='saxpy/openmp'
     export SYS='RCCS-Fugaku-Fujitsu-A64FX-TofuD'
     ./bin/benchpark setup ${BM} ${SYS} workspace
 
 Patch some files in various repos
+
+.. code:: bash
 
     sed -i -e "s@1280000000@160000000@g" -e 's@cflags=".*"@@g' experiments/streamc/openmp/ramble.yaml
     wget https://raw.githubusercontent.com/GoogleCloudPlatform/ramble/22db33d5f3728e015fcca6d5618a67014ca132c8/lib/ramble/ramble/spack_runner.py -O workspace/ramble/lib/ramble/ramble/spack_runner.py
@@ -39,6 +45,8 @@ Patch some files in various repos
 
 Build the benchmark
 
+.. code:: bash
+
     source ./workspace/setup.sh
     export TMP=/local
     export TMPDIR=/local
@@ -46,10 +54,12 @@ Build the benchmark
 
 Submit benchmarks from login node (not interactive shell)
 
+.. code:: bash
+
     if [ -f ~/spack/share/spack/setup-env.sh ]; then
-        source ~/spack/share/spack/setup-env.sh;
+        source ~/spack/share/spack/setup-env.sh
     else
-        source /vol0004/apps/oss/spack/share/spack/setup-env.sh;
+        source /vol0004/apps/oss/spack/share/spack/setup-env.sh
     fi
     spack load python@3.11.6 /yjlixq5
     export BM='saxpy/openmp'
