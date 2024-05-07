@@ -4,9 +4,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from spack.package import *
-from spack.pkg.benchpark.stream_consistency import StreamConsistency as StreamConsistency
+from spack.pkg.benchpark.mpi_consistency import MpiConsistency as MpiConsistency
 
-class Stream(CMakePackage, StreamConsistency):
+class Stream(CMakePackage, MpiConsistency):
     """The STREAM benchmark is a simple synthetic benchmark program that
     measures sustainable memory bandwidth (in MB/s) and the corresponding
     computation rate for simple vector kernels.
@@ -28,6 +28,8 @@ class Stream(CMakePackage, StreamConsistency):
 
     depends_on("caliper", when="+caliper")
     depends_on("adiak@0.4:", when="+caliper")
+
+    depends_on("mpi", when="+mpi")
 
     def cmake_args(self):
         args = [ 

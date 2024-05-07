@@ -7,9 +7,10 @@ from spack.package import *
 from spack.package_base import PackageBase
 
 
-class StreamConsistency(PackageBase):
+class MpiConsistency(PackageBase):
     with when("+mpi%gcc"):
-        for ver in [
-            "12.1.1",
-        ]:
-            depends_on(f"mpi%gcc@{ver}", when=f"%gcc@{ver}")
+        for implementation in ["mvapich2", "mpich", "cray-mpich"]:
+            for ver in [
+                "12.1.1",
+            ]:
+                depends_on(f"{implementation}%gcc@{ver}", when=f"%gcc@{ver} ^{implementation}")
