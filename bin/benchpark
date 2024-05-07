@@ -14,15 +14,29 @@ import shutil
 import subprocess
 import sys
 import yaml
+from inspect import currentframe, getframeinfo
 
-DEBUG = False
+DEBUG = True
 
 __version__ = "0.1.0"
 
 
+def get_linenumber():
+    cf = currentframe()
+    return cf.f_back.f_back.f_lineno
+
+
+def get_filename():
+    cf = currentframe()
+    return os.path.basename(getframeinfo(cf.f_back).filename)
+
+
 def debug_print(message):
     if DEBUG:
-        print("(debug) " + str(message))
+        print(
+            "(debug) " + get_filename() + "::" + str(get_linenumber()) + " " + message,
+            file=sys.stderr,
+        )
 
 
 def main():
@@ -62,6 +76,7 @@ def main():
 
 
 def get_version():
+    debug_print("Hello, world!")
     benchpark_version = __version__
     return benchpark_version
 
