@@ -1,8 +1,13 @@
+#!/bin/bash
 # Copyright 2023 Lawrence Livermore National Security, LLC and other
 # Benchpark Project Developers. See the top-level COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: Apache-2.0
 
-versions:
-  ramble: bb664f142b2cbdb2b2ea39e70a8535c9f27c1179
-  spack: c2eef8bab26adb00b250992e29d697b4706356a0
+{batch_nodes}
+{batch_ranks}
+{batch_timeout}
+
+cd {experiment_run_dir}
+
+{command}
