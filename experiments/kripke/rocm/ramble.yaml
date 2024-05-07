@@ -16,28 +16,39 @@ ramble:
       concretize: '-U -f'
 
   applications:
-    saxpy:
+    kripke:
       workloads:
-        problem:
+        kripke:
+          env_vars:
           variables:
             n_ranks: '{processes_per_node} * {n_nodes}'
+            experiment_setup: ''
+            processes_per_node: ['8']
+            n_nodes: '1'
+            arch: 'HIP'
           experiments:
-            saxpy_{n}_{n_nodes}_{processes_per_node}_{n_ranks}:
+            kripke_rocm_{n_nodes}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}:
               variables:
-                processes_per_node: ['8', '4']
-                n_nodes: ['1', '2']
-                n: ['128', '256', '512', '1024']
-              matrix:
-                  - n
+                ngroups: 64
+                gs: 1
+                nquad: 128
+                ds: 128
+                lorder: 4
+                nzx: '64'
+                nzy: '64'
+                nzz: '64'
+                npx: '2'
+                npy: '2'
+                npz: '2'
   spack:
     concretized: true
     packages:
-      saxpy:
-        spack_spec: saxpy@1.0.0 +rocm{modifier_spack_variant} ~openmp amdgpu_target={rocm_arch}
+      kripke:
+        spack_spec: kripke@1.2.7.0 +mpi+rocm{modifier_spack_variant} ^chai@2024.02
         compiler: default-compiler
     environments:
-      saxpy:
+      kripke:
         packages:
         - default-mpi
-        - saxpy
+        - kripke
         - '{modifier_package_name}'

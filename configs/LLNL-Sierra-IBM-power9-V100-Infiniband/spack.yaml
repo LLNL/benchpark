@@ -6,9 +6,9 @@
 spack:
   packages:
     default-compiler:
-      spack_spec: xl@16.1.1-2022.08.19-cuda{default_cuda_version}
+      spack_spec: xl@16.1.1-2023.06.28-cuda-{default_cuda_version}-gcc-11.2.1
     default-mpi:
-      spack_spec: spectrum-mpi@2022.08.19
+      spack_spec: spectrum-mpi@2023.06.28-cuda-{default_cuda_version}-gcc-11.2.1
     compiler-gcc:
       spack_spec: gcc@8.3.1
     compiler-clang:
