@@ -10,3 +10,7 @@ variables:
   batch_nodes: '#SBATCH -N {n_nodes}'
   batch_ranks: '#SBATCH -n {n_ranks}'
   batch_timeout: '#SBATCH -t {batch_time}:00'
+  sys_hyperthreads_per_core: 2
+  sys_instance_names: [hpc7a.12xlarge, hpc7a.24xlarge, hpc7a.48xlarge, hpc7a.96xlarge]
+  sys_cores_per_node: [24, 48, 96, 192]
+  sys_mem_per_node: [768, 768, 768, 768]
