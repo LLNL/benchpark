@@ -9,8 +9,9 @@ from spack.package_base import PackageBase
 
 class MpiConsistency(PackageBase):
     with when("+mpi%gcc"):
-        for implementation in ["mvapich2", "mpich", "cray-mpich"]:
+        for implementation in ["mvapich2", "mpich", "cray-mpich", "spectrum-mpi"]:
             for ver in [
+                "8.3.1",
                 "12.1.1",
             ]:
                 depends_on(f"{implementation}%gcc@{ver}", when=f"%gcc@{ver} ^{implementation}")
