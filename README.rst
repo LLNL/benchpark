@@ -24,18 +24,18 @@ Benchpark is an open collaborative repository for reproducible specifications of
 Benchpark enables cross-site collaboration on benchmarking by providing a mechanism for sharing
 reproducible, working specifications for the following:
 
-1. **:maroon:`System specifications`**
+1. :maroon:`**System specifications**`
 
 * location of system compilers and system MPI
 * system scheduler and launcher
 
-2. **:blue:`Benchmark specifications`**
+2. :blue:`**Benchmark specifications**`
 
 * source repo and version
 * build (Spack) configuration
 * run (Ramble) configuration
 
-3. **:green:`Experiment specifications`**
+3. :green:`**Experiment specifications**`
 
 * programming models to use for benchmarks on a given system type
 * valid experiments for benchmarks on a given system (scientific parameter studies, performance parameter studies, etc.)
