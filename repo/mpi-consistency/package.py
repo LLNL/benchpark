@@ -12,6 +12,7 @@ class MpiConsistency(PackageBase):
         for implementation in ["mvapich2", "mpich", "cray-mpich", "spectrum-mpi"]:
             for ver in [
                 "8.3.1",
+                "11.2.1",
                 "12.1.1",
             ]:
                 depends_on(f"{implementation}%gcc@{ver}", when=f"%gcc@{ver} ^{implementation}")

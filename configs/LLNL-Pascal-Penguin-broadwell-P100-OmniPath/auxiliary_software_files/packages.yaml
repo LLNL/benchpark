@@ -42,11 +42,11 @@ packages:
   mvapich2:
     buildable: false
     externals:
-    - spec: mvapich2@2.3.7-gcc-11.2.1
+    - spec: mvapich2@2.3.7-gcc-11.2.1%gcc@11.2.1
       prefix: /usr/tce/packages/mvapich2/mvapich2-2.3.7-gcc-11.2.1
-    - spec: mvapich2@2.3.7-intel-2021.6.0
+    - spec: mvapich2@2.3.7-intel-2021.6.0%intel@2021.6.0
       prefix: /usr/tce/packages/mvapich2/mvapich2-2.3.7-intel-classic-2021.6.0/
-    - spec: mvapich2@2.3.7-clang-14.0.6
+    - spec: mvapich2@2.3.7-clang-14.0.6%clang@14.0.6
       prefix: /usr/tce/packages/mvapich2/mvapich2-2.3.7-clang-14.0.6
   cub:
     buildable: false
