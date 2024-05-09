@@ -1,9 +1,5 @@
 .. raw:: html
 
-    <style> .maroon {color:maroon} </style>
-    <style> .blue {color:blue} </style>
-    <style> .green {color:green} </style>
-
     <div align="left">
       <h2>
         <picture>
@@ -24,33 +20,39 @@ Benchpark is an open collaborative repository for reproducible specifications of
 Benchpark enables cross-site collaboration on benchmarking by providing a mechanism for sharing
 reproducible, working specifications for the following:
 
-1. :maroon:`**System specifications**`
+1. **System specifications** (benchmark and experiment agnostic)
 
-* location of system compilers and system MPI
-* system scheduler and launcher
+* Hardware information
+* System software environment information (available compilers, MPI)
+* Scheduler and launcher
 
-2. :blue:`**Benchmark specifications**`
+2. **Benchmark specifications** (system and experiment agnostic)
 
-* source repo and version
-* build (Spack) configuration
-* run (Ramble) configuration
+* Source repo and version
+* Build configuration (with Spack)
+* Run configuration (with Ramble)
 
-3. :green:`**Experiment specifications**`
+3. **Experiment specifications** (specific benchmark on a specific system)
 
-* programming models to use for benchmarks on a given system type
-* valid experiments for benchmarks on a given system (scientific parameter studies, performance parameter studies, etc.)
+* Programming model (e.g., OpenMP, CUDA, ROCm) for the benchmark on a given system
+* Parameters for individual runs in a study
 
 Dependencies
 ------------
-Benchpark uses the following open source projects for specifying configurations:
+Benchpark uses the following open source packages for specifying configurations:
 
 * `Spack <https://github.com/spack/spack>`_ to specify build configurations
 * `Ramble <https://github.com/GoogleCloudPlatform/ramble>`_ to specify run configurations
 
 Community
 ---------
-Benchpark is an open source project.  Questions, discussion, and contributions
-of new benchmarks, experiments, and system specifications are welcome.
+Benchpark is an open source project.  Questions, discussion, and contributions of new
+
+* `System specifications <https://software.llnl.gov/benchpark/add-a-system-config.html>`_
+* `Benchmark specifications <https://software.llnl.gov/benchpark/add-a-benchmark.html>`_
+* `Experiment specifications <https://software.llnl.gov/benchpark/add-an-experiment.html>`_
+
+as well as updates and improvements to any of the above are welcome.
 We use `github discussions <https://github.com/llnl/benchpark/discussions>`_ for Q&A and discussion.
 
 Contributing
@@ -77,7 +79,7 @@ ACM, New York, NY, USA, 9 pages.
 
 License
 -------
-Benchpark is released under the Apache 2.0 w/ LLVM Exception license. For more
-details see the [LICENSE](./LICENSE) file.
+Benchpark is released under the Apache 2.0 w/ LLVM Exception license. For more details see
+the `LICENSE <https://github.com/LLNL/benchpark/blob/develop/LICENSE>`_ file.
 
 LLNL-CODE-850629
