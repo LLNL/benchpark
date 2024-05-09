@@ -29,8 +29,8 @@ reproducible, working specifications for the following:
 2. **Benchmark specifications** (system and experiment agnostic)
 
 * Source repo and version
-* Build configuration (with Spack)
-* Run configuration (with Ramble)
+* Build configuration (with `Spack <https://github.com/spack/spack>`_)
+* Run configuration (with `Ramble <https://github.com/GoogleCloudPlatform/ramble>`_)
 
 3. **Experiment specifications** (specific benchmark on a specific system)
 
@@ -41,18 +41,18 @@ Dependencies
 ------------
 Benchpark uses the following open source packages for specifying configurations:
 
-* `Spack <https://github.com/spack/spack>`_ to specify build configurations
-* `Ramble <https://github.com/GoogleCloudPlatform/ramble>`_ to specify run configurations
+* `Spack <https://github.com/spack/spack>`_ for build configurations
+* `Ramble <https://github.com/GoogleCloudPlatform/ramble>`_ for run configurations
 
 Community
 ---------
-Benchpark is an open source project.  Questions, discussion, and contributions of new
+Benchpark is an open source project.  Questions, discussion,and contributions of
+new specifications as well as updates and improvements to existing specifications are welcome.
 
-* `System specifications <https://software.llnl.gov/benchpark/add-a-system-config.html>`_
-* `Benchmark specifications <https://software.llnl.gov/benchpark/add-a-benchmark.html>`_
-* `Experiment specifications <https://software.llnl.gov/benchpark/add-an-experiment.html>`_
+* `Adding a System Specification <https://software.llnl.gov/benchpark/add-a-system-config.html>`_
+* `Adding a Benchmark Specification <https://software.llnl.gov/benchpark/add-a-benchmark.html>`_
+* `Ading an Experiment Specification <https://software.llnl.gov/benchpark/add-an-experiment.html>`_
 
-as well as updates and improvements to any of the above are welcome.
 We use `github discussions <https://github.com/llnl/benchpark/discussions>`_ for Q&A and discussion.
 
 Contributing
