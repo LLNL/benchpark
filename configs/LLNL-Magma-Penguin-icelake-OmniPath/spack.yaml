@@ -6,17 +6,17 @@
 spack:
   packages:
     default-compiler:
-      spack_spec: gcc@12.1.1
+      spack_spec: '{compiler_spec}'
     default-mpi:
-      spack_spec: mvapich2@2.3.7-gcc1211
+      spack_spec: '{mpi_spec}'
     compiler-gcc:
       spack_spec: gcc@12.1.1
     compiler-intel:
       spack_spec: intel@2021.6.0-classic
     blas:
-      spack_spec: intel-oneapi-mkl@2022.1.0
+      spack_spec: '{blas_spec}'
     lapack:
-      spack_spec: intel-oneapi-mkl@2022.1.0
+      spack_spec: '{lapack_spec}'
     mpi-gcc:
       spack_spec: mvapich2@2.3.7-gcc1211
     mpi-intel:

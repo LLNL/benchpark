@@ -5,6 +5,8 @@
 
 ramble:
   include:
+  - ./configs/spack_config_variables.yaml
+  - ./configs/zips.yaml
   - ./configs/spack.yaml
   - ./configs/variables.yaml
   - ./configs/modifier.yaml
