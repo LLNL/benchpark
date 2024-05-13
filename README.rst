@@ -51,7 +51,7 @@ new specifications as well as updates and improvements to existing specification
 
 * `Adding a System Specification <https://software.llnl.gov/benchpark/add-a-system-config.html>`_
 * `Adding a Benchmark Specification <https://software.llnl.gov/benchpark/add-a-benchmark.html>`_
-* `Ading an Experiment Specification <https://software.llnl.gov/benchpark/add-an-experiment.html>`_
+* `Adding an Experiment Specification <https://software.llnl.gov/benchpark/add-an-experiment.html>`_
 
 We use `github discussions <https://github.com/llnl/benchpark/discussions>`_ for Q&A and discussion.
 
