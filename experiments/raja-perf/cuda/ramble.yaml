@@ -22,10 +22,9 @@ ramble:
       workloads:
         suite:
           experiments:
-            suite_{n_ranks_per_node}:
+            suite_{n_gpus}:
               variables:
-                n_ranks_per_node: ['1', '2', '4']
-                n_nodes: '1'
+                n_gpus: '1'
   spack:
     concretized: true
     packages:
