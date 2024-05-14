@@ -43,12 +43,16 @@ ramble:
   spack:
     concretized: true
     packages:
+      cuda:
+        spack_spec: cuda@{default_cuda_version}+allow-unsupported-compilers
+        compiler: default-compiler
       kripke:
         spack_spec: kripke@1.2.7.0 +mpi+cuda{modifier_spack_variant} ^chai@2024.02
         compiler: default-compiler
     environments:
       kripke:
         packages:
+        - cuda
         - default-mpi
         - kripke
         - '{modifier_package_name}'
