@@ -356,6 +356,11 @@ class Allocation(BasicModifier):
         v.allocation_directives = ""
 
     def lsf_instructions(self, v):
+        """Note that this generates lrun invocations; lrun  is an LLNL-specific
+        tool. jsrun is the generally-available scheduler for IBM Spectrum
+        machines (there is not currently a method for generating jsrun
+        invocations).
+        """
         cmd_opts = []
         batch_opts = []
 
