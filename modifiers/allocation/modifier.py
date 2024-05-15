@@ -255,7 +255,9 @@ class Allocation(BasicModifier):
             if v.n_ranks:
                 multi_cores_per_rank = v.n_cores_per_rank or v.n_threads_per_proc or 0
                 cores_request_per_rank = max(multi_cores_per_rank, 1)
-                ranks_per_node = math.floor(v.sys_cores_per_node / cores_request_per_rank)
+                ranks_per_node = math.floor(
+                    v.sys_cores_per_node / cores_request_per_rank
+                )
                 if ranks_per_node == 0:
                     raise ValueError(
                         "Experiment requests more cores per rank than "
