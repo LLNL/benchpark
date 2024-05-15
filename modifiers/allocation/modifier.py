@@ -256,6 +256,11 @@ class Allocation(BasicModifier):
                 multi_cores_per_rank = v.n_cores_per_rank or v.n_threads_per_proc or 0
                 cores_request_per_rank = max(multi_cores_per_rank, 1)
                 ranks_per_node = math.floor(v.sys_cores_per_node / cores_request_per_rank)
+                if ranks_per_node == 0:
+                    raise ValueError(
+                        "Experiment requests more cores per rank than "
+                        "are available on a node"
+                    )
                 cores_node_request = math.ceil(v.n_ranks / ranks_per_node)
             gpus_node_request = None
             if v.n_gpus:
@@ -263,7 +268,7 @@ class Allocation(BasicModifier):
                     gpus_node_request = math.ceil(v.n_gpus / float(v.sys_gpus_per_node))
                 else:
                     raise ValueError(
-                        "Experiment requests GPUs, but sys_gpus_per_nodei "
+                        "Experiment requests GPUs, but sys_gpus_per_node "
                         "is not specified for the system"
                     )
             v.n_nodes = max(cores_node_request or 0, gpus_node_request or 0)
