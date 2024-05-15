@@ -7,29 +7,29 @@
 (optional) Edit experiment
 ==========================
 
-Benchpark configuration files are organized as follows:: 
+Benchpark configuration files are organized as follows::
 
-  $benchpark 
-  ├── configs 
-  │  ├── ${SYSTEM1} 
-  │  │  ├── auxiliary_software_files 
-  │  │  │  ├── compilers.yaml 
-  │  │  │  └── packages.yaml 
-  │  │  ├── spack.yaml 
-  │  │  └── variables.yaml 
-  ├── experiments 
-  │  ├── ${BENCHMARK1} 
-  │  │  ├── ${ProgrammingModel1} 
-  │  │  │  ├── execute_experiment.tpl 
-  │  │  │  └── ramble.yaml 
-  │  │  ├── ${ProgrammingModel1} 
-  │  │  │  ├── execute_experiment.tpl 
-  │  │  │  └── ramble.yaml 
-  └── repo 
-     ├── ${BENCHMARK1} 
-     │  ├── application.py 
-     │  └── package.py 
-     └── repo.yaml 
+  $benchpark
+  ├── configs
+  │  ├── ${SYSTEM1}
+  │  │  ├── auxiliary_software_files
+  │  │  │  ├── compilers.yaml
+  │  │  │  └── packages.yaml
+  │  │  ├── spack.yaml
+  │  │  └── variables.yaml
+  ├── experiments
+  │  ├── ${BENCHMARK1}
+  │  │  ├── ${ProgrammingModel1}
+  │  │  │  ├── execute_experiment.tpl
+  │  │  │  └── ramble.yaml
+  │  │  ├── ${ProgrammingModel1}
+  │  │  │  ├── execute_experiment.tpl
+  │  │  │  └── ramble.yaml
+  └── repo
+     ├── ${BENCHMARK1}
+     │  ├── application.py
+     │  └── package.py
+     └── repo.yaml
 
 You can edit these configuration files to change the behavior of your experiments.
 
@@ -43,8 +43,8 @@ Experiment specification
 ------------------------
 Files under ``benchpark/experiments/${BENCHMARK}/${ProgrammingModel}``
 provide the specifications for the experiments.
-If you would like to make changes to your experiments,  such as enabling 
-specific tools to measure the performance of your experiments, 
+If you would like to make changes to your experiments,  such as enabling
+specific tools to measure the performance of your experiments,
 you can manually edit the specifications in ``ramble.yaml``
 (see :doc:`add-an-experiment` for details).
 
@@ -52,7 +52,7 @@ Benchmark specification
 -----------------------
 If you would like to modify a specification of your benchmark,
 you can do so by upstreaming changes to Spack and/or Ramble,
-or working on your benchmark specification in ``benchpark/repo/${BENCHMARK}`` 
+or working on your benchmark specification in ``benchpark/repo/${BENCHMARK}``
 (see :doc:`add-a-benchmark` for details).
 
 Modifiers
@@ -66,18 +66,18 @@ performance analysis or setting up system resources.
 
 Applying the Caliper modifier
 -----------------------------
-We have implemented a Caliper modifier to enable profiling of Caliper-instrumented 
+We have implemented a Caliper modifier to enable profiling of Caliper-instrumented
 benchmarks in Benchpark. More documentation on Caliper can be found `here
 <https://software.llnl.gov/Caliper>`_.
 
 To turn on profiling with Caliper, add ``--modifier=<caliper_modifier>`` to the Benchpark
 setup step::
 
-    ./benchpark setup benchmark/programmingmodel system --modifier=<caliper_modifier> <workspace-dir>
+    ./benchpark setup <Benchmark/ProgrammingModel> <System> --modifier=<caliper_modifier> <workspace-dir>
 
 Valid values for ``<caliper_modifier>`` are found in the **Caliper Modifier**
 column of the table below.  Benchpark will link the experiment to Caliper,
-and inject appropriate Caliper configuration at runtime.  After the experiments 
+and inject appropriate Caliper configuration at runtime.  After the experiments
 in the workspace have completed running, a ``.cali`` file
 is created which contains the collected performance metrics.
 
