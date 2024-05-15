@@ -9,7 +9,7 @@ variables:
   timeout: '120'
   scheduler: "slurm"
   # This describes the LUMI-G partition: https://docs.lumi-supercomputer.eu/hardware/lumig/
-  sys_cpus_per_node: "64"
+  sys_cores_per_node: "64"
   sys_gpus_per_node: "8"
   sys_mem_per_node: "512"
   max_request: "1000"  # n_ranks/n_nodes cannot exceed this

@@ -8,7 +8,7 @@ variables:
   rocm_arch: 'gfx90a'
   timeout: "120"
   scheduler: "flux"
-  sys_cpus_per_node: "64"
+  sys_cores_per_node: "64"
   sys_gpus_per_node: "4"
   max_request: "1000"  # n_ranks/n_nodes cannot exceed this
   n_ranks: '1000001'  # placeholder value

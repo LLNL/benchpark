@@ -21,7 +21,7 @@ class AllocOpt(Enum):
 
     # Descriptions of resources available on systems
     SYS_GPUS_PER_NODE = 100
-    SYS_CPUS_PER_NODE = 101
+    SYS_CORES_PER_NODE = 101
     SYS_MEM_PER_NODE = 102
 
     # Scheduler identification and other high-level instructions
@@ -251,12 +251,12 @@ class Allocation(BasicModifier):
         if not v.n_nodes:
             if not any((v.n_ranks, v.n_gpus)):
                 raise ValueError("Must specify one of: n_nodes, n_ranks, n_gpus")
-            cpus_node_request = None
+            cores_node_request = None
             if v.n_ranks:
-                multi_cpus_per_rank = v.n_cores_per_rank or v.n_threads_per_proc or 0
-                cpus_request_per_rank = max(multi_cpus_per_rank, 1)
-                ranks_per_node = math.floor(v.sys_cpus_per_node / cpus_request_per_rank)
-                cpus_node_request = math.ceil(v.n_ranks / ranks_per_node)
+                multi_cores_per_rank = v.n_cores_per_rank or v.n_threads_per_proc or 0
+                cores_request_per_rank = max(multi_cores_per_rank, 1)
+                ranks_per_node = math.floor(v.sys_cores_per_node / cores_request_per_rank)
+                cores_node_request = math.ceil(v.n_ranks / ranks_per_node)
             gpus_node_request = None
             if v.n_gpus:
                 if v.sys_gpus_per_node:
@@ -266,7 +266,7 @@ class Allocation(BasicModifier):
                         "Experiment requests GPUs, but sys_gpus_per_nodei "
                         "is not specified for the system"
                     )
-            v.n_nodes = max(cpus_node_request or 0, gpus_node_request or 0)
+            v.n_nodes = max(cores_node_request or 0, gpus_node_request or 0)
 
         if not v.n_threads_per_proc:
             v.n_threads_per_proc = 1

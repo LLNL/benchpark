@@ -9,7 +9,7 @@ variables:
   default_cuda_version: '11.8.0'
   timeout: "120"
   scheduler: "slurm"
-  sys_cpus_per_node: "36"
+  sys_cores_per_node: "36"
   sys_gpus_per_node: "2"
   max_request: "1000"  # n_ranks/n_nodes cannot exceed this
   n_ranks: '1000001'  # placeholder value
