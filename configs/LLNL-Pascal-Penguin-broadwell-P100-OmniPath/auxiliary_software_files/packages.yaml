@@ -16,8 +16,8 @@ packages:
     buildable: false
   cmake:
     externals:
-    - spec: cmake@3.23.1
-      prefix: /usr/tce/packages/cmake/cmake-3.23.1
+    - spec: cmake@3.26.3
+      prefix: /usr/tce/packages/cmake/cmake-3.26.3
     buildable: false
   gmake:
     externals:
@@ -48,6 +48,11 @@ packages:
       prefix: /usr/tce/packages/mvapich2/mvapich2-2.3.7-intel-classic-2021.6.0/
     - spec: mvapich2@2.3.7-clang-14.0.6
       prefix: /usr/tce/packages/mvapich2/mvapich2-2.3.7-clang-14.0.6
+  cub:
+    buildable: false
+    externals:
+    - spec: cub@11.8.0
+      prefix: /usr/tce/packages/cuda/cuda-11.8.0/
   cuda:
     buildable: false
     externals:

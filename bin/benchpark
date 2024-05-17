@@ -102,7 +102,10 @@ def benchpark_systems():
     source_dir = source_location()
     systems = []
     for x in os.listdir(source_dir / "configs"):
-        systems.append(x)
+        if not (
+            os.path.isfile(os.path.join(source_dir / "configs", x)) or x == "common"
+        ):
+            systems.append(x)
     return systems
 
 
@@ -483,7 +486,7 @@ Further steps are needed to build the experiments (ramble -P -D {ramble_workspac
     print(instructions)
 
 
-def helper_experiments_tags(ramble_exe, experiments):
+def helper_experiments_tags(ramble_exe, benchmarks):
     # find all tags in Ramble applications (both in Ramble built-in and in Benchpark/repo)
     (tags_stdout, tags_stderr) = run_command(f"{ramble_exe} attributes --tags --all")
     ramble_applications_tags = {}
@@ -494,20 +497,20 @@ def helper_experiments_tags(ramble_exe, experiments):
         ramble_applications_tags[key_value[0]] = key_value[1].strip().split(",")
 
     benchpark_experiments_tags = {}
-    for exp in experiments:
-        benchpark_experiments_tags[exp] = ramble_applications_tags[exp]
+    for benchmark in benchmarks:
+        benchpark_experiments_tags[benchmark] = ramble_applications_tags[benchmark]
     return benchpark_experiments_tags
 
 
 def benchpark_tags_handler(args):
     """
-    Filter ramble tags by benchpark experiments
+    Filter ramble tags by benchpark benchmarks
     """
     source_dir = source_location()
     experiments_root = pathlib.Path(os.path.abspath(args.experiments_root))
     ramble_location = experiments_root / "ramble"
     ramble_exe = ramble_location / "bin" / "ramble"
-    experiments = benchpark_experiments()
+    benchmarks = benchpark_benchmarks()
 
     if args.tag:
         if benchpark_check_tag(args.tag):
@@ -516,17 +519,15 @@ def benchpark_tags_handler(args):
             lines = tag_stdout.splitlines()
 
             for line in lines:
-                if line in experiments:
+                if line in benchmarks:
                     print(line)
 
     elif args.application:
-        if benchpark_check_experiment(args.application):
-            benchpark_experiments_tags = helper_experiments_tags(
-                ramble_exe, experiments
-            )
+        if benchpark_check_benchmark(args.application):
+            benchpark_experiments_tags = helper_experiments_tags(ramble_exe, benchmarks)
             print(benchpark_experiments_tags[args.application])
     else:
-        benchpark_experiments_tags = helper_experiments_tags(ramble_exe, experiments)
+        benchpark_experiments_tags = helper_experiments_tags(ramble_exe, benchmarks)
         print("All tags that exist in Benchpark experiments:")
         for k, v in benchpark_experiments_tags.items():
             print(k)
