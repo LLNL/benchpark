@@ -73,7 +73,7 @@ def source_location():
 
 def benchpark_list(subparsers, actions_dict):
     list_parser = subparsers.add_parser(
-        "list", help="List available benchmarks and systems"
+        "list", help="List available experiments, systems, and modifiers"
     )
     list_parser.add_argument("sublist", nargs="?")
     actions_dict["list"] = benchpark_list_handler
@@ -84,8 +84,7 @@ def benchpark_benchmarks():
     benchmarks = []
     experiments_dir = source_dir / "experiments"
     for x in os.listdir(experiments_dir):
-        for y in os.listdir(experiments_dir / x):
-            benchmarks.append(f"{x}/{y}")
+        benchmarks.append(f"{x}")
     return benchmarks
 
 
@@ -94,7 +93,8 @@ def benchpark_experiments():
     experiments = []
     experiments_dir = source_dir / "experiments"
     for x in os.listdir(experiments_dir):
-        experiments.append(f"{x}")
+        for y in os.listdir(experiments_dir / x):
+            experiments.append(f"{x}/{y}")
     return experiments
 
 
@@ -102,8 +102,19 @@ def benchpark_systems():
     source_dir = source_location()
     systems = []
     for x in os.listdir(source_dir / "configs"):
-        systems.append(x)
+        if not (
+            os.path.isfile(os.path.join(source_dir / "configs", x)) or x == "common"
+        ):
+            systems.append(x)
     return systems
+
+
+def benchpark_modifiers():
+    source_dir = source_location()
+    modifiers = []
+    for x in os.listdir(source_dir / "modifiers"):
+        modifiers.append(x)
+    return modifiers
 
 
 def benchpark_get_tags():
@@ -132,36 +143,44 @@ def benchpark_list_handler(args):
     source_dir = source_location()
     sublist = args.sublist
     benchmarks = benchpark_benchmarks()
+    experiments = benchpark_experiments()
     systems = benchpark_systems()
+    modifiers = benchpark_modifiers()
 
     if sublist == None:
-        print("Benchmarks/ProgrammingModel:")
-        for benchmark in benchmarks:
-            print(f"\t{benchmark}")
+        print("Experiments:")
+        for experiment in experiments:
+            print(f"\t{experiment}")
         print("Systems:")
         for system in systems:
             print(f"\t{system}")
+    elif sublist == "benchmarks":
+        print("Benchmarks:")
+        for benchmark in benchmarks:
+            print(f"\t{benchmark}")
+    elif sublist == "experiments":
+        print("Experiments:")
+        for experiment in experiments:
+            print(f"\t{experiment}")
+    elif sublist == "systems":
+        print("Systems:")
+        for system in systems:
+            print(f"\t{system}")
+    elif sublist == "modifiers":
+        print("Modifiers:")
+        for modifier in modifiers:
+            print(f"\t{modifier}")
     else:
-        if sublist == "benchmarks":
-            print("Benchmarks:")
-            for benchmark in benchmarks:
-                print(f"\t{benchmark}")
-        else:
-            if sublist == "systems":
-                print("Systems:")
-                for system in systems:
-                    print(f"\t{system}")
-            else:
-                raise ValueError(
-                    f'Invalid benchpark list "{sublist}" - must choose [benchmarks], [systems], or leave empty'
-                )
+        raise ValueError(
+            f'Invalid benchpark list "{sublist}" - must choose [experiments], [systems], [modifiers] or leave empty'
+        )
 
 
 def benchpark_check_benchmark(arg_str):
     benchmarks = benchpark_benchmarks()
     found = arg_str in benchmarks
     if not found:
-        out_str = f'Invalid benchmark/experiment "{arg_str}" - must choose one of: '
+        out_str = f'Invalid benchmark "{arg_str}" - must choose one of: '
         for benchmark in benchmarks:
             out_str += f"\n\t{benchmark}"
         raise ValueError(out_str)
@@ -172,7 +191,7 @@ def benchpark_check_experiment(arg_str):
     experiments = benchpark_experiments()
     found = arg_str in experiments
     if not found:
-        out_str = f'Invalid benchmark/experiment "{arg_str}" - must choose one of: '
+        out_str = f'Invalid experiment (benchmark/ProgrammingModel) "{arg_str}" - must choose one of: '
         for experiment in experiments:
             out_str += f"\n\t{experiment}"
         raise ValueError(out_str)
@@ -201,13 +220,26 @@ def benchpark_check_tag(arg_str):
     return found
 
 
+def benchpark_check_modifier(arg_str):
+    modifiers = benchpark_modifiers()
+    found = arg_str in modifiers
+    if not found:
+        out_str = f'Invalid modifier "{arg_str}" - must choose one of: '
+        for modifier in modifiers:
+            out_str += f"\n\t{modifier}"
+        raise ValueError(out_str)
+    return found
+
+
 def benchpark_setup(subparsers, actions_dict):
     create_parser = subparsers.add_parser(
         "setup", help="Set up an experiment and prepare it to build/run"
     )
 
     create_parser.add_argument(
-        "benchmark", type=str, help="The experiment (benchmark/ProgrammingModel) to run"
+        "experiment",
+        type=str,
+        help="The experiment (benchmark/ProgrammingModel) to run",
     )
     create_parser.add_argument(
         "system", type=str, help="The system on which to run the experiment"
@@ -311,32 +343,28 @@ def benchpark_setup_handler(args):
     experiments_root/
         spack/
         ramble/
-        <benchmark>/
+        <experiment>/
             <system>/
                 workspace/
                     configs/
                         (everything from source/configs/<system>)
-                        (everything from source/experiments/<benchmark>)
+                        (everything from source/experiments/<experiment>)
     """
 
-    benchmark = args.benchmark
+    experiment = args.experiment
     system = args.system
     experiments_root = pathlib.Path(os.path.abspath(args.experiments_root))
     modifier = args.modifier
     source_dir = source_location()
     debug_print(f"source_dir = {source_dir}")
-    debug_print(f"specified benchmark/ProgrammingModel = {benchmark}")
-    valid_benchmark = benchpark_check_benchmark(benchmark)
+    debug_print(f"specified experiment (benchmark/ProgrammingModel) = {experiment}")
+    valid_experiment = benchpark_check_experiment(experiment)
     debug_print(f"specified system = {system}")
     valid_system = benchpark_check_system(system)
-    if not (valid_benchmark and valid_system):
-        raise ValueError(
-            "Invalid benchmark/experiment and system provided: {0} {1}".format(
-                benchmark, system
-            )
-        )
+    debug_print(f"specified modifier = {modifier}")
+    valid_modifier = benchpark_check_modifier(modifier)
 
-    workspace_dir = experiments_root / str(benchmark) / str(system)
+    workspace_dir = experiments_root / str(experiment) / str(system)
 
     if workspace_dir.exists():
         if workspace_dir.is_dir():
@@ -360,7 +388,7 @@ def benchpark_setup_handler(args):
     print(f"Setting up configs for Ramble workspace {ramble_configs_dir}")
 
     configs_src_dir = source_dir / "configs" / str(system)
-    experiment_src_dir = source_dir / "experiments" / benchmark
+    experiment_src_dir = source_dir / "experiments" / experiment
     modifier_config_dir = source_dir / "modifiers" / modifier / "configs"
     ramble_configs_dir.mkdir(parents=True)
     ramble_logs_dir.mkdir(parents=True)
@@ -458,7 +486,7 @@ Further steps are needed to build the experiments (ramble -P -D {ramble_workspac
     print(instructions)
 
 
-def helper_experiments_tags(ramble_exe, experiments):
+def helper_experiments_tags(ramble_exe, benchmarks):
     # find all tags in Ramble applications (both in Ramble built-in and in Benchpark/repo)
     (tags_stdout, tags_stderr) = run_command(f"{ramble_exe} attributes --tags --all")
     ramble_applications_tags = {}
@@ -469,20 +497,20 @@ def helper_experiments_tags(ramble_exe, experiments):
         ramble_applications_tags[key_value[0]] = key_value[1].strip().split(",")
 
     benchpark_experiments_tags = {}
-    for exp in experiments:
-        benchpark_experiments_tags[exp] = ramble_applications_tags[exp]
+    for benchmark in benchmarks:
+        benchpark_experiments_tags[benchmark] = ramble_applications_tags[benchmark]
     return benchpark_experiments_tags
 
 
 def benchpark_tags_handler(args):
     """
-    Filter ramble tags by benchpark experiments
+    Filter ramble tags by benchpark benchmarks
     """
     source_dir = source_location()
     experiments_root = pathlib.Path(os.path.abspath(args.experiments_root))
     ramble_location = experiments_root / "ramble"
     ramble_exe = ramble_location / "bin" / "ramble"
-    experiments = benchpark_experiments()
+    benchmarks = benchpark_benchmarks()
 
     if args.tag:
         if benchpark_check_tag(args.tag):
@@ -491,17 +519,15 @@ def benchpark_tags_handler(args):
             lines = tag_stdout.splitlines()
 
             for line in lines:
-                if line in experiments:
+                if line in benchmarks:
                     print(line)
 
     elif args.application:
-        if benchpark_check_experiment(args.application):
-            benchpark_experiments_tags = helper_experiments_tags(
-                ramble_exe, experiments
-            )
+        if benchpark_check_benchmark(args.application):
+            benchpark_experiments_tags = helper_experiments_tags(ramble_exe, benchmarks)
             print(benchpark_experiments_tags[args.application])
     else:
-        benchpark_experiments_tags = helper_experiments_tags(ramble_exe, experiments)
+        benchpark_experiments_tags = helper_experiments_tags(ramble_exe, benchmarks)
         print("All tags that exist in Benchpark experiments:")
         for k, v in benchpark_experiments_tags.items():
             print(k)
