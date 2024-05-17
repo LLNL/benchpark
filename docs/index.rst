@@ -17,13 +17,19 @@
    5-build-experiment
    6-run-experiment
    7-analyze-experiment
+
+.. toctree::
+   :maxdepth: 1
+   :caption: FAQ
+
    FAQ-what-to-rerun
+   FAQ-spack-ramble-dependence
+   FAQ-benchpark-repo
 
 .. toctree::
    :maxdepth: 1
    :caption: Catalogue
 
-   catalogue-of-benchmarks
    available-system-specs
    benchmark-list
    benchpark-help
@@ -32,10 +38,10 @@
    :maxdepth: 1
    :caption: Contributing
 
-   add-a-benchmark
-   add-an-experiment
    add-a-system-config
    add-a-site-specific-system-config
+   add-a-benchmark
+   add-an-experiment
 
 .. toctree::
    :maxdepth: 1

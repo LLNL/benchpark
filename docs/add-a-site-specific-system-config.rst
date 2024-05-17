@@ -4,7 +4,7 @@
    SPDX-License-Identifier: Apache-2.0
 
 ======================================
-Adding a Specific System Configuration
+Adding a Specific System Specification
 ======================================
 
 For a specific system, one can (optionally) add more information about the software installed on the system

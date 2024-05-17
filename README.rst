@@ -20,19 +20,19 @@ Benchpark is an open collaborative repository for reproducible specifications of
 Benchpark enables cross-site collaboration on benchmarking by providing a mechanism for sharing
 reproducible, working specifications for the following:
 
-1. **System specifications** (benchmark and experiment agnostic)
+1. **System Specifications** (benchmark and experiment agnostic)
 
 * Hardware information
 * System software environment information (available compilers, MPI)
 * Scheduler and launcher
 
-2. **Benchmark specifications** (system and experiment agnostic)
+2. **Benchmark Specifications** (system and experiment agnostic)
 
 * Source repo and version
 * Build configuration (with `Spack <https://github.com/spack/spack>`_)
 * Run configuration (with `Ramble <https://github.com/GoogleCloudPlatform/ramble>`_)
 
-3. **Experiment specifications** (specific benchmark on a specific system)
+3. **Experiment Specifications** (specific benchmark experiment on a specific system)
 
 * Programming model (e.g., OpenMP, CUDA, ROCm) for the benchmark on a given system
 * Parameters for individual runs in a study
