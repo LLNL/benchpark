@@ -25,12 +25,13 @@ class Laghos(MakefilePackage):
     version("develop", branch="caliper")
 
     variant("metis", default=True, description="Enable/disable METIS support")
-    variant("caliper", default=True, description="Enable/disable Caliper support")
+    variant("caliper", default=False, description="Enable/disable Caliper support")
     variant("ofast", default=False, description="Enable gcc optimization flags")
 
     depends_on("mfem+mpi+metis", when="+metis")
     depends_on("mfem+mpi~metis", when="~metis")
     depends_on("caliper", when="+caliper")
+    depends_on("adiak", when="+caliper")
 
     depends_on("mfem@develop", when="@develop")
     depends_on("mfem@4.2.0:", when="@3.1")

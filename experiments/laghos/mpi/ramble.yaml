@@ -20,10 +20,10 @@ ramble:
         problem:
           env_vars:
           variables:
-            n_ranks: ['1', '2', '4', '8', '16', '32']
-            n_nodes: '1'
+            n_nodes: ['1', '2', '4', '8', '16', '32', '64', '128']
+            n_ranks: '{sys_cpus_per_node} * {n_nodes}'
           experiments:
-            laghos_mpi_sedov_{n_nodes}_{n_ranks}:
+            laghos_mpi_triplept_{n_nodes}_{n_ranks}:
               variables:
   spack:
     concretized: true
