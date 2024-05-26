@@ -3,16 +3,16 @@
 
    SPDX-License-Identifier: Apache-2.0
 
-=============================
-Current System Configurations
-=============================
+=====================
+System Specifications
+=====================
 
 The table below provides a directory of information for systems that have been
-defined in Benchpark. The column headers in the table below are available for
-use as the ``system`` parameter in Benchpark setup. See
+specified in Benchpark. The column headers in the table below are available for
+use as the ``system`` parameter in ``Benchpark setup``. See
 :doc:`4-benchpark-setup` for more details.
 
-.. csv-table:: Current system definitions in Benchpark.
+.. csv-table:: Current System Specifications in Benchpark.
    :file: current-system-definitions.csv
    :header-rows: 1
    :align: left

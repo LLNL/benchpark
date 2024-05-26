@@ -3,9 +3,9 @@
 
    SPDX-License-Identifier: Apache-2.0
 
-================
-Build experiment
-================
+=======================
+Building the experiment
+=======================
 
 ``benchpark setup`` has set up the directory structure for your experiment.
 The next step is setting up the Ramble workspace and building the code::
