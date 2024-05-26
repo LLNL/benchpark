@@ -33,7 +33,7 @@ ramble:
     concretized: true
     packages:
       saxpy:
-        spack_spec: saxpy@1.0.0 +rocm{modifier_spack_variant} amdgpu_target={rocm_arch}
+        spack_spec: saxpy@1.0.0 +rocm{modifier_spack_variant} ~openmp amdgpu_target={rocm_arch}
         compiler: default-compiler
     environments:
       saxpy:

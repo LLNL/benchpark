@@ -3,9 +3,9 @@
 
    SPDX-License-Identifier: Apache-2.0
 
-==========================================
-FAQ: I made changes.  What should I rerun?
-==========================================
+=========================
+What to rerun after edits
+=========================
 
 .. list-table:: I made changes.  What should I rerun?
    :widths: 35 65
@@ -15,7 +15,7 @@ FAQ: I made changes.  What should I rerun?
      - Commands to rerun
    * - configs
      - ``ramble -P -D . workspace setup``
-   * - benchmark's package.py 
+   * - benchmark's package.py
      - ``ramble -P -D . workspace setup``
    * - dependency of package.py
      - ``ramble -P -D . workspace setup``

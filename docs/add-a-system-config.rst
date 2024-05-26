@@ -4,7 +4,7 @@
    SPDX-License-Identifier: Apache-2.0
 
 =============================
-Adding a System Configuration
+Adding a System Specification
 =============================
 
 ``benchpark/configs`` contains a directory for each system specified in Benchpark.

@@ -28,11 +28,15 @@ ramble:
   spack:
     concretized: true
     packages:
+      cuda:
+        spack_spec: cuda@{default_cuda_version}+allow-unsupported-compilers
+        compiler: default-compiler
       raja-perf:
-        spack_spec: raja-perf@develop +cuda~openmp+mpi cuda_arch=={cuda_arch} ^cuda@{default_cuda_version}
+        spack_spec: raja-perf@develop +cuda~openmp+mpi cuda_arch=={cuda_arch}
         compiler: default-compiler
     environments:
       raja-perf:
         packages:
+        - cuda
         - default-mpi
         - raja-perf

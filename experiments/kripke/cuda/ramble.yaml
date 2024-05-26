@@ -15,33 +15,44 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
-  modifiers:
-  - name: allocation
-
   applications:
-    saxpy:
+    kripke:
       workloads:
-        problem:
+        kripke:
+          env_vars:
+          variables:
+            n_ranks: '{processes_per_node} * {n_nodes}'
+            experiment_setup: ''
+            processes_per_node: '2'
+            n_nodes: '2'
+            arch: 'CUDA'
           experiments:
-            saxpy_{n}:
+            kripke_cuda_{n_nodes}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}:
               variables:
-                n_gpus: '1'
-                n: ['128', '256', '512', '1024']
-              matrix:
-              - n
+                ngroups: 64
+                gs: 1
+                nquad: 128
+                ds: 128
+                lorder: 4
+                nzx: '64'
+                nzy: '64'
+                nzz: '32'
+                npx: '2'
+                npy: '2'
+                npz: '1'
   spack:
     concretized: true
     packages:
       cuda:
         spack_spec: cuda@{default_cuda_version}+allow-unsupported-compilers
         compiler: default-compiler
-      saxpy:
-        spack_spec: saxpy@1.0.0 +cuda{modifier_spack_variant} cuda_arch=={cuda_arch} ~openmp
+      kripke:
+        spack_spec: kripke@1.2.7.0 +mpi+cuda{modifier_spack_variant} ^chai@2024.02
         compiler: default-compiler
     environments:
-      saxpy:
+      kripke:
         packages:
         - cuda
         - default-mpi
-        - saxpy
+        - kripke
         - '{modifier_package_name}'
