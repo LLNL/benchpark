@@ -4,7 +4,7 @@
    SPDX-License-Identifier: Apache-2.0
 
 =================================
-Benchmark Specs in benchpark/repo
+Benchmark not yet in Spack/Ramble
 =================================
 By default, Benchpark will use ${Benchmark1} specifications (``package.py`` and ``application.py``)
 provided in the Spack and Ramble repos.

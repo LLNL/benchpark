@@ -32,16 +32,16 @@ reproducible, working specifications for the following:
 * Build configuration (with `Spack <https://github.com/spack/spack>`_)
 * Run configuration (with `Ramble <https://github.com/GoogleCloudPlatform/ramble>`_)
 
-3. **Experiment Specifications** (specific benchmark experiment on a specific system)
+3. **Experiment Specifications** (specific benchmark experiment on a system specification)
 
 * Programming model (e.g., OpenMP, CUDA, ROCm) for the benchmark on a given system
 * Parameters for individual runs in a study
 
 Dependencies
 ------------
-Benchpark uses the following open source packages for specifying configurations:
+Benchpark uses the following open source projects for specifying configurations:
 
-* `Spack <https://github.com/spack/spack>`_ for build configurations
+* `Spack <https://github.com/spack/spack>`_ for building benchmark and dependencies
 * `Ramble <https://github.com/GoogleCloudPlatform/ramble>`_ for run configurations
 
 Community

@@ -3,9 +3,9 @@
 
    SPDX-License-Identifier: Apache-2.0
 
-==============================
-Dependency on Spack and Ramble
-==============================
+==================================
+Spack/Ramble versions in Benchpark
+==================================
 
 Benchpark depends on the build functionality provided in
 `Spack <https://github.com/spack/spack>`_,

@@ -30,7 +30,7 @@
    :maxdepth: 1
    :caption: Catalogue
 
-   available-system-specs
+   system-list
    benchmark-list
    benchpark-help
 
