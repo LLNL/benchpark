@@ -49,11 +49,11 @@ Patch some files in various repos:
 .. code:: bash
 
     sed -i -e "s@1280000000@160000000@g" -e 's@cflags=".*"@@g' experiments/streamc/openmp/ramble.yaml
-    wget https://raw.githubusercontent.com/GoogleCloudPlatform/ramble/22db33d5f3728e015fcca6d5618a67014ca132c8/lib/ramble/ramble/spack_runner.py -O workspace/ramble/lib/ramble/ramble/spack_runner.py
     wget https://raw.githubusercontent.com/jdomke/spack/RIKEN_CCS_fugaku5/lib/spack/spack/util/libc.py -O workspace/spack/lib/spack/spack/util/libc.py
     wget https://raw.githubusercontent.com/jdomke/spack/RIKEN_CCS_fugaku6/var/spack/repos/builtin/packages/hpcg/package.py -O workspace/spack/var/spack/repos/builtin/packages/hpcg/package.py
     wget https://raw.githubusercontent.com/jdomke/spack/RIKEN_CCS_fugaku8/var/spack/repos/builtin/packages/fujitsu-mpi/package.py -O workspace/spack/var/spack/repos/builtin/packages/fujitsu-mpi/package.py
     wget https://raw.githubusercontent.com/jdomke/spack/RIKEN_CCS_fugaku9/var/spack/repos/builtin/packages/fujitsu-ssl2/package.py -O workspace/spack/var/spack/repos/builtin/packages/fujitsu-ssl2/package.py
+    #ONLY FOR CLANG BUILDS: sed -i -e 's@SYSTEM_PATHS = \[\(.*\)\]@SYSTEM_PATHS = [\1, "/opt/FJSVxtclanga/tcsds-mpi-1.2.38", "/opt/FJSVxtclanga/tcsds-ssl2-1.2.38"]@g' workspace/spack/lib/spack/spack/util/environment.py
 
 
 Build the benchmark:
@@ -80,4 +80,10 @@ Go back to login node and submit benchmarks:
     export BM='saxpy/openmp'
     export SYS='RCCS-Fugaku-Fujitsu-A64FX-TofuD'
     ./workspace/ramble/bin/ramble -P -D $(readlink -f $(pwd)/workspace/${BM}/${SYS}/workspace) on
+
+Finding the benchmark output (Fujitsu MPI does not write to STDOUT):
+
+.. code:: bash
+
+   find workspace/${BM}/${SYS}/workspace -name 'output.*'
 
