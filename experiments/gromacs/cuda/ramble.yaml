@@ -44,18 +44,18 @@ ramble:
   spack:
     concretized: true
     packages:
-      gromacs:
-        spack_spec: gromacs@2023.3 +mpi+openmp+cuda~hwloc~double cuda_arch=={cuda_arch}
-        compiler: compiler-clang
       cuda:
         spack_spec: cuda@{default_cuda_version}+allow-unsupported-compilers
-        compiler: compiler-clang
+        compiler: default-compiler
+      gromacs:
+        spack_spec: gromacs@2023.3 +mpi+openmp+cuda~hwloc~double cuda_arch=={cuda_arch}
+        compiler: default-compiler
     environments:
       gromacs:
         packages:
         - cuda
         - blas
         - lapack
-        - mpi-clang
+        - default-mpi
         - fftw
         - gromacs
