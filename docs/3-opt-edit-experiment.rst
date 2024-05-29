@@ -64,8 +64,66 @@ specifications. Modifiers are intended to encasulate reusable patterns that
 perform a specific configuration of an experiment. This may include injecting
 performance analysis or setting up system resources.
 
-Applying the Caliper modifier
------------------------------
+Requesting resources with Allocation Modifier
+---------------------------------------------
+Given::
+
+  - an experiment that requests resources (nodes, cpus, gpus, etc.), and
+  - a specification of the resources available on the system (cores-per-node, gpus-per-node, etc.),
+
+the ``Allocation Modifier`` generates the appropriate scheduler request for these resources
+(how many nodes are required to run a given experiment, etc.).
+
+
+.. list-table:: Hardware resources
+   :widths: 20 40 40
+   :header-rows: 1
+
+   * - Resource
+     - System
+     - Experiment
+   * - Nodes
+     -
+     - n_nodes
+   * - MPI Ranks
+     -
+     - n_ranks
+   * - CPU cores
+     - sys_cores_per_node
+     - n_cores_per_node
+   * - GPUs
+     - sys_gpus_per_node
+     - n_gpus_per_node
+   * - MPI Ranks per node
+     -
+     - n_ranks_per_node
+   * - Memory per node
+     - sys_mem_per_node
+     - n_mem_per_node
+
+
+The experiment is required to specify one of::
+
+  - n_nodes
+  - n_ranks
+  - n_gpus
+
+
+The modifier checks the resources requested by the experiment,
+computes the values for the unspecified variables, and
+checks that the request does not exceed the resources available on the system.
+The following algorithm is used to determine the resources required
+(determine allocation function)::
+
+  - If the experiment does not define ``n_ranks`` but requests ``n_ranks_per_node``
+    and ``n_nodes``, it will be allocated ``n_ranks = n_nodes x n_ranks_per_node``.
+  - If the experiment does not define ``n_ranks`` but requests ``n_gpus``,
+    it will be allocated ``n_ranks = n_gpus``
+
+
+
+Profiling with Caliper Modifier
+-------------------------------
 We have implemented a Caliper modifier to enable profiling of Caliper-instrumented
 benchmarks in Benchpark. More documentation on Caliper can be found `here
 <https://software.llnl.gov/Caliper>`_.
