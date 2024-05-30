@@ -21,12 +21,12 @@ ramble:
           variables:
             n_ranks: '{processes_per_node} * {n_nodes}'
             size_name: ['medium']
-            scaling_nodes: [1]
+            scaling_nodes: [2]
             n_nodes: '{scaling_nodes}'
           experiments:
             scaling_{n_nodes}nodes_{size_name}:
               variables:
-                processes_per_node: ['2']
+                processes_per_node: ['1']
   spack:
     concretized: true
     packages:
