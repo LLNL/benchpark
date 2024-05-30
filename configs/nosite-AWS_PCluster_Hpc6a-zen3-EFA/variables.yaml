@@ -11,4 +11,4 @@ variables:
   batch_ranks: '#SBATCH -n {n_ranks}'
   batch_timeout: '#SBATCH -t {batch_time}:00'
   sys_cpus_per_node: 96
-  sys_gpus_per_node 0
+  sys_gpus_per_node: 0

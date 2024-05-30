@@ -53,10 +53,11 @@ class Laghos(MakefilePackage):
         targets = []
         spec = self.spec
 
-        targets.append("CALIPER_DIR=%s" % spec["caliper"].prefix)
         targets.append("MFEM_DIR=%s" % spec["mfem"].prefix)
         targets.append("CONFIG_MK=%s" % spec["mfem"].package.config_mk)
         targets.append("TEST_MK=%s" % spec["mfem"].package.test_mk)
+        if "+caliper" in self.spec: 
+            targets.append("CALIPER_DIR=%s" % spec["caliper"].prefix)
         if spec.satisfies("@:2.0"):
             targets.append("CXX=%s" % spec["mpi"].mpicxx)
         if "+ofast %gcc" in self.spec:

@@ -16,7 +16,7 @@ class Laghos(SpackApplication):
             'multi-node','single-node','mpi','network-latency-bound',
             'network-collectives','unstructured-grid']
 
-    executable('p', 'laghos -p 3 -m {laghos}/data/box01_hex.mesh -rs 5 -ms 500 --caliper', use_mpi=True)
+    executable('p', 'laghos -p 3 -m {laghos}/data/box01_hex.mesh -rs 5 -ms 500', use_mpi=True)
 
     workload('problem', executables=['p'])
 
