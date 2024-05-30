@@ -26,7 +26,7 @@ ramble:
           experiments:
             scaling_{n_nodes}nodes_{size_name}:
               variables:
-                processes_per_node: ['36']
+                processes_per_node: ['2']
   spack:
     concretized: true
     packages:
