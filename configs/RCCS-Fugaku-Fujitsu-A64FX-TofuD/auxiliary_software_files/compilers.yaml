@@ -36,11 +36,6 @@ compilers:
     #  fflags: {"-msve-vector-bits=scalable"}
     #  ldflags: {"-fuse-ld=lld"}
     environment:
-      set:
-        OMPI_CC: /vol0004/apps/oss/llvm-v17.0.2/compute_node/bin/clang
-        OMPI_CXX: /vol0004/apps/oss/llvm-v17.0.2/compute_node/bin/clang++
-        OMPI_FC: /vol0004/apps/oss/llvm-v17.0.2/compute_node/bin/flang
-        OMPI_F77: /vol0004/apps/oss/llvm-v17.0.2/compute_node/bin/flang
       append_path:
         LD_LIBRARY_PATH: /opt/FJSVxtclanga/tcsds-1.2.38/lib64
     operating_system: rhel8
@@ -58,10 +53,6 @@ compilers:
       ldflags: {"-lelf -ldl"}
     environment:
       set:
-        OMPI_CC: /vol0004/apps/oss/spack-v0.21/opt/spack/linux-rhel8-a64fx/gcc-8.5.0/gcc-13.2.0-abihbe7ykvpedq54j6blfvfppy7ojbmd/bin/gcc
-        OMPI_CXX: /vol0004/apps/oss/spack-v0.21/opt/spack/linux-rhel8-a64fx/gcc-8.5.0/gcc-13.2.0-abihbe7ykvpedq54j6blfvfppy7ojbmd/bin/g++
-        OMPI_FC: /vol0004/apps/oss/spack-v0.21/opt/spack/linux-rhel8-a64fx/gcc-8.5.0/gcc-13.2.0-abihbe7ykvpedq54j6blfvfppy7ojbmd/bin/gfortran
-        OMPI_F77: /vol0004/apps/oss/spack-v0.21/opt/spack/linux-rhel8-a64fx/gcc-8.5.0/gcc-13.2.0-abihbe7ykvpedq54j6blfvfppy7ojbmd/bin/gfortran
         OPAL_PREFIX: /vol0004/apps/oss/mpigcc/fjmpi-gcc12
       append_path:
         LD_LIBRARY_PATH: /opt/FJSVxtclanga/tcsds-1.2.38/lib64

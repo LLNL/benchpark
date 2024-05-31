@@ -78,7 +78,6 @@ packages:
     externals:
       - spec: "elfutils@0.186 arch=linux-rhel8-a64fx"
         prefix: /usr
-      # Dummy
       - spec: "elfutils@0.182 arch=linux-rhel8-a64fx"
         prefix: /usr
   expat:
@@ -117,7 +116,6 @@ packages:
     externals:
       - spec: "gnutls@3.6.16 arch=linux-rhel8-a64fx"
         prefix: /usr
-      # Dummy
       - spec: "gnutls@3.6.14 arch=linux-rhel8-a64fx"
         prefix: /usr
   hwloc:
@@ -140,7 +138,6 @@ packages:
     externals:
       - spec: "libdrm@2.4.108 arch=linux-rhel8-a64fx"
         prefix: /usr
-      # Dummy
       - spec: "libdrm@2.4.103 arch=linux-rhel8-a64fx"
         prefix: /usr
   libedit:
@@ -167,7 +164,6 @@ packages:
     externals:
       - spec: "libibumad@37.2 arch=linux-rhel8-a64fx"
         prefix: /usr
-      # Dummy
       - spec: "libibumad@32.0 arch=linux-rhel8-a64fx"
         prefix: /usr
   libpciaccess:
@@ -222,7 +218,6 @@ packages:
     externals:
       - spec: "nspr@4.32.0 arch=linux-rhel8-a64fx"
         prefix: /usr
-      # Dummy
       - spec: "nspr@4.25.0 arch=linux-rhel8-a64fx"
         prefix: /usr
   numactl:
@@ -239,7 +234,6 @@ packages:
     externals:
       - spec: "openssl@1.1.1k arch=linux-rhel8-a64fx"
         prefix: /usr
-      # Dummy
       - spec: "openssl@1.1.1g arch=linux-rhel8-a64fx"
         prefix: /usr
   papi:
@@ -282,14 +276,12 @@ packages:
     externals:
       - spec: "ucx@1.11.2 arch=linux-rhel8-a64fx"
         prefix: /usr
-      # Dummy
       - spec: "ucx@1.9.0 arch=linux-rhel8-a64fx"
         prefix: /usr
   valgrind:
     externals:
       - spec: "valgrind@3.18.1 arch=linux-rhel8-a64fx"
         prefix: /usr
-      # Dummy
       - spec: "valgrind@3.16.0 arch=linux-rhel8-a64fx"
         prefix: /usr
   xz:
