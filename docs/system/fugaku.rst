@@ -51,9 +51,9 @@ Patch some files in various repos:
     sed -i -e "s@1280000000@160000000@g" -e 's@cflags=".*"@@g' experiments/streamc/openmp/ramble.yaml
     wget https://raw.githubusercontent.com/jdomke/spack/RIKEN_CCS_fugaku5/lib/spack/spack/util/libc.py -O workspace/spack/lib/spack/spack/util/libc.py
     wget https://raw.githubusercontent.com/jdomke/spack/RIKEN_CCS_fugaku6/var/spack/repos/builtin/packages/hpcg/package.py -O workspace/spack/var/spack/repos/builtin/packages/hpcg/package.py
-    wget https://raw.githubusercontent.com/jdomke/spack/RIKEN_CCS_fugaku8/var/spack/repos/builtin/packages/fujitsu-mpi/package.py -O workspace/spack/var/spack/repos/builtin/packages/fujitsu-mpi/package.py
     wget https://raw.githubusercontent.com/jdomke/spack/RIKEN_CCS_fugaku10/var/spack/repos/builtin/packages/hpl/package.py -O workspace/spack/var/spack/repos/builtin/packages/hpl/package.py
     wget https://raw.githubusercontent.com/jdomke/spack/RIKEN_CCS_fugaku11/var/spack/repos/builtin/packages/fujitsu-ssl2/package.py -O workspace/spack/var/spack/repos/builtin/packages/fujitsu-ssl2/package.py
+    wget https://raw.githubusercontent.com/jdomke/spack/RIKEN_CCS_fugaku12/var/spack/repos/builtin/packages/fujitsu-mpi/package.py -O workspace/spack/var/spack/repos/builtin/packages/fujitsu-mpi/package.py
     #ONLY FOR CLANG BUILDS: sed -i -e 's@SYSTEM_PATHS = \[\(.*\)\]@SYSTEM_PATHS = [\1, "/opt/FJSVxtclanga/tcsds-mpi-1.2.38", "/opt/FJSVxtclanga/tcsds-ssl2-1.2.38"]@g' workspace/spack/lib/spack/spack/util/environment.py
     #ONLY FOR CLANG BUILDS: sed -i -e 's@%fj"):@%fj") or (spec.target == "a64fx" and spec.satisfies("%clang\@11:")):@g' workspace/spack/var/spack/repos/builtin/packages/cmake/package.py
 
