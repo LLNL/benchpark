@@ -13,4 +13,6 @@ cd {experiment_run_dir}
 
 {experiment_setup}
 
+{pre_process}
 {command}
+{post_process}

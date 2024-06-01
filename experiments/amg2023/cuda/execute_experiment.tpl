@@ -9,4 +9,6 @@
 
 cd {experiment_run_dir}
 
+{pre_process}
 {command}
+{post_process}

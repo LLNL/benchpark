@@ -5,7 +5,9 @@
 
 variables:
   batch_time: ''
+  pre_process: ''
   mpi_command: 'mpirun -n {n_nodes} -c {n_ranks} --oversubscribe'
+  post_process: ''
   batch_submit: '{execute_experiment}'
   batch_nodes: ''
   batch_ranks: ''
