@@ -15,6 +15,8 @@ import subprocess
 import sys
 import yaml
 
+import lib.system
+
 DEBUG = False
 
 __version__ = "0.1.0"
@@ -256,7 +258,13 @@ def benchpark_setup(subparsers, actions_dict):
         help="The modifier to apply to the experiment (default none)",
     )
 
+    system_parser = subparsers.add_parser(
+        "system", help="Initialize a system config"
+    )
+    lib.system.setup_parser(system_parser)
+
     actions_dict["setup"] = benchpark_setup_handler
+    actions_dict["system"] = lib.system.command
 
 
 def run_command(command_str, env=None):
