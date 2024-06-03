@@ -28,23 +28,23 @@ class Genesis(SpackApplication):
                sha256='f24d872beae5e38baa6a591906f78e3438186973c88e4879e4b04a0cca74f83e',
                description='Regression tests are prepared for ATDYN, SPDYN, prst_setup (parallel I/O), and analysis tools to check if these programs work correctly.')
 
-    workload('dhfr', executables=['chdir', 'genesis'], input='benchmark-2020')
-    workload('apoa1', executables=['chdir', 'genesis'], input='benchmark-2020')
-    workload('uun', executables=['chdir', 'genesis'], input='benchmark-2020')
-    workload('cryoem', executables=['chdir', 'genesis'], input='tests-2.1.1')
+    workload('DHFR', executables=['chdir', 'genesis'], input='benchmark-2020')
+    workload('ApoA1', executables=['chdir', 'genesis'], input='benchmark-2020')
+    workload('UUN', executables=['chdir', 'genesis'], input='benchmark-2020')
+    workload('cryoEM', executables=['chdir', 'genesis'], input='tests-2.1.1')
 
     workload_variable('input', default='{benchmark-2020}/inputs/jac_amber/equil.inp',
                       description='jac_amber/ : DHFR (27,346 atoms), AMBER format, soluble system',
-                      workloads=['dhfr'])
+                      workloads=['DHFR'])
     workload_variable('input', default='{benchmark-2020}/inputs/apoa1/equil.inp',
                       description='apoa1/ : apoa1 (92,224 atoms), CHARMM format, soluble system',
-                      workloads=['apoa1'])
+                      workloads=['ApoA1'])
     workload_variable('input', default='{benchmark-2020}/inputs/uun/equil.inp',
                       description='uun/ : uun (216,726 atoms), CHARMM format, membrane+solvent system',
-                      workloads=['uun'])
+                      workloads=['UUN'])
     workload_variable('input', default='{tests-2.1.1}/regression_test/test_spdyn/cryoEM/All_atom/inp',
                       description='cryoEM/All_atom/ : cryoEM (? atoms), CHARMM format',
-                      workloads=['cryoem'])
+                      workloads=['cryoEM'])
 
     figure_of_merit('Figure of Merit (FOM)', log_file='{experiment_run_dir}/{experiment_name}.out', fom_regex=r'^\s+dynamics\s+=\s+(?P<fom>[-+]?([0-9]*[.])?[0-9]+([eED][-+]?[0-9]+)?)', group_name='fom', units='')
 
