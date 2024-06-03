@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+
+import os.path
+import pathlib
+import subprocess
+import sys
+
+def main():
+    basedir = pathlib.Path(os.path.abspath(__file__)).parent.parent
+    main = basedir / "lib" / "main.py"
+    subprocess.run([sys.executable, main] + sys.argv[1:], check=True)
+
+if __name__ == "__main__":
+    main()
