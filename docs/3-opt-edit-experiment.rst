@@ -3,9 +3,9 @@
 
    SPDX-License-Identifier: Apache-2.0
 
-==========================
-(optional) Edit experiment
-==========================
+=================================
+Editing the experiment (optional)
+=================================
 
 Benchpark configuration files are organized as follows::
 
@@ -33,13 +33,20 @@ Benchpark configuration files are organized as follows::
 
 You can edit these configuration files to change the behavior of your experiments.
 
-System specification
+System Specification
 --------------------
 Files under ``benchpark/configs/${SYSTEM}`` provide the specification
 of the software stack on your system
 (see :doc:`add-a-system-config` for details).
 
-Experiment specification
+Benchmark Specification
+-----------------------
+If you would like to modify a specification of your benchmark,
+you can do so by upstreaming changes to Spack and/or Ramble,
+or working on your benchmark specification in ``benchpark/repo/${BENCHMARK}``
+(see :doc:`add-a-benchmark` for details).
+
+Experiment Specification
 ------------------------
 Files under ``benchpark/experiments/${BENCHMARK}/${ProgrammingModel}``
 provide the specifications for the experiments.
@@ -48,15 +55,8 @@ specific tools to measure the performance of your experiments,
 you can manually edit the specifications in ``ramble.yaml``
 (see :doc:`add-an-experiment` for details).
 
-Benchmark specification
------------------------
-If you would like to modify a specification of your benchmark,
-you can do so by upstreaming changes to Spack and/or Ramble,
-or working on your benchmark specification in ``benchpark/repo/${BENCHMARK}``
-(see :doc:`add-a-benchmark` for details).
-
-Modifiers
----------
+Benchpark Modifiers
+-------------------
 In Benchpark, a ``modifier`` follows the `Ramble Modifier
 <https://googlecloudplatform.github.io/ramble/tutorials/10_using_modifiers.html#modifiers>`_
 and is an abstract object that can be applied to a large set of reproducible
