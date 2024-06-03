@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-#
 # Copyright 2023 Lawrence Livermore National Security, LLC and other
 # Benchpark Project Developers. See the top-level COPYRIGHT file for details.
 #
@@ -15,7 +13,7 @@ import subprocess
 import sys
 import yaml
 
-import lib.system
+import benchpark.system
 
 DEBUG = False
 
@@ -261,10 +259,10 @@ def benchpark_setup(subparsers, actions_dict):
     system_parser = subparsers.add_parser(
         "system", help="Initialize a system config"
     )
-    lib.system.setup_parser(system_parser)
+    benchpark.system.setup_parser(system_parser)
 
     actions_dict["setup"] = benchpark_setup_handler
-    actions_dict["system"] = lib.system.command
+    actions_dict["system"] = benchpark.system.command
 
 
 def run_command(command_str, env=None):

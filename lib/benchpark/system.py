@@ -1,7 +1,9 @@
 
 
-def setup_parser(parser):
-    create_subparser = parser.add_parser("create")
+def setup_parser(root_parser):
+    system_subparser = root_parser.add_subparsers(dest="system_subcommand")
+
+    create_parser = system_subparser.add_parser("create")
     create_parser.add_argument(
         "--from", dest="use_existing", type=str, help="Copy an existing system config"
     )
@@ -10,7 +12,7 @@ def setup_parser(parser):
         help="Use a template class to generate a system config"
     )
 
-    list_subparser = parser.add_parser("list")
+    list_subparser = system_subparser.add_parser("list")
 
 
 def command(args):
