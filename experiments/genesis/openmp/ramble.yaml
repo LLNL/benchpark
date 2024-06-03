@@ -1,0 +1,47 @@
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+ramble:
+  include:
+  - ./configs/spack.yaml
+  - ./configs/variables.yaml
+  - ./configs/modifier.yaml
+
+  config:
+    deprecated: true
+    spack_flags:
+      install: '--add --keep-stage'
+      concretize: '-U -f'
+
+  applications:
+    genesis:
+      workloads:
+        cryoEM:
+          env_vars:
+            set:
+              OMP_NUM_THREADS: '{omp_num_threads}'
+          variables:
+            n_ranks: '{processes_per_node} * {n_nodes}'
+            experiment_setup: ''
+            processes_per_node: ['4']
+            n_nodes: ['1']
+            omp_num_threads: ['12']
+            arch: 'OpenMP'
+          experiments:
+            genesis_omp_{n_nodes}_{processes_per_node}_{omp_num_threads}:
+              variables: {}
+  spack:
+    concretized: true
+    packages:
+      genesis:
+        spack_spec: genesis@2.1.1 +mpi+openmp{modifier_spack_variant}
+        compiler: default-compiler
+    environments:
+      genesis:
+        packages:
+        - lapack
+        - default-mpi
+        - genesis
+        - '{modifier_package_name}'
