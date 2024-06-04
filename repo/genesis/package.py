@@ -44,11 +44,13 @@ class Genesis(AutotoolsPackage):
         spec = self.spec
         filter_file(r"atomcls1\(1:3\)", "atomcls1(1:6)", join_path(self.stage.source_path, "src/analysis/sp_analysis/hbond_analysis/hbond_analyze.fpp"))
         filter_file(r"atomcls2\(1:3\)", "atomcls2(1:6)", join_path(self.stage.source_path, "src/analysis/sp_analysis/hbond_analysis/hbond_analyze.fpp"))
+        #if not spec.satisfies("%fj"):
+        #    filter_file(r"^#include <stdio", "#define __USE_LARGEFILE64\n#include <stdio", join_path(self.stage.source_path, "src/lib/fileio_data_.c"))
+        #    filter_file(r"fseeko64", "fseeko", join_path(self.stage.source_path, "src/lib/fileio_data_.c"))
+        #    filter_file(r"ftello64", "ftello", join_path(self.stage.source_path, "src/lib/fileio_data_.c"))
 
     def configure_args(self):
         spec = self.spec
-        print(spec)
-        print(spec.variants)
         config_args = [f"--enable-{spec.variants['precision'].value}",
                        f"--with-simd={spec.variants['simd'].value}"]
 
@@ -70,14 +72,27 @@ class Genesis(AutotoolsPackage):
             env["OPT_OPENMP"] = "-fopenmp"
 
         if spec.satisfies("%clang"):
-            env["CFLAGS"] = "-Ofast -ffast-math -Wno-implicit-function-declaration"
-            env["CXXFLAGS"] = "-Ofast -ffast-math -Wno-implicit-function-declaration"
-            env["FCFLAGS"] = "-Ofast -ffast-math -Mbackslash"
-            env["F77FLAGS"] = "-Ofast -ffast-math -Mbackslash"
+            opt_flags = "-Ofast -ffast-math"
+            env["CFLAGS"] = f"{opt_flags}"
+            env["CXXFLAGS"] = f"{opt_flags}"
+            env["FCFLAGS"] = f"{opt_flags} -Mbackslash"
+            env["F77FLAGS"] = f"{opt_flags} -Mbackslash"
             # cpp workaround; other systems and OS likely need different pre-processor fix
-            if "a64fx" in spec.target:
+            if "a64fx" in str(spec.target):
                 env["FPP"] = "/opt/FJSVxtclanga/tcsds-1.2.38/bin/../lib/fpp"
                 env["PPFLAGS"] = "-traditional-cpp -traditional"
+        elif spec.satisfies("%fj"):
+            opt_flags = "-Kfast"
+            env["CFLAGS"] = f"{opt_flags}"
+            env["CXXFLAGS"] = f"{opt_flags}"
+            env["FCFLAGS"] = f"{opt_flags}"
+            env["F77FLAGS"] = f"{opt_flags}"
+        elif spec.satisfies("%gcc"):
+            opt_flags = "-O3 -ffast-math"
+            env["CFLAGS"] = f"{opt_flags}"
+            env["CXXFLAGS"] = f"{opt_flags}"
+            env["FCFLAGS"] = f"{opt_flags} -ffree-line-length-none"
+            env["F77FLAGS"] = f"{opt_flags} -ffree-line-length-none"
 
         if "+gpu" in spec:
             config_args.extend(self.with_or_without("cuda", activation_value=spec["cuda"].prefix))

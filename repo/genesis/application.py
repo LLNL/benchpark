@@ -33,13 +33,13 @@ class Genesis(SpackApplication):
     workload('UUN', executables=['chdir', 'genesis'], input='benchmark-2020')
     workload('cryoEM', executables=['chdir', 'genesis'], input='tests-2.1.1')
 
-    workload_variable('input', default='{benchmark-2020}/inputs/jac_amber/equil.inp',
+    workload_variable('input', default='{benchmark-2020}//genesis2.0beta/jac_amber/p{n_ranks}.inp',
                       description='jac_amber/ : DHFR (27,346 atoms), AMBER format, soluble system',
                       workloads=['DHFR'])
-    workload_variable('input', default='{benchmark-2020}/inputs/apoa1/equil.inp',
+    workload_variable('input', default='{benchmark-2020}/npt/genesis2.0beta/apoa1/p{n_ranks}.inp',
                       description='apoa1/ : apoa1 (92,224 atoms), CHARMM format, soluble system',
                       workloads=['ApoA1'])
-    workload_variable('input', default='{benchmark-2020}/inputs/uun/equil.inp',
+    workload_variable('input', default='{benchmark-2020}/npt/genesis2.0beta/uun/p{n_ranks}.inp',
                       description='uun/ : uun (216,726 atoms), CHARMM format, membrane+solvent system',
                       workloads=['UUN'])
     workload_variable('input', default='{tests-2.1.1}/regression_test/test_spdyn/cryoEM/All_atom/inp',

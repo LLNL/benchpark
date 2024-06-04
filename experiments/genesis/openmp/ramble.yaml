@@ -18,16 +18,16 @@ ramble:
   applications:
     genesis:
       workloads:
-        cryoEM:
+        DHFR:
           env_vars:
             set:
               OMP_NUM_THREADS: '{omp_num_threads}'
           variables:
             n_ranks: '{processes_per_node} * {n_nodes}'
             experiment_setup: ''
-            processes_per_node: ['4']
+            processes_per_node: ['8']
             n_nodes: ['1']
-            omp_num_threads: ['12']
+            omp_num_threads: ['4']
             arch: 'OpenMP'
           experiments:
             genesis_omp_{n_nodes}_{processes_per_node}_{omp_num_threads}:
