@@ -40,6 +40,7 @@ def main():
     benchpark_list(subparsers, actions)
     benchpark_setup(subparsers, actions)
     benchpark_tags(subparsers, actions)
+    init_commands(subparsers, actions)
 
     args = parser.parse_args()
     no_args = True if len(sys.argv) == 1 else False
@@ -256,12 +257,19 @@ def benchpark_setup(subparsers, actions_dict):
         help="The modifier to apply to the experiment (default none)",
     )
 
+    actions_dict["setup"] = benchpark_setup_handler
+
+
+def init_commands(subparsers, actions_dict):
+    """This function is for initializing commands that are defined outside
+    of this script. It is intended that all command setup will eventually
+    be refactored in this way (e.g. `benchpark_setup` will be defined in
+    another file.
+    """
     system_parser = subparsers.add_parser(
         "system", help="Initialize a system config"
     )
     benchpark.system.setup_parser(system_parser)
-
-    actions_dict["setup"] = benchpark_setup_handler
     actions_dict["system"] = benchpark.system.command
 
 

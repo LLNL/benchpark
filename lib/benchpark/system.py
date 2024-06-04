@@ -1,5 +1,11 @@
 
 
+def system_create(args):
+    pass
+
+def system_list(args):
+    raise NotImplementedError("'benchpark system list' is not available")
+
 def setup_parser(root_parser):
     system_subparser = root_parser.add_subparsers(dest="system_subcommand")
 
@@ -16,5 +22,11 @@ def setup_parser(root_parser):
 
 
 def command(args):
-    import pdb; pdb.set_trace()
-    print("hi")
+    actions = {
+        "create": system_create,
+        "list": system_list,
+    }
+    if args.system_subcommand in actions:
+        actions[args.system_subcommand](args)
+    else:
+        raise ValueError(f"Unknown subcommand for 'system': {args.system_subcommand}")
