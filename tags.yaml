@@ -15,11 +15,14 @@ benchpark-tags:
     - fusion
     - material-science
     - molecular-dynamics
+    - qcd
   benchmark-scale:
     - large-scale
     - multi-node
     - single-node
     - sub-node
+    - strong-scaling
+    - weak-scaling
   communication:
     - mpi
     - nccl
