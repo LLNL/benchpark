@@ -19,14 +19,14 @@ def system_create(args):
             k = k.replace("-", "_")
             init_kwargs[k] = v
 
-    if args.type:
-        cls = systems.system_from_type(args.type, **init_kwargs)
+    if args.system_type:
+        system = systems.system_from_type(args.system_type, **init_kwargs)
     elif args.use_existing:
         pass
     else:
         raise ValueError("Must specify one of: --type, --from")
 
-    variables_yaml = generate_system_description()
+    variables_yaml = system.generate_system_description()
 
     if args.basedir:
         base = args.basedir
@@ -42,7 +42,7 @@ def system_create(args):
     os.mkdir(destdir)
 
     gen_files = {
-        "variables.yaml", variables_yaml
+        "variables.yaml": variables_yaml
     }
     for fname, content in gen_files.items():
         path = os.path.join(destdir, fname)

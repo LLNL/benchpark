@@ -4,17 +4,17 @@ from .base import System
 # With boto3, we could determine this dynamically vs. storing a static table
 id_to_resources = {
     "c4.xlarge": {
-        "sys_cpus_per_node": 4,
+        "sys_cores_per_node": 4,
         "sys_mem_per_node": 7.5,
     },
     "c6g.xlarge": {
-        "sys_cpus_per_node": 4,
+        "sys_cores_per_node": 4,
         "sys_mem_per_node": 8,
     }
 }
 
 class Aws(System):
-    def __init__(self, instance_type):
+    def __init__(self, instance_type=None):
         super().__init__()
         self.scheduler = "mpi"
         attrs = id_to_resources.get(instance_type)

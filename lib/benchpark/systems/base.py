@@ -2,14 +2,14 @@
 
 class System:
     def __init__(self):
-        self.sys_cpus_per_node = None
+        self.sys_cores_per_node = None
         self.sys_gpus_per_node = None
         self.sys_mem_per_node = None
         self.scheduler = None
         self.timeout = "120"
         self.queue = None
 
-        self.required = ["sys_cpus_per_node", "scheduler", "timeout"]
+        self.required = ["sys_cores_per_node", "scheduler", "timeout"]
 
     def generate_system_description(self):
         for attr in self.required:
@@ -22,7 +22,7 @@ class System:
                 optionals.append(f"{opt}: {getattr(self, opt)}")
         indent = " " * 2
         if optionals:
-            optionals_as_cfg = f"{indent}" + f"\n{indent}".join(optionals)
+            optionals_as_cfg = f"\n{indent}".join(optionals)
         return f"""\
 # SPDX-License-Identifier: Apache-2.0
 
