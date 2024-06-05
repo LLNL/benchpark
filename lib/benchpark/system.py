@@ -41,13 +41,12 @@ def system_create(args):
         raise ValueError(f"System description dir already exists: {destdir}")
     os.mkdir(destdir)
 
-    gen_files = {
-        "variables.yaml": variables_yaml
-    }
+    gen_files = {"variables.yaml": variables_yaml}
     for fname, content in gen_files.items():
         path = os.path.join(destdir, fname)
         with open(path, "w") as f:
             f.write(content)
+
 
 def system_list(args):
     raise NotImplementedError("'benchpark system list' is not available")
@@ -61,7 +60,9 @@ def setup_parser(root_parser):
         "--from", dest="use_existing", type=str, help="Copy an existing system config"
     )
     create_parser.add_argument(
-        "--type", dest="system_type", type=str,
+        "--type",
+        dest="system_type",
+        type=str,
         help="Use a template class to generate a system config"
     )
     create_parser.add_argument("--dest", help="Place all system files here directly")

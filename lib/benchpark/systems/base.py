@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
+
 class System:
     def __init__(self):
         self.sys_cores_per_node = None

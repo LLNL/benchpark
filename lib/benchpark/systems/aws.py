@@ -10,8 +10,9 @@ id_to_resources = {
     "c6g.xlarge": {
         "sys_cores_per_node": 4,
         "sys_mem_per_node": 8,
-    }
+    },
 }
+
 
 class Aws(System):
     def __init__(self, instance_type=None):

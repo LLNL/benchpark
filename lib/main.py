@@ -266,9 +266,7 @@ def init_commands(subparsers, actions_dict):
     be refactored in this way (e.g. `benchpark_setup` will be defined in
     another file.
     """
-    system_parser = subparsers.add_parser(
-        "system", help="Initialize a system config"
-    )
+    system_parser = subparsers.add_parser("system", help="Initialize a system config")
     benchpark.system.setup_parser(system_parser)
     actions_dict["system"] = benchpark.system.command
 
