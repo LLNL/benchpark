@@ -79,7 +79,7 @@ def setup_parser(root_parser):
         "--set", action="append", help="Set system-specific attributes"
     )
 
-    list_subparser = system_subparser.add_parser("list")
+    system_subparser.add_parser("list")
 
 
 def command(args):

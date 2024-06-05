@@ -141,14 +141,13 @@ def benchpark_get_tags():
 
 
 def benchpark_list_handler(args):
-    source_dir = source_location()
     sublist = args.sublist
     benchmarks = benchpark_benchmarks()
     experiments = benchpark_experiments()
     systems = benchpark_systems()
     modifiers = benchpark_modifiers()
 
-    if sublist == None:
+    if sublist is None:
         print("Experiments:")
         for experiment in experiments:
             print(f"\t{experiment}")
@@ -370,11 +369,11 @@ def benchpark_setup_handler(args):
     source_dir = source_location()
     debug_print(f"source_dir = {source_dir}")
     debug_print(f"specified experiment (benchmark/ProgrammingModel) = {experiment}")
-    valid_experiment = benchpark_check_experiment(experiment)
+    benchpark_check_experiment(experiment)
     debug_print(f"specified system = {system}")
-    valid_system = benchpark_check_system(system)
+    benchpark_check_system(system)
     debug_print(f"specified modifier = {modifier}")
-    valid_modifier = benchpark_check_modifier(modifier)
+    benchpark_check_modifier(modifier)
 
     workspace_dir = experiments_root / str(experiment) / str(system)
 
@@ -518,7 +517,6 @@ def benchpark_tags_handler(args):
     """
     Filter ramble tags by benchpark benchmarks
     """
-    source_dir = source_location()
     experiments_root = pathlib.Path(os.path.abspath(args.experiments_root))
     ramble_location = experiments_root / "ramble"
     ramble_exe = ramble_location / "bin" / "ramble"
