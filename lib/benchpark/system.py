@@ -68,7 +68,7 @@ def setup_parser(root_parser):
         "--type",
         dest="system_type",
         type=str,
-        help="Use a template class to generate a system config"
+        help="Use a template class to generate a system config",
     )
     create_parser.add_argument("--dest", help="Place all system files here directly")
     create_parser.add_argument(
