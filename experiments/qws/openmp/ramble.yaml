@@ -16,42 +16,43 @@ ramble:
       concretize: '-U -f'
 
   applications:
-    kripke:
+    qws:
       workloads:
-        kripke:
+        qws:
           env_vars:
             set:
               OMP_NUM_THREADS: '{omp_num_threads}'
           variables:
             n_ranks: '{processes_per_node} * {n_nodes}'
             experiment_setup: ''
-            processes_per_node: ['1', '16']
-            n_nodes: '1'
-            omp_num_threads: ['32', '2']
+            processes_per_node: ['1']
+            n_nodes: ['1']
+            omp_num_threads: ['48']
             arch: 'OpenMP'
           experiments:
-            kripke_omp_{n_nodes}_{omp_num_threads}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}:
+            qws_omp_{n_nodes}_{omp_num_threads}_{lx}_{ly}_{lz}_{lt}_{px}_{py}_{pz}_{pt}_{tol_outer}_{tol_inner}_{maxiter_plus1_outer}_{maxiter_inner}:
               variables:
-                ngroups: 64
-                gs: 1
-                nquad: 128
-                ds: 128
-                lorder: 4
-                nzx: '64'
-                nzy: '32'
-                nzz: '32'
-                npx: ['1', '4']
-                npy: ['1', '2']
-                npz: ['1', '2']
+                lx: '32'
+                ly: '6'
+                lz: '4'
+                lt: '3'
+                px: '1'
+                py: '1'
+                pz: '1'
+                pt: '1'
+                tol_outer: '-1'
+                tol_inner: '-1'
+                maxiter_plus1_outer: '6'
+                maxiter_inner: '50'
   spack:
     concretized: true
     packages:
-      kripke:
-        spack_spec: kripke@develop +mpi+openmp{modifier_spack_variant} ^chai@2024.02
+      qws:
+        spack_spec: qws@master +mpi+openmp{modifier_spack_variant}
         compiler: default-compiler
     environments:
-      kripke:
+      qws:
         packages:
         - default-mpi
-        - kripke
+        - qws
         - '{modifier_package_name}'

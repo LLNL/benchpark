@@ -23,7 +23,7 @@ ramble:
         osu_latency:
           variables:
             size_name: ['medium']
-            scaling_nodes: [1]
+            scaling_nodes: [2]
             n_nodes: '{scaling_nodes}'
           experiments:
             scaling_{n_nodes}nodes_{size_name}:
