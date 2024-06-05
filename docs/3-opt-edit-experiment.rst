@@ -69,56 +69,54 @@ Requesting resources with Allocation Modifier
 Given::
 
   - an experiment that requests resources (nodes, cpus, gpus, etc.), and
-  - a specification of the resources available on the system (cores-per-node, gpus-per-node, etc.),
+  - a specification of the resources available on the system (cores_per_node, gpus_per_node, etc.),
 
 the ``Allocation Modifier`` generates the appropriate scheduler request for these resources
 (how many nodes are required to run a given experiment, etc.).
 
 
-.. list-table:: Hardware resources
+.. list-table:: Hardware resources as specified by the system, and requested for the experiment
    :widths: 20 40 40
    :header-rows: 1
 
    * - Resource
-     - System
-     - Experiment
-   * - Nodes
-     -
+     - Available on the System
+     - Requested for the Experiment
+   * - Total Nodes
+     - (opt) sys_nodes
      - n_nodes
-   * - MPI Ranks
+   * - Total MPI Ranks
      -
      - n_ranks
-   * - CPU cores
+   * - CPU cores per node
      - sys_cores_per_node
-     - n_cores_per_node
-   * - GPUs
+     - (opt) n_cores_per_node
+   * - GPUs per node
      - sys_gpus_per_node
-     - n_gpus_per_node
-   * - MPI Ranks per node
-     -
-     - n_ranks_per_node
+     - (opt) n_gpus_per_node
    * - Memory per node
      - sys_mem_per_node
-     - n_mem_per_node
+     - (opt) n_mem_per_node
 
 
-The experiment is required to specify one of::
+The experiment is required to specify::
 
-  - n_nodes
-  - n_ranks
-  - n_gpus
+  - n_ranks it requires
+  - n_gpus (if using GPUs)
 
+If the experiment does not specify ``n_nodes``, the modifier will compute
+the number of nodes to allocate to provide the ``n_ranks`` and/or ``n_gpus``
+required for the experiment.
+
+The system is required to specify::
+
+  - sys_cores_per_node
+  - sys_gpus_per_node (if it has GPUs)
+  - sys_mem_per_node
 
 The modifier checks the resources requested by the experiment,
 computes the values for the unspecified variables, and
 checks that the request does not exceed the resources available on the system.
-The following algorithm is used to determine the resources required
-(determine allocation function)::
-
-  - If the experiment does not define ``n_ranks`` but requests ``n_ranks_per_node``
-    and ``n_nodes``, it will be allocated ``n_ranks = n_nodes x n_ranks_per_node``.
-  - If the experiment does not define ``n_ranks`` but requests ``n_gpus``,
-    it will be allocated ``n_ranks = n_gpus``
 
 
 
