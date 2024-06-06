@@ -125,17 +125,17 @@ jobs:
           ./bin/benchpark setup kripke/openmp nosite-x86_64 workspace/
           . workspace/setup.sh
           ramble \
-            --workspace-dir workspace/kripke/rocm/nosite-x86_64/workspace \
+            --workspace-dir workspace/kripke/openmp/nosite-x86_64/workspace \
             --disable-progress-bar \
             --disable-logger \
             workspace setup --dry-run
 
       - name: Dry run kripke/cuda on Sierra with allocation modifier
         run: |
-          ./bin/benchpark setup kripke/rocm LLNL-Sierra-IBM-power9-V100-Infiniband workspace/
+          ./bin/benchpark setup kripke/cuda LLNL-Sierra-IBM-power9-V100-Infiniband workspace/
           . workspace/setup.sh
           ramble \
-            --workspace-dir workspace/kripke/rocm/LLNL-Sierra-IBM-power9-V100-Infiniband/workspace \
+            --workspace-dir workspace/kripke/cuda/LLNL-Sierra-IBM-power9-V100-Infiniband/workspace \
             --disable-progress-bar \
             --disable-logger \
             workspace setup --dry-run
