@@ -66,7 +66,7 @@ performance analysis or setting up system resources.
 
 Requesting resources with Allocation Modifier
 ---------------------------------------------
-Given::
+Given:
 
   - an experiment that requests resources (nodes, cpus, gpus, etc.), and
   - a specification of the resources available on the system (cores_per_node, gpus_per_node, etc.),
@@ -99,7 +99,7 @@ the ``Allocation Modifier`` generates the appropriate scheduler request for thes
      - (opt) n_mem_per_node
 
 
-The experiment is required to specify::
+The experiment is required to specify:
 
   - n_ranks it requires
   - n_gpus (if using GPUs)
@@ -108,7 +108,7 @@ If the experiment does not specify ``n_nodes``, the modifier will compute
 the number of nodes to allocate to provide the ``n_ranks`` and/or ``n_gpus``
 required for the experiment.
 
-The system is required to specify::
+The system is required to specify:
 
   - sys_cores_per_node
   - sys_gpus_per_node (if it has GPUs)
@@ -118,6 +118,24 @@ The modifier checks the resources requested by the experiment,
 computes the values for the unspecified variables, and
 checks that the request does not exceed the resources available on the system.
 
+To use the resource allocation modifier with your experiment,
+add the following in your ramble.yaml::
+
+  ramble:
+    include:
+      - ...
+      - ./configs/modifier.yaml
+    config:
+      ...
+    modifiers:
+    - name: allocation
+    applications:
+      ...
+    spack:
+      ...
+    environments:
+      - ...
+      - '{modifier_package_name}'
 
 
 Profiling with Caliper Modifier
