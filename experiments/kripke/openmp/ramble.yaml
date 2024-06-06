@@ -24,16 +24,18 @@ ramble:
         kripke:
           env_vars:
             set:
-              OMP_NUM_THREADS: '{omp_num_threads}'
+              OMP_NUM_THREADS: '{n_ranks_per_node} * {n_threads_per_proc}'
           variables:
-            #n_ranks: '{n_ranks_per_node} * {n_nodes}'
             experiment_setup: ''
             n_ranks_per_node: ['1', '16']
             n_nodes: '1'
             n_threads_per_proc: ['32', '2']
             arch: 'OpenMP'
+          matrix:
+            - n_threads_per_proc
+            - n_ranks_per_node
           experiments:
-            kripke_omp_{n_nodes}_{omp_num_threads}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}:
+            kripke_omp_{n_nodes}_{OMP_NUM_THREADS}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}:
               variables:
                 ngroups: 64
                 gs: 1
