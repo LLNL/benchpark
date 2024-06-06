@@ -13,16 +13,18 @@ ramble:
     spack_flags:
       install: '--add --keep-stage'
       concretize: '-U -f'
+
+  modifiers:
+  - name: allocation
+
   applications:
     raja-perf:
       workloads:
         suite:
           experiments:
-            suite_{n_nodes}_{n_ranks}:
+            suite_{n_gpus}:
               variables:
-                processes_per_node: ['1', '2', '4']
-                n_ranks: '{processes_per_node} * {n_nodes}'
-                n_nodes: '1'
+                n_gpus: '1'
   spack:
     concretized: true
     packages:
