@@ -3,11 +3,11 @@
 
    SPDX-License-Identifier: Apache-2.0
 
-=================
-Add an Experiment
-=================
+====================
+Adding an Experiment
+====================
 
-Experiment specifications are located in ``benchpark/experiments``.
+Experiment Specifications are located in ``benchpark/experiments``.
 They are organized by the *ProgrammingModel* used for on-node parallelization for the experiment,
 e.g., ``benchpark/experiments/amg2023/cuda`` for an AMG2023 experiment using CUDA (on an NVIDIA GPU),
 and ``benchpark/experiments/amg2023/openmp`` for an AMG2023 experiment using OpenMP (on a CPU).

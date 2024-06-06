@@ -3,9 +3,9 @@
 
    SPDX-License-Identifier: Apache-2.0
 
-===============
-Benchpark Setup
-===============
+====================
+Setting up Benchpark
+====================
 
 Select a benchmark experiment to run, along with the programming model to use, and a system to run them on.
 Also choose a directory for your experiment::

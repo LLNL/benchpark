@@ -36,7 +36,10 @@ jobs:
             docs:
               - '.github/**'
               - 'bin/**'
+              - 'configs/**'
               - 'docs/**'
+              - 'experiments/**'
+              - 'repo/**'
               - 'README.rst'
             style:
               - '.github/**'
