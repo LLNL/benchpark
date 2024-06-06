@@ -15,6 +15,9 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
+  modifiers:
+  - name: allocation
+
   applications:
     kripke:
       workloads:
@@ -23,11 +26,11 @@ ramble:
             set:
               OMP_NUM_THREADS: '{omp_num_threads}'
           variables:
-            n_ranks: '{processes_per_node} * {n_nodes}'
+            #n_ranks: '{n_ranks_per_node} * {n_nodes}'
             experiment_setup: ''
-            processes_per_node: ['1', '16']
+            n_ranks_per_node: ['1', '16']
             n_nodes: '1'
-            omp_num_threads: ['32', '2']
+            n_threads_per_proc: ['32', '2']
             arch: 'OpenMP'
           experiments:
             kripke_omp_{n_nodes}_{omp_num_threads}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}:
