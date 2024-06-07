@@ -42,7 +42,6 @@ ramble:
                 npy: '2'
                 npz: '2'
   spack:
-    concretized: true
     packages:
       kripke:
         spack_spec: kripke@develop +mpi+rocm{modifier_spack_variant} ^chai@2024.02

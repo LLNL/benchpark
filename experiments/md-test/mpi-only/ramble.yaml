@@ -32,7 +32,6 @@ ramble:
                 iterations: '10'
                 additional-args: ''
   spack:
-    concretized: true
     packages:
       ior:
         spack_spec: ior@3.3.0

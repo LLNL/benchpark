@@ -45,7 +45,6 @@ ramble:
               - problems
               - scaling_nodes
   spack:
-    concretized: true
     packages:
       lammps:
         spack_spec: lammps@20231121 +opt+manybody+molecule+kspace+rigid+openmp+openmp-package+asphere+dpd-basic+dpd-meso+dpd-react+dpd-smooth+reaxff
