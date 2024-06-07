@@ -15,16 +15,17 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
+  modifiers:
+  - name: allocation
+
   applications:
     kripke:
       workloads:
         kripke:
           env_vars:
           variables:
-            n_ranks: '{processes_per_node} * {n_nodes}'
             experiment_setup: ''
-            processes_per_node: ['8']
-            n_nodes: '1'
+            n_gpus: '8'
             arch: 'HIP'
           experiments:
             kripke_rocm_{n_nodes}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}:
@@ -44,7 +45,7 @@ ramble:
     concretized: true
     packages:
       kripke:
-        spack_spec: kripke@1.2.7.0 +mpi+rocm{modifier_spack_variant} ^chai@2024.02
+        spack_spec: kripke@develop +mpi+rocm{modifier_spack_variant} ^chai@2024.02
         compiler: default-compiler
     environments:
       kripke:

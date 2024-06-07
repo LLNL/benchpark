@@ -3,9 +3,9 @@
 
    SPDX-License-Identifier: Apache-2.0
 
-==========================================
-FAQ
-==========================================
+=========================
+What to rerun after edits
+=========================
 
 .. list-table:: I made changes.  What should I rerun?
    :widths: 35 65
