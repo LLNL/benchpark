@@ -14,13 +14,15 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
+  modifiers:
+  - name: allocation
+
   applications:
     hpcc:
       workloads:
         standard:
           variables:
             n_ranks: ['1', '2', '4', '8']
-            experiment_setup: ''
           experiments:
             hpcc_standard_{n_nodes}_{n_ranks}:
               variables:

@@ -14,6 +14,9 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
+  modifiers:
+  - name: allocation
+
   applications:
     raja-perf:
       workloads:
@@ -32,7 +35,7 @@ ramble:
         spack_spec: 'blt@0.5.2:'
         compiler: compiler-gcc
       raja-perf:
-        spack_spec: raja-perf@develop ~openmp +mpi ^cmake@3.23.1
+        spack_spec: raja-perf@develop ~openmp +mpi
         compiler: default-compiler
     environments:
       raja-perf:

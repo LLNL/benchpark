@@ -12,7 +12,12 @@ class Amg2023(SpackApplication):
     """AMG2023 benchmark"""
     name = "amg2023"
 
-    tags = ["amg2023"]
+    tags = ['asc','engineering','hypre','solver','sparse-linear-algebra',
+            'large-scale','multi-node','single-node','sub-node',
+            'high-branching','high-memory-bandwidth','large-memory-footprint',
+            'regular-memory-access','irregular-memory-access','mixed-precision',
+            'mpi','network-latency-bound','network-collectives','block-structured-grid',
+            'c','cuda','hip','openmp']
 
     executable('p1', 'amg' +
                      ' -P {px} {py} {pz}' +
@@ -53,5 +58,3 @@ class Amg2023(SpackApplication):
     #TODO: Fix the FOM success_criteria(...)
     success_criteria('pass', mode='string', match=r'Figure of Merit \(FOM\)', file='{experiment_run_dir}/{experiment_name}.out')
 
-    def evaluate_success(self):
-      return True
