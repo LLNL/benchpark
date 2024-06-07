@@ -120,7 +120,27 @@ jobs:
             --disable-logger \
             workspace setup --dry-run
 
-      - name: Dry run kripke/rocm on Tioga
+      - name: Dry run kripke/openmp on nosite-x86_64 with allocation modifier
+        run: |
+          ./bin/benchpark setup kripke/openmp nosite-x86_64 workspace/
+          . workspace/setup.sh
+          ramble \
+            --workspace-dir workspace/kripke/openmp/nosite-x86_64/workspace \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace setup --dry-run
+
+      - name: Dry run kripke/cuda on Sierra with allocation modifier
+        run: |
+          ./bin/benchpark setup kripke/cuda LLNL-Sierra-IBM-power9-V100-Infiniband workspace/
+          . workspace/setup.sh
+          ramble \
+            --workspace-dir workspace/kripke/cuda/LLNL-Sierra-IBM-power9-V100-Infiniband/workspace \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace setup --dry-run
+
+      - name: Dry run kripke/rocm on Tioga with allocation modifier
         run: |
           ./bin/benchpark setup kripke/rocm LLNL-Tioga-HPECray-zen3-MI250X-Slingshot workspace/
           . workspace/setup.sh
