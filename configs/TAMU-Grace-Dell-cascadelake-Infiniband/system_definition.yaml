@@ -24,9 +24,9 @@ system_definition:
     vendor: Mellanox 
     name: HDR100InfiniBand
   system-tested:
-    site:
-    name:
-    installation-year:
-    description:
-  top500-system-instances:
+    site: TAMU
+    name: Grace
+    installation-year: 2020
+    description: top500 <https://www.top500.org/system/179905/>
+  top500-system-instances: 
     -
