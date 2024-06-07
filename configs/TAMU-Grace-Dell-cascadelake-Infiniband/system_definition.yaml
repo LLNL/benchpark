@@ -29,4 +29,4 @@ system_definition:
     installation-year: 2020
     description: top500 <https://www.top500.org/system/179905/>
   top500-system-instances: 
-    -
+    - Grace
