@@ -18,24 +18,24 @@ ramble:
     n_times: ['20', '35']
     array_size: ['80000000', '1280000000']
 
+  modifiers:
+  - name: allocation
+
   applications:
     streamc:
       workloads:
         streamc:
-          env_vars:
-            set:
-              OMP_NUM_THREADS: '{n_threads}'
           variables:
             n_ranks: '1'
           experiments:
-            stream_{array_size}_{n_times}_{n_threads}:
+            stream_{array_size}_{n_times}_{n_threads_per_proc}:
               variables:
                 env_name: 'stream_{array_size}_{n_times}'
-                processes_per_node: '1'
+                n_ranks_per_node: '1'
                 n_nodes: '1'
-                n_threads: ['8', '16', '32']
+                n_threads_per_proc: ['8', '16', '32']
               matrix:
-                - n_threads
+                - n_threads_per_proc
 
   spack:
     concretized: true

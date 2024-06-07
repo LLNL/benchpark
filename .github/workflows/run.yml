@@ -90,3 +90,52 @@ jobs:
             --unsigned \
             --update-index ci-buildcache \
             $(spack find --format '/{hash}')
+  dryrunexperiments:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Benchpark
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
+
+      - name: Add needed Python libs
+        run: |
+          pip install -r ./requirements.txt
+
+      - name: Dry run amg2023/cuda on Sierra with allocation modifier
+        run: |
+          ./bin/benchpark setup amg2023/cuda LLNL-Sierra-IBM-power9-V100-Infiniband workspace/
+          . workspace/setup.sh
+          ramble \
+            --workspace-dir workspace/amg2023/cuda/LLNL-Sierra-IBM-power9-V100-Infiniband/workspace \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace setup --dry-run
+
+      - name: Dry run amg2023/cuda on Pascal with allocation modifier
+        run: |
+          ./bin/benchpark setup amg2023/cuda LLNL-Pascal-Penguin-broadwell-P100-OmniPath workspace/
+          . workspace/setup.sh
+          ramble \
+            --workspace-dir workspace/amg2023/cuda/LLNL-Pascal-Penguin-broadwell-P100-OmniPath/workspace \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace setup --dry-run
+
+      - name: Dry run kripke/rocm on Tioga
+        run: |
+          ./bin/benchpark setup kripke/rocm LLNL-Tioga-HPECray-zen3-MI250X-Slingshot workspace/
+          . workspace/setup.sh
+          ramble \
+            --workspace-dir workspace/kripke/rocm/LLNL-Tioga-HPECray-zen3-MI250X-Slingshot/workspace \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace setup --dry-run
+
+      - name: Dry run hpl/openmp with Caliper-topdown modifier on Magma
+        run: |
+          ./bin/benchpark setup hpl/openmp --modifier=caliper-topdown LLNL-Magma-Penguin-icelake-OmniPath workspace/
+          . workspace/setup.sh
+          ramble \
+            --workspace-dir workspace/hpl/openmp/LLNL-Magma-Penguin-icelake-OmniPath/workspace \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace setup --dry-run

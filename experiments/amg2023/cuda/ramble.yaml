@@ -15,12 +15,14 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
+  modifiers:
+  - name: allocation
+
   applications:
     amg2023:
       workloads:
         problem1:
           variables:
-            n_ranks: '{processes_per_node} * {n_nodes}'
             p: 2
             px: '{p}'
             py: '{p}'
@@ -32,11 +34,10 @@ ramble:
             gtl: ['gtl', 'nogtl']
             gtlflag: ['-M"-gpu"', '']
           experiments:
-            amg2023_cuda_problem1_{gtl}_{n_nodes}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
+            amg2023_cuda_problem1_{gtl}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
               variables:
                 env_name: amg2023
-                processes_per_node: '4'
-                n_nodes: '2'
+                n_gpus: '8'
               zips:
                 gtl_info:
                 - gtl
