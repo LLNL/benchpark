@@ -43,7 +43,6 @@ ramble:
                   - n
                   - n_threads_per_proc
   spack:
-    concretized: true
     packages:
       hypre-omp:
         spack_spec: hypre@2.31.0 +mpi+openmp+mixedint~fortran{modifier_spack_variant}
