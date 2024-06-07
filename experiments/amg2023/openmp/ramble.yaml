@@ -15,7 +15,7 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
-  modifier:
+  modifiers:
   - name: allocation
 
   applications:
@@ -35,7 +35,7 @@ ramble:
             n_nodes: ['1', '2']
             n_threads_per_proc: ['4', '6', '12']
           experiments:
-            amg2023_omp_problem1_{n_nodes}_{omp_num_threads}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
+            amg2023_omp_problem1_{n_nodes}_{n_threads_per_proc}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
               variables:
                 env_name: amg2023-omp
               matrices:
