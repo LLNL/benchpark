@@ -102,7 +102,10 @@ def benchpark_systems():
     source_dir = source_location()
     systems = []
     for x in os.listdir(source_dir / "configs"):
-        systems.append(x)
+        if not (
+            os.path.isfile(os.path.join(source_dir / "configs", x)) or x == "common"
+        ):
+            systems.append(x)
     return systems
 
 
@@ -407,6 +410,10 @@ def benchpark_setup_handler(args):
         source_dir / "configs" / "common",
         ramble_spack_experiment_configs_dir,
         include_fn,
+    )
+    os.symlink(
+        source_dir / "experiments" / "universal-resources" / "execute_experiment.tpl",
+        ramble_configs_dir / "execute_experiment.tpl",
     )
 
     spack_location = experiments_root / "spack"
