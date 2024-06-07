@@ -17,8 +17,8 @@ spack:
     default-mpi:
       #spack_spec: intel@2020b
       spack_spec: openmpi@4.1.4
-    #mpi-gcc:
-    #  spack_spec: openmpi@4.1.4
+    mpi-gcc:
+      spack_spec: openmpi@4.1.4
     blas:
       #spack_spec: openblas@0.3.5
       spack_spec: blas
