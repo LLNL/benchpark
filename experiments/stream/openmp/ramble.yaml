@@ -33,7 +33,7 @@ ramble:
           variables:
             n_ranks: '1'
           experiments:
-            stream_{s}_{o}_{n}_{n_threads}:
+            stream_{s}_{o}_{n}_{n_threads_per_proc}:
               variables:
                 env_name: 'stream'
                 processes_per_node: '1'
@@ -43,14 +43,13 @@ ramble:
                 - n_threads_per_proc
 
   spack:
-    concretized: true
     packages:
       stream:
-        spack_spec: 'stream@5.10-caliper{modifier_spack_variant}'
-        compiler: compiler-gcc
+        spack_spec: stream@5.10-caliper{modifier_spack_variant}
+        compiler: default-compiler
     environments:
       stream:
         packages:
+        - default-mpi
         - stream
-        - mpi-gcc
         - '{modifier_package_name}'

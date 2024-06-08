@@ -30,10 +30,9 @@ ramble:
                 n_nodes: '1'
                 n_threads_per_proc: ['8', '16']
   spack:
-    concretized: true
     packages:
       raja-perf:
-        spack_spec: raja-perf@develop +openmp +mpi 
+        spack_spec: raja-perf@develop +openmp +mpi
         compiler: default-compiler
     environments:
       raja-perf:

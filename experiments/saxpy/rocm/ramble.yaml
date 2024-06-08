@@ -30,7 +30,6 @@ ramble:
               matrix:
                   - n
   spack:
-    concretized: true
     packages:
       saxpy:
         spack_spec: saxpy@1.0.0 +rocm{modifier_spack_variant} ~openmp amdgpu_target={rocm_arch}

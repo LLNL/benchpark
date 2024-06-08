@@ -29,7 +29,6 @@ ramble:
                 env_name: raja-perf
                 n_nodes: '1'
   spack:
-    concretized: true
     packages:
       blt:
         spack_spec: 'blt@0.5.2:'

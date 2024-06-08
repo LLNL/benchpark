@@ -39,7 +39,6 @@ ramble:
               matrix:
                 - n_threads_per_proc
   spack:
-    concretized: true
     packages:
       hpl-omp:
         spack_spec: hpl@2.3 +openmp
