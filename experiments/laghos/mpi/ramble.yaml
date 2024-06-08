@@ -30,7 +30,6 @@ ramble:
             laghos_mpi_triplept_{n_nodes}_{n_ranks}:
               variables:
   spack:
-    concretized: true
     packages:
       hypre:
         spack_spec: hypre@2.31.0 +mpi~cuda~openmp~rocm
