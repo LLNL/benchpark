@@ -8,7 +8,7 @@ spack:
     default-compiler:
       spack_spec: cce@16
     default-mpi:
-      spack_spec: cray-mpich@8.1%cce ~gtl
+      spack_spec: cray-mpich@8.1.26%cce@16.0.0 ~gtl
     compiler-rocm:
       spack_spec: cce@16
     compiler-amdclang:
