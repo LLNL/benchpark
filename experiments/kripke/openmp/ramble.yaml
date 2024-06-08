@@ -46,7 +46,6 @@ ramble:
                 npy: ['1', '2']
                 npz: ['1', '2']
   spack:
-    concretized: true
     packages:
       kripke:
         spack_spec: kripke@develop +mpi+openmp{modifier_spack_variant} ^chai@2024.02

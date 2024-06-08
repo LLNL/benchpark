@@ -29,7 +29,6 @@ ramble:
                 env_name: hpcc
                 n_nodes: '1'
   spack:
-    concretized: true
     packages:
       hpcc:
         spack_spec: hpcc@1.5.0

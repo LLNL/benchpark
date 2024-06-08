@@ -43,7 +43,6 @@ ramble:
                 size: '1536'
 
   spack:
-    concretized: true
     packages:
       fftw:
         spack_spec: fftw@3.3.10 +mpi+openmp

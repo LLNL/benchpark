@@ -42,7 +42,6 @@ ramble:
                   - n
                   - gtl
   spack:
-    concretized: true
     variables:
       gtl: ["gtl", "no-gtl"]
     packages:

@@ -38,7 +38,6 @@ ramble:
                 - n_threads_per_proc
 
   spack:
-    concretized: true
     packages:
       stream_{array_size}_{n_times}:
         spack_spec: 'stream@5.10 +openmp stream_array_size={array_size} ntimes={n_times} cflags="-mcmodel=medium -Ofast -flto"'

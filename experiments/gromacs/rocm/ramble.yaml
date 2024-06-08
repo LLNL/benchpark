@@ -43,7 +43,6 @@ ramble:
                 size: '1536'
 
   spack:
-    concretized: true
     packages:
       hipsycl:
         spack_spec: hipsycl@23.10.0
