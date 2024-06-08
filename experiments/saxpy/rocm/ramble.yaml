@@ -15,17 +15,17 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
+  modifiers:
+  - name: allocation
+
   applications:
     saxpy:
       workloads:
         problem:
-          variables:
-            n_ranks: '{processes_per_node} * {n_nodes}'
           experiments:
-            saxpy_{n}_{n_nodes}_{processes_per_node}_{n_ranks}:
+            saxpy_{n}:
               variables:
-                processes_per_node: ['8', '4']
-                n_nodes: ['1', '2']
+                n_gpus: '1'
                 n: ['128', '256', '512', '1024']
               matrix:
                   - n
@@ -33,7 +33,7 @@ ramble:
     concretized: true
     packages:
       saxpy:
-        spack_spec: saxpy@1.0.0 +rocm{modifier_spack_variant} amdgpu_target={rocm_arch}
+        spack_spec: saxpy@1.0.0 +rocm{modifier_spack_variant} ~openmp amdgpu_target={rocm_arch}
         compiler: default-compiler
     environments:
       saxpy:

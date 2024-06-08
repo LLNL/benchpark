@@ -14,26 +14,26 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
+  modifiers:
+  - name: allocation
+
   applications:
     raja-perf:
       workloads:
         suite:
-          env_vars:
-            set:
-              OMP_NUM_THREADS: '{n_threads}'
           variables:
             n_ranks: '1'
           experiments:
-            suite_{n_nodes}_{n_ranks}_{n_threads}:
+            suite_{n_nodes}_{n_ranks}_{n_threads_per_proc}:
               variables:
                 env_name: raja-perf
                 n_nodes: '1'
-                n_threads: ['8', '16']
+                n_threads_per_proc: ['8', '16']
   spack:
     concretized: true
     packages:
       raja-perf:
-        spack_spec: raja-perf@develop +openmp +mpi ^cmake@3.23.1
+        spack_spec: raja-perf@develop +openmp +mpi 
         compiler: default-compiler
     environments:
       raja-perf:
