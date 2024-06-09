@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
+      uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
 
     - name: Setup Python
       uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d
@@ -18,7 +18,7 @@ jobs:
 
     - name: Setup GitHub Pages
       id: pages
-      uses: actions/configure-pages@1f0c5cde4bc74cd7e1254d0cb4de8d49e9068c7d
+      uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b
 
     - name: Install Sphinx and Theme via Pip
       run: |
