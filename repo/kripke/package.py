@@ -12,7 +12,8 @@ class Kripke(CMakePackage, CudaPackage, ROCmPackage):
     """
 
     homepage = "https://computing.llnl.gov/projects/co-design/kripke"
-    git = "https://github.com/LLNL/Kripke.git"
+    # git = "https://github.com/LLNL/Kripke.git"
+    git = "https://github.com/gracenansamba/Kripke.git"
 
     tags = ["proxy-app"]
 
