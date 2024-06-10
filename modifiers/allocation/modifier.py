@@ -33,15 +33,15 @@ class AllocOpt(Enum):
     # Exec customization for inserting arbitrary options and commands,
     # inserted verbatim
     EXTRA_BATCH_OPTS = 300
-    EXTRA_EXEC_OPTS = 301
+    EXTRA_CMD_OPTS = 301
     POST_EXEC_CMDS = 302
     PRE_EXEC_CMDS = 303
 
     @staticmethod
     def as_type(enumval, input):
-        if enumval in [AllocOpt.EXTRA_BATCH_OPTS, AllocOpt.EXTRA_EXEC_OPTS,
+        if enumval in [AllocOpt.EXTRA_BATCH_OPTS, AllocOpt.EXTRA_CMD_OPTS,
                 AllocOpt.POST_EXEC_CMDS, AllocOpt.PRE_EXEC_CMDS]:
-            import pdb; pdb.set_trace()
+            #import pdb; pdb.set_trace()
             return input
         elif enumval in [AllocOpt.SCHEDULER, AllocOpt.QUEUE]:
             return str(input)
@@ -352,12 +352,12 @@ class Allocation(BasicModifier):
         if v.extra_cmd_opts:
             cmd_opts.extend(v.extra_cmd_opts)
 
-        if v.exec_pre_cmds:
-            v.pre_exec = "\n".join(v.exec_pre_cmds)
+        if v.pre_exec_cmds:
+            v.pre_exec = "\n".join(v.pre_exec_cmds)
         else:
             v.pre_exec = ""
-        if v.exec_post_cmds:
-            v.post_exec = "\n".join(v.exec_post_cmds)
+        if v.post_exec_cmds:
+            v.post_exec = "\n".join(v.post_exec_cmds)
         else:
             v.post_exec = ""
 

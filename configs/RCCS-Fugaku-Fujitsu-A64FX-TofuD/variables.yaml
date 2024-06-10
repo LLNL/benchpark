@@ -15,7 +15,7 @@ variables:
   - '-x PJM_LLIO_GFSCACHE="/vol0002:/vol0003:/vol0004:/vol0005:/vol0006"'
   post_exec_cmds:
   - 'for F in $(ls -1v fjmpioutdir/bmexe.*); do cat $F >> {log_file}; done'
-  - 'echo "done"'
+  #- 'echo "done"'
   max_request: "1000"  # n_ranks/n_nodes cannot exceed this
   n_ranks: '1000001'  # placeholder value
   n_nodes: '1000001'  # placeholder value
