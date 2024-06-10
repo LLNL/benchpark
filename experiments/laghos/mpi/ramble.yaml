@@ -7,12 +7,16 @@ ramble:
   include:
   - ./configs/spack.yaml
   - ./configs/variables.yaml
+  - ./configs/modifier.yaml
 
   config:
     deprecated: true
     spack_flags:
       install: '--add --keep-stage'
       concretize: '-U -f'
+
+  modifiers:
+  - name: allocation
 
   applications:
     laghos:
@@ -21,7 +25,7 @@ ramble:
           env_vars:
           variables:
             n_nodes: ['1', '2', '4', '8', '16', '32', '64', '128']
-            n_ranks: '{sys_cpus_per_node} * {n_nodes}'
+            n_ranks: '{sys_cores_per_node} * {n_nodes}'
           experiments:
             laghos_mpi_triplept_{n_nodes}_{n_ranks}:
               variables:
