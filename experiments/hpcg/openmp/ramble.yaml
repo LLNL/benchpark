@@ -38,7 +38,6 @@ ramble:
                 - n_threads_per_proc
 
   spack:
-    concretized: true
     packages:
       hpcg-omp:
         spack_spec: 'hpcg@3.1 +openmp'

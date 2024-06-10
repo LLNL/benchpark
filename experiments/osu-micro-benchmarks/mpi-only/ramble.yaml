@@ -30,7 +30,6 @@ ramble:
               variables:
                 n_ranks_per_node: ['36']
   spack:
-    concretized: true
     packages:
       osu-micro-benchmarks:
         spack_spec: osu-micro-benchmarks

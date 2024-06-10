@@ -26,7 +26,6 @@ ramble:
               variables:
                 n_gpus: '1'
   spack:
-    concretized: true
     packages:
       raja-perf:
         spack_spec: raja-perf@develop +rocm~openmp amdgpu_target={rocm_arch}

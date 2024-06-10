@@ -35,7 +35,6 @@ ramble:
                   - omp_num_threads
 
   spack:
-    concretized: true
     packages:
       saxpy:
         spack_spec: saxpy@1.0.0 +openmp{modifier_spack_variant}
