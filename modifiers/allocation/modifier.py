@@ -346,9 +346,9 @@ class Allocation(BasicModifier):
         """
         batch_opts, cmd_opts = [], []
         if v.extra_batch_opts:
-            batch_opts.extend(v.extra_batch_opts.split("\n"))
+            batch_opts.extend(v.extra_batch_opts.strip().split("\n"))
         if v.extra_cmd_opts:
-            cmd_opts.extend(v.extra_cmd_opts.split("\n"))
+            cmd_opts.extend(v.extra_cmd_opts.strip().split("\n"))
 
         if v.pre_exec_cmds:
             v.pre_exec = v.pre_exec_cmds
