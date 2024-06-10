@@ -39,11 +39,9 @@ class AllocOpt(Enum):
 
     @staticmethod
     def as_type(enumval, input):
-        if enumval in [AllocOpt.EXTRA_BATCH_OPTS, AllocOpt.EXTRA_CMD_OPTS,
+        if enumval in [AllocOpt.SCHEDULER, AllocOpt.QUEUE,
+                AllocOpt.EXTRA_BATCH_OPTS, AllocOpt.EXTRA_CMD_OPTS,
                 AllocOpt.POST_EXEC_CMDS, AllocOpt.PRE_EXEC_CMDS]:
-            #import pdb; pdb.set_trace()
-            return input
-        elif enumval in [AllocOpt.SCHEDULER, AllocOpt.QUEUE]:
             return str(input)
         else:
             return int(input)
@@ -348,16 +346,16 @@ class Allocation(BasicModifier):
         """
         batch_opts, cmd_opts = [], []
         if v.extra_batch_opts:
-            batch_opts.extend(v.extra_batch_opts)
+            batch_opts.extend(v.extra_batch_opts.split("\n"))
         if v.extra_cmd_opts:
-            cmd_opts.extend(v.extra_cmd_opts)
+            cmd_opts.extend(v.extra_cmd_opts.split("\n"))
 
         if v.pre_exec_cmds:
-            v.pre_exec = "\n".join(v.pre_exec_cmds)
+            v.pre_exec = v.pre_exec_cmds
         else:
             v.pre_exec = ""
         if v.post_exec_cmds:
-            v.post_exec = "\n".join(v.post_exec_cmds)
+            v.post_exec = v.post_exec_cmds
         else:
             v.post_exec = ""
 
