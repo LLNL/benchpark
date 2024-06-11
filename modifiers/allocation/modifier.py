@@ -385,7 +385,7 @@ class Allocation(BasicModifier):
         batch_opts, cmd_opts = Allocation._init_batch_and_cmd_opts(v)
         cmd_opts.extend([f"-n {v.n_ranks}"])
 
-        v.mpi_command = "mpirun" + " ".join(cmd_opts)
+        v.mpi_command = "mpirun " + " ".join(cmd_opts)
         v.batch_submit = "{execute_experiment}"
         v.allocation_directives = ""
 
@@ -431,7 +431,7 @@ class Allocation(BasicModifier):
 
         batch_directives = list(f"#PJM {x}" for x in batch_opts)
 
-        v.mpi_command = "mpiexec" + " ".join(cmd_opts)
+        v.mpi_command = "mpiexec " + " ".join(cmd_opts)
         v.batch_submit = "pjsub {execute_experiment}"
         v.allocation_directives = "\n".join(batch_directives)
 
