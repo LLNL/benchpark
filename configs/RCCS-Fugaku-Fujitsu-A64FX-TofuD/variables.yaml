@@ -11,6 +11,8 @@ variables:
   scheduler: "pjm"
   sys_cores_per_node: "48"
   sys_mem_per_node: "32"
+  extra_cmd_opts: |
+    -std-proc fjmpioutdir/bmexe
   extra_batch_opts: |
     -x PJM_LLIO_GFSCACHE="/vol0002:/vol0003:/vol0004:/vol0005:/vol0006"
   post_exec_cmds: |
