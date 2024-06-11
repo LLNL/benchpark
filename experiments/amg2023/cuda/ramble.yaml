@@ -47,7 +47,6 @@ ramble:
                   - n
                   - gtl_info
   spack:
-    concretized: true
     packages:
       cuda:
         spack_spec: cuda@{default_cuda_version}+allow-unsupported-compilers

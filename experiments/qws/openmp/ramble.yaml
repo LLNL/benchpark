@@ -45,7 +45,6 @@ ramble:
                 maxiter_plus1_outer: '6'
                 maxiter_inner: '50'
   spack:
-    concretized: true
     packages:
       qws:
         spack_spec: qws@master +mpi+openmp{modifier_spack_variant}

@@ -19,24 +19,25 @@ ramble:
   - name: allocation
 
   applications:
-    saxpy:
+    laghos:
       workloads:
         problem:
+          env_vars:
+          variables:
+            n_nodes: ['1', '2', '4', '8', '16', '32', '64', '128']
+            n_ranks: '{sys_cores_per_node} * {n_nodes}'
           experiments:
-            saxpy_{n}:
+            laghos_mpi_triplept_{n_nodes}_{n_ranks}:
               variables:
-                n_gpus: '1'
-                n: ['128', '256', '512', '1024']
-              matrix:
-                  - n
   spack:
+    concretized: true
     packages:
-      saxpy:
-        spack_spec: saxpy@1.0.0 +rocm{modifier_spack_variant} ~openmp amdgpu_target={rocm_arch}
+      laghos:
+        spack_spec: laghos@develop +metis ^zlib
         compiler: default-compiler
     environments:
-      saxpy:
+      laghos:
         packages:
         - default-mpi
-        - saxpy
-        - '{modifier_package_name}'
+        - blas
+        - laghos

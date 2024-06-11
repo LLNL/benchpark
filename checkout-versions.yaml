@@ -4,5 +4,5 @@
 # SPDX-License-Identifier: Apache-2.0
 
 versions:
-  ramble: d33af765be716ae27ebbe65a4cc5553661fa92b1
-  spack: c2eef8bab26adb00b250992e29d697b4706356a0
+  ramble: cc7a83e708d22a482ead437e2f71260e59c0ee8f     # develop on 6/5/2024 (a few commits past 0.5.0 release).  
+  spack: cd741c368ca3f0df4297d46092107a49e7698828      # develop before 6/5/2024 (a few commits past 0.22.0 release)
