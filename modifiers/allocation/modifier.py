@@ -39,9 +39,14 @@ class AllocOpt(Enum):
 
     @staticmethod
     def as_type(enumval, input):
-        if enumval in [AllocOpt.SCHEDULER, AllocOpt.QUEUE,
-                AllocOpt.EXTRA_BATCH_OPTS, AllocOpt.EXTRA_CMD_OPTS,
-                AllocOpt.POST_EXEC_CMDS, AllocOpt.PRE_EXEC_CMDS]:
+        if enumval in [
+            AllocOpt.SCHEDULER,
+            AllocOpt.QUEUE,
+            AllocOpt.EXTRA_BATCH_OPTS,
+            AllocOpt.EXTRA_CMD_OPTS,
+            AllocOpt.POST_EXEC_CMDS,
+            AllocOpt.PRE_EXEC_CMDS
+        ]:
             return str(input)
         else:
             return int(input)
