@@ -4,6 +4,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 packages:
+  papi:
+    externals:
+    - spec: papi@6.0.0.1
+      prefix: /usr/tce/packages/papi/papi-6.0.0.1
+      buildable: false
   tar:
     externals:
     - spec: tar@1.30
@@ -11,9 +16,9 @@ packages:
       buildable: false
   cmake:
     externals:
-    - spec: cmake@3.23.1
-      prefix: /usr/tce/packages/cmake/cmake-3.23.1
-      buildable: false
+    - spec: cmake@3.26.3
+      prefix: /usr/tce/packages/cmake/cmake-3.26.3
+    buildable: false
   gmake:
     externals:
     - spec: gmake@4.2.1
@@ -27,6 +32,21 @@ packages:
     externals:
     - spec: intel-oneapi-mkl@2022.1.0
       prefix: /usr/tce/backend/installations/linux-rhel8-x86_64/intel-19.0.4/intel-oneapi-mkl-2022.1.0-sksz67twjxftvwchnagedk36gf7plkrp
+      buildable: false
+  python:
+    externals:
+    - spec: python@3.9.12
+      prefix: /usr/tce/packages/python/python-3.9.12/
+      buildable: false
+  hwloc:
+    externals:
+    - spec: hwloc@2.9.1
+      prefix: /usr
+      buildable: false
+  fftw:
+    externals:
+    - spec: fftw@3.3.10
+      prefix: /usr/tce/packages/fftw/fftw-3.3.10
       buildable: false
   mpi:
     externals:
