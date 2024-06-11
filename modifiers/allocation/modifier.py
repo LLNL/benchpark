@@ -45,7 +45,7 @@ class AllocOpt(Enum):
             AllocOpt.EXTRA_BATCH_OPTS,
             AllocOpt.EXTRA_CMD_OPTS,
             AllocOpt.POST_EXEC_CMDS,
-            AllocOpt.PRE_EXEC_CMDS
+            AllocOpt.PRE_EXEC_CMDS,
         ]:
             return str(input)
         else:
