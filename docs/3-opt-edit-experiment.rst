@@ -164,10 +164,12 @@ is created which contains the collected performance metrics.
      - Metrics Collected
    * - caliper
      - Platform-independent
-     - | - Min time/rank: Minimum time (in seconds) across all ranks
-       | - Max time/rank: Maximum time (in seconds) across all ranks
-       | - Avg time/rank: Average time (in seconds) across all ranks
-       | - Total time: Aggregated time (in seconds) over all ranks
+     - | - Min/Max/Avg time/rank: Minimum/Maximum/Average time (in seconds) across all ranks
+       | - Total time: Aggregated time (in seconds) for all ranks
+   * - caliper-mpi
+     - Platform-independent
+     - | - Same as basic caliper modifier above
+       | - Profiles MPI functions
    * - caliper-topdown
      - x86 Intel CPUs
      - | - Retiring
