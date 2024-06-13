@@ -370,9 +370,6 @@ class Allocation(BasicModifier):
             cmd_opts.append(f"-n {v.n_ranks}")
         if v.n_nodes:
             batch_opts.append(f"-nnodes {v.n_nodes}")
-        if v.n_gpus:
-            gpus_per_rank = self.gpus_as_gpus_per_rank(v)
-            batch_opts.append(f"-g {gpus_per_rank}")
         if v.n_ranks_per_node:
             cmd_opts.append(f"-T {v.n_ranks_per_node}")
         # TODO: this might have to be an option on the batch_submit vs.
