@@ -14,4 +14,4 @@ modifiers:
 spack:
   packages:
     caliper:
-      spack_spec: caliper+adiak+mpi~libunwind~libdw~papi
+      spack_spec: caliper@master+adiak+mpi~libunwind~libdw~papi
