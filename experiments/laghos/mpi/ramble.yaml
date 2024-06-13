@@ -33,7 +33,7 @@ ramble:
     concretized: true
     packages:
       laghos:
-        spack_spec: laghos@develop +metis ^zlib
+        spack_spec: laghos@develop +metis^zlib{modifier_spack_variant}
         compiler: default-compiler
     environments:
       laghos:
@@ -41,3 +41,4 @@ ramble:
         - default-mpi
         - blas
         - laghos
+        - '{modifier_package_name}'
