@@ -72,7 +72,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808
         with:
-          name: workspace-archive
+          name: saxpy-workspace-archive
           path: './workspace/saxpy/openmp/nosite-x86_64/workspace/archive/**'
 
       - name: Upload Binaries to CI Cache
@@ -160,7 +160,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808
         with:
-          name: workspace-archive
+          name: amg2023-workspace-archive
           path: './workspace/amg2023/openmp/nosite-x86_64/workspace/archive/**'
 
       - name: Upload Binaries to CI Cache
