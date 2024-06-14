@@ -502,6 +502,8 @@ def helper_experiments_tags(ramble_exe, benchmarks):
 
     benchpark_experiments_tags = {}
     for benchmark in benchmarks:
+        if benchmark == "universal-resources":
+            continue
         benchpark_experiments_tags[benchmark] = ramble_applications_tags[benchmark]
     return benchpark_experiments_tags
 
