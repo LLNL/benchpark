@@ -10,6 +10,9 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
+  modifiers:
+  - name: allocation
+
   applications:
     gromacs:
       workloads:
@@ -18,13 +21,11 @@ ramble:
             set:
               OMP_PROC_BIND: close
               OMP_PLACES: cores
-              OMP_NUM_THREADS: '{omp_num_threads}'
           variables:
             experiment_setup: ''
-            n_ranks: '{processes_per_node} * {n_nodes}'
-            processes_per_node: '4'
+            n_ranks_per_node: '4'
             n_nodes: '2'
-            omp_num_threads: '16'
+            n_threads_per_proc: '16'
             target: 'cpu'
           experiments:
             gromacs_water_gmx50_adac_size{size}_dlb{dlb}_pin{pin}_target{target}_maxh{maxh}_nsteps{nsteps}_nstlist{nstlist}_npme{npme}:
@@ -42,7 +43,6 @@ ramble:
                 size: '1536'
 
   spack:
-    concretized: true
     packages:
       fftw:
         spack_spec: fftw@3.3.10 +mpi+openmp

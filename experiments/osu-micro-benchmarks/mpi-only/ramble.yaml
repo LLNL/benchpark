@@ -14,21 +14,22 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
+  modifiers:
+  - name: allocation
+
   applications:
     osu-micro-benchmarks:
       workloads:
         osu_latency:
           variables:
-            n_ranks: '{processes_per_node} * {n_nodes}'
             size_name: ['medium']
-            scaling_nodes: [1]
+            scaling_nodes: [2]
             n_nodes: '{scaling_nodes}'
           experiments:
             scaling_{n_nodes}nodes_{size_name}:
               variables:
-                processes_per_node: ['36']
+                n_ranks_per_node: ['36']
   spack:
-    concretized: true
     packages:
       osu-micro-benchmarks:
         spack_spec: osu-micro-benchmarks

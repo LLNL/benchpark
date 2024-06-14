@@ -14,6 +14,9 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
+  modifiers:
+  - name: allocation
+
   applications:
     md-test:
       workloads:
@@ -29,7 +32,6 @@ ramble:
                 iterations: '10'
                 additional-args: ''
   spack:
-    concretized: true
     packages:
       ior:
         spack_spec: ior@3.3.0
