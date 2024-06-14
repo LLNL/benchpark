@@ -11,7 +11,8 @@ class Kripke(CMakePackage, CudaPackage, ROCmPackage):
     transport proxy/mini app.
     """
 
-    homepage = "https://computing.llnl.gov/projects/co-design/kripke"
+    # homepage = "https://computing.llnl.gov/projects/co-design/kripke"
+    homepage = "https://github.com/gracenansamba/Kripke.git"
     # git = "https://github.com/LLNL/Kripke.git"
     git = "https://github.com/gracenansamba/Kripke.git"
 
@@ -21,6 +22,7 @@ class Kripke(CMakePackage, CudaPackage, ROCmPackage):
 
     license("BSD-3-Clause")
 
+    version("comm_cali", branch="comm_cali", submodules=False)
     version("develop", branch="develop", submodules=False)
     version(
         "1.2.7.0", submodules=False, commit="db920c1f5e1dcbb9e949d120e7d86efcdb777635"
@@ -55,7 +57,7 @@ class Kripke(CMakePackage, CudaPackage, ROCmPackage):
     variant("caliper", default=False, description="Build with Caliper support enabled.")
 
     depends_on("mpi", when="+mpi")
-    depends_on("caliper", when="+caliper")
+    depends_on("caliper@master", when="+caliper")
     depends_on("adiak@0.4:", when="+caliper")
     conflicts("^blt@:0.3.6", when="+rocm")
 
