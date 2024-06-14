@@ -57,10 +57,7 @@ def main(workspace):
         try:
             byte_data = subprocess.run(cmd, capture_output=True, check=True)
         except subprocess.CalledProcessError as e:
-            print(f"Failed cmd: {cmd}\n"
-                f"Output: {e.stdout}\n"
-                f"Error: {e.stderr}\n"
-            )
+            print(f"Failed cmd: {cmd}\nOutput: {e.stdout}\nError: {e.stderr}")
             raise
         tags = str(byte_data.stdout, "utf-8")
         tags = (
