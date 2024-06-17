@@ -274,6 +274,7 @@ class Gromacs(CMakePackage, CudaPackage, ROCmPackage):
     depends_on("sycl", when="+sycl")
     depends_on("lapack")
     depends_on("blas")
+    depends_on("hipsycl", when="+rocm")
     depends_on("gcc", when="%oneapi ~intel_provided_gcc")
     depends_on("gcc", when="%intel ~intel_provided_gcc")
 
@@ -539,13 +540,20 @@ class CMakeBuilder(spack.build_systems.cmake.CMakeBuilder):
         if "+cuda" in self.spec:
             options.append("-DCUDA_TOOLKIT_ROOT_DIR:STRING=" + self.spec["cuda"].prefix)
 
-        options.append("-DGMX_EXTERNAL_LAPACK:BOOL=ON")
-        if self.spec["lapack"].libs:
-            options.append("-DGMX_LAPACK_USER={0}".format(self.spec["lapack"].libs.joined(";")))
+        target = self.spec.target
+        if "+cuda" in self.spec and target.family == "ppc64le":
+            options.append("-DGMX_EXTERNAL_LAPACK:BOOL=OFF")
+        else:
+            options.append("-DGMX_EXTERNAL_LAPACK:BOOL=ON")
+            if self.spec["lapack"].libs:
+                options.append("-DGMX_LAPACK_USER={0}".format(self.spec["lapack"].libs.joined(";")))
 
-        options.append("-DGMX_EXTERNAL_BLAS:BOOL=ON")
-        if self.spec["blas"].libs:
-            options.append("-DGMX_BLAS_USER={0}".format(self.spec["blas"].libs.joined(";")))
+        if "+cuda" in self.spec and target.family == "ppc64le":
+            options.append("-DGMX_EXTERNAL_BLAS:BOOL=OFF")
+        else:
+            options.append("-DGMX_EXTERNAL_BLAS:BOOL=ON")
+            if self.spec["blas"].libs:
+                options.append("-DGMX_BLAS_USER={0}".format(self.spec["blas"].libs.joined(";")))
 
         if "+cp2k" in self.spec:
             options.append("-DGMX_CP2K:BOOL=ON")
@@ -585,6 +593,8 @@ class CMakeBuilder(spack.build_systems.cmake.CMakeBuilder):
         elif target >= "bulldozer":
             # AMD Family 15h
             options.append("-DGMX_SIMD=AVX_128_FMA")
+        elif target.family == "ppc64le":
+            options.append("-DGMX_SIMD=None")
         elif "vsx" in target:
             # IBM Power 7 and beyond
             if self.spec.satisfies("%nvhpc"):

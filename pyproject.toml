@@ -31,5 +31,5 @@ skip_gitignore = true
 color_output = true
 
 [tool.codespell]
-skip = './_build,./docs/_static'
+skip = './docs/_build,./docs/_static'
 ignore-words-list = 'fom'

@@ -23,19 +23,23 @@ jobs:
       license: ${{ steps.filter.outputs.license }}
 
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # @v2
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # @v2
         if: ${{ github.event_name == 'push' }}
         with:
           fetch-depth: 0
 
         # For pull requests it's not necessary to checkout the code
-      - uses: dorny/paths-filter@0bc4621a3135347011ad047f9ecf449bf72ce2bd
+      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36
         id: filter
         with:
           filters: |
             docs:
               - '.github/**'
+              - 'bin/**'
+              - 'configs/**'
               - 'docs/**'
+              - 'experiments/**'
+              - 'repo/**'
               - 'README.rst'
             style:
               - '.github/**'
@@ -48,6 +52,7 @@ jobs:
               - '.github/**'
               - 'bin/**'
               - 'configs/**'
+              - 'checkout-versions.yaml'
               - 'experiments/**'
               - 'repo/**'
             license:
