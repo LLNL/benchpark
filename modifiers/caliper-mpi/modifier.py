@@ -7,7 +7,7 @@ from ramble.modkit import *
 from ramble.mod.benchpark.caliper import Caliper as CaliperBase
 
 
-class CaliperMPI(CaliperBase):
+class CaliperMpi(CaliperBase):
     """Define a modifier for Caliper"""
 
     name = "caliper-mpi"
