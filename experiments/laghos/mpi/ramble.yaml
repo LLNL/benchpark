@@ -31,20 +31,23 @@ ramble:
               variables:
   spack:
     packages:
+      zlib:
+        spack_spec: zlib@1.3.1 +optimize+pic+shared
+        compiler: default-compiler
       hypre:
         spack_spec: hypre@2.31.0 +mpi~cuda~openmp~rocm
         compiler: default-compiler
       mfem:
         spack_spec: mfem@develop +mpi~cuda~openmp~rocm
         compiler: default-compiler
-      laghos:
-        spack_spec: laghos@develop +metis ^zlib
         compiler: default-compiler
     environments:
       laghos:
         packages:
         - default-mpi
+        - zlib
         - blas
         - hypre
         - mfem
         - laghos
+        - '{modifier_package_name}'
