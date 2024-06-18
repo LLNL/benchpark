@@ -23,7 +23,7 @@ jobs:
       license: ${{ steps.filter.outputs.license }}
 
     steps:
-      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # @v2
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # @v2
         if: ${{ github.event_name == 'push' }}
         with:
           fetch-depth: 0
@@ -35,7 +35,11 @@ jobs:
           filters: |
             docs:
               - '.github/**'
+              - 'bin/**'
+              - 'configs/**'
               - 'docs/**'
+              - 'experiments/**'
+              - 'repo/**'
               - 'README.rst'
             style:
               - '.github/**'

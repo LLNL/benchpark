@@ -16,8 +16,8 @@ packages:
       buildable: false
   cmake:
     externals:
-    - spec: cmake@3.23.1
-      prefix: /usr/tce/packages/cmake/cmake-3.23.1
+    - spec: cmake@3.26.3
+      prefix: /usr/tce/packages/cmake/cmake-3.26.3
       buildable: false
   gmake:
     externals:

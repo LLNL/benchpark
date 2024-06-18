@@ -10,6 +10,9 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
+  modifiers:
+  - name: allocation
+
   applications:
     gromacs:
       workloads:
@@ -18,13 +21,11 @@ ramble:
             set:
               OMP_PROC_BIND: close
               OMP_PLACES: cores
-              OMP_NUM_THREADS: '{omp_num_threads}'
           variables:
             experiment_setup: ''
-            n_ranks: '{processes_per_node} * {n_nodes}'
-            processes_per_node: '2'
+            n_ranks_per_node: '2'
             n_nodes: '4'
-            omp_num_threads: '10'
+            n_threads_per_proc: '10'
             target: 'gpu'
           experiments:
             gromacs_water_gmx50_adac_size{size}_dlb{dlb}_pin{pin}_target{target}_maxh{maxh}_nsteps{nsteps}_nstlist{nstlist}_npme{npme}:
@@ -42,20 +43,19 @@ ramble:
                 size: '1536'
 
   spack:
-    concretized: true
     packages:
-      gromacs:
-        spack_spec: gromacs@2023.3 +mpi+openmp+cuda~hwloc~double cuda_arch=={cuda_arch}
-        compiler: compiler-clang
       cuda:
         spack_spec: cuda@{default_cuda_version}+allow-unsupported-compilers
-        compiler: compiler-clang
+        compiler: default-compiler
+      gromacs:
+        spack_spec: gromacs@2023.3 +mpi+openmp+cuda~hwloc~double cuda_arch=={cuda_arch}
+        compiler: default-compiler
     environments:
       gromacs:
         packages:
         - cuda
         - blas
         - lapack
-        - mpi-clang
+        - default-mpi
         - fftw
         - gromacs
