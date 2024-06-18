@@ -40,6 +40,8 @@ ramble:
       mfem:
         spack_spec: mfem@develop +mpi~cuda~openmp~rocm
         compiler: default-compiler
+      laghos:
+        spack_spec: laghos@develop +metis{modifier_spack_variant}
         compiler: default-compiler
     environments:
       laghos:
