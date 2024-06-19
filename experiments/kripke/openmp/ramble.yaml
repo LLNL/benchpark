@@ -22,9 +22,6 @@ ramble:
     kripke:
       workloads:
         kripke:
-          env_vars:
-            set:
-              OMP_NUM_THREADS: '{omp_num_threads}'
           variables:
             experiment_setup: ''
             n_nodes: '1'
