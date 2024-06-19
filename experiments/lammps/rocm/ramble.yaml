@@ -4,11 +4,19 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ramble:
+  include:
+  - ./configs/spack.yaml
+  - ./configs/variables.yaml
+  - ./configs/modifier.yaml
+
   config:
     deprecated: true
     spack_flags:
       install: '--add --keep-stage'
       concretize: '-U -f'
+
+  modifiers:
+  - name: allocation
 
   applications:
     lammps:
@@ -20,9 +28,9 @@ ramble:
               MPICH_GPU_SUPPORT_ENABLED: 0
           variables:
             scaling_nodes: ['8']
+            n_ranks_per_node: ['8']
             n_nodes: '{scaling_nodes}'
-            processes_per_node: ['8']
-            n_ranks: '{processes_per_node} * {n_nodes}'
+            n_gpus: 64
           experiments:
             scaling_{n_nodes}nodes_{size_name}:
               variables:
@@ -44,7 +52,6 @@ ramble:
               - scaling_nodes
 
   spack:
-    concretized: true
     packages:
       lammps:
         spack_spec: lammps@20231121 +opt+manybody+molecule+kspace+rigid+kokkos+rocm+asphere+dpd-basic+dpd-meso+dpd-react+dpd-smooth+reaxff~openmp lammps_sizes=bigbig amdgpu_target={rocm_arch}
