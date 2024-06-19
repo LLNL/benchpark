@@ -17,6 +17,11 @@ class Caliper(SpackModifier):
 
     mode("time", description="Platform-independent collection of time")
 
+    mode(
+        "mpi",
+        description="Profile MPI functions",
+    )
+
     _cali_datafile = "{experiment_run_dir}/{experiment_name}.cali"
 
     env_var_modification(
@@ -24,6 +29,13 @@ class Caliper(SpackModifier):
         "spot(output={})".format(_cali_datafile),
         method="set",
         modes=["time"],
+    )
+
+    env_var_modification(
+        "CALI_CONFIG",
+        "spot(output={}, profile.mpi)".format(_cali_datafile),
+        method="set",
+        modes=["mpi"],
     )
 
     archive_pattern(_cali_datafile)

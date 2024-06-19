@@ -6,10 +6,11 @@
 variables:
   modifier_package_name: 'caliper'
   modifier_spack_variant: '+caliper'
+  caliper_mode: 'time'
 
 modifiers:
   - name: caliper
-    mode: time
+    mode: '{caliper_mode}'
 
 spack:
   packages:
