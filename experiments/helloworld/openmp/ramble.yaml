@@ -1,0 +1,61 @@
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+ramble:
+  include:
+  - ./configs/spack.yaml
+  - ./configs/variables.yaml
+  - ./configs/modifier.yaml
+
+  config:
+    deprecated: true
+    spack_flags:
+      install: '--add --keep-stage'
+      concretize: '-U -f'
+
+  modifiers:
+  - name: allocation
+
+  applications:
+    helloworld:
+        #success_criteria:
+          #- name: 'ran'
+        #mode: 'string'
+        #match: '.*'
+        #file: 'blah'   # '{experiment_run_dir}/{experiment_name}.out' 
+      workloads:
+        problem:
+          experiments:
+            helloworld_{n}_{n_nodes}_{omp_num_threads}:
+              variables:
+                n_ranks_per_node: ['8', '4']
+                n_nodes: ['1', '2']
+                omp_num_threads: ['2', '4']
+                n: ['512', '1024']
+              matrices:
+                - size_threads:
+                  - n
+                  - omp_num_threads
+              success_criteria:
+                - name: 'ran'
+                  mode: 'string'
+                  match: '.*'
+                  file: '{experiment_run_dir}/{experiment_name}.out'
+
+
+  spack:
+    packages:
+      openmpi:
+          spack_spec: openmpi@4.1.6 target=x86_64
+      helloworld:
+          spack_spec: helloworld
+          compiler: default-compiler
+    environments:
+      helloworld:
+        packages:
+        - openmpi
+        - default-mpi
+        - helloworld
+        - '{modifier_package_name}'
