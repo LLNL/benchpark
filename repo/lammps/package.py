@@ -9,8 +9,6 @@ from spack.pkg.builtin.lammps import Lammps as BuiltinLammps
 
 class Lammps(BuiltinLammps):
 
-  tags("nbody","large-scale","c++","python","spatial-discretization","mpi","openmp","vectorization","cuda","kokkos","rocm")
-
   def setup_run_environment(self, env):
 
     super(BuiltinLammps, self).setup_run_environment(env)
