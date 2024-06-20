@@ -11,8 +11,8 @@ from ramble.app.builtin.lammps import Lammps as LammpsBase
 
 class Lammps(LammpsBase):
 
-    tags = ['asc','chemistry','material-science','molecular-dynamics',
-            'fft','particles',
+    tags = ['chemistry','material-science','molecular-dynamics',
+            'fft','particles','nbody','spatial-discretization',
             'large-scale','multi-node','single-node','sub-node',
             'mpi','network-collectives','network-point-to-point',
-            'c++','kokkos','fortran','openmp']
+            'c++','python','kokkos','cuda','rocm','openmp','vectorization']
