@@ -7,31 +7,33 @@ ramble:
   include:
   - ./configs/spack.yaml
   - ./configs/variables.yaml
-
+  - ./configs/modifier.yaml
+  
   config:
     deprecated: true
     spack_flags:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
+  modifiers:
+  - name: allocation
+
   applications:
     raja-perf:
       workloads:
         suite:
           experiments:
-            suite_{n_nodes}_{n_ranks}_{n_gpus_per_task}:
+            suite_{n_gpus}:
               variables:
-                n_ranks: '1'
-                n_nodes: '1'
-                n_gpus_per_task: '1'
+                n_gpus: '1'
   spack:
-    concretized: true
     packages:
       raja-perf:
-        spack_spec: raja-perf@develop +rocm~openmp amdgpu_target={rocm_arch}
+        spack_spec: raja-perf@develop +rocm~openmp{modifier_spack_variant} amdgpu_target={rocm_arch}
         compiler: default-compiler
     environments:
       raja-perf:
         packages:
         - default-mpi
         - raja-perf
+        - '{modifier_package_name}'

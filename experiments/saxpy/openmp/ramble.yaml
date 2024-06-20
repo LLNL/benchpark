@@ -15,32 +15,29 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
+  modifiers:
+  - name: allocation
+
   applications:
     saxpy:
       workloads:
         problem:
-          env_vars:
-            set:
-              OMP_NUM_THREADS: '{n_threads}'
-          variables:
-            n_ranks: '8'
           experiments:
-            saxpy_{n}_{n_nodes}_{n_ranks}_{n_threads}:
+            saxpy_{n}_{n_nodes}_{omp_num_threads}:
               variables:
-                processes_per_node: ['8', '4']
+                n_ranks_per_node: ['8', '4']
                 n_nodes: ['1', '2']
-                n_threads: ['2', '4']
+                omp_num_threads: ['2', '4']
                 n: ['512', '1024']
               matrices:
                 - size_threads:
                   - n
-                  - n_threads
+                  - omp_num_threads
 
   spack:
-    concretized: true
     packages:
       saxpy:
-        spack_spec: saxpy@1.0.0 +openmp{modifier_spack_variant} ^cmake@3.23.1
+        spack_spec: saxpy@1.0.0 +openmp{modifier_spack_variant}
         compiler: default-compiler
     environments:
       saxpy:

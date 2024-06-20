@@ -4,7 +4,7 @@
    SPDX-License-Identifier: Apache-2.0
 
 =============================
-Adding a System Configuration
+Adding a System Specification
 =============================
 
 ``benchpark/configs`` contains a directory for each system specified in Benchpark.
@@ -104,11 +104,18 @@ spack section in the `Ramble configuration file
 .. code-block:: yaml
 
     variables:
-      mpi_command: 'mpirun -N {n_nodes} -n {n_ranks}'
-      batch_submit: '{execute_experiment}'
-      batch_nodes: ''
-      batch_ranks: ''
-      batch_timeout: ''
+      timeout: '30'
+      scheduler: "slurm"
+      sys_cores_per_node: "128"
+      sys_gpus_per_node: "4"
+      sys_mem_per_node unset
+      max_request: "1000"  # n_ranks/n_nodes cannot exceed this
+      n_ranks: '1000001'  # placeholder value
+      n_nodes: '1000001'  # placeholder value
+      batch_submit: "placeholder"
+      mpi_command: "placeholder"
+      # batch_queue: "pbatch"
+      # batch_bank: "guest"
 
 If defining a specific system, one can be more specific with available software versions
 and packages, as demonstrated in :doc:`add-a-site-specific-system-config`.
