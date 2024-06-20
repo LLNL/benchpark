@@ -249,11 +249,6 @@ packages:
     - spec: rocblas@5.5.1
       prefix: /opt/rocm-5.5.1
       buildable: false
-  rocfft:
-    externals:
-    - spec: rocfft@5.4.3
-      prefix: /opt/rocm-5.4.3
-    buildable: false
   rocsolver:
     externals:
     - spec: rocsolver@5.4.3
