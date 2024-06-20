@@ -22,10 +22,6 @@ ramble:
     lammps:
       workloads:
         hns-reaxff:
-          env_vars:
-            set:
-              LD_LIBRARY_PATH: '/opt/cray/pe/cce/16.0.0/cce/x86_64/lib:$LD_LIBRARY_PATH'
-              MPICH_GPU_SUPPORT_ENABLED: 0
           variables:
             scaling_nodes: ['8']
             n_ranks_per_node: ['8']
