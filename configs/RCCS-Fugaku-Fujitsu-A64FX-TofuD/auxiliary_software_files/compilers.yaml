@@ -5,13 +5,13 @@
 
 compilers:
 - compiler:
-    spec: fj@4.8.1
+    spec: fj@4.10.0
     modules: []
     paths:
-      cc: /opt/FJSVxtclanga/tcsds-1.2.36/bin/fcc
-      cxx: /opt/FJSVxtclanga/tcsds-1.2.36/bin/FCC
-      f77: /opt/FJSVxtclanga/tcsds-1.2.36/bin/frt
-      fc: /opt/FJSVxtclanga/tcsds-1.2.36/bin/frt
+      cc: /opt/FJSVxtclanga/tcsds-1.2.38/bin/fcc
+      cxx: /opt/FJSVxtclanga/tcsds-1.2.38/bin/FCC
+      f77: /opt/FJSVxtclanga/tcsds-1.2.38/bin/frt
+      fc: /opt/FJSVxtclanga/tcsds-1.2.38/bin/frt
     flags: {}
     operating_system: rhel8
     target: aarch64
@@ -20,50 +20,42 @@ compilers:
         fcc_ENV: -Nclang
         FCC_ENV: -Nclang
       prepend_path:
-        PATH: /opt/FJSVxtclanga/tcsds-1.2.36/bin
-        LD_LIBRARY_PATH: /opt/FJSVxtclanga/tcsds-1.2.36/lib64
+        PATH: /opt/FJSVxtclanga/tcsds-1.2.38/bin
+        LD_LIBRARY_PATH: /opt/FJSVxtclanga/tcsds-1.2.38/lib64
     extra_rpaths: []
 - compiler:
-    spec: clang@15.0.3
+    spec: clang@17.0.2
     paths:
-      cc: /vol0004/apps/oss/llvm-v15.0.3/compute_node/bin/clang
-      cxx: /vol0004/apps/oss/llvm-v15.0.3/compute_node/bin/clang++
-      f77: /vol0004/apps/oss/llvm-v15.0.3/compute_node/bin/flang
-      fc: /vol0004/apps/oss/llvm-v15.0.3/compute_node/bin/flang
-    flags:
-      cflags: {"-msve-vector-bits=scalable"}
-      cxxflags: {"-msve-vector-bits=scalable"}
-      ldflags: {"-fuse-ld=lld -lelf -ldl"}
+      cc: /vol0004/apps/oss/llvm-v17.0.2/compute_node/bin/clang
+      cxx: /vol0004/apps/oss/llvm-v17.0.2/compute_node/bin/clang++
+      f77: /vol0004/apps/oss/llvm-v17.0.2/compute_node/bin/flang
+      fc: /vol0004/apps/oss/llvm-v17.0.2/compute_node/bin/flang
+    #flags:
+    #  cflags: {"-msve-vector-bits=scalable"}
+    #  cxxflags: {"-msve-vector-bits=scalable"}
+    #  fflags: {"-msve-vector-bits=scalable"}
+    #  ldflags: {"-fuse-ld=lld"}
     environment:
-      set:
-        OMPI_CC: /vol0004/apps/oss/llvm-v15.0.3/compute_node/bin/clang
-        OMPI_CXX: /vol0004/apps/oss/llvm-v15.0.3/compute_node/bin/clang++
-        OMPI_FC: /vol0004/apps/oss/llvm-v15.0.3/compute_node/bin/flang
-        OMPI_F77: /vol0004/apps/oss/llvm-v15.0.3/compute_node/bin/flang
       append_path:
-        LD_LIBRARY_PATH: /opt/FJSVxtclanga/tcsds-1.2.36/lib64
+        LD_LIBRARY_PATH: /opt/FJSVxtclanga/tcsds-1.2.38/lib64
     operating_system: rhel8
     target: aarch64
     modules: []
     extra_rpaths: []
 - compiler:
-    spec: gcc@12.2.0
+    spec: gcc@13.2.0
     paths:
-      cc: /vol0004/apps/oss/spack-v0.19/opt/spack/linux-rhel8-a64fx/gcc-8.5.0/gcc-12.2.0-sxcx7kmt3qiktffgzzvrj2wmup3g32bc/bin/gcc
-      cxx: /vol0004/apps/oss/spack-v0.19/opt/spack/linux-rhel8-a64fx/gcc-8.5.0/gcc-12.2.0-sxcx7kmt3qiktffgzzvrj2wmup3g32bc/bin/g++
-      f77: /vol0004/apps/oss/spack-v0.19/opt/spack/linux-rhel8-a64fx/gcc-8.5.0/gcc-12.2.0-sxcx7kmt3qiktffgzzvrj2wmup3g32bc/bin/gfortran
-      fc: /vol0004/apps/oss/spack-v0.19/opt/spack/linux-rhel8-a64fx/gcc-8.5.0/gcc-12.2.0-sxcx7kmt3qiktffgzzvrj2wmup3g32bc/bin/gfortran
+      cc: /vol0004/apps/oss/spack-v0.21/opt/spack/linux-rhel8-a64fx/gcc-8.5.0/gcc-13.2.0-abihbe7ykvpedq54j6blfvfppy7ojbmd/bin/gcc
+      cxx: /vol0004/apps/oss/spack-v0.21/opt/spack/linux-rhel8-a64fx/gcc-8.5.0/gcc-13.2.0-abihbe7ykvpedq54j6blfvfppy7ojbmd/bin/g++
+      f77: /vol0004/apps/oss/spack-v0.21/opt/spack/linux-rhel8-a64fx/gcc-8.5.0/gcc-13.2.0-abihbe7ykvpedq54j6blfvfppy7ojbmd/bin/gfortran
+      fc: /vol0004/apps/oss/spack-v0.21/opt/spack/linux-rhel8-a64fx/gcc-8.5.0/gcc-13.2.0-abihbe7ykvpedq54j6blfvfppy7ojbmd/bin/gfortran
     flags:
       ldflags: {"-lelf -ldl"}
     environment:
       set:
-        OMPI_CC: /vol0004/apps/oss/spack-v0.19/opt/spack/linux-rhel8-a64fx/gcc-8.5.0/gcc-12.2.0-sxcx7kmt3qiktffgzzvrj2wmup3g32bc/bin/gcc
-        OMPI_CXX: /vol0004/apps/oss/spack-v0.19/opt/spack/linux-rhel8-a64fx/gcc-8.5.0/gcc-12.2.0-sxcx7kmt3qiktffgzzvrj2wmup3g32bc/bin/g++
-        OMPI_FC: /vol0004/apps/oss/spack-v0.19/opt/spack/linux-rhel8-a64fx/gcc-8.5.0/gcc-12.2.0-sxcx7kmt3qiktffgzzvrj2wmup3g32bc/bin/gfortran
-        OMPI_F77: /vol0004/apps/oss/spack-v0.19/opt/spack/linux-rhel8-a64fx/gcc-8.5.0/gcc-12.2.0-sxcx7kmt3qiktffgzzvrj2wmup3g32bc/bin/gfortran
         OPAL_PREFIX: /vol0004/apps/oss/mpigcc/fjmpi-gcc12
       append_path:
-        LD_LIBRARY_PATH: /opt/FJSVxtclanga/tcsds-1.2.36/lib64
+        LD_LIBRARY_PATH: /opt/FJSVxtclanga/tcsds-1.2.38/lib64
     operating_system: rhel8
     target: aarch64
     modules: []

@@ -54,7 +54,11 @@ def main(workspace):
     for bmark in benchmarks:
         # call benchpark tags -a bmark workspace
         cmd = ["../bin/benchpark", "tags", "-a", bmark, workspace]
-        byte_data = subprocess.run(cmd, capture_output=True)
+        try:
+            byte_data = subprocess.run(cmd, capture_output=True, check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Failed cmd: {cmd}\nOutput: {e.stdout}\nError: {e.stderr}")
+            raise
         tags = str(byte_data.stdout, "utf-8")
         tags = (
             tags.replace("[", "")
