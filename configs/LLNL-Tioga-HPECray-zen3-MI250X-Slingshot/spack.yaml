@@ -26,7 +26,7 @@ spack:
     mpi-rocm-gtl:
       spack_spec: cray-mpich@8.1%cce +gtl
     mpi-rocm-no-gtl:
-      spack_spec: cray-mpich@8.1%cce ~gtl
+      spack_spec: cray-mpich@8.1.26%cce@16.0.0 ~gtl
     mpi-gcc:
       spack_spec: cray-mpich@8.1%gcc ~gtl
     fftw:
