@@ -339,7 +339,7 @@ class Allocation(BasicModifier):
             cmd_opts.append(f"-n {v.n_ranks}")
         if v.n_nodes:
             cmd_opts.append(f"-N {v.n_nodes}")
-            cmd_opts.append(f"--exclusive")
+            cmd_opts.append("--exclusive")
         if v.n_gpus:
             gpus_per_rank = 1  # self.gpus_as_gpus_per_rank(v)
             cmd_opts.append(f"-g={gpus_per_rank}")
