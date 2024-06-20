@@ -150,6 +150,16 @@ jobs:
             --disable-logger \
             workspace setup --dry-run
 
+      - name: Dry run lammps/rocm on Tioga with allocation modifier
+        run: |
+          ./bin/benchpark setup lammps/rocm LLNL-Tioga-HPECray-zen3-MI250X-Slingshot workspace/
+          . workspace/setup.sh
+          ramble \
+            --workspace-dir workspace/lammps/rocm/LLNL-Tioga-HPECray-zen3-MI250X-Slingshot/workspace \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace setup --dry-run
+
       - name: Dry run hpl/openmp with Caliper-topdown modifier on Magma
         run: |
           ./bin/benchpark setup hpl/openmp --modifier=caliper-topdown LLNL-Magma-Penguin-icelake-OmniPath workspace/
