@@ -342,7 +342,7 @@ class Allocation(BasicModifier):
             cmd_opts.append(f"--exclusive")
         if v.n_gpus:
             gpus_per_rank = self.gpus_as_gpus_per_rank(v)
-            #cmd_opts.append(f"--gpus-per-task={gpus_per_rank}")
+            # cmd_opts.append(f"--gpus-per-task={gpus_per_rank}")
 
         if v.timeout:
             batch_opts.append(f"-t {v.timeout}m")
