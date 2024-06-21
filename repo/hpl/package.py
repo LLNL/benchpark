@@ -44,6 +44,11 @@ class Hpl(AutotoolsPackage):
     arch = "{0}-{1}".format(platform.system(), platform.processor())
     build_targets = ["arch={0}".format(arch)]
 
+    def setup_build_environment(self, env):
+        spec = self.spec
+        if spec["mpi"].extra_attributes and "extra_link_flags" in spec["mpi"].extra_attributes:
+            env.append_flags("LIBS", spec["mpi"].extra_attributes["extra_link_flags"])
+
     @when("@:2.2")
     def autoreconf(self, spec, prefix):
         # Prevent sanity check from killing the build
