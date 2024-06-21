@@ -403,6 +403,10 @@ class Gromacs(CMakePackage, CudaPackage, ROCmPackage, RocmConsistency):
                     r"-gencode;arch=compute_20,code=sm_21;?", "", "cmake/gmxManageNvccConfig.cmake"
                 )
 
+    def setup_run_environment(self, env):
+        if self.compiler.extra_rpaths:
+            for rpath in self.compiler.extra_rpaths:
+                env.prepend_path("LD_LIBRARY_PATH", rpath)
 
 class CMakeBuilder(spack.build_systems.cmake.CMakeBuilder):
     @run_after("build")

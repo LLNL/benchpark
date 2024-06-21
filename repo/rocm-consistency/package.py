@@ -32,6 +32,10 @@ class RocmConsistency(PackageBase):
             depends_on(f"hsakmt-roct@{ver}", when=f"^hip@{ver}")
             depends_on(f"hsa-rocr-dev@{ver}", when=f"^hip@{ver}")
             depends_on(f"comgr@{ver}", when=f"^hip@{ver}")
+            if ver >= "5.5.1":
+              depends_on(f"llvm@16.0.0-{ver} +clang~lld~lldb", when=f"^hip@{ver}")
+            else:
+              depends_on(f"llvm@15.0.0-{ver} +clang~lld~lldb", when=f"^hip@{ver}")
             depends_on(f"llvm-amdgpu@{ver} +rocm-device-libs", when=f"^hip@{ver}")
             depends_on(f"rocminfo@{ver}", when=f"^hip@{ver}")
             depends_on(f"roctracer-dev-api@{ver}", when=f"^hip@{ver}")

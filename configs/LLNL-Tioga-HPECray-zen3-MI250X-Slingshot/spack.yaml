@@ -6,38 +6,28 @@
 spack:
   packages:
     default-compiler:
-      spack_spec: cce@16
+      spack_spec: cce@16.0.0-rocm5.5.1
     default-mpi:
       spack_spec: cray-mpich@8.1.26%cce@16.0.0 ~gtl
     compiler-rocm:
-      spack_spec: cce@16
-    compiler-rocmcc:
-      spack_spec: rocmcc@5.4.3
-    hip543:
-      spack_spec: hip@5.4.3
-    hsa-rocr-dev543:
-      spack_spec: hsa-rocr-dev@5.4.3
+      spack_spec: cce@16.0.0-rocm5.5.1
     compiler-amdclang:
       spack_spec: clang@16.0.0-rocm5.5.1
     compiler-gcc:
       spack_spec: gcc@12.2.0
     blas-rocm:
-      spack_spec: rocblas@5.5
-    blas-rocm543:
-      spack_spec: rocblas@5.4.3
+      spack_spec: rocblas@5.5.1
     blas:
-      spack_spec: rocblas@5.5
+      spack_spec: rocblas@5.5.1
     lapack-rocm:
-      spack_spec: rocsolver@5.5
-    lapack-rocm543:
-      spack_spec: rocsolver@5.4.3
+      spack_spec: rocsolver@5.5.1
     lapack:
       spack_spec: cray-libsci@23
     mpi-rocm-gtl:
-      spack_spec: cray-mpich@8.1%cce +gtl
+      spack_spec: cray-mpich@8.1.26%cce@16.0.0 +gtl
     mpi-rocm-no-gtl:
       spack_spec: cray-mpich@8.1.26%cce@16.0.0 ~gtl
     mpi-gcc:
-      spack_spec: cray-mpich@8.1%gcc ~gtl
+      spack_spec: cray-mpich@8.1.26%gcc@12.2.0 ~gtl
     fftw:
       spack_spec: intel-oneapi-mkl@2023.2.0 

@@ -226,13 +226,12 @@ packages:
     - spec: rocminfo@5.5.1
       prefix: /opt/rocm-5.5.1/
   llvm:
+    buildable: false
     externals:
-    - spec: llvm@16.0.0+clang~lld~lldb
+    - spec: llvm@15.0.0-5.4.3
       prefix: /opt/rocm-5.4.3/llvm
-      buildable: false
-    - spec: llvm@16.0.0+clang~lld~lldb
+    - spec: llvm@16.0.0-5.5.1
       prefix: /opt/rocm-5.5.1/llvm
-      buildable: false
   llvm-amdgpu:
     externals:
     - spec: llvm-amdgpu@5.4.3
@@ -296,19 +295,19 @@ packages:
   cray-mpich:
     buildable: false
     externals:
-    - spec: cray-mpich@8.1.26%cce +gtl +wrappers
+    - spec: cray-mpich@8.1.26%cce@16.0.0 +gtl +wrappers
       prefix: /opt/cray/pe/mpich/8.1.26/ofi/crayclang/16.0
       extra_attributes:
         gtl_cutoff_size: 4096
         fi_cxi_ats: 0
         gtl_lib_path: /opt/cray/pe/mpich/8.1.26/gtl/lib
         ldflags: "-L/opt/cray/pe/mpich/8.1.26/ofi/crayclang/16.0/lib -lmpi -L/opt/cray/pe/mpich/8.1.26/gtl/lib -Wl,-rpath=/opt/cray/pe/mpich/8.1.26/gtl/lib -lmpi_gtl_hsa"
-    - spec: cray-mpich@8.1.26%cce ~gtl +wrappers
+    - spec: cray-mpich@8.1.26%cce@16.0.0 ~gtl +wrappers
       prefix: /opt/cray/pe/mpich/8.1.26/ofi/crayclang/16.0
       extra_attributes:
         gtl_lib_path: /opt/cray/pe/mpich/8.1.26/gtl/lib
         ldflags: "-L/opt/cray/pe/mpich/8.1.26/ofi/crayclang/16.0/lib -lmpi -L/opt/cray/pe/mpich/8.1.26/gtl/lib -Wl,-rpath=/opt/cray/pe/mpich/8.1.26/gtl/lib"
-    - spec: cray-mpich@8.1.26%gcc ~gtl +wrappers
+    - spec: cray-mpich@8.1.26%gcc@12.2.0 ~gtl +wrappers
       prefix: /opt/cray/pe/mpich/8.1.26/ofi/gnu/10.3
       extra_attributes:
         gtl_lib_path: /opt/cray/pe/mpich/8.1.26/gtl/lib
