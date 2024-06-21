@@ -45,7 +45,7 @@ ramble:
   spack:
     packages:
       hipsycl:
-        spack_spec: hipsycl@23.10.0+rocm
+        spack_spec: hipsycl@23.10.0+rocm amdgpu_target={rocm_arch}
         compiler: default-compiler
       gromacs:
         spack_spec: gromacs@2024 +mpi+openmp+sycl+rocm~hwloc~double amdgpu_target={rocm_arch}
