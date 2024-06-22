@@ -422,6 +422,10 @@ def benchpark_setup_handler(args):
         ramble_spack_experiment_configs_dir,
         include_fn,
     )
+    os.symlink(
+        source_dir / "common-resources" / "execute_experiment.tpl",
+        ramble_configs_dir / "execute_experiment.tpl",
+    )
 
     spack_location = experiments_root / "spack"
     ramble_location = experiments_root / "ramble"
