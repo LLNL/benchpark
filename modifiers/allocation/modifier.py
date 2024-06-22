@@ -373,12 +373,13 @@ class Allocation(BasicModifier):
             cmd_opts.append(f"-n {v.n_ranks}")
         if v.n_nodes:
             cmd_opts.append(f"-N {v.n_nodes}")
+            cmd_opts.append("--exclusive")
         if v.n_gpus:
-            gpus_per_rank = self.gpus_as_gpus_per_rank(v)
-            cmd_opts.append(f"--gpus-per-task={gpus_per_rank}")
+            gpus_per_rank = 1  # self.gpus_as_gpus_per_rank(v)
+            cmd_opts.append(f"-g={gpus_per_rank}")
 
         if v.timeout:
-            batch_opts.append("-t {v.timeout}m")
+            batch_opts.append(f"-t {v.timeout}m")
 
         batch_directives = list(f"# flux: {x}" for x in (cmd_opts + batch_opts))
 
@@ -408,7 +409,7 @@ class Allocation(BasicModifier):
             batch_opts.append(f"-nnodes {v.n_nodes}")
         if v.n_gpus:
             gpus_per_rank = self.gpus_as_gpus_per_rank(v)
-            batch_opts.append(f"-g {gpus_per_rank}")
+            cmd_opts.append(f"-g {gpus_per_rank}")
         if v.n_ranks_per_node:
             cmd_opts.append(f"-T {v.n_ranks_per_node}")
         # TODO: this might have to be an option on the batch_submit vs.

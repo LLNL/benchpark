@@ -7,6 +7,7 @@ ramble:
   include:
   - ./configs/spack.yaml
   - ./configs/variables.yaml
+  - ./configs/modifier.yaml
 
   config:
     deprecated: true
@@ -15,34 +16,40 @@ ramble:
       concretize: '-U -f'
 
   variables:
-    n_times: ['20', '35']
-    array_size: ['80000000', '1280000000']
+    n: ['35', '35', '35', '35']
+    s: ['32000000', '64000000', '128000000', '256000000']
+    o: ['0', '0', '0', '0']
 
   modifiers:
   - name: allocation
 
   applications:
-    streamc:
+    stream:
       workloads:
-        streamc:
+        stream:
+          env_vars:
+            set:
+              OMP_NUM_THREADS: '{n_threads_per_proc}'
           variables:
             n_ranks: '1'
           experiments:
-            stream_{array_size}_{n_times}_{n_threads_per_proc}:
+            stream_{s}_{o}_{n}_{n_threads_per_proc}:
               variables:
-                env_name: 'stream_{array_size}_{n_times}'
-                n_ranks_per_node: '1'
+                env_name: 'stream'
+                processes_per_node: '1'
                 n_nodes: '1'
-                n_threads_per_proc: ['8', '16', '32']
+                n_threads_per_proc: ['16', '32']
               matrix:
                 - n_threads_per_proc
 
   spack:
     packages:
-      stream_{array_size}_{n_times}:
-        spack_spec: 'stream@5.10 +openmp stream_array_size={array_size} ntimes={n_times} cflags="-mcmodel=medium -Ofast -flto"'
+      stream:
+        spack_spec: stream@5.10-caliper{modifier_spack_variant}
         compiler: default-compiler
     environments:
-      stream_{array_size}_{n_times}:
+      stream:
         packages:
-        - stream_{array_size}_{n_times}
+        - default-mpi
+        - stream
+        - '{modifier_package_name}'
