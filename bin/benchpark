@@ -416,7 +416,7 @@ def benchpark_setup_handler(args):
     experiment_template_options = [
         configs_src_dir / template_name,
         experiment_src_dir / template_name,
-        source_dir / "experiments" / "universal-resources" / template_name,
+        source_dir / "common-resources" / template_name,
     ]
     for choice_template in experiment_template_options:
         if os.path.exists(choice_template):
