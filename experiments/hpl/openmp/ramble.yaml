@@ -7,6 +7,7 @@ ramble:
   include:
   - ./configs/spack.yaml
   - ./configs/variables.yaml
+  - ./configs/modifier.yaml
 
   config:
     deprecated: true
@@ -14,15 +15,14 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
+  modifiers:
+  - name: allocation
+
   applications:
     hpl:
       workloads:
         standard:
-          env_vars:
-            set:
-              OMP_NUM_THREADS: '{omp_num_threads}'
           variables:
-            n_ranks: '{processes_per_node} * {n_nodes}'
             N-Grids: 1
             Ps: 2
             Qs: 4
@@ -30,20 +30,19 @@ ramble:
             Ns: 10000
             N-NBs: 1
             NBs: 128
-            processes_per_node: '8'
+            n_ranks_per_node: '8'
             n_nodes: '1'
-            omp_num_threads: ['2', '4', '8']
+            n_threads_per_proc: ['2', '4', '8']
           experiments:
-            hpl_omp_problem1_{n_nodes}_{n_ranks}_{omp_num_threads}_{Ps}_{Qs}_{Ns}_{NBs}:
+            hpl_omp_problem1_{n_threads_per_proc}_{Ps}_{Qs}_{Ns}_{NBs}:
               variables:
                 env_name: hpl-omp
               matrix:
-                - omp_num_threads
+                - n_threads_per_proc
   spack:
-    concretized: true
     packages:
       hpl-omp:
-        spack_spec: hpl@2.3 +openmp
+        spack_spec: hpl@2.3-caliper+openmp{modifier_spack_variant}
         compiler: default-compiler
     environments:
       hpl-omp:
@@ -51,3 +50,4 @@ ramble:
         - blas
         - default-mpi
         - hpl-omp
+        - '{modifier_package_name}'
