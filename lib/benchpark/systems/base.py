@@ -1,6 +1,31 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
+class SpackConfigMergeResolver:
+    def __init__(self, benchpark_installation):
+        self.benchpark_installation = benchpark_installation
+        self.script = benchpark_installation.root / "lib" / "scripts" / "merge.py"
+        self.ramble = None
+
+    def prepare(self):
+        self.spack = self.benchpark_installation.spack()
+
+    def __call__(self, path1, path2):
+        """Merge config from path1 into path2"""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_dir = pathlib.Path(temp_dir)
+
+            merged_config = temp_dir / pathlib.Path(path2).name
+
+            run_command(
+                f"{self.spack} python {self.script} {path1} {path2} {merged_config}"
+            )
+
+            debug_print(f"Overwrite {path2} with merged yaml from {merged_config}")
+            # Overwrite the destination path with the merged result
+            shutil.copy2(merged_config, path2)
+
+
 class System:
     def __init__(self):
         self.sys_cores_per_node = None

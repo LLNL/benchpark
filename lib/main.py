@@ -14,6 +14,7 @@ import sys
 import yaml
 
 import benchpark.system
+from benchpark.runtime import RuntimeResources
 
 DEBUG = False
 
@@ -332,23 +333,6 @@ def symlink_tree(src, dst, include_fn=None):
             os.symlink(src_file, dst_symlink)
 
 
-@contextmanager
-def working_dir(location):
-    initial_dir = os.getcwd()
-    try:
-        os.chdir(location)
-        yield
-    finally:
-        os.chdir(initial_dir)
-
-
-def git_clone_commit(url, commit, destination):
-    run_command(f"git clone -c feature.manyFiles=true {url} {destination}")
-
-    with working_dir(destination):
-        run_command(f"git checkout {commit}")
-
-
 def benchpark_setup_handler(args):
     """
     experiments_root/
@@ -427,52 +411,21 @@ def benchpark_setup_handler(args):
         ramble_configs_dir / "execute_experiment.tpl",
     )
 
-    spack_location = experiments_root / "spack"
-    ramble_location = experiments_root / "ramble"
-
-    spack_exe = spack_location / "bin" / "spack"
-    ramble_exe = ramble_location / "bin" / "ramble"
-    spack_cache_location = spack_location / "misc-cache"
-
     initializer_script = experiments_root / "setup.sh"
 
-    checkout_versions_location = source_dir / "checkout-versions.yaml"
-    with open(checkout_versions_location, "r") as yaml_file:
-        data = yaml.safe_load(yaml_file)
-        ramble_commit = data["versions"]["ramble"]
-        spack_commit = data["versions"]["spack"]
+    per_workspace_setup = RuntimeResources(experiments_root)
 
-    if not spack_location.exists():
-        print(f"Cloning spack into {spack_location}")
-        git_clone_commit(
-            "https://github.com/spack/spack.git", spack_commit, spack_location
-        )
+    spack, first_time_spack = per_workspace_setup.spack_first_time_setup()
+    ramble, first_time_ramble = per_workspace_setup.ramble_first_time_setup()
 
-        env = {"SPACK_DISABLE_LOCAL_CONFIG": "1"}
-        run_command(
-            f"{spack_exe} config --scope=site add config:misc_cache:{spack_cache_location}",
-            env=env,
-        )
-        run_command(f"{spack_exe} repo add --scope=site {source_dir}/repo", env=env)
+    if first_time_spack:
+        spack("repo", "add", "--scope", f"{source_dir}/repo")
 
-    if not ramble_location.exists():
-        print(f"Cloning ramble into {ramble_location}")
-        git_clone_commit(
-            "https://github.com/GoogleCloudPlatform/ramble.git",
-            ramble_commit,
-            ramble_location,
-        )
-
-        run_command(f"{ramble_exe} repo add --scope=site {source_dir}/repo")
-        run_command(
-            f'{ramble_exe} config --scope=site add "config:disable_progress_bar:true"'
-        )
-        run_command(
-            f"{ramble_exe} repo add -t modifiers --scope=site {source_dir}/modifiers"
-        )
-        run_command(
-            f"{ramble_exe} config --scope=site add \"config:spack:global:args:'-d'\""
-        )
+    if first_time_ramble:
+        ramble(f"repo add --scope=site {source_dir}/repo")
+        ramble(f'config --scope=site add "config:disable_progress_bar:true"')
+        ramble(f"repo add -t modifiers --scope=site {source_dir}/modifiers")
+        ramble(f"config --scope=site add \"config:spack:global:args:'-d'\"")
 
     if not initializer_script.exists():
         with open(initializer_script, "w") as f:
