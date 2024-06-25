@@ -111,7 +111,10 @@ class Experiment(metaclass=ExperimentMeta):
     #
 
     # This allows analysis tools to correctly interpret the class attributes.
-    variants: Dict[str, Tuple["benchpark.variant.Variant", "benchpark.experiment_spec.ConcreteSpec"]]
+    variants: Dict[
+        str,
+        Tuple["benchpark.variant.Variant", "benchpark.experiment_spec.ConcreteSpec"],
+    ]
 
     def __init__(self, spec):
         self.spec: "benchpark.experiment_spec.ConcreteSpec" = spec
@@ -134,7 +137,8 @@ class Experiment(metaclass=ExperimentMeta):
     @classproperty
     def namespace(cls):
         """Spack namespace for the package, which identifies its repo."""
-        return benchpark.repo.namespace_from_fullname(cls.__module__)
+        parts = cls.__module__.split(".")
+        return ".".join(parts[2:-1])
 
     @classproperty
     def fullname(cls):
