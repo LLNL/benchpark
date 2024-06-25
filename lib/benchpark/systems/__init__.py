@@ -4,9 +4,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from .aws import Aws
+from .tioga import Tioga
 
 sys_id_to_class = {
     "aws": Aws,
+    "tioga": Tioga,
 }
 
 
