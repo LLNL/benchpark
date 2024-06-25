@@ -399,7 +399,7 @@ def benchpark_setup_handler(args):
         # Always exclude files that start with "."
         if fname.startswith("."):
             return False
-        if fname.endswith(".yaml") or fname.endswith(".tpl"):
+        if fname.endswith(".yaml"):
             return True
         return False
 
@@ -411,8 +411,18 @@ def benchpark_setup_handler(args):
         ramble_spack_experiment_configs_dir,
         include_fn,
     )
+
+    template_name = "execute_experiment.tpl"
+    experiment_template_options = [
+        configs_src_dir / template_name,
+        experiment_src_dir / template_name,
+        source_dir / "common-resources" / template_name,
+    ]
+    for choice_template in experiment_template_options:
+        if os.path.exists(choice_template):
+            break
     os.symlink(
-        source_dir / "common-resources" / "execute_experiment.tpl",
+        choice_template,
         ramble_configs_dir / "execute_experiment.tpl",
     )
 

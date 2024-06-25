@@ -48,7 +48,7 @@ ramble:
         spack_spec: fftw@3.3.10 +mpi+openmp
         compiler: default-compiler
       gromacs:
-        spack_spec: gromacs@main +mpi+openmp~hwloc
+        spack_spec: gromacs@main +mpi+openmp~hwloc~sycl~rocm~cuda
         compiler: default-compiler
     environments:
       gromacs:
