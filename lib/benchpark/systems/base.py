@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import pathlib
+import tempfile
 
 from benchpark.runtime import RuntimeResources
 
@@ -12,20 +13,18 @@ def _hash_id(content_list):
     return sha256_hash.hexdigest()
 
 
+_scripts_basedir = pathlib.Path(os.path.abspath(__module__.__file__)).parents[3] / "script-resources"
+
+
 class ScriptResources(RuntimeResources):
     def __init__(self):
-        script_resource_root = pathlib.Path(os.path.abspath(__module__.__file__)).parents[3] / "external-resources"
-        super().__init__(script_resource_root)
+        super().__init__(_scripts_basedir)
 
 
 class SpackConfigMergeResolver:
-    def __init__(self, benchpark_installation):
-        self.benchpark_installation = benchpark_installation
-        self.script = benchpark_installation.root / "lib" / "scripts" / "merge.py"
-        self.ramble = None
-
-    def prepare(self):
-        self.spack = self.benchpark_installation.spack()
+    def __init__(self, script_resources):
+        self.script_resources = script_resources
+        self.merge_script = _scripts_basedir / "merge-spack-config.py"
 
     def __call__(self, path1, path2):
         """Merge config from path1 into path2"""
@@ -34,11 +33,10 @@ class SpackConfigMergeResolver:
 
             merged_config = temp_dir / pathlib.Path(path2).name
 
-            run_command(
-                f"{self.spack} python {self.script} {path1} {path2} {merged_config}"
+            self.script_resources.spack(
+                f"python {self.merge_script} {path1} {path2} {merged_config}"
             )
 
-            debug_print(f"Overwrite {path2} with merged yaml from {merged_config}")
             # Overwrite the destination path with the merged result
             shutil.copy2(merged_config, path2)
 
@@ -78,7 +76,14 @@ class System:
             selections.append(component_dir / component_choices[0]
 
         # Now we have a set of packages.yaml files we need to merge together
-        pass
+        merge = SpackConfigMergeResolver(ScriptResources())
+
+        aux = outputdir / "auxiliary_software_files"
+        os.mkdir(aux)
+        aux_packages = aux / "packages.yaml"
+        shutil.copy2(selections[0], aux_packages)
+        for selection in selections[1:]:
+            merge(selection, aux_packages)
 
     def variables_yaml(self):
         for attr in self.required:
