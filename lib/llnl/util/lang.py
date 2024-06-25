@@ -166,7 +166,9 @@ def memoized(func):
         except TypeError as e:
             # TypeError is raised when indexing into a dict if the key is unhashable.
             raise UnhashableArguments(
-                "args + kwargs '{}' was not hashable for function '{}'".format(key, func.__name__)
+                "args + kwargs '{}' was not hashable for function '{}'".format(
+                    key, func.__name__
+                )
             ) from e
 
     return _memoized_function
@@ -240,11 +242,17 @@ def key_ordering(cls):
     if not has_method(cls, "_cmp_key"):
         raise TypeError("'%s' doesn't define _cmp_key()." % cls.__name__)
 
-    setter("__eq__", lambda s, o: (s is o) or (o is not None and s._cmp_key() == o._cmp_key()))
+    setter(
+        "__eq__",
+        lambda s, o: (s is o) or (o is not None and s._cmp_key() == o._cmp_key()),
+    )
     setter("__lt__", lambda s, o: o is not None and s._cmp_key() < o._cmp_key())
     setter("__le__", lambda s, o: o is not None and s._cmp_key() <= o._cmp_key())
 
-    setter("__ne__", lambda s, o: (s is not o) and (o is None or s._cmp_key() != o._cmp_key()))
+    setter(
+        "__ne__",
+        lambda s, o: (s is not o) and (o is None or s._cmp_key() != o._cmp_key()),
+    )
     setter("__gt__", lambda s, o: o is None or s._cmp_key() > o._cmp_key())
     setter("__ge__", lambda s, o: o is None or s._cmp_key() >= o._cmp_key())
 
@@ -510,7 +518,8 @@ def match_predicate(*args):
                     return True
             else:
                 raise ValueError(
-                    "args to match_predicate must be regex, " "list of regexes, or callable."
+                    "args to match_predicate must be regex, "
+                    "list of regexes, or callable."
                 )
         return False
 
@@ -633,15 +642,19 @@ def pretty_string_to_date(date_str, now=None):
     # datetime formats
     pattern[re.compile(r"^\d{4}$")] = lambda x: datetime.strptime(x, "%Y")
     pattern[re.compile(r"^\d{4}-\d{2}$")] = lambda x: datetime.strptime(x, "%Y-%m")
-    pattern[re.compile(r"^\d{4}-\d{2}-\d{2}$")] = lambda x: datetime.strptime(x, "%Y-%m-%d")
-    pattern[re.compile(r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$")] = lambda x: datetime.strptime(
-        x, "%Y-%m-%d %H:%M"
+    pattern[re.compile(r"^\d{4}-\d{2}-\d{2}$")] = lambda x: datetime.strptime(
+        x, "%Y-%m-%d"
     )
-    pattern[re.compile(r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$")] = lambda x: datetime.strptime(
-        x, "%Y-%m-%d %H:%M:%S"
-    )
+    pattern[
+        re.compile(r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$")
+    ] = lambda x: datetime.strptime(x, "%Y-%m-%d %H:%M")
+    pattern[
+        re.compile(r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$")
+    ] = lambda x: datetime.strptime(x, "%Y-%m-%d %H:%M:%S")
 
-    pretty_regex = re.compile(r"(a|\d+)\s*(year|month|week|day|hour|minute|second)s?\s*ago")
+    pretty_regex = re.compile(
+        r"(a|\d+)\s*(year|month|week|day|hour|minute|second)s?\s*ago"
+    )
 
     def _n_xxx_ago(x):
         how_many, time_period = pretty_regex.search(x).groups()
@@ -740,6 +753,7 @@ class Singleton:
 
     @property
     def instance(self):
+        print("HEREHEREHERE")
         if self._instance is None:
             self._instance = self.factory()
         return self._instance
@@ -749,6 +763,10 @@ class Singleton:
         # requested but not yet set. The final 'getattr' line here requires
         # 'instance'/'_instance' to be defined or it will enter an infinite
         # loop, so protect against that here.
+        print("HERE", name)
+        import traceback
+
+        traceback.print_stack()
         if name in ["_instance", "instance"]:
             raise AttributeError(f"cannot create {name}")
         return getattr(self.instance, name)
@@ -981,7 +999,9 @@ class GroupedExceptionHandler:
         """Whether any exceptions were handled."""
         return bool(self.exceptions)
 
-    def forward(self, context: str, base: type = BaseException) -> "GroupedExceptionForwarder":
+    def forward(
+        self, context: str, base: type = BaseException
+    ) -> "GroupedExceptionForwarder":
         """Return a contextmanager which extracts tracebacks and prefixes a message."""
         return GroupedExceptionForwarder(context, self, base)
 
@@ -999,7 +1019,9 @@ class GroupedExceptionHandler:
             )
             for context, exc, tb in self.exceptions
         ]
-        return "due to the following failures:\n{0}".format("\n".join(each_exception_message))
+        return "due to the following failures:\n{0}".format(
+            "\n".join(each_exception_message)
+        )
 
 
 class GroupedExceptionForwarder:
@@ -1018,7 +1040,9 @@ class GroupedExceptionForwarder:
         if exc_value is not None:
             if not issubclass(exc_type, self._base):
                 return False
-            self._handler._receive_forwarded(self._context, exc_value, traceback.format_tb(tb))
+            self._handler._receive_forwarded(
+                self._context, exc_value, traceback.format_tb(tb)
+            )
 
         # Suppress any exception from being re-raised:
         # https://docs.python.org/3/reference/datamodel.html#object.__exit__.

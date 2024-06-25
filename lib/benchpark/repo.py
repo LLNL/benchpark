@@ -64,21 +64,29 @@ type_definitions = {
 
 
 # Experiments
-def _exprs(repo_dirs=None):
+def _exprs():
     """Get the singleton RepoPath instance for Ramble.
 
     Create a RepoPath, add it to sys.meta_path, and return it.
 
     TODO: consider not making this a singleton.
     """
-    repo_dirs = repo_dirs
+    filename = os.getcwd()  # gross way to work around file for interactive testing
+    repo_dirs = [os.path.join(filename, "test_repo")]
+    print(repo_dirs)
     if not repo_dirs:
         raise NoRepoConfiguredError(
             "Benchpark configuration contains no experiment repositories."
         )
 
-    path = RepoPath(*repo_dirs, object_type=ObjectTypes.experiments)
+    print("BEFORE PATH")
+    try:
+        path = RepoPath(*repo_dirs, object_type=ObjectTypes.experiments)
+    except BaseException as e:
+        print("EXCEPTION", e)
+    print("AFTER PATH")
     sys.meta_path.append(path)
+    print("RETURNING", path)
     return path
 
 
@@ -216,12 +224,13 @@ class RepoPath(object):
                     repo = Repo(repo, object_type=object_type)
                 self.put_last(repo)
             except RepoError as e:
-                logger.warn(
-                    "Failed to initialize repository: '%s'." % repo,
-                    e.message,
-                    "To remove the bad repository, run this command:",
-                    "    ramble repo rm %s" % repo,
-                )
+                pass
+                # logger.warn(
+                #     "Failed to initialize repository: '%s'." % repo,
+                #     e.message,
+                #     "To remove the bad repository, run this command:",
+                #     "    ramble repo rm %s" % repo,
+                # )
 
     def put_first(self, repo):
         """Add repo first in the search path."""
@@ -356,7 +365,7 @@ class RepoPath(object):
         """Given a spec, get the repository for its object."""
         # We don't @_autospec this function b/c it's called very frequently
         # and we want to avoid parsing str's into Specs unnecessarily.
-        logger.debug(f"Getting repo for obj {spec}")
+        # logger.debug(f"Getting repo for obj {spec}")
         namespace = None
         if isinstance(spec, benchpark.experiment_spec.ExperimentSpec):
             namespace = spec.namespace
@@ -365,7 +374,7 @@ class RepoPath(object):
             # handle strings directly for speed instead of @_autospec'ing
             namespace, _, name = spec.rpartition(".")
 
-        logger.debug(f" Name and namespace = {namespace} - {name}")
+        # logger.debug(f" Name and namespace = {namespace} - {name}")
         # If the spec already has a namespace, then return the
         # corresponding repo if we know about it.
         if namespace:
@@ -377,7 +386,7 @@ class RepoPath(object):
         # If there's no namespace, search in the RepoPath.
         for repo in self.repos:
             if name in repo:
-                logger.debug("Found repo...")
+                # logger.debug("Found repo...")
                 return repo
 
         # If the object isn't in any repo, return the one with
@@ -460,7 +469,7 @@ class Repo(object):
         """
         # Root directory, containing _repo.yaml and object dirs
         # Allow roots to be ramble-relative by starting with '$ramble'
-        self.root = ramble.util.path.canonicalize_path(root)
+        self.root = root  # TODO CANONICALIZE
         self.object_file_name = type_definitions[object_type]["file_name"]
         self.object_type = object_type
         self.object_abbrev = type_definitions[object_type]["abbrev"]
@@ -638,6 +647,11 @@ class Repo(object):
 
         return module
 
+    def _read_config(self):
+        """Check for a YAML config file in this db's root directory."""
+        # THIS IS A HUGE HACK
+        return {"namespace": "builtin"}
+
     @autospec
     def get(self, spec):
         """Returns the object associated with the supplied spec."""
@@ -645,7 +659,7 @@ class Repo(object):
         # it actually exists, because we have to load it anyway, and that ends
         # up checking for existence. We avoid constructing
         # FastObjectChecker, which will stat all objects.
-        logger.debug(f"Getting obj {spec} from repo")
+        #        logger.debug(f"Getting obj {spec} from repo")
         if spec.name is None:
             raise UnknownObjectError(None, self)
 
@@ -659,7 +673,7 @@ class Repo(object):
             # pass these through as their error messages will be fine.
             raise
         except Exception as e:
-            logger.debug(e)
+            #            logger.debug(e)
 
             # Make sure other errors in constructors hit the error
             # handler by wrapping them
@@ -792,10 +806,10 @@ class Repo(object):
                 raise UnknownObjectError(obj_name, self)
 
             if not os.path.isfile(file_path):
-                logger.die(f"Something's wrong. '{file_path}' is not a file!")
+                raise Exception(f"Something's wrong. '{file_path}' is not a file!")
 
             if not os.access(file_path, os.R_OK):
-                logger.die(f"Cannot read '{file_path}'!")
+                raise Exception(f"Cannot read '{file_path}'!")
 
             # e.g., ramble.app.builtin.mpich
             fullname = "%s.%s" % (self.full_namespace, obj_name)
@@ -831,12 +845,12 @@ class Repo(object):
             )
 
         class_name = nm.mod_to_class(obj_name)
-        logger.debug(f" Class name = {class_name}")
+        # logger.debug(f" Class name = {class_name}")
         module = self._get_obj_module(obj_name)
 
         cls = getattr(module, class_name)
         if not inspect.isclass(cls):
-            logger.die(f"{obj_name}.{class_name} is not a class")
+            raise Exception(f"{obj_name}.{class_name} is not a class")
 
         return cls
 
