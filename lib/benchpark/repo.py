@@ -815,7 +815,9 @@ class Repo(object):
             fullname = "%s.%s" % (self.full_namespace, obj_name)
 
             try:
-                module = ramble.util.imp.load_source(fullname, file_path)
+                loader = importlib.machinery.SourceFileLoader(fullname, file_path)
+                module = types.ModuleType(loader.name)
+                loader.exec_module(module)
             except SyntaxError as e:
                 # SyntaxError strips the path from the filename so we need to
                 # manually construct the error message in order to give the

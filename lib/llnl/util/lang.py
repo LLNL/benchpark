@@ -753,7 +753,6 @@ class Singleton:
 
     @property
     def instance(self):
-        print("HEREHEREHERE")
         if self._instance is None:
             self._instance = self.factory()
         return self._instance
@@ -763,10 +762,6 @@ class Singleton:
         # requested but not yet set. The final 'getattr' line here requires
         # 'instance'/'_instance' to be defined or it will enter an infinite
         # loop, so protect against that here.
-        print("HERE", name)
-        import traceback
-
-        traceback.print_stack()
         if name in ["_instance", "instance"]:
             raise AttributeError(f"cannot create {name}")
         return getattr(self.instance, name)
