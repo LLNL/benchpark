@@ -1,6 +1,17 @@
-import pathlib
-import yaml
 from contextlib import contextmanager
+import os
+import pathlib
+import shlex
+import subprocess
+import yaml
+
+
+DEBUG = True
+
+
+def debug_print(message):
+    if DEBUG:
+        print("(debug) " + str(message))
 
 
 @contextmanager
@@ -22,7 +33,7 @@ def git_clone_commit(url, commit, destination):
 
 def benchpark_root():
     this_module_path = pathlib.Path(os.path.abspath(__file__))
-    return this_module_path.parent.parent
+    return this_module_path.parents[2]
 
 
 def run_command(command_str, env=None):
@@ -58,7 +69,7 @@ class RuntimeResources:
         self.root = benchpark_root()
         self.dest = pathlib.Path(dest)
 
-        checkout_versions_location = source_dir / "checkout-versions.yaml"
+        checkout_versions_location = self.root / "checkout-versions.yaml"
         with open(checkout_versions_location, "r") as yaml_file:
             data = yaml.safe_load(yaml_file)
             self.ramble_commit = data["versions"]["ramble"]

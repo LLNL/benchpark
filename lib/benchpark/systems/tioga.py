@@ -3,6 +3,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+import os
 import pathlib
 
 from .base import System
@@ -16,6 +17,6 @@ class Tioga(System):
         self.sys_cores_per_node = "64"
         self.sys_gpus_per_node = "4"
 
-        base = pathlib.Path(os.path.abspath(__module__.__file__)).parents[0] 
+        base = pathlib.Path(os.path.abspath(__file__)).parents[0]
         self.external_resources = base / "externals" / "tioga"
 

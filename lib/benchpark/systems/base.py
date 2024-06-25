@@ -3,6 +3,7 @@
 import hashlib
 import os
 import pathlib
+import shutil
 import tempfile
 
 from benchpark.runtime import RuntimeResources
@@ -35,7 +36,8 @@ class SpackConfigMergeResolver:
 
             merged_config = temp_dir / pathlib.Path(path2).name
 
-            self.script_resources.spack(
+            spack = self.script_resources.spack()
+            spack(
                 f"python {self.merge_script} {path1} {path2} {merged_config}"
             )
 
@@ -63,6 +65,8 @@ class System:
         with open(variables_yaml, "w") as f:
             f.write(self.variables_yaml())
 
+        self.externals(output_dir)
+
     def system_id(self):
         return _hash_id([self.variables_yaml()])
 
@@ -75,14 +79,14 @@ class System:
         selections = list()
         for component in os.listdir(self.external_resources):
             component_dir = self.external_resources / component
-            component_choices = os.listdir(component_dir)
+            component_choices = list(sorted(os.listdir(component_dir)))
             # TODO: for now, pick the first; need to allow users to select
             selections.append(component_dir / component_choices[0])
 
         # Now we have a set of packages.yaml files we need to merge together
         merge = SpackConfigMergeResolver(ScriptResources())
 
-        aux = outputdir / "auxiliary_software_files"
+        aux = output_dir / "auxiliary_software_files"
         os.mkdir(aux)
         aux_packages = aux / "packages.yaml"
         shutil.copy2(selections[0], aux_packages)
