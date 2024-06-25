@@ -4,6 +4,8 @@ from typing import Iterable, Iterator, List, Optional, Union
 import llnl.util.lang
 import benchpark.repo
 
+repo_path = benchpark.repo.paths[benchpark.repo.ObjectTypes.experiments]
+
 
 class VariantMap(llnl.util.lang.HashableMap):
     def __setitem__(self, name: str, values: Union[str, Iterable]):
@@ -40,7 +42,9 @@ class VariantMap(llnl.util.lang.HashableMap):
         return f"{name}={','.join(values)}"
 
     def __str__(self):
-        " ".join(self.stringify(name, values) for name, values in self.dict.items())
+        return " ".join(
+            self.stringify(name, values) for name, values in self.dict.items()
+        )
 
 
 class ConcreteVariantMap(VariantMap):
@@ -93,6 +97,9 @@ class ExperimentSpec(object):
         self._variants = value
 
     def __eq__(self, other: "ExperimentSpec"):
+        if other is None:
+            return False
+
         return (
             self.name == other.name
             and (
@@ -102,6 +109,19 @@ class ExperimentSpec(object):
             )
             and self.variants == other.variants
         )
+
+    def __str__(self):
+        string = ""
+        if self.namespace is not None:
+            string += f"{self.namespace}."
+        if self.name is not None:
+            string += self.name
+
+        variants = str(self.variants)
+        if not string:
+            return variants
+        string += f" {variants}" if variants else ""
+        return string
 
     def _dup(self, other: "ExperimentSpec"):
         # operate on underlying types so it can be called on ConcreteExperimentSpec
@@ -142,13 +162,12 @@ class ExperimentSpec(object):
 
     @property
     def experiment_class(self):
-        ## TODO interface combination ##
-        return benchpark.repo.get_experiment_class(self.name)
+        return repo_path.get_obj_class(self.name)
 
 
 class ConcreteExperimentSpec(ExperimentSpec):
     def __init__(self, str_or_spec: Union[str, ExperimentSpec]):
-        super().__init__(*args, **kwargs)
+        super().__init__(str_or_spec)
         self._concretize()
 
     def __hash__(self):
@@ -186,7 +205,7 @@ class ConcreteExperimentSpec(ExperimentSpec):
 
         if not self.namespace:
             ## TODO interface combination ##
-            self._namespace = benchpark.repo.namespace_for_experiment(self.name)
+            self._namespace = self.experiment_class.namespace
 
         ## TODO interface combination ##
         for name, variant in self.experiment_class.variants.items():
@@ -415,7 +434,7 @@ class ExperimentSpecParser(object):
                 ), f"SPLIT_KVP cannot split pair {self.ctx.current_token.value}"
 
                 name, value = match.groups()
-                spec[name] = value
+                spec.variants[name] = value
             else:
                 break
 
