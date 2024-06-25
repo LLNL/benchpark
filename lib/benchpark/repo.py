@@ -73,20 +73,13 @@ def _exprs():
     """
     filename = os.getcwd()  # gross way to work around file for interactive testing
     repo_dirs = [os.path.join(filename, "test_repo")]
-    print(repo_dirs)
     if not repo_dirs:
         raise NoRepoConfiguredError(
             "Benchpark configuration contains no experiment repositories."
         )
 
-    print("BEFORE PATH")
-    try:
-        path = RepoPath(*repo_dirs, object_type=ObjectTypes.experiments)
-    except BaseException as e:
-        print("EXCEPTION", e)
-    print("AFTER PATH")
+    path = RepoPath(*repo_dirs, object_type=ObjectTypes.experiments)
     sys.meta_path.append(path)
-    print("RETURNING", path)
     return path
 
 

@@ -219,7 +219,7 @@ class ConcreteExperimentSpec(ExperimentSpec):
 
         for name, values in self.variants.items():
             if name not in self.experiment_class.variants:
-                raise Exception
+                raise Exception(f"{name} is not a valid variant of {self.name}")
 
             variant = self.experiment_class.variants[name]
             variant.validate_values(self.variants[name])
