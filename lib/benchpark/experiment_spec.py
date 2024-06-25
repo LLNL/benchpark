@@ -216,10 +216,13 @@ class ConcreteExperimentSpec(ExperimentSpec):
         for name, variant in self.experiment_class.variants.items():
             if name not in self.variants:
                 self._variants[name] = variant.default
-            else:
-                # raise if the value is invalid
-                ## TODO interface combination ##
-                variant.validate(self.variants[name])
+
+        for name, values in self.variants.items():
+            if name not in self.experiment_class.variants:
+                raise Exception
+
+            variant = self.experiment_class.variants[name]
+            variant.validate_values(self.variants[name])
 
         # Convert to immutable type
         self._variants = ConcreteVariantMap(self.variants)
