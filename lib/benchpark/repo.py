@@ -73,7 +73,9 @@ def _exprs(repo_dirs=None):
     """
     repo_dirs = repo_dirs
     if not repo_dirs:
-        raise NoRepoConfiguredError("Benchpark configuration contains no experiment repositories.")
+        raise NoRepoConfiguredError(
+            "Benchpark configuration contains no experiment repositories."
+        )
 
     path = RepoPath(*repo_dirs, object_type=ObjectTypes.experiments)
     sys.meta_path.append(path)
@@ -162,8 +164,8 @@ def autospec(function):
 
     @functools.wraps(function)
     def converter(self, spec_like, *args, **kwargs):
-        if not isinstance(spec_like, benchpark.experiment_spec.Spec):
-            spec_like = benchpark.experiment_spec.Spec(spec_like)
+        if not isinstance(spec_like, benchpark.experiment_spec.ExperimentSpec):
+            spec_like = benchpark.experiment_spec.ExperimentSpec(spec_like)
         return function(self, spec_like, *args, **kwargs)
 
     return converter
@@ -356,7 +358,7 @@ class RepoPath(object):
         # and we want to avoid parsing str's into Specs unnecessarily.
         logger.debug(f"Getting repo for obj {spec}")
         namespace = None
-        if isinstance(spec, benchpark.experiment_spec.Spec):
+        if isinstance(spec, benchpark.experiment_spec.ExperimentSpec):
             namespace = spec.namespace
             name = spec.name
         else:
@@ -477,7 +479,10 @@ class Repo(object):
             if os.path.exists(config_file):
                 self.config_name = config
                 self.config_file = config_file
-        check(os.path.isfile(self.config_file), "No %s found in '%s'" % (self.config_name, root))
+        check(
+            os.path.isfile(self.config_file),
+            "No %s found in '%s'" % (self.config_name, root),
+        )
 
         # Read configuration and validate namespace
         config = self._read_config()
@@ -633,8 +638,6 @@ class Repo(object):
 
         return module
 
-
-
     @autospec
     def get(self, spec):
         """Returns the object associated with the supplied spec."""
@@ -688,7 +691,9 @@ class Repo(object):
     def index(self):
         """Construct the index for this repo lazily."""
         if self._repo_index is None:
-            self._repo_index = RepoIndex(self._obj_checker, self.namespace, self.object_type)
+            self._repo_index = RepoIndex(
+                self._obj_checker, self.namespace, self.object_type
+            )
             self._repo_index.add_indexer("tags", TagIndexer(self.object_type))
         return self._repo_index
 
@@ -802,7 +807,9 @@ class Repo(object):
                 # manually construct the error message in order to give the
                 # user the correct .py where the syntax error is
                 # located
-                raise SyntaxError("invalid syntax in {0:}, line {1:}".format(file_path, e.lineno))
+                raise SyntaxError(
+                    "invalid syntax in {0:}, line {1:}".format(file_path, e.lineno)
+                )
 
             module.__object__ = self.full_namespace
             module.__loader__ = self
@@ -904,7 +911,7 @@ class ReposFinder(object):
             raise RuntimeError('cannot reload module "{0}"'.format(fullname))
 
         # Preferred API from https://peps.python.org/pep-0451/
-        if not fullname.startswith("ramble."):
+        if not fullname.startswith("benchpark."):
             return None
 
         loader = self.compute_loader(fullname)
