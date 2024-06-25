@@ -11,6 +11,11 @@ from .base import System
 class Tioga(System):
     def __init__(self):
         super().__init__()
+
+        self.scheduler = "flux"
+        self.sys_cores_per_node = "64"
+        self.sys_gpus_per_node = "4"
+
         base = pathlib.Path(os.path.abspath(__module__.__file__)).parents[0] 
         self.external_resources = base / "externals" / "tioga"
 
