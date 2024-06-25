@@ -21,7 +21,7 @@ def git_clone_commit(url, commit, destination):
 
 
 def benchpark_root():
-    this_module_path = pathlib.Path(os.path.abspath(__module__.__file__))
+    this_module_path = pathlib.Path(os.path.abspath(__file__))
     return this_module_path.parent.parent
 
 

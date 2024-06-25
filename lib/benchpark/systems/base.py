@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
+import os
 import pathlib
 import tempfile
 
@@ -13,7 +14,7 @@ def _hash_id(content_list):
     return sha256_hash.hexdigest()
 
 
-_scripts_basedir = pathlib.Path(os.path.abspath(__module__.__file__)).parents[3] / "script-resources"
+_scripts_basedir = pathlib.Path(os.path.abspath(__file__)).parents[3] / "script-resources"
 
 
 class ScriptResources(RuntimeResources):
@@ -73,7 +74,7 @@ class System:
             component_dir = self.external_resources / component
             component_choices = os.listdir(component_dir)
             # TODO: for now, pick the first; need to allow users to select
-            selections.append(component_dir / component_choices[0]
+            selections.append(component_dir / component_choices[0])
 
         # Now we have a set of packages.yaml files we need to merge together
         merge = SpackConfigMergeResolver(ScriptResources())
