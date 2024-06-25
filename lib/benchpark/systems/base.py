@@ -5,6 +5,13 @@ import pathlib
 from benchpark.runtime import RuntimeResources
 
 
+def _hash_id(content_list):
+    sha256_hash = hashlib.sha256()
+    for x in content_list:
+        sha256_hash.update(x.encode("utf-8"))
+    return sha256_hash.hexdigest()
+
+
 class ScriptResources(RuntimeResources):
     def __init__(self):
         script_resource_root = pathlib.Path(os.path.abspath(__module__.__file__)).parents[3] / "external-resources"
@@ -38,6 +45,8 @@ class SpackConfigMergeResolver:
 
 class System:
     def __init__(self, input_dir):
+        self.external_resources = None
+
         self.sys_cores_per_node = None
         self.sys_gpus_per_node = None
         self.sys_mem_per_node = None
@@ -52,11 +61,23 @@ class System:
         with open(variables_yaml, "w") as f:
             f.write(self.variables_yaml())
 
-    def externals(self, destdir):
-        # Each subdir of auxiliary_packages contains a set of mutually-exclusive
-        # configs. If the user specified nothing, we can combine the "first"
-        # file from each directory into a single packages config.
-        # (you can sort them alphabetically, choosing names like 01-rocm-543.yaml)
+    def system_id(self):
+        return _hash_id([self.variables_yaml()])
+
+    def externals(self, output_dir):
+        if not self.external_resources:
+            return
+
+        # Each subdir of external-resources contains a mutually-exclusive
+        # set of package files
+        selections = list()
+        for component in os.listdir(self.external_resources):
+            component_dir = self.external_resources / component
+            component_choices = os.listdir(component_dir)
+            # TODO: for now, pick the first; need to allow users to select
+            selections.append(component_dir / component_choices[0]
+
+        # Now we have a set of packages.yaml files we need to merge together
         pass
 
     def variables_yaml(self):

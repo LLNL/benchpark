@@ -9,13 +9,6 @@ import os
 import benchpark.systems as systems
 
 
-def _hash_id(content_list):
-    sha256_hash = hashlib.sha256()
-    for x in content_list:
-        sha256_hash.update(x.encode("utf-8"))
-    return sha256_hash.hexdigest()
-
-
 def system_create(args):
     init_kwargs = dict()
     if args.set:
@@ -31,11 +24,9 @@ def system_create(args):
     else:
         raise ValueError("Must specify one of: --type, --from")
 
-    variables_yaml = system.generate_system_description()
-
     if args.basedir:
         base = args.basedir
-        sysdir = _hash_id([variables_yaml])
+        sysdir = system.system_id()
         destdir = os.path.join(base, sysdir)
     elif args.dest:
         destdir = args.dest
@@ -46,11 +37,7 @@ def system_create(args):
         raise ValueError(f"System description dir already exists: {destdir}")
     os.mkdir(destdir)
 
-    gen_files = {"variables.yaml": variables_yaml}
-    for fname, content in gen_files.items():
-        path = os.path.join(destdir, fname)
-        with open(path, "w") as f:
-            f.write(content)
+    system.generate_description(destdir)
 
 
 def system_list(args):
