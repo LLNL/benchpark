@@ -1,4 +1,6 @@
-from typing import Iterable, Union
+import enum
+import re
+from typing import Iterable, Iterator, List, Optional, Union
 import llnl.util.lang
 import benchpark.repo
 
@@ -13,20 +15,19 @@ class VariantMap(llnl.util.lang.HashableMap):
             values = tuple(*values)
         super().__setitem__(name, values)
 
-    def intersects(self, other: VariantMap) -> bool:
+    def intersects(self, other: "VariantMap") -> bool:
         if isinstance(other, ConcreteVariantMap):
             return other.intersects(self)
 
         # always possible to constrain since abstract variants are multi-value
         return True
 
-    def satisfies(self, other: VariantMap) -> bool:
+    def satisfies(self, other: "VariantMap") -> bool:
         if isinstance(other, ConcreteVariantMap):
             self == other
 
         return all(
-            name in self and set(self[name]) >= set(other[name])
-            for name in other
+            name in self and set(self[name]) >= set(other[name]) for name in other
         )
 
     @staticmethod
@@ -39,10 +40,7 @@ class VariantMap(llnl.util.lang.HashableMap):
         return f"{name}={','.join(values)}"
 
     def __str__(self):
-        ' '.join(
-            self.stringify(name, values)
-            for name, values in self.dict.items()
-        )
+        " ".join(self.stringify(name, values) for name, values in self.dict.items())
 
 
 class ConcreteVariantMap(VariantMap):
@@ -54,7 +52,7 @@ class ConcreteVariantMap(VariantMap):
 
 
 class ExperimentSpec(object):
-    def __init__(self, str_or_spec: Optional[Union[str, ExperimentSpec]] = None):
+    def __init__(self, str_or_spec: Optional[Union[str, "ExperimentSpec"]] = None):
         self._name = None
         self._namespace = None
         self._variants = VariantMap()
@@ -94,14 +92,18 @@ class ExperimentSpec(object):
     def variants(self, value: VariantMap):
         self._variants = value
 
-    def __eq__(self, other: ExperimentSpec):
+    def __eq__(self, other: "ExperimentSpec"):
         return (
-            self.name == other.name and
-            (self.namespace is None or other.namespace is None or self.namespace == other.namespace) and
-            self.variants == other.variants
+            self.name == other.name
+            and (
+                self.namespace is None
+                or other.namespace is None
+                or self.namespace == other.namespace
+            )
+            and self.variants == other.variants
         )
 
-    def _dup(self, other: ExperimentSpec):
+    def _dup(self, other: "ExperimentSpec"):
         # operate on underlying types so it can be called on ConcreteExperimentSpec
         self._name = other.name
         self._namespace = other.namespace
@@ -113,22 +115,26 @@ class ExperimentSpec(object):
 
         self._dup(specs[0])
 
-    def intersects(self, other: Union[str, ExperimentSpec]) -> bool:
+    def intersects(self, other: Union[str, "ExperimentSpec"]) -> bool:
         if not isinstance(other, ExperimentSpec):
             other = ExperimentSpec(other)
         return (
-            (self.name is None or other.name is None or self.name == other.name) and
-            (self.namespace is None or other.namespace is None or self.namespace == other.namespace) and
-            self.variants.intersects(other.variants)
+            (self.name is None or other.name is None or self.name == other.name)
+            and (
+                self.namespace is None
+                or other.namespace is None
+                or self.namespace == other.namespace
+            )
+            and self.variants.intersects(other.variants)
         )
 
-    def satisfies(self, other: Union[str, ExperimentSpec]) -> bool:
+    def satisfies(self, other: Union[str, "ExperimentSpec"]) -> bool:
         if not isinstance(other, ExperimentSpec):
             other = ExperimentSpec(other)
         return (
-            (other.name is None or self.name == other.name) and
-            (other.namespace is None or self.namespace == other.namespace) and
-            self.variants.satisfies(other.variants)
+            (other.name is None or self.name == other.name)
+            and (other.namespace is None or self.namespace == other.namespace)
+            and self.variants.satisfies(other.variants)
         )
 
     def concretize(self):
@@ -148,13 +154,25 @@ class ConcreteExperimentSpec(ExperimentSpec):
     def __hash__(self):
         return hash((self.name, self.namespace, self.variants))
 
+    @property
+    def name(self):
+        return self._name
+
     @name.setter
     def name(self, value: str):
         raise TypeError(f"{self.__class__} is immutable")
 
+    @property
+    def namespace(self):
+        return self._namespace
+
     @namespace.setter
     def namespace(self, value: str):
         raise TypeError(f"{self.__class__} is immutable")
+
+    @property
+    def variants(self):
+        return self._variants
 
     @variants.setter
     def variants(self, value: str):
@@ -162,7 +180,9 @@ class ConcreteExperimentSpec(ExperimentSpec):
 
     def _concretize(self):
         if not self.name:
-            raise AnonymousSpecError(f"Cannot concretize anonymous ExperimentSpec {self}")
+            raise AnonymousSpecError(
+                f"Cannot concretize anonymous ExperimentSpec {self}"
+            )
 
         if not self.namespace:
             ## TODO interface combination ##
@@ -224,6 +244,7 @@ class TokenType(TokenBase):
     Order of declaration is extremely important, since text containing specs is parsed with a
     single regex obtained by ``"|".join(...)`` of all the regex in the order of declaration.
     """
+
     # variants
     BOOL_VARIANT = rf"(?:[~+-]\s*{NAME})"
     KEY_VALUE_PAIR = rf"(?:{NAME}=(?:{VALUE}))"
@@ -247,7 +268,11 @@ class Token:
     __slots__ = "kind", "value", "start", "end"
 
     def __init__(
-        self, kind: TokenBase, value: str, start: Optional[int] = None, end: Optional[int] = None
+        self,
+        kind: TokenBase,
+        value: str,
+        start: Optional[int] = None,
+        end: Optional[int] = None,
     ):
         self.kind = kind
         self.value = value
@@ -276,7 +301,7 @@ ALL_TOKENS = re.compile("|".join(TOKEN_REGEXES))
 ANALYSIS_REGEX = re.compile("|".join(ERROR_HANDLING_REGEXES))
 
 
-def tokenize(text: str) -> Iterator[Token]:
+def tokenize(text: str) -> Iterable[Token]:
     """Return a token generator from the text passed as input.
 
     Raises:
@@ -287,13 +312,14 @@ def tokenize(text: str) -> Iterator[Token]:
     match: Optional[Match] = None
     for match in iter(scanner.match, None):
         # The following two assertions are to help mypy
-        msg = (
-            "unexpected value encountered during parsing. Please submit a bug report "
-        )
+        msg = "unexpected value encountered during parsing. Please submit a bug report "
         assert match is not None, msg
         assert match.lastgroup is not None, msg
         yield Token(
-            TokenType.__members__[match.lastgroup], match.group(), match.start(), match.end()
+            TokenType.__members__[match.lastgroup],
+            match.group(),
+            match.start(),
+            match.end(),
         )
 
     if match is None and not text:
@@ -319,7 +345,9 @@ class TokenContext:
 
     def advance(self):
         """Advance one token"""
-        self.current_token, self.next_token = self.next_token, next(self.token_stream, None)
+        self.current_token, self.next_token = self.next_token, next(
+            self.token_stream, None
+        )
 
     def accept(self, kind: TokenType):
         """If the next token is of the specified kind, advance the stream and return True.
@@ -335,16 +363,21 @@ class TokenContext:
 
 
 class ExperimentSpecParser(object):
-    __slots__  = "literal_str", "ctx"
+    __slots__ = "literal_str", "ctx"
+
     def __init__(self, literal_str: str):
         self.literal_str = literal_str
-        self.ctx = TokenContext(filter(lambda x: x.kind != TokenType.WS, tokenize(literal_str)))
+        self.ctx = TokenContext(
+            filter(lambda x: x.kind != TokenType.WS, tokenize(literal_str))
+        )
 
     def tokens(self) -> List[Token]:
         """Return the entire list of token from the initial text. White spaces are
         filtered out.
         """
-        return list(filter(lambda x: x.kind != TokenType.WS, tokenize(self.literal_str)))
+        return list(
+            filter(lambda x: x.kind != TokenType.WS, tokenize(self.literal_str))
+        )
 
     def next_spec(self) -> Optional[ExperimentSpec]:
         """Return the next spec parsed from text.
@@ -377,7 +410,9 @@ class ExperimentSpecParser(object):
                 spec.variants[name] = str(value).lower()
             elif self.ctx.accept(TokenType.KEY_VALUE_PAIR):
                 match = SPLIT_KVP.match(self.ctx.current_token.value)
-                assert match, f"SPLIT_KVP cannot split pair {self.ctx.current_token.value}"
+                assert (
+                    match
+                ), f"SPLIT_KVP cannot split pair {self.ctx.current_token.value}"
 
                 name, value = match.groups()
                 spec[name] = value
@@ -386,14 +421,16 @@ class ExperimentSpecParser(object):
 
         return spec
 
-    def all_specs(self): -> List[ExperimentSpec]:
+    def all_specs(self) -> List[ExperimentSpec]:
         return list(iter(self.next_spec, None))
 
 
 # ERROR HANDLING BELOW HERE
 
+
 class AnonymousSpecError(Exception):
     pass
+
 
 class SpecTokenizationError(Exception):
     """Syntax error in a spec string"""
