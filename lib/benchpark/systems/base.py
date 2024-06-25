@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
+import hashlib
 import os
 import pathlib
 import tempfile
@@ -43,7 +44,7 @@ class SpackConfigMergeResolver:
 
 
 class System:
-    def __init__(self, input_dir):
+    def __init__(self):
         self.external_resources = None
 
         self.sys_cores_per_node = None
@@ -56,6 +57,8 @@ class System:
         self.required = ["sys_cores_per_node", "scheduler", "timeout"]
 
     def generate_description(self, output_dir):
+        output_dir = pathlib.Path(output_dir)
+
         variables_yaml = output_dir / "variables.yaml"
         with open(variables_yaml, "w") as f:
             f.write(self.variables_yaml())
