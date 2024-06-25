@@ -8,6 +8,11 @@ repo_path = benchpark.repo.paths[benchpark.repo.ObjectTypes.experiments]
 
 
 class VariantMap(llnl.util.lang.HashableMap):
+    def __init__(self, init: "VariantMap" = None):
+        super().__init__()
+        if init:
+            self.dict = init.dict.copy()
+
     def __setitem__(self, name: str, values: Union[str, Iterable]):
         if name in self.dict:
             raise Exception(f"Cannot specify variant {name} twice")
