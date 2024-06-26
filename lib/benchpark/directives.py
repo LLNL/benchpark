@@ -83,8 +83,7 @@ class DirectiveMeta(type):
     def __init__(cls, name, bases, attr_dict):
         # The instance is being initialized: if it is an experiment we must ensure
         # that the directives are called to set it up.
-
-        if "benchpark.experiment" in cls.__module__:
+        if "benchpark.expr" in cls.__module__:
             # Ensure the presence of the dictionaries associated with the directives.
             # All dictionaries are defaultdicts that create lists for missing keys.
             for d in DirectiveMeta._directive_dict_names:
@@ -177,18 +176,18 @@ class DirectiveMeta(type):
                     kwargs.update(default_args)
                 kwargs.update(_kwargs)
 
-                # Inject when arguments from the context
-                if DirectiveMeta._when_constraints_from_context:
-                    # Check that directives not yet supporting the when= argument
-                    # are not used inside the context manager
-                    if decorated_function.__name__ == "version":
-                        msg = (
-                            'directive "{0}" cannot be used within a "when"'
-                            ' context since it does not support a "when=" '
-                            "argument"
-                        )
-                        msg = msg.format(decorated_function.__name__)
-                        raise DirectiveError(msg)
+                # # Inject when arguments from the context
+                # if DirectiveMeta._when_constraints_from_context:
+                #     # Check that directives not yet supporting the when= argument
+                #     # are not used inside the context manager
+                #     if decorated_function.__name__ == "version":
+                #         msg = (
+                #             'directive "{0}" cannot be used within a "when"'
+                #             ' context since it does not support a "when=" '
+                #             "argument"
+                #         )
+                #         msg = msg.format(decorated_function.__name__)
+                #         raise DirectiveError(msg)
 
                 # If any of the arguments are executors returned by a
                 # directive passed as an argument, don't execute them
@@ -232,7 +231,9 @@ class DirectiveMeta(type):
         return _decorator
 
 
-SubmoduleCallback = Callable[["benchpark.experiment.Experiment"], Union[str, List[str], bool]]
+SubmoduleCallback = Callable[
+    ["benchpark.experiment.Experiment"], Union[str, List[str], bool]
+]
 directive = DirectiveMeta.directive
 
 
@@ -323,13 +324,13 @@ def variant(
     description = str(description).strip()
 
     def _execute_variant(pkg):
-        if not re.match(benchpark.experiment_spec.spec.IDENTIFIER_RE, name):
+        if not re.match(benchpark.experiment_spec.IDENTIFIER, name):
             directive = "variant"
             msg = "Invalid variant name in {0}: '{1}'"
             raise DirectiveError(directive, msg.format(pkg.name, name))
 
-        pkg.variants[name] = (
-            benchpark.variant.Variant(name, default, description, values, multi, validator, sticky),
+        pkg.variants[name] = benchpark.variant.Variant(
+            name, default, description, values, multi, validator, sticky
         )
 
     return _execute_variant
