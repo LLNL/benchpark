@@ -23,6 +23,8 @@ class Laghos(MakefilePackage):
     license("BSD-2-Clause")
 
     version("develop", branch="caliper")
+    version("comm_cali", branch="comm_cali", submodules=False, git="https://github.com/gracenansamba/mfem.git")
+
 
     variant("metis", default=True, description="Enable/disable METIS support")
     variant("caliper", default=False, description="Enable/disable Caliper support")
