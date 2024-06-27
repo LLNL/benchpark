@@ -25,7 +25,7 @@ ramble:
           env_vars:
           variables:
             experiment_setup: ''
-            n_gpus: ['4', '8', '16', '32']
+            n_gpus: '{npx}*{npy}*{npz}'
             arch: 'CUDA'
           experiments:
             kripke_cuda_strong_{n_nodes}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}:
