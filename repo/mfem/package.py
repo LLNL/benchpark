@@ -18,7 +18,7 @@ class Mfem(BuiltinMfem):
         "gcc": "gnu",
     }
     
-    version("2.31_comm_cali", branch="comm_cali", submodules=False, git="https://github.com/gracenansamba/mfem.git")
+    version("comm_cali", branch="comm_cali", submodules=False, git="https://github.com/gracenansamba/mfem.git")
 
     def configure_args(self):
         configure_args = super().configure_args()
