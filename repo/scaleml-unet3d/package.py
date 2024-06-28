@@ -6,45 +6,20 @@
 from spack.package import *
 
 
-class ScaleML-UNet3D(CMakePackage, CudaPackage, ROCmPackage):
-    """ is a parallel ...
-    It requires an installation of PyTorch-[version] or higher.
-    """
+class UnetBenchmarkGit(Package):
+    """TO_BE_NAMED is a scalable machine learning benchmark for 3d semantic segmentation."""
 
     tags = ["benchmark"]
-    homepage = "https://github.com/LLNL/AMG2023"
-    git = "https://github.com/LLNL/AMG2023.git"
+    homepage = "http://example.com"
+    git = "https://lc.llnl.gov/gitlab/hao3/unet-benchmark.git"
 
-    license("Apache-2.0")
+    license("UNKNOWN", checked_by="Thionazin")
 
-    version("develop", branch="main")
+    version("main", sha256="332afea93d2520963437da808108beb814fb98ac78df12d693b2a37b61815d21")
 
-    variant("mpi", default=True, description="Enable MPI support")
-    variant("openmp", default=False, description="Enable OpenMP support")
-    variant("caliper", default=False, description="Enable Caliper monitoring")
+    depends_on("anaconda3", type=("build", "run"))
 
-    depends_on("mpi", when="+mpi")
-    depends_on("hypre+mpi", when="+mpi")
-    requires("+mpi", when="^hypre+mpi")
-    depends_on("caliper", when="+caliper")
-    depends_on("adiak", when="+caliper")
-    depends_on("hypre+caliper", when="+caliper")
-    depends_on("hypre@2.31.0:")
-    depends_on("hypre+cuda", when="+cuda")
-    requires("+cuda", when="^hypre+cuda")
-    depends_on("hypre+rocm", when="+rocm")
-    requires("+rocm", when="^hypre+rocm")
+    def install(self, spec, prefix):
+        bash = which("bash")
+        bash("conda", "env", "create", "-f", join_path(self.build_directory, "requirements.yaml"))
 
-    def cmake_args(self):
-        cmake_options = []
-        cmake_options.append(self.define_from_variant("AMG_WITH_CALIPER", "caliper"))
-        cmake_options.append(self.define_from_variant("AMG_WITH_OMP", "openmp"))
-        cmake_options.append(self.define("HYPRE_PREFIX", self.spec["hypre"].prefix))
-        if self.spec["hypre"].satisfies("+cuda"):
-            cmake_options.append("-DAMG_WITH_CUDA=ON")
-        if self.spec["hypre"].satisfies("+rocm"):
-            cmake_options.append("-DAMG_WITH_HIP=ON")
-        if self.spec["hypre"].satisfies("+mpi"):
-            cmake_options.append("-DAMG_WITH_MPI=ON")
-
-        return cmake_options

@@ -16,39 +16,9 @@ class ScaleMLUNet3D(SpackApplication):
             'large-scale','multi-node','single-node','sub-node',
             'mpi','c','cuda','hip']
 
-    executable('p1', 'amg' +
-                     ' -P {px} {py} {pz}' +
-                     ' -n {nx} {ny} {nz}' +
-                     ' -problem 1'        +
-                     ' -keepT', use_mpi=True)
-
-    executable('p2', 'amg' +
-                     ' -P {px} {py} {pz}' +
-                     ' -n {nx} {ny} {nz}' +
-                     ' -problem 2'        +
-                     ' -keepT', use_mpi=True)
+    executable('p1', 'train.sh', 'configs/config.yml')
 
     workload('problem1', executables=['p1'])
-    workload('problem2', executables=['p2'])
-
-    workload_variable('px', default='2',
-                      description='px',
-                      workloads=['problem1', 'problem2'])
-    workload_variable('py', default='2',
-                      description='py',
-                      workloads=['problem1', 'problem2'])
-    workload_variable('pz', default='2',
-                      description='pz',
-                      workloads=['problem1', 'problem2'])
-    workload_variable('nx', default='220',
-                      description='nx',
-                      workloads=['problem1', 'problem2'])
-    workload_variable('ny', default='220',
-                      description='ny',
-                      workloads=['problem1', 'problem2'])
-    workload_variable('nz', default='220',
-                      description='nz',
-                      workloads=['problem1', 'problem2'])
 
     figure_of_merit('Figure of Merit (FOM)', log_file='{experiment_run_dir}/{experiment_name}.out', fom_regex=r'Figure of Merit \(FOM\):\s+(?P<fom>[0-9]+\.[0-9]*(e^[0-9]*)?)', group_name='fom', units='')
 
