@@ -46,7 +46,7 @@ ramble:
     packages:
       hypre-omp:
         #  spack_spec: hypre@2.31.0 +mpi+openmp+mixedint~fortran{modifier_spack_variant}
-        spack_spec: hypre@2.31_comm_cali +mpi+openmp~mixedint~fortran{modifier_spack_variant}
+        spack_spec: ypre@2.31_comm_cali +mpi+openmp~mixedint~fortran{modifier_spack_variant}
         # spack_spec: hypre@comm_cali +mpi +openmp +mixedint ~fortran
         compiler: default-compiler
       amg2023-omp:
