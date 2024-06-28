@@ -6,30 +6,31 @@
 import os
 
 from spack.package import *
-from spack.pkg.builtin.mfem import mfem as BuiltinMfem
+from spack.pkg.builtin.mfem import Mfem as BuiltinMfem
 
 
 class Mfem(BuiltinMfem):
-    requires("+rocm", when="^rocblas")
-    requires("+rocm", when="^rocsolver")
+    variant("rocm", default=False, description="Enable ROCm support")
+    depends_on("rocblas", when="+rocm")
+    depends_on("rocsolver", when="+rocm")
 
     compiler_to_cpe_name = {
         "cce": "cray",
         "gcc": "gnu",
     }
-    
+
     version("comm_cali", branch="comm_cali", submodules=False, git="https://github.com/gracenansamba/mfem.git")
 
     def configure_args(self):
         configure_args = super().configure_args()
 
-        if (self.compiler.fc and 'xlf' in self.compiler.fc) or (self.compiler.f77 and 'xlf' in self.compiler.f77):
-          if not "+fortran" in self.spec:        
-            configure_args.append("--with-fmangle=no-underscores")
-            configure_args.append("--with-fmangle-blas=no-underscores") 
-            configure_args.append("--with-fmangle-lapack=no-underscores")
+        if (self.compiler.fc and "xlf" in self.compiler.fc) or (self.compiler.f77 and "xlf" in self.compiler.f77):
+            if not "+fortran" in self.spec:
+                configure_args.append("--with-fmangle=no-underscores")
+                configure_args.append("--with-fmangle-blas=no-underscores")
+                configure_args.append("--with-fmangle-lapack=no-underscores")
 
-        if self.spec["blas"].satisfies("rocblas"):
+        if "+rocm" in self.spec:
             configure_args.append("--enable-rocblas")
         if self.spec.satisfies("^cray-mpich+gtl"):
             configure_args.append("--enable-gpu-aware-mpi")
@@ -56,4 +57,3 @@ class Mfem(BuiltinMfem):
             if spec.satisfies("+openmp"):
                 libsci_name += "_mp"
             env.append_flags("LDFLAGS", f"-L{spec['lapack'].prefix}/lib -l{libsci_name}")
-
