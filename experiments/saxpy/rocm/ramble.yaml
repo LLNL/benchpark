@@ -24,15 +24,17 @@ ramble:
         problem:
           experiments:
             saxpy_{n}:
+              variants:
+                package_manager: spack
               variables:
                 n_gpus: '1'
                 n: ['128', '256', '512', '1024']
               matrix:
                   - n
-  spack:
+  software:
     packages:
       saxpy:
-        spack_spec: saxpy@1.0.0 +rocm{modifier_spack_variant} ~openmp amdgpu_target={rocm_arch}
+        pkg_spec: saxpy@1.0.0 +rocm{modifier_spack_variant} ~openmp amdgpu_target={rocm_arch}
         compiler: default-compiler
     environments:
       saxpy:

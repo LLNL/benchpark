@@ -8,7 +8,7 @@ import sys
 from ramble.appkit import *
 
 
-class Saxpy(SpackApplication):
+class Saxpy(ExecutableApplition):
     """saxpy benchmark"""
     name = "saxpy"
 

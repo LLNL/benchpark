@@ -26,14 +26,16 @@ ramble:
             n_ranks: '1'
           experiments:
             suite_{n_nodes}_{n_ranks}_{n_threads_per_proc}:
+              variants:
+                package_manager: spack
               variables:
                 env_name: raja-perf
                 n_nodes: '1'
                 n_threads_per_proc: ['8', '16']
-  spack:
+  software:
     packages:
       raja-perf:
-        spack_spec: raja-perf@develop +openmp+mpi{modifier_spack_variant}
+        pkg_spec: raja-perf@develop +openmp+mpi{modifier_spack_variant}
         compiler: default-compiler
     environments:
       raja-perf:

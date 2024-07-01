@@ -7,7 +7,7 @@ from ramble.appkit import *
 
 import sys
 
-class Kripke(SpackApplication):
+class Kripke(ExecutableApplition):
     """Kripke benchmark uses RAJA Portability Layer"""
     name = "Kripke"
 

@@ -28,6 +28,6 @@ class Caliper(SpackModifier):
 
     archive_pattern(_cali_datafile)
 
-    software_spec("caliper", spack_spec="caliper")
+    software_spec("caliper", pkg_spec="caliper")
 
     required_package("caliper")

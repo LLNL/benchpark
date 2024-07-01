@@ -8,7 +8,7 @@ from ramble.appkit import *
 from ramble.expander import Expander
 
 
-class Stream(SpackApplication):
+class Stream(ExecutableApplition):
     '''Define STREAM application'''
     name = 'stream'
 
@@ -17,8 +17,9 @@ class Stream(SpackApplication):
     tags('memorybenchmark', 'microbenchmark', 'memory-benchmark', 'micro-benchmark')
 
     software_spec('stream',
-                  spack_spec='stream@5.10 +openmp cflags="-O3 -DSTREAM_ARRAY_SIZE=80000000 -DNTIMES=20"',
-                  compiler='gcc12')
+                  pkg_spec='stream@5.10 +openmp cflags="-O3 -DSTREAM_ARRAY_SIZE=80000000 -DNTIMES=20"',
+                  compiler='gcc12',
+                  package_manager='spack*')
 
     required_package('stream')
 

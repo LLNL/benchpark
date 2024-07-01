@@ -15,7 +15,7 @@ Benchpark configuration files are organized as follows::
   │  │  ├── auxiliary_software_files
   │  │  │  ├── compilers.yaml
   │  │  │  └── packages.yaml
-  │  │  ├── spack.yaml
+  │  │  ├── software.yaml
   │  │  └── variables.yaml
   ├── experiments
   │  ├── ${BENCHMARK1}
@@ -131,7 +131,7 @@ add the following in your ramble.yaml::
     - name: allocation
     applications:
       ...
-    spack:
+    software:
       ...
     environments:
       - ...

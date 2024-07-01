@@ -27,12 +27,14 @@ ramble:
             n_nodes: '{scaling_nodes}'
           experiments:
             scaling_{n_nodes}nodes_{size_name}:
+              variants:
+                package_manager: spack
               variables:
                 n_ranks_per_node: ['36']
-  spack:
+  software:
     packages:
       osu-micro-benchmarks:
-        spack_spec: osu-micro-benchmarks
+        pkg_spec: osu-micro-benchmarks
         compiler: default-compiler
     environments:
       osu-micro-benchmarks:

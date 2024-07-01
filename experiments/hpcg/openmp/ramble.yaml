@@ -32,15 +32,17 @@ ramble:
             n_nodes: '1'
           experiments:
             hpcg_standard_{mx}_{my}_{mz}_{iterations}_{n_threads_per_proc}:
+              variants:
+                package_manager: spack
               variables:
                 env_name: hpcg-omp
               matrix:
                 - n_threads_per_proc
 
-  spack:
+  software:
     packages:
       hpcg-omp:
-        spack_spec: 'hpcg@3.1 +openmp'
+        pkg_spec: 'hpcg@3.1 +openmp'
         compiler: default-compiler
     environments:
       hpcg-omp:

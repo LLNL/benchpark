@@ -29,6 +29,8 @@ ramble:
             n_gpus: 64
           experiments:
             scaling_{n_nodes}nodes_{size_name}:
+              variants:
+                package_manager: spack
               variables:
                 size_name: ['bigbig']
                 size_x: [20]
@@ -47,10 +49,10 @@ ramble:
               - problems
               - scaling_nodes
 
-  spack:
+  software:
     packages:
       lammps:
-        spack_spec: lammps@20231121 +opt+manybody+molecule+kspace+rigid+kokkos+rocm+asphere+dpd-basic+dpd-meso+dpd-react+dpd-smooth+reaxff~openmp lammps_sizes=bigbig amdgpu_target={rocm_arch}
+        pkg_spec: lammps@20231121 +opt+manybody+molecule+kspace+rigid+kokkos+rocm+asphere+dpd-basic+dpd-meso+dpd-react+dpd-smooth+reaxff~openmp lammps_sizes=bigbig amdgpu_target={rocm_arch}
         compiler: compiler-rocm
     environments:
       lammps:

@@ -1,0 +1,20 @@
+,Pascal,AWS_PCluster_Hpc7a-zen4-EFA,Sierra,Tioga,AWS_PCluster_Hpc7a-zen4-EFA,HPECray-zen3-MI250X-Slingshot,Fugaku,x86_64,Piz Daint,LUMI,Grace-CPU,Magma,Ruby,Eiger,JUWELS-Booster
+**site**,LLNL,,LLNL,LLNL,,,RIKEN Center for Computational Science,,CSCS,CSC,TAMU,LLNL,LLNL,CSCS,JSC
+**system**,Penguin-broadwell-P100-OmniPath,AWS_PCluster_Hpc7a-zen4-EFA,IBM-power9-V100-Infiniband,HPECray-zen3-MI250X-Slingshot,AWS_PCluster_Hpc7a-zen4-EFA,HPECray-zen3-MI250X-Slingshot,Fujitsu-A64FX-TofuD,x86_64,HPECray-haswell-P100-Infiniband,HPECray-zen3-MI250X-Slingshot,Dell-cascadelake-InfiniBand,Penguin-icelake-OmniPath,Penguin-icelake-OmniPath,HPECray-zen2-Slingshot,JUWELS-Booster-rome-A100-Infiniband
+**integrator.vendor**,Penguin,AWS,IBM,HPECray,AWS,HPECray,Fujitsu,,HPECray,HPECray,Dell,PenguinComputing,Supermicro,HPECray,Atos
+**integrator.name**,,ParallelCluster3.7.2-Hpc7a,AC922,EX235a,ParallelCluster3.7.2-Hpc7a,EX235a,FX1000,,,EX235a,,RelionCluster,,,XH2000
+**processor.vendor**,Intel,AMD,IBM,AMD,AMD,AMD,Fujitsu,,Intel,AMD,Intel,Intel,Intel,AMD,AMD
+**processor.name**,Xeon_E5-2695_v4,EPYC-Zen4,POWER9,EPYC-Zen3,EPYC-Zen4,EPYC-Zen3,A64FX,,Xeon-E5-2650v3,EPYC-Zen3,Xeon6248R,XeonPlatinum924248C,XeonPlatinum8276L,EPYC-7742,EPYC-Zen2
+**processor.ISA**,x86_64,x86_64,ppc64le,x86_64,x86_64,x86_64,Armv8.2-A-SVE,x86_64,x86_64,x86_64,x86_64,x86_64,x86_64,x86_64,x86_64
+**processor.uArch**,broadwell,zen4,power9,zen3,zen4,zen3,aarch64,,haswell,zen3,cascadelake,icelake,icelake,zen2,zen2
+**accelerator.vendor**,NVIDIA,,NVIDIA,AMD,,AMD,,,NVIDIA,AMD,NVIDIA,,,,NVIDIA
+**accelerator.name**,P100,,V100,MI250X,,MI250X,,,P100,MI250X,A100,,,,A100
+**accelerator.ISA**,PTX,,PTX,GCN,,GCN,,,PTX,GCN,,,,,PTX
+**accelerator.uArch**,sm_56,,sm_70,gfx90a,,gfx90a,,,sm_60,gfx90a,,,,,sm_80
+**interconnect.vendor**,Cornelis,AWS,Mellanox,HPECray,AWS,HPECray,Fujitsu,,HPECray,HPECray,Mellanox,Intel,Cornelis,HPECray,Mellanox
+**interconnect.name**,OmniPath,EFA,EDR-Infiniband,Slingshot11,EFA,Slingshot11,TofuInterconnectD,,Aries,Slingshot11,HDR100InfiniBand,OmniPath,OmniPath,Slingshot,Infiniband
+**system-tested.site**,LLNL,AWS,LLNL,LLNL,AWS,LLNL,R-CCS,,CSCS,CSC,TAMU,LLNL,LLNL,CSCS,JSC
+**system-tested.name**,pascal,,lassen,tioga,,tioga,Fugaku,,daint,LUMI,Grace,magma,ruby,daint,JUWELS-Booster
+**system-tested.installation-year**,2018,,2018,2022,,2022,2020,,2017,2023,2020,2019,2020,2017,2020
+**system-tested.description**,,`aws/hpc7a <https://aws.amazon.com/ec2/instance-types/hpc7a>`_,`top500 <https://www.top500.org/system/179398>`_,`top500 <https://www.top500.org/system/180052>`_,`aws/hpc7a <https://aws.amazon.com/ec2/instance-types/hpc7a>`_,`top500 <https://www.top500.org/system/180052>`_,`top500 <https://www.top500.org/system/179807/>`_,,`top500 <https://www.top500.org/system/177824>`_,`top500 <https://www.top500.org/system/180048>`_,`top500 <https://www.top500.org/system/179905/>`_,`top500 <https://www.top500.org/system/179774>`_,`top500 <https://www.top500.org/system/179866>`_,`top500 <https://www.top500.org/system/177824>`_,`top500 <https://www.top500.org/system/179894/>`_
+**top500-system-instances**,,,Sierra (LLNL),"Frontier (ORNL), Lumi     (CSC), Tioga    (LLNL)",,"Frontier (ORNL), Lumi     (CSC), Tioga    (LLNL)",Fugaku (R-CCS),,Piz Daint (CSCS),"Frontier (ORNL), LUMI     (CSC), Tioga    (LLNL)",Grace,Magma (LLNL),Ruby (LLNL),,JUWELS Booster (JSC)
