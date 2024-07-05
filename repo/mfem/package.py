@@ -10,9 +10,12 @@ from spack.pkg.builtin.mfem import Mfem as BuiltinMfem
 
 
 class Mfem(BuiltinMfem):
-    variant("rocm", default=False, description="Enable ROCm support")
-    depends_on("rocblas", when="+rocm")
-    depends_on("rocsolver", when="+rocm")
+    # variant("rocm", default=False, description="Enable ROCm support")
+    # depends_on("rocblas", when="+rocm")
+    # depends_on("rocsolver", when="+rocm")
+
+    requires("+rocm", when="^rocblas")
+    requires("+rocm", when="^rocsolver")
 
     compiler_to_cpe_name = {
         "cce": "cray",
