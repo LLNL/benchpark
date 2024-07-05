@@ -17,9 +17,16 @@ class UnetBenchmarkGit(Package):
 
     version("main", sha256="332afea93d2520963437da808108beb814fb98ac78df12d693b2a37b61815d21")
 
-    depends_on("anaconda3", type=("build", "run"))
-
-    def install(self, spec, prefix):
-        bash = which("bash")
-        bash("conda", "env", "create", "-f", join_path(self.build_directory, "requirements.yaml"))
+    depends_on("python@3.10", type=("build", "run"))
+    depends_on("py-mpi4py", type=("build", "run"))
+    depends_on("py-torch", type=("build", "run"))
+    depends_on("py-torchvision", type=("build", "run"))
+    depends_on("py-matplotlib", type=("build", "run"))
+    depends_on("py-numpy@1.23.0", type=("build", "run"))
+    depends_on("py-pillow", type=("build", "run"))
+    depends_on("py-tqdm", type=("build", "run"))
+    depends_on("py-wandb", type=("build", "run"))
+    depends_on("py-open3d+python", type=("build", "run"))
+    # Add pyntcloud, may have to integrate
+    depends_on("py-pyyaml", type=("build", "run"))
 
