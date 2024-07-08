@@ -8,7 +8,7 @@ import sys
 from ramble.appkit import *
 
 
-class Amg2023(ExecutableApplition):
+class Amg2023(ExecutableApplication):
     """AMG2023 benchmark"""
     name = "amg2023"
 
