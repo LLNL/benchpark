@@ -6,7 +6,7 @@
 from spack.package import *
 
 
-class UnetBenchmarkGit(Package):
+class UnetBenchmarkGit(Package, CudaPackage):
     """TO_BE_NAMED is a scalable machine learning benchmark for 3d semantic segmentation."""
 
     tags = ["benchmark"]
@@ -17,12 +17,17 @@ class UnetBenchmarkGit(Package):
 
     version("main", sha256="332afea93d2520963437da808108beb814fb98ac78df12d693b2a37b61815d21")
 
-    depends_on("python@3.10", type=("build", "run"))
+    depends_on("python@3:", type=("build", "run"))      
+    
+    # depends_on("py-h5py", type=("build", "run"))
+    # depends_on("py-pycuda", type=("build", "run"))
     depends_on("py-mpi4py", type=("build", "run"))
-    depends_on("py-torch", type=("build", "run"))
+    depends_on("py-torch+cuda", when="+cuda", type=("build", "run"))
+    depends_on("py-torch~cuda~cudnn~nccl", when="~cuda", type=("build", "run"))
+    depends_on("py-pytorch-gradual-warmup-lr", type=("build", "run"))
     depends_on("py-torchvision", type=("build", "run"))
     depends_on("py-matplotlib", type=("build", "run"))
-    depends_on("py-numpy@1.23.0", type=("build", "run"))
+    depends_on("py-numpy", type=("build", "run"))        # @1.23.0 - strict dependence?
     depends_on("py-pillow", type=("build", "run"))
     depends_on("py-tqdm", type=("build", "run"))
     depends_on("py-wandb", type=("build", "run"))
@@ -30,3 +35,9 @@ class UnetBenchmarkGit(Package):
     # Add pyntcloud, may have to integrate
     depends_on("py-pyyaml", type=("build", "run"))
 
+    def install(self, spec, prefix):
+        mkdirp(prefix.bin)
+        install("UnetBenchmarkGit", prefix.bin)
+        install_tree("data", prefix.data)
+
+    install_time_test_callbacks = []  # type: List[str]
