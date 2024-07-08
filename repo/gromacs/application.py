@@ -8,7 +8,7 @@ from ramble.appkit import *
 from ramble.expander import Expander
 
 
-class Gromacs(ExecutableApplition):
+class Gromacs(ExecutableApplication):
     '''Define a Gromacs application'''
     name = 'gromacs'
 
