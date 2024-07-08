@@ -17,5 +17,5 @@
 # This is compatible across platforms.
 #
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-export PYTHONPATH="${SCRIPT_DIR}/../lib"
+export PYTHONPATH="${SCRIPT_DIR}/../lib":$PYTHONPATH
 exec python3 -i "$@"
