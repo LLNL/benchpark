@@ -8,7 +8,7 @@ from ramble.appkit import *
 from ramble.expander import Expander
 
 
-class Stream(ExecutableApplition):
+class Stream(ExecutableApplication):
     '''Define STREAM application'''
     name = 'stream'
 
