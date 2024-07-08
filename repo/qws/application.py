@@ -7,7 +7,7 @@ from ramble.appkit import *
 
 import sys
 
-class Qws(ExecutableApplition):
+class Qws(ExecutableApplication):
     """QWS benchmark for Lattice quantum chromodynamics simulation library for
     Fugaku and computers with wide SIMD
     """
