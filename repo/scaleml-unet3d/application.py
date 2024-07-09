@@ -8,8 +8,8 @@ import sys
 from ramble.appkit import *
 
 
-class ScaleMLUNet3D(SpackApplication):
-    """ScaleMLUNet3D benchmark"""
+class UnetBenchmarkGit(SpackApplication):
+    """UnetBenchmarkGit benchmark"""
     name = "ScaleML-UNet3D"
 
     tags = ['ai',
