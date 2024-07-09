@@ -3,8 +3,8 @@ import os
 import pathlib
 import shlex
 import subprocess
+import sys
 import yaml
-
 
 DEBUG = True
 
@@ -78,6 +78,23 @@ class RuntimeResources:
         self.ramble_location = self.dest / "ramble"
         self.spack_location = self.dest / "spack"
 
+    def bootstrap(self):
+        if not self.ramble_location.exists():
+            self._install_ramble()
+        ramble_lib_path = self.ramble_location / "lib" / "ramble"
+        externals = str(ramble_lib_path / "external")
+        if externals not in sys.path:
+            sys.path.insert(1, externals)
+        internals = str(ramble_lib_path)
+        if internals not in sys.path:
+            sys.path.insert(1, internals)
+
+        # Spack does not go in sys.path, but we will manually access modules from it
+        # The reason for this oddity is that spack modules will compete with the internal
+        # spack modules from ramble
+        if not self.spack_location.exists():
+            self._install_spack()
+
     def _install_ramble(self):
         debug_print(f"Cloning Ramble to {self.ramble_location}")
         git_clone_commit(
@@ -90,9 +107,7 @@ class RuntimeResources:
     def _install_spack(self):
         debug_print(f"Cloning Spack to {self.spack_location}")
         git_clone_commit(
-            "https://github.com/spack/spack.git",
-            self.spack_commit,
-            self.spack_location
+            "https://github.com/spack/spack.git", self.spack_commit, self.spack_location
         )
         debug_print(f"Done cloning Spack ({self.spack_location})")
 
@@ -111,7 +126,12 @@ class RuntimeResources:
         if not self.spack_location.exists():
             first_time = True
             self._install_spack()
-            spack("config", "--scope=site", "add", f"config:misc_cache:{spack_cache_location}")
+            spack(
+                "config",
+                "--scope=site",
+                "add",
+                f"config:misc_cache:{spack_cache_location}",
+            )
         return spack, first_time
 
     def spack_first_time_setup(self):

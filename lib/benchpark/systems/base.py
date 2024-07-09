@@ -1,12 +1,36 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import hashlib
+import importlib.util
 import os
 import pathlib
 import shutil
+import sys
 import tempfile
 
+import benchpark.paths
 from benchpark.runtime import RuntimeResources
+
+bootstrapper = RuntimeResources(benchpark.paths.benchpark_home)
+bootstrapper.bootstrap()
+
+import ramble.config as cfg
+import spack.util.spack_yaml as syaml
+
+
+# We cannot import this the normal way because it from modern Spack
+# and mixing modern Spack modules with ramble modules that depend on
+# ancient Spack will cause errors. This module is safe to load as an
+# individual because it is not used by Ramble
+# The following code block implements the line
+# import spack.schema.packages as packages_schema
+packages_schema_spec = importlib.util.spec_from_file_location(
+    "spack.schema.packages",
+    f"{bootstrapper.spack_location}/lib/spack/spack/schema/packages.py",
+)
+packages_schema = importlib.util.module_from_spec(packages_schema_spec)
+sys.modules["spack.schema.packages"] = packages_schema
+packages_schema_spec.loader.exec_module(packages_schema)
 
 
 def _hash_id(content_list):
@@ -14,35 +38,6 @@ def _hash_id(content_list):
     for x in content_list:
         sha256_hash.update(x.encode("utf-8"))
     return sha256_hash.hexdigest()
-
-
-_scripts_basedir = pathlib.Path(os.path.abspath(__file__)).parents[3] / "script-resources"
-
-
-class ScriptResources(RuntimeResources):
-    def __init__(self):
-        super().__init__(_scripts_basedir)
-
-
-class SpackConfigMergeResolver:
-    def __init__(self, script_resources):
-        self.script_resources = script_resources
-        self.merge_script = _scripts_basedir / "merge-spack-config.py"
-
-    def __call__(self, path1, path2):
-        """Merge config from path1 into path2"""
-        with tempfile.TemporaryDirectory() as temp_dir:
-            temp_dir = pathlib.Path(temp_dir)
-
-            merged_config = temp_dir / pathlib.Path(path2).name
-
-            spack = self.script_resources.spack()
-            spack(
-                f"python {self.merge_script} {path1} {path2} {merged_config}"
-            )
-
-            # Overwrite the destination path with the merged result
-            shutil.copy2(merged_config, path2)
 
 
 class System:
@@ -83,15 +78,18 @@ class System:
             # TODO: for now, pick the first; need to allow users to select
             selections.append(component_dir / component_choices[0])
 
-        # Now we have a set of packages.yaml files we need to merge together
-        merge = SpackConfigMergeResolver(ScriptResources())
+        data = cfg.read_config_file(selections[0], packages_schema.schema)
+        for selection in selections[1:]:
+            cfg.merge_yaml(
+                data, cfg.read_config_file(selection, packages_schema.schema)
+            )
 
         aux = output_dir / "auxiliary_software_files"
         os.mkdir(aux)
+
         aux_packages = aux / "packages.yaml"
-        shutil.copy2(selections[0], aux_packages)
-        for selection in selections[1:]:
-            merge(selection, aux_packages)
+        with open(aux_packages, "w") as outstream:
+            syaml.dump_config(data, outstream)
 
     def variables_yaml(self):
         for attr in self.required:
