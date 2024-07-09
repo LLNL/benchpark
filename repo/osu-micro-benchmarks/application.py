@@ -6,7 +6,7 @@
 import sys
 
 from ramble.appkit import *
-from ramble.app.builtin.osu-micro-benchmarks import OsuMicroBenchmarks as OsuMicroBenchmarksBase
+from ramble.app.builtin.osu_micro_benchmarks import OsuMicroBenchmarks as OsuMicroBenchmarksBase
 
 
 class OsuMicroBenchmarks(OsuMicroBenchmarksBase):
