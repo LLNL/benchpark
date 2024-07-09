@@ -10,7 +10,7 @@ from ramble.appkit import *
 
 class UnetBenchmarkGit(SpackApplication):
     """UnetBenchmarkGit benchmark"""
-    name = "ScaleML-UNet3D"
+    name = "UnetBenchmarkGit"
 
     tags = ['ai',
             'large-scale','multi-node','single-node','sub-node',
