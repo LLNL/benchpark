@@ -6,6 +6,8 @@ import subprocess
 import sys
 import yaml
 
+import benchpark.paths
+
 DEBUG = True
 
 
@@ -31,12 +33,21 @@ def git_clone_commit(url, commit, destination):
         run_command(f"git checkout {commit}")
 
 
+def get_commit(path):
+    output, error = run_command(
+        f"git ls-remote --refs -q {path} HEAD", fail_on_error=False
+    )
+    if "fatal: Could not read from remote repository." in error:
+        return None
+    return output.split()[0].strip()
+
+
 def benchpark_root():
     this_module_path = pathlib.Path(os.path.abspath(__file__))
     return this_module_path.parents[2]
 
 
-def run_command(command_str, env=None):
+def run_command(command_str, env=None, fail_on_error=True):
     proc = subprocess.Popen(
         shlex.split(command_str),
         env=env,
@@ -45,7 +56,7 @@ def run_command(command_str, env=None):
         text=True,
     )
     stdout, stderr = proc.communicate()
-    if proc.returncode != 0:
+    if proc.returncode != 0 and fail_on_error:
         raise RuntimeError(
             f"Failed command: {command_str}\nOutput: {stdout}\nError: {stderr}"
         )
@@ -75,8 +86,17 @@ class RuntimeResources:
             self.ramble_commit = data["versions"]["ramble"]
             self.spack_commit = data["versions"]["spack"]
 
-        self.ramble_location = self.dest / "ramble"
-        self.spack_location = self.dest / "spack"
+        # If we already downloaded the same commit of ramble or spack for bootstrapping
+        # then just use that instead
+        if self.ramble_commit == get_commit(benchpark.paths.global_ramble_path):
+            self.ramble_location = benchpark.paths.global_ramble_path
+        else:
+            self.ramble_location = self.dest / "ramble"
+
+        if self.spack_commit == get_commit(benchpark.paths.global_spack_path):
+            self.spack_location = benchpark.paths.global_spack_path
+        else:
+            self.spack_location = self.dest / "spack"
 
     def bootstrap(self):
         if not self.ramble_location.exists():
