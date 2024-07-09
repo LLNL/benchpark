@@ -6,7 +6,7 @@
 import sys
 
 from ramble.appkit import *
-from ramble.app.builtin.md-test import MdTest as MdTestBase
+from ramble.app.builtin.md_test import MdTest as MdTestBase
 
 
 class MdTest(MdTestBase):
