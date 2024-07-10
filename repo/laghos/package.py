@@ -23,7 +23,6 @@ class Laghos(MakefilePackage):
     license("BSD-2-Clause")
 
     version("develop", branch="caliper")
-    version("comm_cali", branch="comm_cali", submodules=False, git="https://github.com/gracenansamba/mfem.git")
 
 
     variant("metis", default=True, description="Enable/disable METIS support")
@@ -42,7 +41,7 @@ class Laghos(MakefilePackage):
     depends_on("mfem@3.4.1-laghos-v2.0", when="@2.0")
     # Recommended mfem version for laghos v1.x is: ^mfem@3.3.1-laghos-v1.0
     depends_on("mfem@3.3.1-laghos-v1.0", when="@1.0,1.1")
-    depends_on("mfem@4.1_comm_cali", when="@comm_cali")
+    depends_on("mfem@4.1_comm_cali", when="+caliper")
 
 
     # Replace MPI_Session
