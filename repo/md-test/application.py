@@ -1,13 +1,14 @@
-#!/bin/bash
 # Copyright 2023 Lawrence Livermore National Security, LLC and other
 # Benchpark Project Developers. See the top-level COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: Apache-2.0
 
-{allocation_directives}
+import sys
 
-cd {experiment_run_dir}
+from ramble.appkit import *
+from ramble.app.builtin.md_test import MdTest as MdTestBase
 
-{pre_exec}
-{command}
-{post_exec}
+
+class MdTest(MdTestBase):
+
+    tags = ['synthetic','i-o','large-scale','mpi','c']

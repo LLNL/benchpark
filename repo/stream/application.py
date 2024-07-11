@@ -16,6 +16,11 @@ class Stream(SpackApplication):
 
     tags('memorybenchmark', 'microbenchmark', 'memory-benchmark', 'micro-benchmark')
 
+    tags = ['synthetic',
+            'large-scale','multi-node','single-node','sub-node',
+            'high-memory-bandwidth','regular-memory-access',
+            'mpi','c','fortran','openmp']
+
     software_spec('stream',
                   spack_spec='stream@5.10 +openmp cflags="-O3 -DSTREAM_ARRAY_SIZE=80000000 -DNTIMES=20"',
                   compiler='gcc12')
