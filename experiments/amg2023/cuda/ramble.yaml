@@ -31,7 +31,7 @@ ramble:
             nx: '{n}'
             ny: '{n}'
             nz: '{n}'
-            gtl: ['gtl', 'nogtl']
+            gtl: ['gtl']  # gtl: ['gtl', 'nogtl']
             gtlflag: ['-M"-gpu"', '']
           experiments:
             amg2023_cuda_problem1_{gtl}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
