@@ -17,7 +17,7 @@ class Quicksilver(SpackApplication):
     executable('run', 'qs', use_mpi=True)
 
     workload('quicksilver', executables=['run'])
-    #not sure if these variables are necesary
+    #not sure if these variables are necessary
     workload_variable('D', default='',
                       description='time step (seconds)',
                       workloads=['quicksilver'])
@@ -67,7 +67,7 @@ class Quicksilver(SpackApplication):
 
 
     workload_variable('b', default='',
-                      description='number of vault/batch to start (sets batchSize automaticaly)',
+                      description='number of vault/batch to start (sets batchSize automatically)',
                       workloads=['quicksilver'])
 
     workload_variable('N', default='',
