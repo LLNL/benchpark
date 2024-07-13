@@ -15,6 +15,7 @@ benchpark-tags:
     - fusion
     - material-science
     - molecular-dynamics
+    - synthetic
     - qcd
   benchmark-scale:
     - large-scale
@@ -27,14 +28,19 @@ benchpark-tags:
     - mpi
     - nccl
     - nvsmem
+    - openshmem
     - rccl
     - shmem
     - upc
+    - upc++
   communication-performance-characteristics:
     - network-bandwidth-bound
     - network-bisection-bandwidth-bound
     - network-collectives
     - network-latency-bound
+    - network-multi-threaded
+    - network-nonblocking-collectives
+    - network-onesided
     - network-point-to-point
   compute-performance-characteristics:
     - atomics
@@ -57,16 +63,19 @@ benchpark-tags:
     - high-memory-bandwidth
     - irregular-memory-access
     - large-memory-footprint
+    - managed-memory
     - regular-memory-access
   mesh-representation:
     - amr
     - block-structured-grid
     - meshfree
+    - multigrid
     - structured-grid
     - unstructured-grid
   method-type:
     - ai # AI, ML, DL
     - ale # arbitrary lagrangian-eulerian
+    - conjugate-gradient
     - dense-linear-algebra
     - deterministic
     - direct-solve
@@ -84,6 +93,7 @@ benchpark-tags:
     - low-order
     - montecarlo
     - nbody
+    - no-method
     - ode # ordinary differential equations
     - partial-assembly
     - particles
@@ -98,6 +108,7 @@ benchpark-tags:
     - c
     - c++
     - fortran
+    - java
     - julia
     - python
     - rust
@@ -107,6 +118,7 @@ benchpark-tags:
     - hip
     - kokkos
     - oneapi
+    - openacc
     - openmp
     - raja
     - sycl
