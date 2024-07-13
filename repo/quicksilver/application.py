@@ -12,7 +12,12 @@ class Quicksilver(SpackApplication):
     """Quicksilver benchmark"""
     name = "quicksilver"
 
-
+    tags = ['asc','montecarlo',
+            'single-node',
+            'high-branching',
+            'irregular-memory-access',
+            'mpi',
+            'c++','openmp']
 
     executable('run', 'qs', use_mpi=True)
 
