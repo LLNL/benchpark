@@ -3,36 +3,135 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-from typing import Dict, Tuple
-import os
+import collections.abc
+import functools
 import inspect
+import os
+import re
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Set, Tuple, Union
+
+import ramble.language.language_base
+import ramble.language.language_helpers
+import ramble.language.shared_language
 import yaml  # TODO: some way to ensure yaml available
+from llnl.util.lang import classproperty, memoized
+from ramble.language.language_base import DirectiveError
 
 import benchpark.directives
+import benchpark.experiment_spec
+import benchpark.variant
 import benchpark.repo
-from llnl.util.lang import classproperty, memoized
 
 
-class ExperimentMeta(
-    benchpark.directives.DirectiveMeta,
-):
+class ExperimentMeta(ramble.language.shared_language.SharedMeta):
     """
     Package metaclass for supporting directives (e.g., depends_on) and phases
     """
 
-    def __new__(cls, name, bases, attr_dict):
-        """
-        FIXME: REWRITE
-        Instance creation is preceded by phase attribute transformations.
+    _directive_names = set()
+    _directives_to_be_executed = []
 
-        Conveniently transforms attributes to permit extensible phases by
-        iterating over the attribute 'phases' and creating / updating private
-        InstallPhase attributes in the class that will be initialized in
-        __init__.
-        """
-        attr_dict["_name"] = None
 
-        return super(ExperimentMeta, cls).__new__(cls, name, bases, attr_dict)
+experiment_directive = ExperimentMeta.directive
+
+
+@experiment_directive("variants")
+def variant(
+    name: str,
+    default: Optional[Any] = None,
+    description: str = "",
+    values: Optional[Union[collections.abc.Sequence, Callable[[Any], bool]]] = None,
+    multi: Optional[bool] = None,
+    validator: Optional[Callable[[str, str, Tuple[Any, ...]], None]] = None,
+    when: Optional[Union[str, bool]] = None,
+    sticky: bool = False,
+):
+    """Define a variant for the experiment.
+
+    Experimentizer can specify a default value as well as a text description.
+
+    Args:
+        name: Name of the variant
+        default: Default value for the variant, if not specified otherwise the default will be
+            False for a boolean variant and 'nothing' for a multi-valued variant
+        description: Description of the purpose of the variant
+        values: Either a tuple of strings containing the allowed values, or a callable accepting
+            one value and returning True if it is valid
+        multi: If False only one value per spec is allowed for this variant
+        validator: Optional group validator to enforce additional logic. It receives the experiment
+            name, the variant name and a tuple of values and should raise an instance of BenchparkError
+            if the group doesn't meet the additional constraints
+        when: Optional condition on which the variant applies
+        sticky: The variant should not be changed by the concretizer to find a valid concrete spec
+
+    Raises:
+        DirectiveError: If arguments passed to the directive are invalid
+    """
+
+    def format_error(msg, pkg):
+        msg += " @*r{{[{0}, variant '{1}']}}"
+        return msg.format(pkg.name, name)
+
+    # Ensure we have a sequence of allowed variant values, or a
+    # predicate for it.
+    if values is None:
+        if str(default).upper() in ("TRUE", "FALSE"):
+            values = (True, False)
+        else:
+            values = lambda x: True
+
+    # The object defining variant values might supply its own defaults for
+    # all the other arguments. Ensure we have no conflicting definitions
+    # in place.
+    for argument in ("default", "multi", "validator"):
+        # TODO: we can consider treating 'default' differently from other
+        # TODO: attributes and let a packager decide whether to use the fluent
+        # TODO: interface or the directive argument
+        if hasattr(values, argument) and locals()[argument] is not None:
+
+            def _raise_argument_error(pkg):
+                msg = (
+                    "Remove specification of {0} argument: it is handled "
+                    "by an attribute of the 'values' argument"
+                )
+                raise DirectiveError(format_error(msg.format(argument), pkg))
+
+            return _raise_argument_error
+
+    # Allow for the object defining the allowed values to supply its own
+    # default value and group validator, say if it supports multiple values.
+    default = getattr(values, "default", default)
+    validator = getattr(values, "validator", validator)
+    multi = getattr(values, "multi", bool(multi))
+
+    # Here we sanitize against a default value being either None
+    # or the empty string, as the former indicates that a default
+    # was not set while the latter will make the variant unparsable
+    # from the command line
+    if default is None or default == "":
+
+        def _raise_default_not_set(pkg):
+            if default is None:
+                msg = "either a default was not explicitly set, or 'None' was used"
+            elif default == "":
+                msg = "the default cannot be an empty string"
+            raise DirectiveError(format_error(msg, pkg))
+
+        return _raise_default_not_set
+
+    description = str(description).strip()
+
+    def _execute_variant(pkg):
+        if not re.match(benchpark.experiment_spec.IDENTIFIER, name):
+            directive = "variant"
+            msg = "Invalid variant name in {0}: '{1}'"
+            raise DirectiveError(directive, msg.format(pkg.name, name))
+
+        pkg.variants[name] = benchpark.variant.Variant(
+            name, default, description, values, multi, validator, sticky
+        )
+
+    return _execute_variant
 
 
 class Experiment(metaclass=ExperimentMeta):
