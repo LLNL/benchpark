@@ -30,9 +30,11 @@ except ImportError:
 
 from enum import Enum
 
+import benchpark.paths
+import benchpark.runtime
 import benchpark.spec
 
-bootstrapper = RuntimeResources(benchpark.paths.benchpark_home)
+bootstrapper = benchpark.runtime.RuntimeResources(benchpark.paths.benchpark_home)
 bootstrapper.bootstrap()
 
 import llnl.util.lang
@@ -67,6 +69,16 @@ type_definitions = {
 }
 
 
+@contextlib.contextmanager
+def override_ramble_type_defs():
+    _old = ramble.repository.type_definitions
+    ramble.repository.type_definitions = type_definitions
+
+    yield
+
+    ramble.repository.type_definitions = _old
+
+
 # Experiments
 def _exprs():
     """Get the singleton RepoPath instance for Ramble.
@@ -82,7 +94,10 @@ def _exprs():
             "Benchpark configuration contains no experiment repositories."
         )
 
-    path = ramble.repository.RepoPath(*repo_dirs, object_type=ObjectTypes.experiments)
+    with override_ramble_type_defs():
+        path = ramble.repository.RepoPath(
+            *repo_dirs, object_type=ObjectTypes.experiments
+        )
     sys.meta_path.append(path)
     return path
 
