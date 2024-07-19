@@ -14,6 +14,10 @@ import ramble.language.language_base
 import ramble.language.language_helpers
 import ramble.language.shared_language
 import yaml  # TODO: some way to ensure yaml available
+
+bootstrapper = RuntimeResources(benchpark.paths.benchpark_home)
+bootstrapper.bootstrap()
+
 from llnl.util.lang import classproperty, memoized
 from ramble.language.language_base import DirectiveError
 
