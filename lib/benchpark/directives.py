@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Any, Callable, List, Optional, Set, Tuple, Uni
 import re
 
 import llnl.util.lang
-import benchpark.experiment_spec
+import benchpark.spec
 import benchpark.variant
 
 """This package contains directives that can be used within an experiment.
@@ -324,7 +324,7 @@ def variant(
     description = str(description).strip()
 
     def _execute_variant(pkg):
-        if not re.match(benchpark.experiment_spec.IDENTIFIER, name):
+        if not re.match(benchpark.spec.IDENTIFIER, name):
             directive = "variant"
             msg = "Invalid variant name in {0}: '{1}'"
             raise DirectiveError(directive, msg.format(pkg.name, name))

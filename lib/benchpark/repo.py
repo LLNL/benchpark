@@ -33,7 +33,7 @@ except ImportError:
 from enum import Enum
 
 import llnl.util.lang
-import benchpark.experiment_spec
+import benchpark.spec
 
 global_namespace = "benchpark"
 
@@ -165,8 +165,8 @@ def autospec(function):
 
     @functools.wraps(function)
     def converter(self, spec_like, *args, **kwargs):
-        if not isinstance(spec_like, benchpark.experiment_spec.ExperimentSpec):
-            spec_like = benchpark.experiment_spec.ExperimentSpec(spec_like)
+        if not isinstance(spec_like, benchpark.spec.ExperimentSpec):
+            spec_like = benchpark.spec.ExperimentSpec(spec_like)
         return function(self, spec_like, *args, **kwargs)
 
     return converter
@@ -360,7 +360,7 @@ class RepoPath(object):
         # and we want to avoid parsing str's into Specs unnecessarily.
         # logger.debug(f"Getting repo for obj {spec}")
         namespace = None
-        if isinstance(spec, benchpark.experiment_spec.ExperimentSpec):
+        if isinstance(spec, benchpark.spec.ExperimentSpec):
             namespace = spec.namespace
             name = spec.name
         else:
