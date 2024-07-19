@@ -1,8 +1,12 @@
 import enum
 import re
 from typing import Iterable, Iterator, List, Optional, Union
-import llnl.util.lang
 import benchpark.repo
+
+bootstrapper = RuntimeResources(benchpark.paths.benchpark_home)
+bootstrapper.bootstrap()
+
+import llnl.util.lang
 
 repo_path = benchpark.repo.paths[benchpark.repo.ObjectTypes.experiments]
 

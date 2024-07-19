@@ -7,9 +7,13 @@ import functools
 from typing import TYPE_CHECKING, Any, Callable, List, Optional, Set, Tuple, Union
 import re
 
-import llnl.util.lang
 import benchpark.spec
 import benchpark.variant
+
+bootstrapper = RuntimeResources(benchpark.paths.benchpark_home)
+bootstrapper.bootstrap()
+
+import llnl.util.lang
 
 """This package contains directives that can be used within an experiment.
 
