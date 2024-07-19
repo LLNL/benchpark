@@ -60,13 +60,13 @@ class ConcreteVariantMap(VariantMap):
         return self.satisfies(other)
 
 
-class ExperimentSpec(object):
-    def __init__(self, str_or_spec: Optional[Union[str, "ExperimentSpec"]] = None):
+class Spec(object):
+    def __init__(self, str_or_spec: Optional[Union[str, "Spec"]] = None):
         self._name = None
         self._namespace = None
         self._variants = VariantMap()
 
-        if isinstance(str_or_spec, ExperimentSpec):
+        if isinstance(str_or_spec, Spec):
             self._dup(str_or_spec)
         elif isinstance(str_or_spec, str):
             self._parse(str_or_spec)
@@ -75,7 +75,7 @@ class ExperimentSpec(object):
             msg += f"not from {type(str_or_spec)}."
             raise NotImplementedError(msg)
 
-    ### getter/setter for each attribute so that ConcreteExperimentSpec can be immutable ###
+    ### getter/setter for each attribute so that ConcreteSpec can be immutable ###
     @property
     def name(self):
         return self._name
@@ -101,7 +101,7 @@ class ExperimentSpec(object):
     def variants(self, value: VariantMap):
         self._variants = value
 
-    def __eq__(self, other: "ExperimentSpec"):
+    def __eq__(self, other: "Spec"):
         if other is None:
             return False
 
@@ -128,21 +128,23 @@ class ExperimentSpec(object):
         string += f" {variants}" if variants else ""
         return string
 
-    def _dup(self, other: "ExperimentSpec"):
-        # operate on underlying types so it can be called on ConcreteExperimentSpec
+    def _dup(self, other: "Spec"):
+        # operate on underlying types so it can be called on ConcreteSpec
         self._name = other.name
         self._namespace = other.namespace
         self._variants = other.variants
 
     def _parse(self, string: str):
-        specs = ExperimentSpecParser(string).all_specs()
+        specs = SpecParser(
+            type(self), string
+        ).all_specs()  # parse spec of appropriate type
         assert len(specs) == 1, f"{string} does not parse to one spec"
 
         self._dup(specs[0])
 
-    def intersects(self, other: Union[str, "ExperimentSpec"]) -> bool:
-        if not isinstance(other, ExperimentSpec):
-            other = ExperimentSpec(other)
+    def intersects(self, other: Union[str, "Spec"]) -> bool:
+        if not isinstance(other, Spec):
+            other = type(self)(other)  # keep type from subclass
         return (
             (self.name is None or other.name is None or self.name == other.name)
             and (
@@ -153,9 +155,9 @@ class ExperimentSpec(object):
             and self.variants.intersects(other.variants)
         )
 
-    def satisfies(self, other: Union[str, "ExperimentSpec"]) -> bool:
-        if not isinstance(other, ExperimentSpec):
-            other = ExperimentSpec(other)
+    def satisfies(self, other: Union[str, "Spec"]) -> bool:
+        if not isinstance(other, Spec):
+            other = type(self)(other)  # keep type from subclass
         return (
             (other.name is None or self.name == other.name)
             and (other.namespace is None or self.namespace == other.namespace)
@@ -163,15 +165,31 @@ class ExperimentSpec(object):
         )
 
     def concretize(self):
-        return ConcreteExperimentSpec(self)
+        raise NotImplementedError("Spec.concretize must be implemented by subclass")
 
+    @property
+    def object_class(self):
+        raise NotImplementedError(
+            f"{type(self)} does not implement object_class property"
+        )
+
+
+class ExperimentSpec(Spec):
     @property
     def experiment_class(self):
         return repo_path.get_obj_class(self.name)
 
+    @property
+    def object_class(self):
+        # shared getter so that multiple spec types can be concretized similarly
+        return self.experiment_class
 
-class ConcreteExperimentSpec(ExperimentSpec):
-    def __init__(self, str_or_spec: Union[str, ExperimentSpec]):
+    def concretize(self):
+        return ConcreteExperimentSpec(self)
+
+
+class ConcreteSpec(Spec):
+    def __init__(self, str_or_spec: Union[str, Spec]):
         super().__init__(str_or_spec)
         self._concretize()
 
@@ -204,29 +222,29 @@ class ConcreteExperimentSpec(ExperimentSpec):
 
     def _concretize(self):
         if not self.name:
-            raise AnonymousSpecError(
-                f"Cannot concretize anonymous ExperimentSpec {self}"
-            )
+            raise AnonymousSpecError(f"Cannot concretize anonymous {type(self)} {self}")
 
         if not self.namespace:
             ## TODO interface combination ##
-            self._namespace = self.experiment_class.namespace
+            self._namespace = self.object_class.namespace
 
         ## TODO interface combination ##
-        for name, variant in self.experiment_class.variants.items():
+        for name, variant in self.object_class.variants.items():
             if name not in self.variants:
                 self._variants[name] = variant.default
 
         for name, values in self.variants.items():
-            if name not in self.experiment_class.variants:
+            if name not in self.object_class.variants:
                 raise Exception(f"{name} is not a valid variant of {self.name}")
 
-            variant = self.experiment_class.variants[name]
+            variant = self.object_class.variants[name]
             variant.validate_values(self.variants[name])
 
         # Convert to immutable type
         self._variants = ConcreteVariantMap(self.variants)
 
+
+class ConcreteExperimentSpec(ConcreteSpec, ExperimentSpec):
     @property
     def experiment(self) -> "benchpark.Experiment":
         return self.experiment_class(self)
@@ -389,14 +407,15 @@ class TokenContext:
         return self.next_token and self.next_token.kind in kinds
 
 
-class ExperimentSpecParser(object):
-    __slots__ = "literal_str", "ctx"
+class SpecParser(object):
+    __slots__ = "literal_str", "ctx", "type"
 
-    def __init__(self, literal_str: str):
+    def __init__(self, type, literal_str: str):
         self.literal_str = literal_str
         self.ctx = TokenContext(
             filter(lambda x: x.kind != TokenType.WS, tokenize(literal_str))
         )
+        self.type = type
 
     def tokens(self) -> List[Token]:
         """Return the entire list of token from the initial text. White spaces are
@@ -406,7 +425,7 @@ class ExperimentSpecParser(object):
             filter(lambda x: x.kind != TokenType.WS, tokenize(self.literal_str))
         )
 
-    def next_spec(self) -> Optional[ExperimentSpec]:
+    def next_spec(self) -> Optional[Spec]:
         """Return the next spec parsed from text.
 
         Args:
@@ -419,7 +438,7 @@ class ExperimentSpecParser(object):
         if not self.ctx.next_token:
             return None
 
-        spec = ExperimentSpec()
+        spec = self.type()
 
         if self.ctx.accept(TokenType.UNQUALIFIED_PACKAGE_NAME):
             spec.name = self.ctx.current_token.value
@@ -448,7 +467,7 @@ class ExperimentSpecParser(object):
 
         return spec
 
-    def all_specs(self) -> List[ExperimentSpec]:
+    def all_specs(self) -> List[Spec]:
         return list(iter(self.next_spec, None))
 
 
