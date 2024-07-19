@@ -28,10 +28,8 @@ try:
 except ImportError:
     from collections import Mapping
 
-
 from enum import Enum
 
-import benchpark.naming as nm
 import benchpark.spec
 
 bootstrapper = RuntimeResources(benchpark.paths.benchpark_home)
