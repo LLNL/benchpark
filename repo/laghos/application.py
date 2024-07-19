@@ -8,7 +8,7 @@ import sys
 from ramble.appkit import *
 
 
-class Laghos(ExecutableApplition):
+class Laghos(ExecutableApplication):
     """Laghos benchmark"""
     name = "laghos"
 
