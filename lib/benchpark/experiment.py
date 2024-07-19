@@ -11,7 +11,6 @@ import re
 from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Set, Tuple, Union
 import yaml  # TODO: some way to ensure yaml available
 
-import benchpark.directives
 import benchpark.experiment_spec
 import benchpark.variant
 import benchpark.repo
