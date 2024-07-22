@@ -16,13 +16,10 @@ ramble:
   modifiers:
   - name: allocation
 
-    #variables:
-    #scheduler: "slurm"
-    #processes_per_node: 1
   applications:
-    quicksilver:
+    ior:
       workloads:
-        quicksilver:
+        ior:
           experiments:
              execute_{n_nodes}_{omp_num_threads}_{n}: 
               variables:
@@ -40,12 +37,12 @@ ramble:
       mpi:
         spack_spec: openmpi@4.1.6
         compiler: default-compiler
-      quicksilver:
-        spack_spec: quicksilver 
+      ior:
+        spack_spec: ior@3.3.0 
         compiler: default-compiler
     environments:
-      quicksilver:
+      ior:
         packages:
         - default-mpi
-        - quicksilver
+        - ior
         - '{modifier_package_name}'

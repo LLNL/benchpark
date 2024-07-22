@@ -16,15 +16,13 @@ ramble:
   modifiers:
   - name: allocation
 
-    #variables:
-    #scheduler: "slurm"
-    #processes_per_node: 1
   applications:
-    quicksilver:
+    remhos:
       workloads:
-        quicksilver:
+        remhos:
           experiments:
-             execute_{n_nodes}_{omp_num_threads}_{n}: 
+             execute_{n}_{n_nodes}_{omp_num_threads}:
+
               variables:
                 n_ranks_per_node: ['8', '4']
                 n_nodes: ['1', '2']
@@ -34,18 +32,26 @@ ramble:
                 - size_threads:
                   - n
                   - omp_num_threads
-              
   spack:
     packages:
-      mpi:
-        spack_spec: openmpi@4.1.6
+        #hypre:
+          #spack_spec: hypre@2.10.0b
+        #compiler: default-compiler
+        #zlib-ng:
+        #spack_spec: zlib-ng@2.1.5
+        #compiler: default-compiler
+      remhos:
+        spack_spec: remhos@1.0    
         compiler: default-compiler
-      quicksilver:
-        spack_spec: quicksilver 
+      mfem:
+        spack_spec: mfem@4.5.0
         compiler: default-compiler
     environments:
-      quicksilver:
+      remhos:
         packages:
+            #- hypre
+        - mfem
+          #- zlib-ng
         - default-mpi
-        - quicksilver
+        - remhos
         - '{modifier_package_name}'
