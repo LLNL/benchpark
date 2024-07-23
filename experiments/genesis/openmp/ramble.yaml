@@ -15,6 +15,9 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
+  modifiers:
+  - name: allocation
+
   applications:
     genesis:
       workloads:
@@ -25,9 +28,9 @@ ramble:
           variables:
             n_ranks: '{processes_per_node} * {n_nodes}'
             experiment_setup: ''
-            processes_per_node: ['8']
+            processes_per_node: ['{sys_cores_per_node} / 6']
             n_nodes: ['1']
-            omp_num_threads: ['4']
+            omp_num_threads: ['{processes_per_node} / 2']
             arch: 'OpenMP'
           experiments:
             genesis_omp_{n_nodes}_{processes_per_node}_{omp_num_threads}:
