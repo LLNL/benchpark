@@ -6,9 +6,12 @@
 variables:
   gtl_flag: ''  # to be overwritten by tests that need GTL
   rocm_arch: 'gfx90a'
-  batch_time: '120m'
-  mpi_command: 'flux run -N {n_nodes} -n {n_ranks}'
-  batch_submit: 'flux batch {execute_experiment}'
-  batch_nodes: '# flux: -N {n_nodes}'
-  batch_ranks: '# flux: -n {n_ranks}'
-  batch_timeout: '# flux: -t {batch_time}'
+  timeout: "120"
+  scheduler: "flux"
+  sys_cores_per_node: "64"
+  sys_gpus_per_node: "8"
+  max_request: "1000"  # n_ranks/n_nodes cannot exceed this
+  n_ranks: '1000001'  # placeholder value
+  n_nodes: '1000001'  # placeholder value
+  batch_submit: "placeholder"
+  mpi_command: "placeholder"

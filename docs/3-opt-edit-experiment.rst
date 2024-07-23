@@ -15,7 +15,7 @@ Benchpark configuration files are organized as follows::
   │  │  ├── auxiliary_software_files
   │  │  │  ├── compilers.yaml
   │  │  │  └── packages.yaml
-  │  │  ├── spack.yaml
+  │  │  ├── software.yaml
   │  │  └── variables.yaml
   ├── experiments
   │  ├── ${BENCHMARK1}
@@ -64,8 +64,82 @@ specifications. Modifiers are intended to encasulate reusable patterns that
 perform a specific configuration of an experiment. This may include injecting
 performance analysis or setting up system resources.
 
-Applying the Caliper modifier
------------------------------
+Requesting resources with Allocation Modifier
+---------------------------------------------
+Given:
+
+  - an experiment that requests resources (nodes, cpus, gpus, etc.), and
+  - a specification of the resources available on the system (cores_per_node, gpus_per_node, etc.),
+
+the ``Allocation Modifier`` generates the appropriate scheduler request for these resources
+(how many nodes are required to run a given experiment, etc.).
+
+
+.. list-table:: Hardware resources as specified by the system, and requested for the experiment
+   :widths: 20 40 40
+   :header-rows: 1
+
+   * - Resource
+     - Available on the System
+     - Requested for the Experiment
+   * - Total Nodes
+     - (opt) sys_nodes
+     - n_nodes
+   * - Total MPI Ranks
+     -
+     - n_ranks
+   * - CPU cores per node
+     - sys_cores_per_node
+     - (opt) n_cores_per_node
+   * - GPUs per node
+     - sys_gpus_per_node
+     - (opt) n_gpus_per_node
+   * - Memory per node
+     - sys_mem_per_node
+     - (opt) n_mem_per_node
+
+
+The experiment is required to specify:
+
+  - n_ranks it requires
+  - n_gpus (if using GPUs)
+
+If the experiment does not specify ``n_nodes``, the modifier will compute
+the number of nodes to allocate to provide the ``n_ranks`` and/or ``n_gpus``
+required for the experiment.
+
+The system is required to specify:
+
+  - sys_cores_per_node
+  - sys_gpus_per_node (if it has GPUs)
+  - sys_mem_per_node
+
+The modifier checks the resources requested by the experiment,
+computes the values for the unspecified variables, and
+checks that the request does not exceed the resources available on the system.
+
+To use the resource allocation modifier with your experiment,
+add the following in your ramble.yaml::
+
+  ramble:
+    include:
+      - ...
+      - ./configs/modifier.yaml
+    config:
+      ...
+    modifiers:
+    - name: allocation
+    applications:
+      ...
+    software:
+      ...
+    environments:
+      - ...
+      - '{modifier_package_name}'
+
+
+Profiling with Caliper Modifier
+-------------------------------
 We have implemented a Caliper modifier to enable profiling of Caliper-instrumented
 benchmarks in Benchpark. More documentation on Caliper can be found `here
 <https://software.llnl.gov/Caliper>`_.
@@ -90,10 +164,12 @@ is created which contains the collected performance metrics.
      - Metrics Collected
    * - caliper
      - Platform-independent
-     - | - Min time/rank: Minimum time (in seconds) across all ranks
-       | - Max time/rank: Maximum time (in seconds) across all ranks
-       | - Avg time/rank: Average time (in seconds) across all ranks
-       | - Total time: Aggregated time (in seconds) over all ranks
+     - | - Min/Max/Avg time/rank: Minimum/Maximum/Average time (in seconds) across all ranks
+       | - Total time: Aggregated time (in seconds) for all ranks
+   * - caliper-mpi
+     - Platform-independent
+     - | - Same as basic caliper modifier above
+       | - Profiles MPI functions
    * - caliper-topdown
      - x86 Intel CPUs
      - | - Retiring

@@ -85,30 +85,38 @@ The following files are required for each nosite system ``benchpark/configs/${SY
       - Tioga    (LLNL)
 
 
-2. ``spack.yaml`` defines default compiler and package names Spack should
-use to build the benchmarks on this system.  ``spack.yaml`` becomes the
-spack section in the `Ramble configuration file
+2. ``software.yaml`` defines default compiler and package names your package
+manager (Spack) should use to build the benchmarks on this system.
+``software.yaml`` becomes the spack section in the `Ramble configuration
+file
 <https://googlecloudplatform.github.io/ramble/configuration_files.html#spack-config>`_.
 
 .. code-block:: yaml
 
-    spack:
+    software:
       packages:
         default-compiler:
-          spack_spec: 'spack_spec_for_package'
+          pkg_spec: 'spack_spec_for_package'
         default-mpi:
-          spack_spec: 'spack_spec_for_package'
+          pkg_spec: 'spack_spec_for_package'
 
 3. ``variables.yaml`` defines system-specific launcher and job scheduler.
 
 .. code-block:: yaml
 
     variables:
-      mpi_command: 'mpirun -N {n_nodes} -n {n_ranks}'
-      batch_submit: '{execute_experiment}'
-      batch_nodes: ''
-      batch_ranks: ''
-      batch_timeout: ''
+      timeout: '30'
+      scheduler: "slurm"
+      sys_cores_per_node: "128"
+      sys_gpus_per_node: "4"
+      sys_mem_per_node unset
+      max_request: "1000"  # n_ranks/n_nodes cannot exceed this
+      n_ranks: '1000001'  # placeholder value
+      n_nodes: '1000001'  # placeholder value
+      batch_submit: "placeholder"
+      mpi_command: "placeholder"
+      # batch_queue: "pbatch"
+      # batch_bank: "guest"
 
 If defining a specific system, one can be more specific with available software versions
 and packages, as demonstrated in :doc:`add-a-site-specific-system-config`.

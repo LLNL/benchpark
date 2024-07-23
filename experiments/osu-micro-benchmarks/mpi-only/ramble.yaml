@@ -5,7 +5,7 @@
 
 ramble:
   include:
-  - ./configs/spack.yaml
+  - ./configs/software.yaml
   - ./configs/variables.yaml
 
   config:
@@ -14,24 +14,27 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
+  modifiers:
+  - name: allocation
+
   applications:
     osu-micro-benchmarks:
       workloads:
         osu_latency:
           variables:
-            n_ranks: '{processes_per_node} * {n_nodes}'
             size_name: ['medium']
             scaling_nodes: [2]
             n_nodes: '{scaling_nodes}'
           experiments:
             scaling_{n_nodes}nodes_{size_name}:
+              variants:
+                package_manager: spack
               variables:
-                processes_per_node: ['1']
-  spack:
-    concretized: true
+                n_ranks_per_node: ['36']
+  software:
     packages:
       osu-micro-benchmarks:
-        spack_spec: osu-micro-benchmarks
+        pkg_spec: osu-micro-benchmarks
         compiler: default-compiler
     environments:
       osu-micro-benchmarks:
