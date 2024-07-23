@@ -11,7 +11,9 @@ class Genesis(AutotoolsPackage):
     analysis programs, and other useful tools. GENESIS (GENeralized-Ensemble
     SImulation System) has been developed mainly by Sugita group in RIKEN-CCS.
     """
-
+    
+    tags = ['genesis','benchmark']
+    
     homepage = "https://www.r-ccs.riken.jp/labs/cbrt/"
     git = "https://github.com/genesis-release-r-ccs/genesis"
 
