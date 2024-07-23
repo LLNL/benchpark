@@ -5,7 +5,7 @@
 
 ramble:
   include:
-  - ./configs/spack.yaml
+  - ./configs/software.yaml
   - ./configs/variables.yaml
   - ./configs/modifier.yaml
 
@@ -36,19 +36,21 @@ ramble:
             n_threads_per_proc: ['4', '6', '12']
           experiments:
             amg2023_omp_problem1_{n_nodes}_{n_threads_per_proc}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
+              variants:
+                package_manager: spack
               variables:
                 env_name: amg2023-omp
               matrices:
                 - size_threads:
                   - n
                   - n_threads_per_proc
-  spack:
+  software:
     packages:
       hypre-omp:
-        spack_spec: hypre@2.31.0 +mpi+openmp+mixedint~fortran{modifier_spack_variant}
+        pkg_spec: hypre@2.31.0 +mpi+openmp+mixedint~fortran{modifier_spack_variant}
         compiler: default-compiler
       amg2023-omp:
-        spack_spec: amg2023@develop +mpi+openmp{modifier_spack_variant}
+        pkg_spec: amg2023@develop +mpi+openmp{modifier_spack_variant}
         compiler: default-compiler
     environments:
       amg2023-omp:

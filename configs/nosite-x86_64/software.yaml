@@ -3,17 +3,17 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-spack:
+software:
   packages:
     default-compiler:
-      spack_spec: gcc
+      pkg_spec: gcc
     compiler-gcc:
-      spack_spec: gcc
+      pkg_spec: gcc
     compiler-intel:
-      spack_spec: intel
+      pkg_spec: intel
     default-mpi:
-      spack_spec: openmpi
+      pkg_spec: openmpi
     blas:
-      spack_spec: blas
+      pkg_spec: blas
     lapack:
-      spack_spec: lapack
+      pkg_spec: lapack

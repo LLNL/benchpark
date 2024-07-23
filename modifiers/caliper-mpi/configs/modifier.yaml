@@ -11,7 +11,7 @@ modifiers:
   - name: caliper-mpi
     mode: mpi
 
-spack:
+software:
   packages:
     caliper-mpi:
-      spack_spec: caliper@master+adiak+mpi~libunwind~libdw~papi
+      pkg_spec: caliper@master+adiak+mpi~libunwind~libdw~papi
