@@ -14,7 +14,7 @@ class Genesis(SpackApplication):
     """
     name = "GENESIS"
 
-    tags = ['genesis','MD','mpi', 'openmp', 'cuda']
+    tags = ['molecular-dynamics','mpi', 'openmp', 'cuda']
 
     executable('chdir', 'cd $(dirname {input})', use_mpi=False)
     executable('genesis', 'spdyn {input}', use_mpi=True)
