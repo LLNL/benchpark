@@ -189,3 +189,13 @@ jobs:
             --disable-progress-bar \
             --disable-logger \
             workspace setup --dry-run
+
+      - name: Dry run genesis/openmp with allocation modifier on Fugaku
+        run: |
+          ./bin/benchpark setup genesis/openmp RCCS-Fugaku-Fujitsu-A64FX-TofuD workspace/
+          . workspace/setup.sh
+          ramble \
+            --workspace-dir workspace/genesis/openmp/RCCS-Fugaku-Fujitsu-A64FX-TofuD/workspace \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace setup --dry-run
