@@ -17,6 +17,9 @@ class Genesis(AutotoolsPackage):
 
     version("master", branch="master", submodules=False)
     version(
+        "2.1.3", submodules=False, tag="v2.1.3", commit="835ef1538f9350cfa7e9489f340837d0908afbd2"
+    )
+    version(
         "2.1.1", submodules=False, tag="v2.1.1", commit="38a54fe1c749f4d87bff591e65c61b23a7396f9d"
     )
     version(
@@ -42,12 +45,9 @@ class Genesis(AutotoolsPackage):
     @run_before("configure")
     def fix_programming_error(self):
         spec = self.spec
-        filter_file(r"atomcls1\(1:3\)", "atomcls1(1:6)", join_path(self.stage.source_path, "src/analysis/sp_analysis/hbond_analysis/hbond_analyze.fpp"))
-        filter_file(r"atomcls2\(1:3\)", "atomcls2(1:6)", join_path(self.stage.source_path, "src/analysis/sp_analysis/hbond_analysis/hbond_analyze.fpp"))
-        #if not spec.satisfies("%fj"):
-        #    filter_file(r"^#include <stdio", "#define __USE_LARGEFILE64\n#include <stdio", join_path(self.stage.source_path, "src/lib/fileio_data_.c"))
-        #    filter_file(r"fseeko64", "fseeko", join_path(self.stage.source_path, "src/lib/fileio_data_.c"))
-        #    filter_file(r"ftello64", "ftello", join_path(self.stage.source_path, "src/lib/fileio_data_.c"))
+        if self.version < Version("2.1.3"):
+            filter_file(r"atomcls1\(1:3\)", "atomcls1(1:6)", join_path(self.stage.source_path, "src/analysis/sp_analysis/hbond_analysis/hbond_analyze.fpp"))
+            filter_file(r"atomcls2\(1:3\)", "atomcls2(1:6)", join_path(self.stage.source_path, "src/analysis/sp_analysis/hbond_analysis/hbond_analyze.fpp"))
 
     def configure_args(self):
         spec = self.spec
