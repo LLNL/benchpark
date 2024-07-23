@@ -78,7 +78,7 @@ class Genesis(AutotoolsPackage):
             env["FCFLAGS"] = f"{opt_flags} -Mbackslash"
             env["F77FLAGS"] = f"{opt_flags} -Mbackslash"
             # cpp workaround; other systems and OS likely need different pre-processor fix
-            if "a64fx" in str(spec.target):
+            if spec.target == "a64fx":
                 env["FPP"] = "/opt/FJSVxtclanga/tcsds-1.2.38/bin/../lib/fpp"
                 env["PPFLAGS"] = "-traditional-cpp -traditional"
         elif spec.satisfies("%fj"):
