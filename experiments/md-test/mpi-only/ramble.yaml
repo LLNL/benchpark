@@ -5,7 +5,7 @@
 
 ramble:
   include:
-  - ./configs/spack.yaml
+  - ./configs/software.yaml
   - ./configs/variables.yaml
 
   config:
@@ -13,6 +13,9 @@ ramble:
     spack_flags:
       install: '--add --keep-stage'
       concretize: '-U -f'
+
+  modifiers:
+  - name: allocation
 
   applications:
     md-test:
@@ -23,19 +26,20 @@ ramble:
             n_nodes: '1'
           experiments:
             mdtest_multifile_{num-objects}_{iterations}_{additional-args}_{n_nodes}_{n_ranks}:
+              variants:
+                package_manager: spack
               variables:
                 env_name: mdtest
                 num-objects: '1000'
                 iterations: '10'
                 additional-args: ''
-  spack:
-    concretized: true
+  software:
     packages:
       ior:
-        spack_spec: ior@3.3.0
+        pkg_spec: ior@3.3.0
         compiler: default-compiler
       mdtest:
-        spack_spec: mdtest@1.9.3
+        pkg_spec: mdtest@1.9.3
         compiler: default-compiler
     environments:
       mdtest:
