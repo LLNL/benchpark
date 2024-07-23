@@ -60,6 +60,6 @@ class Qws(SpackApplication):
                       description='Maximum iterations of inner DD solver. (Default: 50)',
                       workloads=['qws'])
 
-    figure_of_merit('Figure of Merit (FOM)', log_file='{experiment_run_dir}/{experiment_name}.out', fom_regex=r'etime for sovler =\s+(?P<fom>[-+]?([0-9]*[.])?[0-9]+([eED][-+]?[0-9]+)?)', group_name='fom', units='')
+    figure_of_merit('Figure of Merit (FOM)', log_file='{experiment_run_dir}/{experiment_name}.out', fom_regex=r'etime for so.ler =\s+(?P<fom>[-+]?([0-9]*[.])?[0-9]+([eED][-+]?[0-9]+)?)', group_name='fom', units='')
 
     success_criteria('pass', mode='string', match=r'print timing', file='{experiment_run_dir}/{experiment_name}.out')
