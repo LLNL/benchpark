@@ -5,7 +5,7 @@
 
 ramble:
   include:
-  - ./configs/spack.yaml
+  - ./configs/software.yaml
   - ./configs/variables.yaml
   - ./configs/modifier.yaml
 
@@ -34,6 +34,8 @@ ramble:
             n_ranks: '1'
           experiments:
             stream_{s}_{o}_{n}_{n_threads_per_proc}:
+              variants:
+                package_manager: spack
               variables:
                 env_name: 'stream'
                 processes_per_node: '1'
@@ -42,10 +44,10 @@ ramble:
               matrix:
                 - n_threads_per_proc
 
-  spack:
+  software:
     packages:
       stream:
-        spack_spec: stream@5.10-caliper{modifier_spack_variant}
+        pkg_spec: stream@5.10-caliper{modifier_spack_variant}
         compiler: default-compiler
     environments:
       stream:

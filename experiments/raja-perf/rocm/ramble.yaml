@@ -5,7 +5,7 @@
 
 ramble:
   include:
-  - ./configs/spack.yaml
+  - ./configs/software.yaml
   - ./configs/variables.yaml
   - ./configs/modifier.yaml
   
@@ -24,12 +24,14 @@ ramble:
         suite:
           experiments:
             suite_{n_gpus}:
+              variants:
+                package_manager: spack
               variables:
                 n_gpus: '1'
-  spack:
+  software:
     packages:
       raja-perf:
-        spack_spec: raja-perf@develop +rocm~openmp{modifier_spack_variant} amdgpu_target={rocm_arch}
+        pkg_spec: raja-perf@develop +rocm~openmp{modifier_spack_variant} amdgpu_target={rocm_arch}
         compiler: default-compiler
     environments:
       raja-perf:
