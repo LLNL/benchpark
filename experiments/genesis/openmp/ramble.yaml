@@ -36,7 +36,6 @@ ramble:
             genesis_omp_{n_nodes}_{processes_per_node}_{omp_num_threads}:
               variables: {}
   spack:
-    concretized: true
     packages:
       genesis:
         spack_spec: genesis@2.1.3 +mpi+openmp{modifier_spack_variant}
