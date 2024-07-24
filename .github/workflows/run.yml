@@ -100,6 +100,16 @@ jobs:
         run: |
           pip install -r ./requirements.txt
 
+      - name: Dry run amg2023/openmp on Dane with allocation modifier
+        run: |
+          ./bin/benchpark setup amg2023/openmp LLNL-Dane-DELL-sapphirerapids-OmniPath workspace/
+          . workspace/setup.sh
+          ramble \
+            --workspace-dir workspace/amg2023/openmp/LLNL-Dane-DELL-sapphirerapids-OmniPath/workspace \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace setup --dry-run
+
       - name: Dry run amg2023/cuda on Sierra with allocation modifier
         run: |
           ./bin/benchpark setup amg2023/cuda LLNL-Sierra-IBM-power9-V100-Infiniband workspace/
