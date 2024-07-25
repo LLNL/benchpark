@@ -38,10 +38,11 @@ bootstrapper = benchpark.runtime.RuntimeResources(benchpark.paths.benchpark_home
 bootstrapper.bootstrap()
 
 import llnl.util.lang
+import ramble.language.language_base
 import ramble.repository
 
-
 global_namespace = "benchpark"
+namespaces = ["benchpark.expr"]
 
 #: Guaranteed unused default value for some functions.
 NOT_PROVIDED = object()
@@ -70,13 +71,21 @@ type_definitions = {
 
 
 @contextlib.contextmanager
-def override_ramble_type_defs():
-    _old = ramble.repository.type_definitions
+def override_ramble_hardcoded_globals():
+    _old = (
+        ramble.repository.type_definitions,
+        ramble.repository.global_namespace,
+        ramble.language.language_base.namespaces,
+    )
     ramble.repository.type_definitions = type_definitions
+    ramble.repository.global_namespace = global_namespace
+    ramble.language.language_base.namespaces = namespaces
 
     yield
 
-    ramble.repository.type_definitions = _old
+    ramble.repository.type_definitions = _old[0]
+    ramble.repository.global_namespace = _old[1]
+    ramble.language.language_base.namespaces = _old[2]
 
 
 # Experiments
@@ -94,7 +103,7 @@ def _exprs():
             "Benchpark configuration contains no experiment repositories."
         )
 
-    with override_ramble_type_defs():
+    with override_ramble_hardcoded_globals():
         path = ramble.repository.RepoPath(
             *repo_dirs, object_type=ObjectTypes.experiments
         )

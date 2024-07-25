@@ -49,6 +49,12 @@ class ExperimentMeta(ramble.language.shared_language.SharedMeta):
     _directive_names = set()
     _directives_to_be_executed = []
 
+    # Hack to be able to use SharedMeta outside of Ramble
+    # will ask Ramble to implement fix on their end and then we can remove this
+    def __init__(self, *args, **kwargs):
+        with benchpark.repo.override_ramble_hardcoded_globals():
+            super(ExperimentMeta, self).__init__(*args, **kwargs)
+
 
 experiment_directive = ExperimentMeta.directive
 

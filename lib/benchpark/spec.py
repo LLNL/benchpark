@@ -135,6 +135,9 @@ class Spec(object):
         string += f" {variants}" if variants else ""
         return string
 
+    def __repr__(self):
+        return str(self)
+
     def _dup(self, other: "Spec"):
         # operate on underlying types so it can be called on ConcreteSpec
         self._name = other.name
