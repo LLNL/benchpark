@@ -244,6 +244,8 @@ class Allocation(BasicModifier):
         # Definitions
         for var, val in v.defined():
             # print(f"<--- Define {str(var)} = {str(val)}")
+            if not val:
+                val = ""
             app.define_variable(var, str(val))
 
         if v.n_threads_per_proc:

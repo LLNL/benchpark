@@ -5,7 +5,7 @@
 
 ramble:
   include:
-  - ./configs/spack.yaml
+  - ./configs/software.yaml
   - ./configs/variables.yaml
   - ./configs/modifier.yaml
 
@@ -29,6 +29,8 @@ ramble:
             arch: 'CUDA'
           experiments:
             kripke_cuda_strong_{n_nodes}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}:
+              variants:
+                package_manager: spack
               variables:
                 ngroups: 64
                 gs: 1
@@ -42,6 +44,8 @@ ramble:
                 npy: ['2', '2', '2', '4']
                 npz: ['1', '2', '2', '2']
             kripke_cuda_weak_{n_nodes}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}:
+              variants:
+                package_manager: spack
               variables:
                 ngroups: 64
                 gs: 1
@@ -54,13 +58,13 @@ ramble:
                 npx: ['2', '2', '4', '4']
                 npy: ['2', '2', '2', '4']
                 npz: ['1', '2', '2', '2']
-  spack:
+  software:
     packages:
       cuda:
-        spack_spec: cuda@{default_cuda_version}+allow-unsupported-compilers
+        pkg_spec: cuda@{default_cuda_version}+allow-unsupported-compilers
         compiler: default-compiler
       kripke:
-        spack_spec: kripke@develop +mpi+cuda{modifier_spack_variant} ^chai@2024.02
+        pkg_spec: kripke@develop +mpi+cuda{modifier_spack_variant} ^chai@2024.02
         compiler: default-compiler
     environments:
       kripke:

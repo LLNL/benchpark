@@ -21,7 +21,7 @@ system_definition:
     ISA: PTX
     uArch: sm_56
   interconnect:
-    vendor: Cornelis
+    vendor: CornelisNetworks
     name: OmniPath
   system-tested:
     site: LLNL
