@@ -9,22 +9,36 @@ import inspect
 import os
 import re
 from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Set, Tuple, Union
+import yaml  # TODO: some way to ensure yaml available
 
+import benchpark.spec
+import benchpark.paths
+import benchpark.repo
+import benchpark.runtime
+import benchpark.variant
+
+bootstrapper = benchpark.runtime.RuntimeResources(benchpark.paths.benchpark_home)
+bootstrapper.bootstrap()
+
+from llnl.util.lang import memoized
 import ramble.language.language_base
 import ramble.language.language_helpers
 import ramble.language.shared_language
-import yaml  # TODO: some way to ensure yaml available
-
-bootstrapper = RuntimeResources(benchpark.paths.benchpark_home)
-bootstrapper.bootstrap()
-
-from llnl.util.lang import classproperty, memoized
 from ramble.language.language_base import DirectiveError
 
-import benchpark.directives
-import benchpark.experiment_spec
-import benchpark.variant
-import benchpark.repo
+
+#### TODO remove this when it is added to ramble.lang (when ramble updates from spack
+class classproperty:
+    """Non-data descriptor to evaluate a class-level property. The function that performs
+    the evaluation is injected at creation time and take an instance (could be None) and
+    an owner (i.e. the class that originated the instance)
+    """
+
+    def __init__(self, callback):
+        self.callback = callback
+
+    def __get__(self, instance, owner):
+        return self.callback(owner)
 
 
 class ExperimentMeta(ramble.language.shared_language.SharedMeta):
@@ -34,6 +48,12 @@ class ExperimentMeta(ramble.language.shared_language.SharedMeta):
 
     _directive_names = set()
     _directives_to_be_executed = []
+
+    # Hack to be able to use SharedMeta outside of Ramble
+    # will ask Ramble to implement fix on their end and then we can remove this
+    def __init__(self, *args, **kwargs):
+        with benchpark.repo.override_ramble_hardcoded_globals():
+            super(ExperimentMeta, self).__init__(*args, **kwargs)
 
 
 experiment_directive = ExperimentMeta.directive
@@ -126,7 +146,7 @@ def variant(
     description = str(description).strip()
 
     def _execute_variant(pkg):
-        if not re.match(benchpark.experiment_spec.IDENTIFIER, name):
+        if not re.match(benchpark.spec.IDENTIFIER, name):
             directive = "variant"
             msg = "Invalid variant name in {0}: '{1}'"
             raise DirectiveError(directive, msg.format(pkg.name, name))
@@ -217,11 +237,11 @@ class Experiment(metaclass=ExperimentMeta):
     # This allows analysis tools to correctly interpret the class attributes.
     variants: Dict[
         str,
-        Tuple["benchpark.variant.Variant", "benchpark.experiment_spec.ConcreteSpec"],
+        Tuple["benchpark.variant.Variant", "benchpark.spec.ConcreteExperimentSpec"],
     ]
 
     def __init__(self, spec):
-        self.spec: "benchpark.experiment_spec.ConcreteSpec" = spec
+        self.spec: "benchpark.spec.ConcreteExperimentSpec" = spec
         super().__init__()
 
     @classproperty
@@ -286,19 +306,19 @@ class Experiment(metaclass=ExperimentMeta):
 
         # if the spec is concrete already, then it extends something
         # that is an *optional* dependency, and the dep isn't there.
-        if isinstance(self.spec, benchpark.experiment_spec.ConcreteSpec):
+        if isinstance(self.spec, benchpark.spec.ConcreteSpec):
             return None
         else:
             # If it's not concrete, then return the spec from the
             # extends() directive since that is all we know so far.
             spec_str = next(iter(self.extendees))
-            return benchpark.experiment_spec.Spec(spec_str)
+            return benchpark.spec.Spec(spec_str)
 
     @property
     def is_extension(self):
         # if it is concrete, it's only an extension if it actually
         # dependes on the extendee.
-        if isinstance(self.spec, benchpark.experiment_spec.ConcreteSpec):
+        if isinstance(self.spec, benchpark.spec.ConcreteSpec):
             return self.extendee_spec is not None
         else:
             # If not, then it's an extension if it *could* be an extension

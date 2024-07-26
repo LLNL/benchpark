@@ -1,8 +1,15 @@
 import enum
 import re
 from typing import Iterable, Iterator, List, Optional, Union
-import llnl.util.lang
+
+import benchpark.paths
 import benchpark.repo
+import benchpark.runtime
+
+bootstrapper = benchpark.runtime.RuntimeResources(benchpark.paths.benchpark_home)
+bootstrapper.bootstrap()
+
+import llnl.util.lang
 
 repo_path = benchpark.repo.paths[benchpark.repo.ObjectTypes.experiments]
 
@@ -127,6 +134,9 @@ class Spec(object):
             return variants
         string += f" {variants}" if variants else ""
         return string
+
+    def __repr__(self):
+        return str(self)
 
     def _dup(self, other: "Spec"):
         # operate on underlying types so it can be called on ConcreteSpec

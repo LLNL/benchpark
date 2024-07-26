@@ -1,6 +1,5 @@
 # TODO
-from benchpark.experiment import Experiment
-from benchpark.directives import *
+from benchpark.experiment import *
 
 
 class Saxpy(Experiment):
