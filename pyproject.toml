@@ -40,6 +40,11 @@ skip_glob = [
   "lib/benchpark/test_repo/**"
 ]
 
+[tool.flake8]
+exclude = [
+  "lib/benchpark/test_repo"
+]
+
 [tool.codespell]
 skip = './docs/_build,./docs/_static'
 ignore-words-list = 'fom'
