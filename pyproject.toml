@@ -32,13 +32,13 @@ extend-exclude = '''
 )/
 '''
 
-#[tool.isort]
-#profile = "black"
-#skip_gitignore = true
-#color_output = true
-#skip_glob = [
-#  "lib/benchpark/test_repo/**"
-#]
+[tool.isort]
+profile = "black"
+skip_gitignore = true
+color_output = true
+skip_glob = [
+  "lib/benchpark/test_repo/**"
+]
 
 [tool.codespell]
 skip = './docs/_build,./docs/_static'

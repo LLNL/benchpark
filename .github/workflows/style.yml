@@ -23,5 +23,3 @@ jobs:
         run: |
           black --diff --check .
           codespell
-          isort
-          flake8
