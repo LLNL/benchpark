@@ -9,11 +9,14 @@ import sys
 import benchpark.paths
 from benchpark.runtime import RuntimeResources
 
-import ramble.config as cfg
-import spack.util.spack_yaml as syaml
-
+# Need to retrieve Ramble to import it
+# fmt: off
 bootstrapper = RuntimeResources(benchpark.paths.benchpark_home)
 bootstrapper.bootstrap()
+
+import ramble.config as cfg
+import spack.util.spack_yaml as syaml
+# fmt: on
 
 
 # We cannot import this the normal way because it from modern Spack

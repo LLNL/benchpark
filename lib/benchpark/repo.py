@@ -19,12 +19,15 @@ import benchpark.paths
 import benchpark.runtime
 import benchpark.spec
 
+# Need to retrieve Ramble to import it
+# fmt: off
+bootstrapper = benchpark.runtime.RuntimeResources(benchpark.paths.benchpark_home)
+bootstrapper.bootstrap()
+
 import llnl.util.lang
 import ramble.language.language_base
 import ramble.repository
-
-bootstrapper = benchpark.runtime.RuntimeResources(benchpark.paths.benchpark_home)
-bootstrapper.bootstrap()
+# fmt: on
 
 global_namespace = "benchpark"
 namespaces = ["benchpark.expr"]
