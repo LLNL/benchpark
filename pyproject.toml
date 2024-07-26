@@ -29,6 +29,7 @@ extend-exclude = '''
     lib/benchpark/test_repo
   | bin\/benchpark-python
 )/
+'''
 
 [tool.isort]
 profile = "black"
