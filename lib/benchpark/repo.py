@@ -10,7 +10,6 @@ import os
 import sys
 import functools
 import contextlib
-import importlib
 
 from enum import Enum
 
@@ -19,14 +18,14 @@ import benchpark.runtime
 import benchpark.spec
 
 # Need to retrieve Ramble to import it
-# fmt: off
+# isort: off
 bootstrapper = benchpark.runtime.RuntimeResources(benchpark.paths.benchpark_home)
 bootstrapper.bootstrap()
 
 import llnl.util.lang
 import ramble.language.language_base
 import ramble.repository
-# fmt: on
+# isort: on
 
 global_namespace = "benchpark"
 namespaces = ["benchpark.expr"]
