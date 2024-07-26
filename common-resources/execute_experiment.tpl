@@ -8,4 +8,6 @@
 
 cd {experiment_run_dir}
 
+{pre_exec}
 {command}
+{post_exec}

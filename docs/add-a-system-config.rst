@@ -85,19 +85,20 @@ The following files are required for each nosite system ``benchpark/configs/${SY
       - Tioga    (LLNL)
 
 
-2. ``spack.yaml`` defines default compiler and package names Spack should
-use to build the benchmarks on this system.  ``spack.yaml`` becomes the
-spack section in the `Ramble configuration file
+2. ``software.yaml`` defines default compiler and package names your package
+manager (Spack) should use to build the benchmarks on this system.
+``software.yaml`` becomes the spack section in the `Ramble configuration
+file
 <https://googlecloudplatform.github.io/ramble/configuration_files.html#spack-config>`_.
 
 .. code-block:: yaml
 
-    spack:
+    software:
       packages:
         default-compiler:
-          spack_spec: 'spack_spec_for_package'
+          pkg_spec: 'spack_spec_for_package'
         default-mpi:
-          spack_spec: 'spack_spec_for_package'
+          pkg_spec: 'spack_spec_for_package'
 
 3. ``variables.yaml`` defines system-specific launcher and job scheduler.
 
