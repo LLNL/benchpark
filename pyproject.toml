@@ -26,8 +26,8 @@ exclude = '''
 '''
 extend-exclude = '''
 /(
-    lib/benchpark/test_repo/(/.*)?$
-  | bin\/benchpark-python
+    '/lib/benchpark/test_repo/(/.*)?$'
+  | '/bin/benchpark-python'
   | \.github
 )/
 '''
