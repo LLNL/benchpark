@@ -11,11 +11,11 @@ from benchpark.runtime import RuntimeResources
 
 # isort: off
 
-bootstrapper = RuntimeResources(benchpark.paths.benchpark_home)
-bootstrapper.bootstrap()
+bootstrapper = RuntimeResources(benchpark.paths.benchpark_home)  # noqa
+bootstrapper.bootstrap()  # noqa
 
-import ramble.config as cfg
-import spack.util.spack_yaml as syaml
+import ramble.config as cfg  # noqa
+import spack.util.spack_yaml as syaml  # noqa
 
 # isort: on
 

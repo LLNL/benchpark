@@ -19,12 +19,12 @@ import benchpark.spec
 
 # isort: off
 
-bootstrapper = benchpark.runtime.RuntimeResources(benchpark.paths.benchpark_home)
-bootstrapper.bootstrap()
+bootstrapper = benchpark.runtime.RuntimeResources(benchpark.paths.benchpark_home)  # noqa
+bootstrapper.bootstrap()  # noqa
 
-import llnl.util.lang
-import ramble.language.language_base
-import ramble.repository
+import llnl.util.lang  # noqa
+import ramble.language.language_base  # noqa
+import ramble.repository  # noqa
 
 # isort: on
 
