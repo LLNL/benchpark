@@ -22,23 +22,22 @@ ramble:
     amg2023:
       workloads:
         problem1:
-          variables:
-            p: 2
-            px: '{p}'
-            py: '{p}'
-            pz: '{p}'
-            n: ['55', '110']
-            nx: '{n}'
-            ny: '{n}'
-            nz: '{n}'
-            n_ranks_per_node: ['8', '4']
-            n_nodes: ['1', '2']
-            n_threads_per_proc: ['4', '6', '12']
           experiments:
             amg2023_omp_problem1_{n_nodes}_{n_threads_per_proc}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
               variants:
                 package_manager: spack
               variables:
+                p: 2
+                px: '{p}'
+                py: '{p}'
+                pz: '{p}'
+                n: ['10', '20']
+                nx: '{n}'
+                ny: '{n}'
+                nz: '{n}'
+                n_ranks_per_node: ['8', '4']
+                n_nodes: ['1', '2']
+                n_threads_per_proc: ['4', '6', '12']
                 env_name: amg2023-omp
               matrices:
                 - size_threads:
