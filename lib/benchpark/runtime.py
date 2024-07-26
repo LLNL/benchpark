@@ -116,7 +116,7 @@ class RuntimeResources:
         if not self.ramble_location.exists():
             first_time = True
             self._install_ramble()
-        return Command(self.ramble_location / "bin" / "ramble"), first_time
+        return Command(self.ramble_location / "bin" / "ramble", env={}), first_time
 
     def _spack(self):
         env = {"SPACK_DISABLE_LOCAL_CONFIG": "1"}

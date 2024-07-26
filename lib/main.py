@@ -429,7 +429,7 @@ def benchpark_setup_handler(args):
     ramble, first_time_ramble = per_workspace_setup.ramble_first_time_setup()
 
     if first_time_spack:
-        spack("repo", "add", "--scope", f"{source_dir}/repo")
+        spack("repo", "add", "--scope=site", f"{source_dir}/repo")
 
     if first_time_ramble:
         ramble(f"repo add --scope=site {source_dir}/repo")
