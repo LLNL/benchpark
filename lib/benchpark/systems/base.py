@@ -4,18 +4,16 @@ import hashlib
 import importlib.util
 import os
 import pathlib
-import shutil
 import sys
-import tempfile
 
 import benchpark.paths
 from benchpark.runtime import RuntimeResources
 
-bootstrapper = RuntimeResources(benchpark.paths.benchpark_home)
-bootstrapper.bootstrap()
-
 import ramble.config as cfg
 import spack.util.spack_yaml as syaml
+
+bootstrapper = RuntimeResources(benchpark.paths.benchpark_home)
+bootstrapper.bootstrap()
 
 
 # We cannot import this the normal way because it from modern Spack

@@ -6,27 +6,12 @@
 # option. This file may not be copied, modified, or distributed
 # except according to those terms.
 
-import abc
-import collections
 import os
 import sys
-import traceback
-import types
 import functools
 import contextlib
-import re
 import importlib
 import importlib.machinery
-import importlib.util
-import inspect
-import stat
-import shutil
-import errno
-
-try:
-    from collections.abc import Mapping  # novm
-except ImportError:
-    from collections import Mapping
 
 from enum import Enum
 
@@ -34,12 +19,12 @@ import benchpark.paths
 import benchpark.runtime
 import benchpark.spec
 
-bootstrapper = benchpark.runtime.RuntimeResources(benchpark.paths.benchpark_home)
-bootstrapper.bootstrap()
-
 import llnl.util.lang
 import ramble.language.language_base
 import ramble.repository
+
+bootstrapper = benchpark.runtime.RuntimeResources(benchpark.paths.benchpark_home)
+bootstrapper.bootstrap()
 
 global_namespace = "benchpark"
 namespaces = ["benchpark.expr"]

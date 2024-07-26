@@ -4,7 +4,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import argparse
-from contextlib import contextmanager
 import os
 import pathlib
 import shlex
@@ -433,9 +432,9 @@ def benchpark_setup_handler(args):
 
     if first_time_ramble:
         ramble(f"repo add --scope=site {source_dir}/repo")
-        ramble(f'config --scope=site add "config:disable_progress_bar:true"')
+        ramble('config --scope=site add "config:disable_progress_bar:true"')
         ramble(f"repo add -t modifiers --scope=site {source_dir}/modifiers")
-        ramble(f"config --scope=site add \"config:spack:global:args:'-d'\"")
+        ramble("config --scope=site add \"config:spack:global:args:'-d'\"")
 
     if not initializer_script.exists():
         with open(initializer_script, "w") as f:

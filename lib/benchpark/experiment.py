@@ -4,11 +4,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import collections.abc
-import functools
 import inspect
 import os
 import re
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Set, Tuple, Union
+from typing import Any, Callable, Dict, Optional, Tuple, Union
 import yaml  # TODO: some way to ensure yaml available
 
 import benchpark.spec
@@ -17,17 +16,16 @@ import benchpark.repo
 import benchpark.runtime
 import benchpark.variant
 
-bootstrapper = benchpark.runtime.RuntimeResources(benchpark.paths.benchpark_home)
-bootstrapper.bootstrap()
-
-from llnl.util.lang import memoized
 import ramble.language.language_base
 import ramble.language.language_helpers
 import ramble.language.shared_language
 from ramble.language.language_base import DirectiveError
 
+bootstrapper = benchpark.runtime.RuntimeResources(benchpark.paths.benchpark_home)
+bootstrapper.bootstrap()
 
-#### TODO remove this when it is added to ramble.lang (when ramble updates from spack
+
+# TODO remove this when it is added to ramble.lang (when ramble updates from spack
 class classproperty:
     """Non-data descriptor to evaluate a class-level property. The function that performs
     the evaluation is injected at creation time and take an instance (could be None) and
@@ -96,13 +94,16 @@ def variant(
         msg += " @*r{{[{0}, variant '{1}']}}"
         return msg.format(pkg.name, name)
 
+    def _always_true(_x):
+        return True
+
     # Ensure we have a sequence of allowed variant values, or a
     # predicate for it.
     if values is None:
         if str(default).upper() in ("TRUE", "FALSE"):
             values = (True, False)
         else:
-            values = lambda x: True
+            values = _always_true
 
     # The object defining variant values might supply its own defaults for
     # all the other arguments. Ensure we have no conflicting definitions

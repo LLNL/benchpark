@@ -1,15 +1,15 @@
 import enum
 import re
-from typing import Iterable, Iterator, List, Optional, Union
+from typing import Iterable, Iterator, List, Match, Optional, Union
 
 import benchpark.paths
 import benchpark.repo
 import benchpark.runtime
 
+import llnl.util.lang
+
 bootstrapper = benchpark.runtime.RuntimeResources(benchpark.paths.benchpark_home)
 bootstrapper.bootstrap()
-
-import llnl.util.lang
 
 repo_path = benchpark.repo.paths[benchpark.repo.ObjectTypes.experiments]
 
@@ -82,7 +82,7 @@ class Spec(object):
             msg += f"not from {type(str_or_spec)}."
             raise NotImplementedError(msg)
 
-    ### getter/setter for each attribute so that ConcreteSpec can be immutable ###
+    # getter/setter for each attribute so that ConcreteSpec can be immutable
     @property
     def name(self):
         return self._name
@@ -235,10 +235,10 @@ class ConcreteSpec(Spec):
             raise AnonymousSpecError(f"Cannot concretize anonymous {type(self)} {self}")
 
         if not self.namespace:
-            ## TODO interface combination ##
+            # TODO interface combination ##
             self._namespace = self.object_class.namespace
 
-        ## TODO interface combination ##
+        # TODO interface combination ##
         for name, variant in self.object_class.variants.items():
             if name not in self.variants:
                 self._variants[name] = variant.default
@@ -502,5 +502,5 @@ class SpecTokenizationError(Exception):
                 continue
             underline += f"{' ' * (match.end() - match.start())}"
 
-        message += color.colorize(f"@*r{{{underline}}}")
+        message += underline
         super().__init__(message)
