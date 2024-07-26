@@ -150,6 +150,26 @@ jobs:
             --disable-logger \
             workspace setup --dry-run
 
+      - name: Dry run laghos/mpi on LLNL-Magma-Penguin-icelake-OmniPath with allocation modifier
+        run: |
+          ./bin/benchpark setup laghos/mpi LLNL-Magma-Penguin-icelake-OmniPath workspace/
+          . workspace/setup.sh
+          ramble \
+            --workspace-dir workspace/laghos/mpi/LLNL-Magma-Penguin-icelake-OmniPath/workspace \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace setup --dry-run
+
+      - name: Dry run laghos/mpi on LLNL-Ruby-icelake-OmniPath with allocation modifier
+        run: |
+          ./bin/benchpark setup laghos/mpi LLNL-Ruby-icelake-OmniPath workspace/
+          . workspace/setup.sh
+          ramble \
+            --workspace-dir workspace/laghos/mpi/LLNL-Ruby-icelake-OmniPath/workspace \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace setup --dry-run
+
       - name: Dry run lammps/rocm on Tioga with allocation modifier
         run: |
           ./bin/benchpark setup lammps/rocm LLNL-Tioga-HPECray-zen3-MI250X-Slingshot workspace/
