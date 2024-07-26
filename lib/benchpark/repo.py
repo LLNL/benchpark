@@ -25,6 +25,7 @@ bootstrapper.bootstrap()
 import llnl.util.lang
 import ramble.language.language_base
 import ramble.repository
+
 # isort: on
 
 global_namespace = "benchpark"

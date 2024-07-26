@@ -16,6 +16,7 @@ bootstrapper.bootstrap()
 
 import ramble.config as cfg
 import spack.util.spack_yaml as syaml
+
 # isort: on
 
 
