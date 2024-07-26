@@ -445,8 +445,8 @@ if [ -n "${{_BENCHPARK_INITIALIZED:-}}" ]; then
     return 0
 fi
 
-. {spack_location}/share/spack/setup-env.sh
-. {ramble_location}/share/ramble/setup-env.sh
+. {per_workspace_setup.spack_location}/share/spack/setup-env.sh
+. {per_workspace_setup.ramble_location}/share/ramble/setup-env.sh
 
 export SPACK_DISABLE_LOCAL_CONFIG=1
 
