@@ -8,7 +8,7 @@ requires-python = ">=3.8"
 line-length = 88
 color = true
 target-version = ['py38', 'py39', 'py310', 'py311']
-include = '\.pyi?$|bin\/benchpark$'
+include = '\.pyi?$|bin'
 exclude = '''
 /(
     \.eggs
@@ -22,9 +22,13 @@ exclude = '''
   | build
   | dist
   | repo
-  | lib/benchpark/test_repo
 )/
 '''
+extend-exclude = '''
+/(
+    lib/benchpark/test_repo
+  | bin\/benchpark-python
+)/
 
 [tool.isort]
 profile = "black"

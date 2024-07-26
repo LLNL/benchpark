@@ -11,7 +11,6 @@ import sys
 import functools
 import contextlib
 import importlib
-import importlib.machinery
 
 from enum import Enum
 
