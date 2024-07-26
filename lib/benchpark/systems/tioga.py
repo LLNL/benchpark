@@ -19,4 +19,3 @@ class Tioga(System):
 
         base = pathlib.Path(os.path.abspath(__file__)).parents[0]
         self.external_resources = base / "externals" / "tioga"
-
