@@ -48,6 +48,9 @@ exclude = [
 skip_glob = [
   "lib/benchpark/test_repo/**"
 ]
+force-exclude = [
+  "lib/benchpark/test_repo/**"
+]
 
 [tool.codespell]
 skip = './docs/_build,./docs/_static'
