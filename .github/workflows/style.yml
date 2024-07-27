@@ -24,4 +24,4 @@ jobs:
           black --diff --check .
           codespell
           isort
-          flake8
+          flake8 --exclude lib/benchpark/test_repo
