@@ -42,7 +42,7 @@ skip_glob = [
 
 [tool.flake8]
 exclude = [
-  "lib/benchpark/test_repo"
+  "lib/benchpark/test_repo/*"
 ]
 
 [tool.codespell]
