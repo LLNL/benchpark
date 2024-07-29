@@ -29,34 +29,35 @@ ramble:
             target: 'gpu'
           experiments:
             gromacs_water_gmx50_adac_size{size}_dlb{dlb}_pin{pin}_target{target}_maxh{maxh}_nsteps{nsteps}_nstlist{nstlist}_npme{npme}:
+              variants:
+                package_manager: spack
               variables:
                 dlb: 'no'
                 pin: 'off'
                 nb: '{target}'
                 pme: 'auto'
-                bonded: '{target}'
+                bonded: 'cpu'
                 update: '{target}'
                 maxh: '0.05'
                 nsteps: '1000'
                 nstlist: '200'
-                npme: '0'
+                npme: '1'
                 size: '1536'
 
-  spack:
-    concretized: true
+  software:
     packages:
       hipsycl:
-        spack_spec: hipsycl@23.10.0
+        pkg_spec: hipsycl@23.10.0+rocm amdgpu_target={rocm_arch}
         compiler: default-compiler
       gromacs:
-        spack_spec: gromacs@2023.3 +mpi+openmp+rocm~hwloc~double amdgpu_target={rocm_arch}
+        pkg_spec: gromacs@2024 +mpi+openmp+sycl+rocm~hwloc~double amdgpu_target={rocm_arch}
         compiler: default-compiler
     environments:
       gromacs:
         packages:
-        - hipsycl
+        - default-mpi
         - blas-rocm
         - lapack-rocm
-        - mpi-rocm-gtl
+        - hipsycl
         - fftw
         - gromacs

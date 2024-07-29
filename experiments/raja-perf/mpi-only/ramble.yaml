@@ -5,8 +5,9 @@
 
 ramble:
   include:
-  - ./configs/spack.yaml
+  - ./configs/software.yaml
   - ./configs/variables.yaml
+  - ./configs/modifier.yaml
 
   config:
     deprecated: true
@@ -25,17 +26,18 @@ ramble:
             n_ranks: ['1', '2', '4', '8']
           experiments:
             suite_{n_nodes}_{n_ranks}:
+              variants:
+                package_manager: spack
               variables:
                 env_name: raja-perf
                 n_nodes: '1'
-  spack:
-    concretized: true
+  software:
     packages:
       blt:
-        spack_spec: 'blt@0.5.2:'
+        pkg_spec: 'blt@0.5.2:'
         compiler: compiler-gcc
       raja-perf:
-        spack_spec: raja-perf@develop ~openmp +mpi
+        pkg_spec: raja-perf@develop{modifier_spack_variant} ~openmp +mpi
         compiler: default-compiler
     environments:
       raja-perf:
@@ -43,3 +45,4 @@ ramble:
         - blt
         - default-mpi
         - raja-perf
+        - '{modifier_package_name}'

@@ -5,8 +5,9 @@
 
 ramble:
   include:
-  - ./configs/spack.yaml
+  - ./configs/software.yaml
   - ./configs/variables.yaml
+  - ./configs/modifier.yaml
 
   config:
     deprecated: true
@@ -23,16 +24,17 @@ ramble:
         suite:
           experiments:
             suite_{n_gpus}:
+              variants:
+                package_manager: spack
               variables:
                 n_gpus: '1'
-  spack:
-    concretized: true
+  software:
     packages:
       cuda:
-        spack_spec: cuda@{default_cuda_version}+allow-unsupported-compilers
+        pkg_spec: cuda@{default_cuda_version}+allow-unsupported-compilers
         compiler: default-compiler
       raja-perf:
-        spack_spec: raja-perf@develop +cuda~openmp+mpi cuda_arch=={cuda_arch}
+        pkg_spec: raja-perf@develop +cuda~openmp+mpi{modifier_spack_variant} cuda_arch=={cuda_arch}
         compiler: default-compiler
     environments:
       raja-perf:
@@ -40,3 +42,4 @@ ramble:
         - cuda
         - default-mpi
         - raja-perf
+        - '{modifier_package_name}'

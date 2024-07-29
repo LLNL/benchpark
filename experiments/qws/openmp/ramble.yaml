@@ -5,7 +5,7 @@
 
 ramble:
   include:
-  - ./configs/spack.yaml
+  - ./configs/software.yaml
   - ./configs/variables.yaml
   - ./configs/modifier.yaml
 
@@ -31,6 +31,8 @@ ramble:
             arch: 'OpenMP'
           experiments:
             qws_omp_{n_nodes}_{omp_num_threads}_{lx}_{ly}_{lz}_{lt}_{px}_{py}_{pz}_{pt}_{tol_outer}_{tol_inner}_{maxiter_plus1_outer}_{maxiter_inner}:
+              variants:
+                package_manager: spack
               variables:
                 lx: '32'
                 ly: '6'
@@ -44,11 +46,10 @@ ramble:
                 tol_inner: '-1'
                 maxiter_plus1_outer: '6'
                 maxiter_inner: '50'
-  spack:
-    concretized: true
+  software:
     packages:
       qws:
-        spack_spec: qws@master +mpi+openmp{modifier_spack_variant}
+        pkg_spec: qws@master +mpi+openmp{modifier_spack_variant}
         compiler: default-compiler
     environments:
       qws:

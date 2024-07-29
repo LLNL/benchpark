@@ -5,7 +5,7 @@
 
 ramble:
   include:
-  - ./configs/spack.yaml
+  - ./configs/software.yaml
   - ./configs/variables.yaml
   - ./configs/modifier.yaml
 
@@ -15,22 +15,24 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
+  modifiers:
+  - name: allocation
+
   applications:
     kripke:
       workloads:
         kripke:
           env_vars:
-            set:
-              OMP_NUM_THREADS: '{omp_num_threads}'
           variables:
-            n_ranks: '{processes_per_node} * {n_nodes}'
             experiment_setup: ''
-            processes_per_node: ['1', '16']
-            n_nodes: '1'
-            omp_num_threads: ['32', '2']
+            n_ranks: '{npx}*{npy}*{npz}'
+            n_threads_per_proc: '1'
+            omp_num_threads: '{n_threads_per_proc}'
             arch: 'OpenMP'
           experiments:
-            kripke_omp_{n_nodes}_{omp_num_threads}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}:
+            kripke_openmp_strong_{n_nodes}_{n_ranks}_{omp_num_threads}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}:
+              variants:
+                package_manager: spack
               variables:
                 ngroups: 64
                 gs: 1
@@ -38,16 +40,30 @@ ramble:
                 ds: 128
                 lorder: 4
                 nzx: '64'
-                nzy: '32'
+                nzy: '64'
                 nzz: '32'
-                npx: ['1', '4']
-                npy: ['1', '2']
-                npz: ['1', '2']
-  spack:
-    concretized: true
+                npx: ['2', '2', '4', '4']
+                npy: ['2', '2', '2', '4']
+                npz: ['1', '2', '2', '2']
+            kripke_openmp_weak_{n_nodes}_{n_ranks}_{omp_num_threads}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}:
+              variants:
+                package_manager: spack
+              variables:
+                ngroups: 64
+                gs: 1
+                nquad: 128
+                ds: 128
+                lorder: 4
+                nzx: ['64', '64', '128', '128']
+                nzy: ['64', '64', '64', '128']
+                nzz: ['32', '64', '64', '64']
+                npx: ['2', '2', '4', '4']
+                npy: ['2', '2', '2', '4']
+                npz: ['1', '2', '2', '2']
+  software:
     packages:
       kripke:
-        spack_spec: kripke@develop +mpi+openmp{modifier_spack_variant} ^chai@2024.02
+        pkg_spec: kripke@develop +mpi+openmp{modifier_spack_variant} ^chai@2024.02
         compiler: default-compiler
     environments:
       kripke:

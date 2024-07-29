@@ -5,7 +5,7 @@
 
 ramble:
   include:
-  - ./configs/spack.yaml
+  - ./configs/software.yaml
   - ./configs/variables.yaml
   - ./configs/modifier.yaml
 
@@ -15,19 +15,22 @@ ramble:
       install: '--add --keep-stage'
       concretize: '-U -f'
 
+  modifiers:
+  - name: allocation
+
   applications:
     kripke:
       workloads:
         kripke:
           env_vars:
           variables:
-            n_ranks: '{processes_per_node} * {n_nodes}'
             experiment_setup: ''
-            processes_per_node: ['8']
-            n_nodes: '1'
+            n_gpus: '{npx}*{npy}*{npz}'
             arch: 'HIP'
           experiments:
-            kripke_rocm_{n_nodes}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}:
+            kripke_rocm_strong_{n_nodes}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}:
+              variants:
+                package_manager: spack
               variables:
                 ngroups: 64
                 gs: 1
@@ -36,15 +39,29 @@ ramble:
                 lorder: 4
                 nzx: '64'
                 nzy: '64'
-                nzz: '64'
-                npx: '2'
-                npy: '2'
-                npz: '2'
-  spack:
-    concretized: true
+                nzz: '32'
+                npx: ['2', '2', '4', '4']
+                npy: ['2', '2', '2', '4']
+                npz: ['1', '2', '2', '2']
+            kripke_rocm_weak_{n_nodes}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}:
+              variants:
+                package_manager: spack
+              variables:
+                ngroups: 64
+                gs: 1
+                nquad: 128
+                ds: 128
+                lorder: 4
+                nzx: ['64', '64', '128', '128']
+                nzy: ['64', '64', '64', '128']
+                nzz: ['32', '64', '64', '64']
+                npx: ['2', '2', '4', '4']
+                npy: ['2', '2', '2', '4']
+                npz: ['1', '2', '2', '2']
+  software:
     packages:
       kripke:
-        spack_spec: kripke@develop +mpi+rocm{modifier_spack_variant} ^chai@2024.02
+        pkg_spec: kripke@develop +mpi+rocm{modifier_spack_variant} ^chai@2024.02
         compiler: default-compiler
     environments:
       kripke:

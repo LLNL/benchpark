@@ -5,9 +5,10 @@
 
 ramble:
   include:
-  - ./configs/spack.yaml
+  - ./configs/software.yaml
   - ./configs/variables.yaml
-
+  - ./configs/modifier.yaml
+  
   config:
     deprecated: true
     spack_flags:
@@ -23,16 +24,18 @@ ramble:
         suite:
           experiments:
             suite_{n_gpus}:
+              variants:
+                package_manager: spack
               variables:
                 n_gpus: '1'
-  spack:
-    concretized: true
+  software:
     packages:
       raja-perf:
-        spack_spec: raja-perf@develop +rocm~openmp amdgpu_target={rocm_arch}
+        pkg_spec: raja-perf@develop +rocm~openmp{modifier_spack_variant} amdgpu_target={rocm_arch}
         compiler: default-compiler
     environments:
       raja-perf:
         packages:
         - default-mpi
         - raja-perf
+        - '{modifier_package_name}'
