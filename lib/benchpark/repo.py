@@ -119,7 +119,7 @@ def _add_repo(repo_dir, obj_type):
 
 # Systems
 def _systems():
-    systems_repo = _base_path() / "systems"
+    systems_repo = _base_path() / "sys_repo"
     return _add_repo(systems_repo, ObjectTypes.systems)
 
 
