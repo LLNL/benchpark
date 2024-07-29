@@ -15,7 +15,6 @@ from enum import Enum
 
 import benchpark.paths
 import benchpark.runtime
-import benchpark.spec
 
 # isort: off
 
@@ -57,7 +56,7 @@ type_definitions = {
         "singular": "experiment",
     },
     ObjectTypes.systems: {
-        "file_name": "system.py"
+        "file_name": "system.py",
         "dir_name": "systems",
         "abbrev": "sys",
         "config_section": "repos",
@@ -101,18 +100,18 @@ def _exprs():
     TODO: consider not making this a singleton.
     """
     experiments_repo = _base_path() / "test_repo"
-    return _add_repo(experiments_repo)
+    return _add_repo(experiments_repo, ObjectTypes.experiments)
 
 
-def _add_repo(repo_dir):
-    if test_repo.exists():
-        repo_dirs = [test_repo]
+def _add_repo(repo_dir, obj_type):
+    if repo_dir.exists():
+        repo_dirs = [str(repo_dir)]
     else:
         raise ValueError(f"Repo dir does not exist: {repo_dir}")
 
     with override_ramble_hardcoded_globals():
         path = ramble.repository.RepoPath(
-            *repo_dirs, object_type=ObjectTypes.experiments
+            *repo_dirs, object_type=obj_type
         )
     sys.meta_path.append(path)
     return path
@@ -121,13 +120,14 @@ def _add_repo(repo_dir):
 # Systems
 def _systems():
     systems_repo = _base_path() / "systems"
-    return _add_repo(systems_repo)
+    return _add_repo(systems_repo, ObjectTypes.systems)
 
 
 paths = {
     ObjectTypes.experiments: llnl.util.lang.Singleton(_exprs),
     ObjectTypes.systems: llnl.util.lang.Singleton(_systems),
 }
+
 
 #####################################
 #     END TYPE SPECIFIC FUNCTIONALITY
@@ -200,20 +200,6 @@ def use_repositories(*paths_and_repos, object_type=default_type):
     if remove_from_meta:
         sys.meta_path.remove(temporary_repositories)
     paths[object_type] = saved
-
-
-def autospec(function):
-    """Decorator that automatically converts the first argument of a
-    function to a Spec.
-    """
-
-    @functools.wraps(function)
-    def converter(self, spec_like, *args, **kwargs):
-        if not isinstance(spec_like, benchpark.spec.ExperimentSpec):
-            spec_like = benchpark.spec.ExperimentSpec(spec_like)
-        return function(self, spec_like, *args, **kwargs)
-
-    return converter
 
 
 # Add the finder to sys.meta_path

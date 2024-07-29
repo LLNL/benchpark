@@ -5,7 +5,9 @@
 
 import os
 
-import benchpark.systems as systems
+#import benchpark.systems as systems
+#import benchpark.repo as repo
+import benchpark.system
 
 
 def system_create(args):
@@ -17,7 +19,9 @@ def system_create(args):
             init_kwargs[k] = v
 
     if args.system_type:
-        system = systems.system_from_type(args.system_type, **init_kwargs)
+        system = benchpark.system.system_class(args.system_type)(**init_kwargs)
+        #system = repo.systems.get(args.system_type)(**init_kwargs)
+        #system = systems.system_from_type(args.system_type, **init_kwargs)
     elif args.use_existing:
         pass
     else:

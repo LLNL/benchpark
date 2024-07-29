@@ -7,6 +7,7 @@ import pathlib
 import sys
 
 import benchpark.paths
+import benchpark.repo
 from benchpark.runtime import RuntimeResources
 
 # isort: off
@@ -32,6 +33,13 @@ packages_schema_spec = importlib.util.spec_from_file_location(
 packages_schema = importlib.util.module_from_spec(packages_schema_spec)
 sys.modules["spack.schema.packages"] = packages_schema
 packages_schema_spec.loader.exec_module(packages_schema)
+
+
+_repo_path = benchpark.repo.paths[benchpark.repo.ObjectTypes.systems]
+
+
+def system_class(system_id):
+    return _repo_path.get_obj_class(system_id)
 
 
 def _hash_id(content_list):

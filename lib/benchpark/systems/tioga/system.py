@@ -6,7 +6,7 @@
 import os
 import pathlib
 
-from .base import System
+from benchpark.system import System
 
 
 class Tioga(System):
