@@ -41,7 +41,7 @@ NOT_PROVIDED = object()
 # Implement type specific functionality between here, and
 #     END TYPE SPECIFIC FUNCTIONALITY
 ####
-ObjectTypes = Enum("ObjectTypes", ["experiments"])
+ObjectTypes = Enum("ObjectTypes", ["experiments", "systems"])
 
 OBJECT_NAMES = [obj.name for obj in ObjectTypes]
 
@@ -56,6 +56,14 @@ type_definitions = {
         "accepted_configs": ["repo.yaml"],
         "singular": "experiment",
     },
+    ObjectTypes.systems: {
+        "file_name": "system.py"
+        "dir_name": "systems",
+        "abbrev": "sys",
+        "config_section": "repos",
+        "accepted_configs": ["repo.yaml"],
+        "singular": "system",
+    }
 }
 
 
@@ -77,6 +85,13 @@ def override_ramble_hardcoded_globals():
     ramble.language.language_base.namespaces = _old[2]
 
 
+import pathlib
+
+
+def _base_path():
+    return pathlib.Path(__file__).resolve().parent
+
+
 # Experiments
 def _exprs():
     """Get the singleton RepoPath instance for Ramble.
@@ -85,12 +100,15 @@ def _exprs():
 
     TODO: consider not making this a singleton.
     """
-    filename = os.getcwd()  # gross way to work around file for interactive testing
-    repo_dirs = [os.path.join(filename, "test_repo")]
-    if not repo_dirs:
-        raise ramble.repository.NoRepoConfiguredError(
-            "Benchpark configuration contains no experiment repositories."
-        )
+    experiments_repo = _base_path() / "test_repo"
+    return _add_repo(experiments_repo)
+
+
+def _add_repo(repo_dir):
+    if test_repo.exists():
+        repo_dirs = [test_repo]
+    else:
+        raise ValueError(f"Repo dir does not exist: {repo_dir}")
 
     with override_ramble_hardcoded_globals():
         path = ramble.repository.RepoPath(
@@ -100,8 +118,15 @@ def _exprs():
     return path
 
 
+# Systems
+def _systems():
+    systems_repo = _base_path() / "systems"
+    return _add_repo(systems_repo)
+
+
 paths = {
     ObjectTypes.experiments: llnl.util.lang.Singleton(_exprs),
+    ObjectTypes.systems: llnl.util.lang.Singleton(_systems),
 }
 
 #####################################

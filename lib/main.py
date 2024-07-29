@@ -12,7 +12,7 @@ import subprocess
 import sys
 import yaml
 
-import benchpark.system
+import benchpark.system_cmd
 from benchpark.runtime import RuntimeResources
 
 DEBUG = False
@@ -266,8 +266,8 @@ def init_commands(subparsers, actions_dict):
     another file.
     """
     system_parser = subparsers.add_parser("system", help="Initialize a system config")
-    benchpark.system.setup_parser(system_parser)
-    actions_dict["system"] = benchpark.system.command
+    benchpark.system_cmd.setup_parser(system_parser)
+    actions_dict["system"] = benchpark.system_cmd.command
 
 
 def run_command(command_str, env=None):
