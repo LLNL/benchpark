@@ -5,7 +5,7 @@
 
 ramble:
   include:
-  - ./configs/spack.yaml
+  - ./configs/software.yaml
   - ./configs/variables.yaml
   - ./configs/modifier.yaml
 
@@ -31,6 +31,8 @@ ramble:
             arch: 'OpenMP'
           experiments:
             kripke_omp_{n_nodes}_{n_ranks}_{omp_num_threads}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}:
+              variants:
+                package_manager: spack
               variables:
                 ngroups: 64
                 gs: 1
@@ -43,10 +45,10 @@ ramble:
                 npx: ['1', '4']
                 npy: ['1', '2']
                 npz: ['1', '2']
-  spack:
+  software:
     packages:
       kripke:
-        spack_spec: kripke@develop +mpi+openmp{modifier_spack_variant} ^chai@2024.02
+        pkg_spec: kripke@develop +mpi+openmp{modifier_spack_variant} ^chai@2024.02
         compiler: default-compiler
     environments:
       kripke:

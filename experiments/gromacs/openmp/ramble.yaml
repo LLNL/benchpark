@@ -29,6 +29,8 @@ ramble:
             target: 'cpu'
           experiments:
             gromacs_water_gmx50_adac_size{size}_dlb{dlb}_pin{pin}_target{target}_maxh{maxh}_nsteps{nsteps}_nstlist{nstlist}_npme{npme}:
+              variants:
+                package_manager: spack
               variables:
                 dlb: 'no'
                 pin: 'off'
@@ -42,13 +44,13 @@ ramble:
                 npme: '0'
                 size: '1536'
 
-  spack:
+  software:
     packages:
       fftw:
-        spack_spec: fftw@3.3.10 +mpi+openmp
+        pkg_spec: fftw@3.3.10 +mpi+openmp
         compiler: default-compiler
       gromacs:
-        spack_spec: gromacs@main +mpi+openmp~hwloc~sycl~rocm~cuda
+        pkg_spec: gromacs@main +mpi+openmp~hwloc~sycl~rocm~cuda
         compiler: default-compiler
     environments:
       gromacs:

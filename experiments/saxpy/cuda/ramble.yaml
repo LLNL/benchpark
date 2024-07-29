@@ -5,7 +5,7 @@
 
 ramble:
   include:
-  - ./configs/spack.yaml
+  - ./configs/software.yaml
   - ./configs/variables.yaml
   - ./configs/modifier.yaml
 
@@ -24,18 +24,20 @@ ramble:
         problem:
           experiments:
             saxpy_{n}:
+              variants:
+                package_manager: spack
               variables:
                 n_gpus: '1'
                 n: ['128', '256', '512', '1024']
               matrix:
               - n
-  spack:
+  software:
     packages:
       cuda:
-        spack_spec: cuda@{default_cuda_version}+allow-unsupported-compilers
+        pkg_spec: cuda@{default_cuda_version}+allow-unsupported-compilers
         compiler: default-compiler
       saxpy:
-        spack_spec: saxpy@1.0.0 +cuda{modifier_spack_variant} cuda_arch=={cuda_arch} ~openmp
+        pkg_spec: saxpy@1.0.0 +cuda{modifier_spack_variant} cuda_arch=={cuda_arch} ~openmp
         compiler: default-compiler
     environments:
       saxpy:

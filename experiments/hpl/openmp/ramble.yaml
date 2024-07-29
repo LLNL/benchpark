@@ -5,7 +5,7 @@
 
 ramble:
   include:
-  - ./configs/spack.yaml
+  - ./configs/software.yaml
   - ./configs/variables.yaml
   - ./configs/modifier.yaml
 
@@ -35,14 +35,16 @@ ramble:
             n_threads_per_proc: ['2', '4', '8']
           experiments:
             hpl_omp_problem1_{n_threads_per_proc}_{Ps}_{Qs}_{Ns}_{NBs}:
+              variants:
+                package_manager: spack
               variables:
                 env_name: hpl-omp
               matrix:
                 - n_threads_per_proc
-  spack:
+  software:
     packages:
       hpl-omp:
-        spack_spec: hpl@2.3-caliper+openmp{modifier_spack_variant}
+        pkg_spec: hpl@2.3-caliper+openmp{modifier_spack_variant}
         compiler: default-compiler
     environments:
       hpl-omp:
