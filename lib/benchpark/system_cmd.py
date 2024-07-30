@@ -5,6 +5,7 @@
 
 import os
 import shutil
+import sys
 
 import benchpark.system
 
@@ -36,8 +37,9 @@ def system_create(args):
     try:
         os.mkdir(destdir)
         system.generate_description(destdir)
-    except os.FileExistsError:
-        raise ValueError(f"System description dir already exists: {destdir}")
+    except FileExistsError:
+        print(f"Abort: system description dir already exists ({destdir})")
+        sys.exit(1)
     except:
         # If there was a failure, remove any partially-generated resources
         shutil.rmtree(destdir)
