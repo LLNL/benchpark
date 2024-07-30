@@ -39,7 +39,10 @@ _repo_path = benchpark.repo.paths[benchpark.repo.ObjectTypes.systems]
 
 
 def system_class(system_id):
-    return _repo_path.get_obj_class(system_id)
+    cls = _repo_path.get_obj_class(system_id)
+    loc = pathlib.Path(_repo_path.filename_for_object_name(system_id)).parent
+    setattr(cls, "resource_location", loc)
+    return cls
 
 
 def _hash_id(content_list):
