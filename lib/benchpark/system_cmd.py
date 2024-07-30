@@ -4,9 +4,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import os
+import shutil
 
-#import benchpark.systems as systems
-#import benchpark.repo as repo
 import benchpark.system
 
 
@@ -20,8 +19,6 @@ def system_create(args):
 
     if args.system_type:
         system = benchpark.system.system_class(args.system_type)(**init_kwargs)
-        #system = repo.systems.get(args.system_type)(**init_kwargs)
-        #system = systems.system_from_type(args.system_type, **init_kwargs)
     elif args.use_existing:
         pass
     else:
@@ -36,11 +33,15 @@ def system_create(args):
     else:
         raise ValueError("Must specify one of: --dest, --basedir")
 
-    if os.path.exists(destdir):
+    try:
+        os.mkdir(destdir)
+        system.generate_description(destdir)
+    except os.FileExistsError:
         raise ValueError(f"System description dir already exists: {destdir}")
-    os.mkdir(destdir)
-
-    system.generate_description(destdir)
+    except:
+        # If there was a failure, remove any partially-generated resources
+        shutil.rmtree(destdir)
+        raise
 
 
 def system_list(args):
