@@ -42,28 +42,28 @@ ramble:
               variants:
                 package_manager: spack
               variables:
-                px: ['2', '2', '4']
-                py: ['2', '2', '2']
-                pz: ['1', '2', '2']
+                px: ['2', '4', '4']
+                py: ['2', '2', '4']
+                pz: ['2', '2', '2']
                 nx: '10'
                 ny: '10'
                 nz: '10'
                 n_ranks_per_node: '8'
-                n_nodes: ['1', '2', '3']
+                n_nodes: ['1', '2', '4']
                 n_threads_per_proc: '6'
                 env_name: amg2023-omp
             amg2023_omp_weak_problem1_{n_nodes}_{n_threads_per_proc}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
               variants:
                 package_manager: spack
               variables:
-                px: ['2', '2', '4']
-                py: ['2', '2', '2']
-                pz: ['1', '2', '2']
+                px: ['2', '4', '4']
+                py: ['2', '2', '4']
+                pz: ['2', '2', '2']
                 nx: ['10', '20', '20']
                 ny: ['10', '10', '20']
                 nz: ['10', '10', '10']
                 n_ranks_per_node: '8'
-                n_nodes: ['1', '2', '3']
+                n_nodes: ['1', '2', '4']
                 n_threads_per_proc: '6'
                 env_name: amg2023-omp
         problem2:
@@ -87,28 +87,28 @@ ramble:
               variants:
                 package_manager: spack
               variables:
-                px: ['2', '2', '4']
-                py: ['2', '2', '2']
-                pz: ['1', '2', '2']
+                px: ['2', '4', '4']
+                py: ['2', '2', '4']
+                pz: ['2', '2', '2']
                 nx: '10'
                 ny: '10'
                 nz: '10'
                 n_ranks_per_node: '8'
-                n_nodes: ['1', '2', '3']
+                n_nodes: ['1', '2', '4']
                 n_threads_per_proc: '6'
                 env_name: amg2023-omp
             amg2023_omp_weak_problem2_{n_nodes}_{n_threads_per_proc}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
               variants:
                 package_manager: spack
               variables:
-                px: ['2', '2', '4']
-                py: ['2', '2', '2']
-                pz: ['1', '2', '2']
+                px: ['2', '4', '4']
+                py: ['2', '2', '4']
+                pz: ['2', '2', '2']
                 nx: ['10', '20', '20']
                 ny: ['10', '10', '20']
                 nz: ['10', '10', '10']
                 n_ranks_per_node: '8'
-                n_nodes: ['1', '2', '3']
+                n_nodes: ['1', '2', '4']
                 n_threads_per_proc: '6'
                 env_name: amg2023-omp
   software:
