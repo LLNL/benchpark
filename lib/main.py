@@ -199,14 +199,29 @@ def benchpark_check_experiment(arg_str):
 
 
 def benchpark_check_system(arg_str):
+    # First check if it's a directory that contains a system_id.yaml
+    cfg_path = pathlib.Path(arg_str)
+    if cfg_path.is_dir():
+        system_id_path = cfg_path / "system_id.yaml"
+        if system_id_path.exists():
+            with open(system_id_path, "r") as f:
+                data = yaml.safe_load(f)
+            system_id = data["system"]["name"]
+            return system_id, cfg_path
+
+    # If it's not a directory, it might be a shorthand that refers
+    # to a pre-constructed config
     systems = benchpark_systems()
-    found = arg_str in systems
-    if not found:
-        out_str = f'Invalid system "{arg_str}" - must choose one of: '
-        for system in systems:
-            out_str += f"\n\t{system}"
+    if arg_str not in systems:
+        out_str = (
+            f"Invalid system {arg_str}: must choose one of:"
+            "\n\t(a) A system ID from `benchpark systems`"
+            "\n\t(b) A directory containing system_id.yaml"
+        )
         raise ValueError(out_str)
-    return found
+
+    configs_src_dir = source_location() / "configs" / str(arg_str)
+    return arg_str, configs_src_dir
 
 
 def benchpark_check_tag(arg_str):
@@ -354,11 +369,11 @@ def benchpark_setup_handler(args):
     debug_print(f"specified experiment (benchmark/ProgrammingModel) = {experiment}")
     benchpark_check_experiment(experiment)
     debug_print(f"specified system = {system}")
-    benchpark_check_system(system)
+    system_id, configs_src_dir = benchpark_check_system(system)
     debug_print(f"specified modifier = {modifier}")
     benchpark_check_modifier(modifier)
 
-    workspace_dir = experiments_root / str(experiment) / str(system)
+    workspace_dir = experiments_root / str(experiment) / str(system_id)
 
     if workspace_dir.exists():
         if workspace_dir.is_dir():
@@ -381,7 +396,6 @@ def benchpark_setup_handler(args):
 
     print(f"Setting up configs for Ramble workspace {ramble_configs_dir}")
 
-    configs_src_dir = source_dir / "configs" / str(system)
     experiment_src_dir = source_dir / "experiments" / experiment
     modifier_config_dir = source_dir / "modifiers" / modifier / "configs"
     ramble_configs_dir.mkdir(parents=True)

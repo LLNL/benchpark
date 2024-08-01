@@ -90,6 +90,13 @@ class System:
         self.external_packages(output_dir)
         self.compilers(output_dir)
 
+        system_id_path = output_dir / "system_id.yaml"
+        with open(system_id_path, "w") as f:
+            f.write(f"""\
+system:
+  name: {self.__class__.__name__}
+""")
+
     def system_id(self):
         return _hash_id([self.variables_yaml()])
 
