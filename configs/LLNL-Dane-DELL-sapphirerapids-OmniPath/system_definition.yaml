@@ -4,17 +4,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 system_definition:
-  name: Ruby
+  name: Dane
   site: LLNL
-  system: Penguin-icelake-OmniPath
+  system: Dane-sapphirerapids-OmniPath
   integrator:
-    vendor: Supermicro
-    name:
+    vendor: DELLEMC
+    name: PowerEdge
   processor:
     vendor: Intel
-    name: XeonPlatinum8276L
+    name: XeonPlatinum8480
     ISA: x86_64
-    uArch: icelake
+    uArch: sapphirerapids
   accelerator:
     vendor:
     name:
@@ -25,8 +25,8 @@ system_definition:
     name: OmniPath
   system-tested:
     site: LLNL
-    name: ruby
-    installation-year: 2020
-    description: top500 <https://www.top500.org/system/179866>
+    name: dane
+    installation-year: 2023
+    description: top500 <https://www.top500.org/system/180228>
   top500-system-instances:
-    - Ruby (LLNL)
+    - Dane (LLNL)
