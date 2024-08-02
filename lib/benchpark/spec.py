@@ -12,6 +12,7 @@ bootstrapper.bootstrap()
 import llnl.util.lang
 
 repo_path = benchpark.repo.paths[benchpark.repo.ObjectTypes.experiments]
+sys_repo = benchpark.repo.paths[benchpark.repo.ObjectTypes.systems]
 
 
 class VariantMap(llnl.util.lang.HashableMap):
@@ -272,6 +273,26 @@ class ConcreteExperimentSpec(ConcreteSpec, ExperimentSpec):
     @property
     def experiment(self) -> "benchpark.Experiment":
         return self.experiment_class(self)
+
+
+class SystemSpec(Spec):
+    @property
+    def system_class(self):
+        return sys_repo.get_obj_class(self.name)
+
+    @property
+    def object_class(self):
+        # shared getter so that multiple spec types can be concretized similarly
+        return self.system_class
+
+    def concretize(self):
+        return ConcreteSystemSpec(self)
+
+
+class ConcreteSystemSpec(ConcreteSpec, SystemSpec):
+    @property
+    def system(self) -> "benchpark.System":
+        return self.system_class(self)
 
 
 # PARSING STUFF BELOW HERE

@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-from benchpark.system import System
+from benchpark.system import System, variant
 
 # Taken from https://aws.amazon.com/ec2/instance-types/
 # With boto3, we could determine this dynamically vs. storing a static table
@@ -20,9 +20,16 @@ id_to_resources = {
 
 
 class Aws(System):
-    def __init__(self, instance_type=None):
-        super().__init__()
+    variant(
+        "instance_type",
+        values=("c6g.xlarge", "c4.xlarge"),
+        default="c4.xlarge",
+        description="AWS instance type",
+    )
+
+    def initialize(self):
+        super().initialize()
         self.scheduler = "mpi"
-        attrs = id_to_resources.get(instance_type)
+        attrs = id_to_resources.get(self.spec.variants["instance_type"])
         for k, v in attrs.items():
             setattr(self, k, v)

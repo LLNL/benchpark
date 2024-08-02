@@ -8,22 +8,14 @@ import shutil
 import sys
 
 import benchpark.system
+import benchpark.spec
 
 
 def system_create(args):
-    init_kwargs = dict()
-    if args.set:
-        for kv in args.set:
-            k, v = kv.split("=")
-            k = k.replace("-", "_")
-            init_kwargs[k] = v
-
-    if args.system_type:
-        system = benchpark.system.system_class(args.system_type)(**init_kwargs)
-    elif args.use_existing:
-        pass
-    else:
-        raise ValueError("Must specify one of: --type, --from")
+    system_spec = benchpark.spec.SystemSpec(' '.join(args.spec))
+    system_spec = system_spec.concretize()
+    import pdb; pdb.set_trace()
+    #system = benchpark.system.system_class(args.system_type)(**init_kwargs)
 
     if args.basedir:
         base = args.basedir
@@ -57,20 +49,12 @@ def setup_parser(root_parser):
     create_parser.add_argument(
         "--from", dest="use_existing", type=str, help="Copy an existing system config"
     )
-    create_parser.add_argument(
-        "--type",
-        dest="system_type",
-        type=str,
-        help="Use a template class to generate a system config",
-    )
     create_parser.add_argument("--dest", help="Place all system files here directly")
     create_parser.add_argument(
         "--basedir", help="Generate a system dir under this, and place all files there"
     )
 
-    create_parser.add_argument(
-        "--set", action="append", help="Set system-specific attributes"
-    )
+    create_parser.add_argument("spec", nargs="+", help="System spec")
 
     system_subparser.add_parser("list")
 
