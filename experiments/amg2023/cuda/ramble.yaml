@@ -33,7 +33,7 @@ ramble:
                 nx: ['10', '20', '20']
                 ny: ['10', '10', '20']
                 nz: ['10', '10', '10']
-                env_name: 'amg2023-gpu-{gtl}'
+                env_name: 'amg2023'
                 n_gpus: '8'
             'amg2023_cuda_strong_problem1_{px}_{py}_{pz}_{nx}_{ny}_{nz}':
               variants:
@@ -45,7 +45,7 @@ ramble:
                 nx: '10'
                 ny: '10'
                 nz: '10'
-                env_name: 'amg2023-gpu-{gtl}'
+                env_name: 'amg2023'
                 n_gpus: '{px}*{py}*{pz}'
             'amg2023_cuda_weak_problem1_{px}_{py}_{pz}_{nx}_{ny}_{nz}':
               variants:
@@ -57,7 +57,7 @@ ramble:
                 nx: ['10', '20', '20']
                 ny: ['10', '10', '20']
                 nz: ['10', '10', '10']
-                env_name: 'amg2023-gpu-{gtl}'
+                env_name: 'amg2023'
                 n_gpus: '{px}*{py}*{pz}'
         problem2:
           experiments:
@@ -71,7 +71,7 @@ ramble:
                 nx: ['10', '20', '20']
                 ny: ['10', '10', '20']
                 nz: ['10', '10', '10']
-                env_name: 'amg2023-gpu-{gtl}'
+                env_name: 'amg2023'
                 n_gpus: '8'
             'amg2023_cuda_strong_problem2_{px}_{py}_{pz}_{nx}_{ny}_{nz}':
               variants:
@@ -83,7 +83,7 @@ ramble:
                 nx: '10'
                 ny: '10'
                 nz: '10'
-                env_name: 'amg2023-gpu-{gtl}'
+                env_name: 'amg2023'
                 n_gpus: '{px}*{py}*{pz}'
             'amg2023_cuda_weak_problem2_{px}_{py}_{pz}_{nx}_{ny}_{nz}':
               variants:
@@ -95,7 +95,7 @@ ramble:
                 nx: ['10', '20', '20']
                 ny: ['10', '10', '20']
                 nz: ['10', '10', '10']
-                env_name: 'amg2023-gpu-{gtl}'
+                env_name: 'amg2023'
                 n_gpus: '{px}*{py}*{pz}'
   software:
     packages:
