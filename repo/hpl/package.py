@@ -116,25 +116,24 @@ class Hpl(AutotoolsPackage):
     def configure_args(self):
         filter_file(r"^libs10=.*", "libs10=%s" % self.spec["blas"].libs.ld_flags, "configure")
 
+        cc, cflags, ldflags = self.spec["mpi"].mpicc, ["-O3"], []
         if "+openmp" in self.spec:
-            config = ["CFLAGS=-O3 " + self.compiler.openmp_flag]
-        else:
-            config = ["CFLAGS=-O3"]
+            cflags.append(self.compiler.openmp_flag)
 
         if (
             self.spec.satisfies("^intel-mkl")
             or self.spec.satisfies("^intel-oneapi-mkl")
             or self.spec.satisfies("^intel-parallel-studio+mkl")
         ):
-            config.append("LDFLAGS={0}".format(self.spec["blas"].libs.ld_flags))
+            ldflags.append(self.spec["blas"].libs.ld_flags)
 
         if "%aocc" in self.spec:
-            amd_ldflags = " "
             if "%aocc@3:" in self.spec:
-                amd_ldflags += "-lamdlibm -lm "
+                ldflags.extend(["-lamdlibm", "-lm"])
             if "%aocc@4:" in self.spec:
-                amd_ldflags += "-lamdalloc "
-            config.append("LDFLAGS=" + amd_ldflags)
+                ldflags.append("-lamdalloc")
+
+        config = [f"CC={cc}", f"CFLAGS={' '.join(cflags)}", f"LDFLAGS={' '.join(ldflags)}"]
 
         if "+caliper" in self.spec:
             config.append("--with-adiak={0}".format(self.spec["adiak"].prefix))
