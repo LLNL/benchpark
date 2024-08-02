@@ -5,7 +5,7 @@
 
 ramble:
   include:
-  - ./configs/spack.yaml
+  - ./configs/software.yaml
   - ./configs/variables.yaml
   - ./configs/modifier.yaml
 
@@ -24,6 +24,8 @@ ramble:
         problem:
           experiments:
             saxpy_{n}_{n_nodes}_{omp_num_threads}:
+              variants:
+                package_manager: spack
               variables:
                 n_ranks_per_node: ['8', '4']
                 n_nodes: ['1', '2']
@@ -34,10 +36,10 @@ ramble:
                   - n
                   - omp_num_threads
 
-  spack:
+  software:
     packages:
       saxpy:
-        spack_spec: saxpy@1.0.0 +openmp{modifier_spack_variant}
+        pkg_spec: saxpy@1.0.0 +openmp{modifier_spack_variant}
         compiler: default-compiler
     environments:
       saxpy:

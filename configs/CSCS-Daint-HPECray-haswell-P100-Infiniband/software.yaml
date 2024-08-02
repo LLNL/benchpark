@@ -3,15 +3,11 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-spack:
+software:
   packages:
     default-compiler:
-      spack_spec: gcc@7.3.1
+      pkg_spec: gcc@9.3.0 # cce@12.0.3
     default-mpi:
-      spack_spec: openmpi@4.1.5-gcc731
+      pkg_spec: cray-mpich@7.7.18
     compiler-gcc:
-      spack_spec: gcc@7.3.1
-    lapack:
-      spack_spec: lapack@3.4.2
-    mpi-gcc:
-      spack_spec: openmpi@4.1.5-gcc731
+      pkg_spec: gcc@9.3.0
