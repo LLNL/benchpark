@@ -64,6 +64,8 @@ packages:
         prefix: /usr
   cmake:
     externals:
+      - spec: "cmake@3.27.7 arch=linux-rhel8-a64fx"
+        prefix: /vol0004/apps/oss/spack/opt/spack/linux-rhel8-a64fx/fj-4.10.0/cmake-3.27.7-ussgjuqkqbxi5dcv7kbp6bugdcjc5ph6
       - spec: "cmake@3.20.2 arch=linux-rhel8-a64fx"
         prefix: /usr
   curl:
