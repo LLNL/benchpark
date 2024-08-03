@@ -30,6 +30,7 @@ class Aws(System):
     def initialize(self):
         super().initialize()
         self.scheduler = "mpi"
-        attrs = id_to_resources.get(self.spec.variants["instance_type"])
+        # TODO: for some reason I have to index to get value, even if multi=False
+        attrs = id_to_resources.get(self.spec.variants["instance_type"][0])
         for k, v in attrs.items():
             setattr(self, k, v)

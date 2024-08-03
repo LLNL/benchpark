@@ -14,8 +14,10 @@ import benchpark.spec
 def system_create(args):
     system_spec = benchpark.spec.SystemSpec(' '.join(args.spec))
     system_spec = system_spec.concretize()
-    import pdb; pdb.set_trace()
     #system = benchpark.system.system_class(args.system_type)(**init_kwargs)
+
+    system = system_spec.system
+    system.initialize()
 
     if args.basedir:
         base = args.basedir

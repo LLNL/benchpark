@@ -30,7 +30,7 @@ import ramble.repository  # noqa
 # isort: on
 
 global_namespace = "benchpark"
-namespaces = ["benchpark.expr"]
+namespaces = ["benchpark.expr", "benchpark.sys"]
 
 #: Guaranteed unused default value for some functions.
 NOT_PROVIDED = object()

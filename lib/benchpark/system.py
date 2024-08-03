@@ -81,10 +81,6 @@ class classproperty:
 
 
 class SystemMeta(ramble.language.shared_language.SharedMeta):
-    """
-    Package metaclass for supporting directives (e.g., depends_on) and phases
-    """
-
     _directive_names = set()
     _directives_to_be_executed = []
 
@@ -109,25 +105,6 @@ def variant(
     when: Optional[Union[str, bool]] = None,
     sticky: bool = False,
 ):
-    """Define a variant for the experiment.
-    Experimentizer can specify a default value as well as a text description.
-    Args:
-        name: Name of the variant
-        default: Default value for the variant, if not specified otherwise the default will be
-            False for a boolean variant and 'nothing' for a multi-valued variant
-        description: Description of the purpose of the variant
-        values: Either a tuple of strings containing the allowed values, or a callable accepting
-            one value and returning True if it is valid
-        multi: If False only one value per spec is allowed for this variant
-        validator: Optional group validator to enforce additional logic. It receives the experiment
-            name, the variant name and a tuple of values and should raise an instance of BenchparkError
-            if the group doesn't meet the additional constraints
-        when: Optional condition on which the variant applies
-        sticky: The variant should not be changed by the concretizer to find a valid concrete spec
-    Raises:
-        DirectiveError: If arguments passed to the directive are invalid
-    """
-
     def format_error(msg, pkg):
         msg += " @*r{{[{0}, variant '{1}']}}"
         return msg.format(pkg.name, name)
