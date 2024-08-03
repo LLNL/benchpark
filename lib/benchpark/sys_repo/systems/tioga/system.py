@@ -10,6 +10,26 @@ from benchpark.system import System
 
 
 class Tioga(System):
+    variant(
+        "rocm",
+        default="551",
+        values=("543", "551"),
+        description="ROCm version",
+    )
+
+    variant(
+        "compiler",
+        default="rocm",
+        values=("gcc", "cce"),
+        description="Which compiler to use",
+    )
+
+    variant(
+        "gtl",
+        default=False,
+        description="Use GTL-enabled MPI",
+    )
+
     def __init__(self):
         super().__init__()
 
@@ -24,6 +44,32 @@ class Tioga(System):
 
         with open(sw_description, "w") as f:
             f.write(self.sw_description())
+
+    # TODO: refactor to eliminate redundance w/ superclass method
+    def external_packages(self, output_dir):
+        externals = pathlib.Path(self.resource_location) / "externals"
+
+        rocm = self.spec.variants["rocm"][0]
+        gtl = self.spec.variants["gtl"]
+        compier = self.spec.variants["compiler"][0]
+
+        selections = [externals / "base" / "00-packages.yaml"]
+        if rocm == "543":
+            selections.append(externals / "rocm" / "00-version-543-packages.yaml")
+
+        if compiler = "cce":
+            if gtl:
+                selections.append(externals / "mpi" / "02-cce-ygtl-packages.yaml")
+            else:
+                selections.append(externals / "mpi" / "01-cce-ngtl-packages.yaml")
+        elif compiler == "gcc":
+            selections.append(externals / "mpi" / "00-gcc-ngtl-packages.yaml")
+
+        aux = output_dir / "auxiliary_software_files"
+        os.makedirs(aux, exist_ok=True)
+        aux_packages = aux / "packages.yaml"
+
+        self._merge_config_files(packages_schema.schema, selections, aux_packages)
 
     def sw_description(self):
         """This is somewhat vestigial: for the Tioga config that is committed
