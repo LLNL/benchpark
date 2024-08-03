@@ -175,13 +175,6 @@ def variant(
 # end duplication from experiment.py
 
 
-def system_class(system_id):
-    cls = _repo_path.get_obj_class(system_id)
-    loc = pathlib.Path(_repo_path.filename_for_object_name(system_id)).parent
-    setattr(cls, "resource_location", loc)
-    return cls
-
-
 def _hash_id(content_list):
     sha256_hash = hashlib.sha256()
     for x in content_list:
@@ -197,6 +190,7 @@ class System(metaclass=SystemMeta):
 
     def __init__(self, spec):
         self.spec: "benchpark.spec.ConcreteSystemSpec" = spec
+        self.resource_location = pathlib.Path(__file__).resolve().parent
         super().__init__()
 
     @classproperty
@@ -257,7 +251,7 @@ class System(metaclass=SystemMeta):
             f.write(self.variables_yaml())
 
         self.external_packages(output_dir)
-        self.compilers(output_dir)
+        self.compiler_description(output_dir)
 
         system_id_path = output_dir / "system_id.yaml"
         with open(system_id_path, "w") as f:
@@ -305,7 +299,7 @@ system:
 
         self._merge_config_files(packages_schema.schema, selections, aux_packages)
 
-    def compilers(self, output_dir):
+    def compiler_description(self, output_dir):
         compilers_basedir = pathlib.Path(self.resource_location) / "compilers"
         if not compilers_basedir.exists():
             return
