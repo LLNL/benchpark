@@ -190,7 +190,6 @@ class System(metaclass=SystemMeta):
 
     def __init__(self, spec):
         self.spec: "benchpark.spec.ConcreteSystemSpec" = spec
-        self.resource_location = pathlib.Path(__file__).resolve().parent
         super().__init__()
 
     @classproperty

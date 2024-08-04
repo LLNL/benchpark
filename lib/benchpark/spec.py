@@ -1,4 +1,5 @@
 import enum
+import pathlib
 import re
 from typing import Iterable, Iterator, List, Match, Optional, Union
 
@@ -278,7 +279,10 @@ class ConcreteExperimentSpec(ConcreteSpec, ExperimentSpec):
 class SystemSpec(Spec):
     @property
     def system_class(self):
-        return sys_repo.get_obj_class(self.name)
+        cls = sys_repo.get_obj_class(self.name)
+        # TODO: this shouldn't be necessary, but .package_dir isn't working
+        cls.resource_location = pathlib.Path(sys_repo.filename_for_object_name(self.name)).parent
+        return cls
 
     @property
     def object_class(self):

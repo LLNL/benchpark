@@ -6,7 +6,7 @@
 import os
 import pathlib
 
-from benchpark.system import System
+from benchpark.system import System, variant, compilers_schema, packages_schema
 
 
 class Tioga(System):
@@ -27,11 +27,12 @@ class Tioga(System):
     variant(
         "gtl",
         default=False,
+        values=('true', 'false'),
         description="Use GTL-enabled MPI",
     )
 
-    def __init__(self):
-        super().__init__()
+    def initialize(self):
+        super().initialize()
 
         self.scheduler = "flux"
         self.sys_cores_per_node = "64"
@@ -47,29 +48,56 @@ class Tioga(System):
 
     # TODO: refactor to eliminate redundance w/ superclass method
     def external_packages(self, output_dir):
-        externals = pathlib.Path(self.resource_location) / "externals"
+        externals = Tioga.resource_location / "externals"
 
+        # TODO: refactor so that the only thing this method does is compute
+        # the selections: the final call to _merge_config_files for example
+        # should be handled elsewhere
         rocm = self.spec.variants["rocm"][0]
-        gtl = self.spec.variants["gtl"]
-        compier = self.spec.variants["compiler"][0]
+        gtl = self.spec.variants["gtl"][0]
+        compiler = self.spec.variants["compiler"][0]
 
         selections = [externals / "base" / "00-packages.yaml"]
         if rocm == "543":
             selections.append(externals / "rocm" / "00-version-543-packages.yaml")
 
-        if compiler = "cce":
-            if gtl:
+        if compiler == "cce":
+            if gtl == "true":
                 selections.append(externals / "mpi" / "02-cce-ygtl-packages.yaml")
             else:
                 selections.append(externals / "mpi" / "01-cce-ngtl-packages.yaml")
+            selections.append(externals / "libsci" / "01-cce-packages.yaml")
         elif compiler == "gcc":
             selections.append(externals / "mpi" / "00-gcc-ngtl-packages.yaml")
+            selections.append(externals / "libsci" / "00-gcc-packages.yaml")
+
+        selections = [str(x) for x in selections]
 
         aux = output_dir / "auxiliary_software_files"
         os.makedirs(aux, exist_ok=True)
         aux_packages = aux / "packages.yaml"
-
         self._merge_config_files(packages_schema.schema, selections, aux_packages)
+
+    def compiler_description(self, output_dir):
+        compilers = Tioga.resource_location / "compilers"
+
+        compiler = self.spec.variants["compiler"][0]
+        rocm = self.spec.variants["rocm"][0]
+
+        selections = []
+        # TODO: I'm not actually sure what compiler mixing is desired, if any
+        # so I don't think the choices here make much sense, but this
+        # demonstrate how system spec variants can be used to choose what
+        # configuration to construct
+        if compiler == "cce":
+            selections.append(compilers / "rocm" / "00-rocm-551-compilers.yaml")
+        elif compiler == "gcc":
+            selections.append(compilers / "gcc" / "00-gcc-12-compilers.yaml")
+
+        aux = output_dir / "auxiliary_software_files"
+        os.makedirs(aux, exist_ok=True)
+        aux_compilers = aux / "compilers.yaml"
+        self._merge_config_files(compilers_schema.schema, selections, aux_compilers)
 
     def sw_description(self):
         """This is somewhat vestigial: for the Tioga config that is committed
