@@ -8,7 +8,7 @@ import sys
 from ramble.appkit import *
 
 
-class Quicksilver(SpackApplication):
+class Quicksilver(ExecutableApplication):
     """Quicksilver benchmark"""
     name = "quicksilver"
 
@@ -19,7 +19,19 @@ class Quicksilver(SpackApplication):
             'mpi',
             'c++','openmp']
 
-    executable('run', 'qs', use_mpi=True)
+    executable('run', 'qs'+
+            ' -i {i}' +
+            ' -X {X}' +
+            ' -Y {Y}' +
+            ' -Z {Z}' +
+            ' -I {I}' +
+            ' -J {J}' +
+            ' -K {K}' +
+            ' -x {x}' +
+            ' -y {y}' +
+            ' -z {z}' +
+            ' -n {n}'
+            , use_mpi=True)
 
     workload('quicksilver', executables=['run'])
     #not sure if these variables are necessary
@@ -29,7 +41,7 @@ class Quicksilver(SpackApplication):
     workload_variable('f', default='',
                       description='max random mesh node displacement',
                       workloads=['quicksilver'])
-    workload_variable('i', default='',
+    workload_variable('i', default='{quicksilver}/Examples/CTS2_Benchmark/CTS2.inp',
                       description='name of input file',
                       workloads=['quicksilver'])
     workload_variable('e', default='',
@@ -121,6 +133,8 @@ class Quicksilver(SpackApplication):
 
 
     #FOM_regex=r'(?<=Merit)\s+[\+\-]*[0-9]*\.*[0-9]+e*[\+\-]*[0-9]*'
-    figure_of_merit("success", log_file='{experiment_run_dir}/{experiment_name}.out', fom_regex=r'(?P<done>.*)', group_name='done', units='')
+    figure_of_merit("FOM", log_file='{experiment_run_dir}/{experiment_name}.out', fom_regex=r'Figure Of Merit\s+(?P<fom>[0-9]+\.[0-9]*([0-9]*)+e\+?[0-9]*)', group_name='fom', units='Num Segments / Cycle Tracking Time')
+
+    figure_of_merit("avg cycleTracking", log_file='{experiment_run_dir}/{experiment_name}.out', fom_regex=r'cycleTracking +[0-9]+\s+[0-9]+\.[0-9]*[0-9]*e\+?[0-9]+\s+(?P<fom>[0-9]+\.[0-9]*([0-9]*)+e\+?[0-9]*)', group_name='fom', units='Cumulative microseconds avg')
     success_criteria('valid', mode='string', match=r'.*', file='{experiment_run_dir}/{experiment_name}.out')
 

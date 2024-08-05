@@ -5,7 +5,7 @@
 
 ramble:
   include:
-  - ./configs/spack.yaml
+  - ./configs/software.yaml
   - ./configs/variables.yaml
   - ./configs/modifier.yaml
   config:
@@ -17,32 +17,55 @@ ramble:
   modifiers:
   - name: allocation
 
-    #variables:
-    #scheduler: "slurm"
-    #processes_per_node: 1
   applications:
     quicksilver:
       workloads:
         quicksilver:
+          variables:
+            experiment_setup: ''
+            arch: 'OpenMP'
+            n_threads_per_proc: '1'
+            omp_num_threads: '{n_threads_per_proc}'
+            n_ranks: '{I}*{J}*{K}' 
           experiments:
-             execute_{n_nodes}_{omp_num_threads}_{n}: 
+            quicksilver_openmp_weak_{n_nodes}_{n_ranks}:
+              variants:
+                package_manager: spack 
               variables:
-                n_ranks_per_node: ['8', '4']
-                n_nodes: ['1', '2']
-                omp_num_threads: ['2', '4']
-                n: ['512', '1024']
-              matrices:
-                - size_threads:
-                  - n
-                  - omp_num_threads
-              
-  spack:
+                n: '{x}*{y}*{z}*10'
+                x: '{X}'
+                y: '{Y}'
+                z: '{Z}'
+                X: ['32','32','64','64']
+                Y: ['32','32','32','64']
+                Z: ['16','32','32','32']
+
+                I: ['2','2','4','4']
+                J: ['2','2','2','4']
+                K: ['1','2','2','2']
+
+            quicksilver_openmp_strong_{n_nodes}_{n_ranks}:
+              variants:
+                package_manager: spack 
+              variables:
+                n: '{x}*{y}*{z}*10'
+                x: '{X}'
+                y: '{Y}'
+                z: '{Z}'
+                X: '32'
+                Y: '32'
+                Z: '16'
+
+                I: ['2','2','4','4']
+                J: ['2','2','2','4']
+                K: ['1','2','2','2']
+  software:
     packages:
       mpi:
-        spack_spec: openmpi@4.1.6
+        pkg_spec: openmpi@4.1.6
         compiler: default-compiler
       quicksilver:
-        spack_spec: quicksilver 
+        pkg_spec: quicksilver 
         compiler: default-compiler
     environments:
       quicksilver:
