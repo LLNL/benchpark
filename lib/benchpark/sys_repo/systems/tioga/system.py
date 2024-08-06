@@ -60,7 +60,8 @@ class Tioga(System):
         selections = [externals / "base" / "00-packages.yaml"]
         if rocm == "543":
             selections.append(externals / "rocm" / "00-version-543-packages.yaml")
-        # TODO: add the rocm 551 config
+        elif rocm == "551":
+            selections.append(externals / "rocm" / "01-version-551-packages.yaml")
 
         if compiler == "cce":
             if gtl == "true":
