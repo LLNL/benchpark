@@ -8,37 +8,37 @@ import sys
 from ramble.appkit import *
 
 
-class Remhos(SpackApplication):
+class Remhos(ExecutableApplication):
     """Remhos benchmark"""
     name = "remhos"
 
 
 
-    executable('run', 'remhos'+' -m {mesh}'+' -p {p}'+' -rs {rs}'+' -rp {rp}'+' -dt {dt}'+' -tf {tf}'+' -ho {ho}' ' -lo {lo}'+' -fct {fct}', use_mpi=True)
+    executable('run', 'remhos'+' -m {mesh}'+' -p {p}'+' -rs {rs}'+'{rp}'+' -dt {dt}'+' -tf {tf}'+' -ho {ho}' ' -lo {lo}'+' -fct {fct}', use_mpi=True)
 
     workload('remhos', executables=['run'])
     
-    workload_variable('mesh', default='{remhos}/data/cube01_hex.mesh',
+    workload_variable('mesh', default='{remhos}/data/periodic-square.mesh',
         description='mesh',
         workloads=['remhos'])
 
-    workload_variable('p', default='14',
+    workload_variable('p', default='5',
         description='p',
         workloads=['remhos'])
     
-    workload_variable('rs', default='2',
+    workload_variable('rs', default='3',
         description='rs',
         workloads=['remhos'])
     
-    workload_variable('rp', default='1',
+    workload_variable('rp', default='',
         description='rp',
         workloads=['remhos'])
 
-    workload_variable('dt', default='0.0005',
+    workload_variable('dt', default='0.005',
         description='dt',
         workloads=['remhos'])
 
-    workload_variable('tf', default='0.6',
+    workload_variable('tf', default='0.8',
         description='tf',
         workloads=['remhos'])
     
@@ -50,7 +50,7 @@ class Remhos(SpackApplication):
         description='lo',
         workloads=['remhos'])
 
-    workload_variable('fct', default='3',
+    workload_variable('fct', default='2',
         description='fct',
         workloads=['remhos'])
     #FOM_regex=r'(?<=Merit)\s+[\+\-]*[0-9]*\.*[0-9]+e*[\+\-]*[0-9]*'
