@@ -46,13 +46,9 @@ class Tioga(System):
         with open(sw_description, "w") as f:
             f.write(self.sw_description())
 
-    # TODO: refactor to eliminate redundance w/ superclass method
-    def external_packages(self, output_dir):
+    def external_pkg_configs(self):
         externals = Tioga.resource_location / "externals"
 
-        # TODO: refactor so that the only thing this method does is compute
-        # the selections: the final call to _merge_config_files for example
-        # should be handled elsewhere
         rocm = self.spec.variants["rocm"][0]
         gtl = self.spec.variants["gtl"][0]
         compiler = self.spec.variants["compiler"][0]
@@ -73,14 +69,9 @@ class Tioga(System):
             selections.append(externals / "mpi" / "00-gcc-ngtl-packages.yaml")
             selections.append(externals / "libsci" / "00-gcc-packages.yaml")
 
-        selections = [str(x) for x in selections]
+        return selections
 
-        aux = output_dir / "auxiliary_software_files"
-        os.makedirs(aux, exist_ok=True)
-        aux_packages = aux / "packages.yaml"
-        self._merge_config_files(packages_schema.schema, selections, aux_packages)
-
-    def compiler_description(self, output_dir):
+    def compiler_configs(self):
         compilers = Tioga.resource_location / "compilers"
 
         compiler = self.spec.variants["compiler"][0]
@@ -96,10 +87,7 @@ class Tioga(System):
         elif compiler == "gcc":
             selections.append(compilers / "gcc" / "00-gcc-12-compilers.yaml")
 
-        aux = output_dir / "auxiliary_software_files"
-        os.makedirs(aux, exist_ok=True)
-        aux_compilers = aux / "compilers.yaml"
-        self._merge_config_files(compilers_schema.schema, selections, aux_compilers)
+        return selections
 
     def sw_description(self):
         """This is somewhat vestigial: for the Tioga config that is committed

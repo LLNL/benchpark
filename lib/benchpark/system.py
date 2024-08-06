@@ -272,25 +272,16 @@ system:
         with open(dst_path, "w") as outstream:
             syaml.dump_config(data, outstream)
 
-    def _select_components(self, basedir):
-        """Each subdir of `basedir` contains a mutually-exclusive set of
-        files: select one file from each component subdir.
-        """
-        selections = list()
-        for component in os.listdir(basedir):
-            component_dir = basedir / component
-            component_choices = list(sorted(os.listdir(component_dir)))
-            # TODO: for now, pick the first; need to allow users to select
-            selections.append(component_dir / component_choices[0])
+    def external_pkg_configs(self):
+        return None
 
-        return selections
+    def compiler_configs(self):
+        return None
 
     def external_packages(self, output_dir):
-        pkgs_basedir = pathlib.Path(self.resource_location) / "externals"
-        if not pkgs_basedir.exists():
+        selections = self.external_pkg_configs()
+        if not selections:
             return
-
-        selections = self._select_components(pkgs_basedir)
 
         aux = output_dir / "auxiliary_software_files"
         os.makedirs(aux, exist_ok=True)
@@ -299,11 +290,9 @@ system:
         self._merge_config_files(packages_schema.schema, selections, aux_packages)
 
     def compiler_description(self, output_dir):
-        compilers_basedir = pathlib.Path(self.resource_location) / "compilers"
-        if not compilers_basedir.exists():
+        selections = self.compiler_configs()
+        if not selections:
             return
-
-        selections = self._select_components(compilers_basedir)
 
         aux = output_dir / "auxiliary_software_files"
         os.makedirs(aux, exist_ok=True)
