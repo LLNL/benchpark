@@ -1,4 +1,5 @@
 # TODO
+from benchpark.directives import variant
 from benchpark.experiment import *
 
 
