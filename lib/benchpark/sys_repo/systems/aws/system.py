@@ -3,7 +3,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-from benchpark.system import System, variant
+from benchpark.system import System
+from benchpark.directives import variant
 
 # Taken from https://aws.amazon.com/ec2/instance-types/
 # With boto3, we could determine this dynamically vs. storing a static table

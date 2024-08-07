@@ -6,7 +6,8 @@
 import os
 import pathlib
 
-from benchpark.system import System, variant, compilers_schema, packages_schema
+from benchpark.directives import variant
+from benchpark.system import System, compilers_schema, packages_schema
 
 
 class Tioga(System):
