@@ -7,8 +7,7 @@ import collections.abc
 import inspect
 import os
 import re
-from typing import Any, Callable, Dict, Optional, Tuple, Union
-import yaml  # TODO: some way to ensure yaml available
+from typing import Any, Callable, Optional, Tuple, Union
 
 import benchpark.spec
 import benchpark.paths

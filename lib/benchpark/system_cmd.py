@@ -33,7 +33,7 @@ def system_create(args):
     except FileExistsError:
         print(f"Abort: system description dir already exists ({destdir})")
         sys.exit(1)
-    except:
+    except Exception:
         # If there was a failure, remove any partially-generated resources
         shutil.rmtree(destdir)
         raise

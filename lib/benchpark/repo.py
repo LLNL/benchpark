@@ -6,10 +6,9 @@
 # option. This file may not be copied, modified, or distributed
 # except according to those terms.
 
-import os
 import sys
-import functools
 import contextlib
+import pathlib
 
 from enum import Enum
 
@@ -82,9 +81,6 @@ def override_ramble_hardcoded_globals():
     ramble.repository.type_definitions = _old[0]
     ramble.repository.global_namespace = _old[1]
     ramble.language.language_base.namespaces = _old[2]
-
-
-import pathlib
 
 
 def _base_path():

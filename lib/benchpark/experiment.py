@@ -3,11 +3,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-import collections.abc
-import inspect
-import os
-import re
-from typing import Any, Callable, Dict, Optional, Tuple, Union
+from typing import Dict, Tuple
 import yaml  # TODO: some way to ensure yaml available
 
 from benchpark.directives import SpecTemplate
@@ -19,8 +15,6 @@ import benchpark.variant
 
 import ramble.language.language_base
 import ramble.language.language_helpers
-import ramble.language.shared_language
-from ramble.language.language_base import DirectiveError
 
 bootstrapper = benchpark.runtime.RuntimeResources(benchpark.paths.benchpark_home)
 bootstrapper.bootstrap()

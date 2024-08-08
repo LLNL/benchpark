@@ -3,11 +3,10 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-import os
 import pathlib
 
 from benchpark.directives import variant
-from benchpark.system import System, compilers_schema, packages_schema
+from benchpark.system import System
 
 
 class Tioga(System):
@@ -76,7 +75,7 @@ class Tioga(System):
         compilers = Tioga.resource_location / "compilers"
 
         compiler = self.spec.variants["compiler"][0]
-        rocm = self.spec.variants["rocm"][0]
+        # rocm = self.spec.variants["rocm"][0]
 
         selections = []
         # TODO: I'm not actually sure what compiler mixing is desired, if any

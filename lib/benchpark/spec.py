@@ -1,4 +1,5 @@
 import enum
+import functools
 import pathlib
 import re
 from typing import Iterable, Iterator, List, Match, Optional, Union
@@ -10,7 +11,7 @@ import benchpark.runtime
 bootstrapper = benchpark.runtime.RuntimeResources(benchpark.paths.benchpark_home)
 bootstrapper.bootstrap()
 
-import llnl.util.lang
+import llnl.util.lang  # noqa
 
 repo_path = benchpark.repo.paths[benchpark.repo.ObjectTypes.experiments]
 sys_repo = benchpark.repo.paths[benchpark.repo.ObjectTypes.systems]
