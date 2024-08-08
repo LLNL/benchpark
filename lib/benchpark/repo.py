@@ -62,7 +62,7 @@ type_definitions = {
         "config_section": "repos",
         "accepted_configs": ["repo.yaml"],
         "singular": "system",
-    }
+    },
 }
 
 
@@ -110,9 +110,7 @@ def _add_repo(repo_dir, obj_type):
         raise ValueError(f"Repo dir does not exist: {repo_dir}")
 
     with override_ramble_hardcoded_globals():
-        path = ramble.repository.RepoPath(
-            *repo_dirs, object_type=obj_type
-        )
+        path = ramble.repository.RepoPath(*repo_dirs, object_type=obj_type)
     sys.meta_path.append(path)
     return path
 

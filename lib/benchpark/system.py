@@ -45,14 +45,14 @@ schemas = {
     "spack.schema.compilers": f"{bootstrapper.spack_location}/lib/spack/spack/schema/compilers.py",
 }
 
+
 def load_schema(schema_id, schema_path):
-    schema_spec = importlib.util.spec_from_file_location(
-        schema_id, schema_path
-    )
+    schema_spec = importlib.util.spec_from_file_location(schema_id, schema_path)
     schema = importlib.util.module_from_spec(schema_spec)
     sys.modules[schema_id] = schema
     schema_spec.loader.exec_module(schema)
     return schema
+
 
 packages_schema = load_schema(
     "spack.schema.packages",
@@ -109,10 +109,12 @@ class System(SpecTemplate):
 
         system_id_path = output_dir / "system_id.yaml"
         with open(system_id_path, "w") as f:
-            f.write(f"""\
+            f.write(
+                f"""\
 system:
   name: {self.__class__.__name__}
-""")
+"""
+            )
 
     def system_id(self):
         return _hash_id([self.variables_yaml()])
@@ -120,9 +122,7 @@ system:
     def _merge_config_files(self, schema, selections, dst_path):
         data = cfg.read_config_file(selections[0], schema)
         for selection in selections[1:]:
-            cfg.merge_yaml(
-                data, cfg.read_config_file(selection, schema)
-            )
+            cfg.merge_yaml(data, cfg.read_config_file(selection, schema))
 
         with open(dst_path, "w") as outstream:
             syaml.dump_config(data, outstream)
