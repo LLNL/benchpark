@@ -22,5 +22,13 @@ class Mfem(BuiltinMfem):
         "gcc": "gnu",
     }
 
+    variant("caliper", default=False, description="Build Caliper support")
+    def get_make_config_options(self, spec, prefix):
+        def yes_no(varstr):
+            return "YES" if varstr in self.spec else "NO"
+        options = super(Mfem, self).get_make_config_options(spec, prefix)
+        caliper_opt = ["MFEM_USE_CALIPER=%s" % yes_no("+caliper"), ]
+        return options + caliper_opt
+
     version("4.1_comm_cali", branch="comm_cali", submodules=False, git="https://github.com/gracenansamba/mfem.git")
 
