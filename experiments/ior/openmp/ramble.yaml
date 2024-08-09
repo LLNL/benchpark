@@ -27,18 +27,19 @@ ramble:
               variants:
                 package_manager: spack 
               variables:
-
                 n_nodes: ['1','2','4'] 
-                b: ['1g','2g','4g']
-                t: ['4m','8m','16m']
+                b: '268435456' #256 mb
+
+                t: '{b}/256'
 
             ior_openmp_strong_{n_nodes}:
               variants:
                 package_manager: spack 
               variables:
                 n_nodes: ['1','2','4']
-                b: '1g'
-                t: '4m'
+                b: '268435456/{n_nodes}'
+                t: '{b}/256'
+                #t: '{b}/({sys_cores_per_node}*4)'
   software:
     packages:
       mpi:
