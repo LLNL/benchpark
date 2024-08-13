@@ -11,7 +11,7 @@ import benchpark.system
 import benchpark.spec
 
 
-def system_create(args):
+def system_init(args):
     system_spec = benchpark.spec.SystemSpec(" ".join(args.spec))
     system_spec = system_spec.concretize()
 
@@ -46,23 +46,20 @@ def system_list(args):
 def setup_parser(root_parser):
     system_subparser = root_parser.add_subparsers(dest="system_subcommand")
 
-    create_parser = system_subparser.add_parser("create")
-    create_parser.add_argument(
-        "--from", dest="use_existing", type=str, help="Copy an existing system config"
-    )
-    create_parser.add_argument("--dest", help="Place all system files here directly")
-    create_parser.add_argument(
+    init_parser = system_subparser.add_parser("init")
+    init_parser.add_argument("--dest", help="Place all system files here directly")
+    init_parser.add_argument(
         "--basedir", help="Generate a system dir under this, and place all files there"
     )
 
-    create_parser.add_argument("spec", nargs="+", help="System spec")
+    init_parser.add_argument("spec", nargs="+", help="System spec")
 
     system_subparser.add_parser("list")
 
 
 def command(args):
     actions = {
-        "create": system_create,
+        "init": system_init,
         "list": system_list,
     }
     if args.system_subcommand in actions:
