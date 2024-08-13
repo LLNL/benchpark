@@ -61,9 +61,6 @@ ramble:
                 K: ['1','2','2','2']
   software:
     packages:
-      mpi:
-        pkg_spec: openmpi@4.1.6
-        compiler: default-compiler
       quicksilver:
         pkg_spec: quicksilver 
         compiler: default-compiler

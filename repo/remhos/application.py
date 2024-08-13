@@ -19,39 +19,39 @@ class Remhos(ExecutableApplication):
     workload('remhos', executables=['run'])
     
     workload_variable('mesh', default='{remhos}/data/periodic-square.mesh',
-        description='mesh',
+        description='mesh file',
         workloads=['remhos'])
 
     workload_variable('p', default='5',
-        description='p',
+        description='problem number',
         workloads=['remhos'])
     
     workload_variable('rs', default='3',
-        description='rs',
+        description='number of serial refinements',
         workloads=['remhos'])
     
     workload_variable('rp', default='',
-        description='rp',
+        description='number of parallel refinements',
         workloads=['remhos'])
 
     workload_variable('dt', default='0.005',
-        description='dt',
+        description='time step',
         workloads=['remhos'])
 
     workload_variable('tf', default='0.8',
-        description='tf',
+        description='time final',
         workloads=['remhos'])
     
     workload_variable('ho', default='1',
-        description='ho',
+        description='high order solver',
         workloads=['remhos'])
 
     workload_variable('lo', default='2',
-        description='lo',
+        description='low order solver',
         workloads=['remhos'])
 
     workload_variable('fct', default='2',
-        description='fct',
+        description='fct type',
         workloads=['remhos'])
     #FOM_regex=r'(?<=Merit)\s+[\+\-]*[0-9]*\.*[0-9]+e*[\+\-]*[0-9]*'
     figure_of_merit("success", log_file='{experiment_run_dir}/{experiment_name}.out', fom_regex=r'(?P<done>.*)', group_name='done', units='')

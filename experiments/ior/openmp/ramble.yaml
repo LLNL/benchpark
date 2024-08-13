@@ -42,9 +42,6 @@ ramble:
                 #t: '{b}/({sys_cores_per_node}*4)'
   software:
     packages:
-      mpi:
-        pkg_spec: openmpi@4.1.6
-        compiler: default-compiler
       ior:
         pkg_spec: ior@3.3.0 
         compiler: default-compiler
