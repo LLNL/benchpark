@@ -84,7 +84,7 @@ def override_ramble_hardcoded_globals():
 
 
 def _base_path():
-    return pathlib.Path(__file__).resolve().parent
+    return pathlib.Path(__file__).resolve().parents[2]
 
 
 # Experiments
@@ -95,7 +95,7 @@ def _exprs():
 
     TODO: consider not making this a singleton.
     """
-    experiments_repo = _base_path() / "test_repo"
+    experiments_repo = _base_path() / "var" / "exp_repo"
     return _add_repo(experiments_repo, ObjectTypes.experiments)
 
 
@@ -113,7 +113,7 @@ def _add_repo(repo_dir, obj_type):
 
 # Systems
 def _systems():
-    systems_repo = _base_path() / "sys_repo"
+    systems_repo = _base_path() / "var" / "sys_repo"
     return _add_repo(systems_repo, ObjectTypes.systems)
 
 
