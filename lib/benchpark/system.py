@@ -11,12 +11,9 @@ from benchpark.directives import SpecTemplate
 import benchpark.repo
 from benchpark.runtime import RuntimeResources
 
-# Duplicate imports from experiment.py
 from typing import Dict, Tuple
 import benchpark.spec
 import benchpark.variant
-import ramble.language.language_helpers
-import ramble.language.shared_language
 
 # isort: off
 
@@ -24,6 +21,8 @@ bootstrapper = RuntimeResources(benchpark.paths.benchpark_home)  # noqa
 bootstrapper.bootstrap()  # noqa
 
 import ramble.config as cfg  # noqa
+import ramble.language.language_helpers
+import ramble.language.shared_language
 import spack.util.spack_yaml as syaml  # noqa
 
 # isort: on
