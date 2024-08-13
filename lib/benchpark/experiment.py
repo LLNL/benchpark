@@ -13,11 +13,11 @@ import benchpark.repo
 import benchpark.runtime
 import benchpark.variant
 
-import ramble.language.language_base
-import ramble.language.language_helpers
-
 bootstrapper = benchpark.runtime.RuntimeResources(benchpark.paths.benchpark_home)
 bootstrapper.bootstrap()
+
+import ramble.language.language_base
+import ramble.language.language_helpers
 
 
 class Experiment(SpecTemplate):
@@ -33,63 +33,9 @@ class Experiment(SpecTemplate):
          special functions, that add metadata (variants) to packages (see
          ``directives.py``).
 
-      2. **Experiment instances**. Once instantiated, a package is
-         essentially a software installer.  Spack calls methods like
-         ``do_install()`` on the ``Package`` object, and it uses those to
-         drive user-implemented methods like ``patch()``, ``install()``, and
-         other build steps.  To install software, an instantiated package
-         needs a *concrete* spec, which guides the behavior of the various
-         install methods.
-
-    Experiments are imported from repos (see ``repo.py``).
-
-    **Package DSL**
-
-    Look in ``lib/spack/docs`` or check https://spack.readthedocs.io for
-    the full documentation of the package domain-specific language.  That
-    used to be partially documented here, but as it grew, the docs here
-    became increasingly out of date.
-
-    **Package Lifecycle**
-
-    A package's lifecycle over a run of Spack looks something like this:
-
-    .. code-block:: python
-
-       p = Package()             # Done for you by spack
-
-       p.do_fetch()              # downloads tarball from a URL (or VCS)
-       p.do_stage()              # expands tarball in a temp directory
-       p.do_patch()              # applies patches to expanded source
-       p.do_install()            # calls package's install() function
-       p.do_uninstall()          # removes install directory
-
-    although packages that do not have code have nothing to fetch so omit
-    ``p.do_fetch()``.
-
-    There are also some other commands that clean the build area:
-
-    .. code-block:: python
-
-       p.do_clean()              # removes the stage directory entirely
-       p.do_restage()            # removes the build directory and
-                                 # re-expands the archive.
-
-    The convention used here is that a ``do_*`` function is intended to be
-    called internally by Spack commands (in ``spack.cmd``).  These aren't for
-    package writers to override, and doing so may break the functionality
-    of the Package class.
-
-    Package creators have a lot of freedom, and they could technically
-    override anything in this class.  That is not usually required.
-
-    For most use cases.  Package creators typically just add attributes
-    like ``homepage`` and, for a code-based package, ``url``, or functions
-    such as ``install()``.
-    There are many custom ``Package`` subclasses in the
-    ``spack.build_systems`` package that make things even easier for
-    specific build systems.
-
+      2. **Experiment instances**. Once instantiated, an experiment is
+         essentially a collection of files defining an experiment in a
+         Ramble workspace.
     """
 
     #
@@ -105,50 +51,6 @@ class Experiment(SpecTemplate):
     def __init__(self, spec):
         self.spec: "benchpark.spec.ConcreteExperimentSpec" = spec
         super().__init__()
-
-    # TODO: allow more than one active extendee.
-    @property
-    def extendee_spec(self):
-        """
-        Spec of the extendee of this package, or None if it is not an extension
-        """
-        if not self.extendees:
-            return None
-
-        # if the spec is concrete already, then it extends something
-        # that is an *optional* dependency, and the dep isn't there.
-        if isinstance(self.spec, benchpark.spec.ConcreteSpec):
-            return None
-        else:
-            # If it's not concrete, then return the spec from the
-            # extends() directive since that is all we know so far.
-            spec_str = next(iter(self.extendees))
-            return benchpark.spec.Spec(spec_str)
-
-    @property
-    def is_extension(self):
-        # if it is concrete, it's only an extension if it actually
-        # dependes on the extendee.
-        if isinstance(self.spec, benchpark.spec.ConcreteSpec):
-            return self.extendee_spec is not None
-        else:
-            # If not, then it's an extension if it *could* be an extension
-            return bool(self.extendees)
-
-    def extends(self, spec):
-        """
-        Returns True if this package extends the given spec.
-
-        If ``self.spec`` is concrete, this returns whether this package extends
-        the given spec.
-
-        If ``self.spec`` is not concrete, this returns whether this package may
-        extend the given spec.
-        """
-        if spec.name not in self.extendees:
-            return False
-        s = self.extendee_spec
-        return s and spec.satisfies(s)
 
     def compute_include_section(self):
         # include the config directory

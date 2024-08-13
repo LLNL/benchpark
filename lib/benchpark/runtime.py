@@ -6,7 +6,7 @@ import subprocess
 import sys
 import yaml
 
-DEBUG = True
+DEBUG = False
 
 
 def debug_print(message):

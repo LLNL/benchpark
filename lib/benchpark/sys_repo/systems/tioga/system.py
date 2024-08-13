@@ -19,7 +19,7 @@ class Tioga(System):
 
     variant(
         "compiler",
-        default="rocm",
+        default="cce",
         values=("gcc", "cce"),
         description="Which compiler to use",
     )
