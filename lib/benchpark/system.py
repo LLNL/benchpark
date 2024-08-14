@@ -15,17 +15,13 @@ from typing import Dict, Tuple
 import benchpark.spec
 import benchpark.variant
 
-# isort: off
-
 bootstrapper = RuntimeResources(benchpark.paths.benchpark_home)  # noqa
 bootstrapper.bootstrap()  # noqa
 
 import ramble.config as cfg  # noqa
-import ramble.language.language_helpers
-import ramble.language.shared_language
+import ramble.language.language_helpers  # noqa
+import ramble.language.shared_language  # noqa
 import spack.util.spack_yaml as syaml  # noqa
-
-# isort: on
 
 # We cannot import this the normal way because it from modern Spack
 # and mixing modern Spack modules with ramble modules that depend on

@@ -3,9 +3,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-import inspect
-import sys
-
 #: at what level we should write stack traces or short error messages
 #: this is module-scoped because it needs to be set very early
 debug = 0
