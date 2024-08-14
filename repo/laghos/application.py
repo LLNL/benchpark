@@ -32,7 +32,7 @@ class Laghos(ExecutableApplication):
                       description='ms',
                       workloads=['problem'])
 
-    workload_variable('mesh_path', default='{laghos}/data/box01_hex.mesh',
+    workload_variable('mesh_path', default='{laghos_path}/data/box01_hex.mesh',
                       description='mesh path',
                       workloads=['problem'])
 
