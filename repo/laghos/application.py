@@ -16,9 +16,25 @@ class Laghos(ExecutableApplication):
             'multi-node','single-node','mpi','network-latency-bound',
             'network-collectives','unstructured-grid']
 
-    executable('p', 'laghos -p 3 -m {laghos}/data/box01_hex.mesh -rs 5 -ms 500', use_mpi=True)
+    executable('p', 'laghos -p {p} -m {mesh_path} -rs {rs} -ms {ms}', use_mpi=True)
 
     workload('problem', executables=['p'])
+
+    workload_variable('p', default='3',
+                      description='p',
+                      workloads=['problem'])
+
+    workload_variable('rs', default='5',
+                      description='rs',
+                      workloads=['problem'])
+
+    workload_variable('ms', default='500',
+                      description='ms',
+                      workloads=['problem'])
+
+    workload_variable('mesh_path', default='{laghos}/data/box01_hex.mesh',
+                      description='mesh path',
+                      workloads=['problem'])
 
     figure_of_merit('Major kernels total time',
                     log_file='{experiment_run_dir}/{experiment_name}.out',
