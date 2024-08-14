@@ -281,7 +281,7 @@ class SystemSpec(Spec):
     @property
     def system_class(self):
         cls = sys_repo.get_obj_class(self.name)
-        # TODO: this shouldn't be necessary, but .package_dir isn't working
+        # TODO: this shouldn't be necessary, but .template_dir isn't working
         cls.resource_location = pathlib.Path(
             sys_repo.filename_for_object_name(self.name)
         ).parent

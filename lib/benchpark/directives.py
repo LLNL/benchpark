@@ -21,7 +21,7 @@ import ramble.language.shared_language
 from ramble.language.language_base import DirectiveError
 
 
-# TODO remove this when it is added to ramble.lang (when ramble updates from spack
+# TODO remove this when it is added to ramble.lang (when ramble updates from spack)
 class classproperty:
     """Non-data descriptor to evaluate a class-level property. The function that performs
     the evaluation is injected at creation time and take an instance (could be None) and
@@ -154,32 +154,31 @@ def variant(
 
 class SpecTemplate(metaclass=DirectiveMeta):
     @classproperty
-    def package_dir(cls):
-        """Directory where the package.py file lives."""
+    def template_dir(cls):
+        """Directory where the experiment/system.py file lives."""
         return os.path.abspath(os.path.dirname(cls.module.__file__))
 
     @classproperty
     def module(cls):
-        """Module object (not just the name) that this package is defined in.
-        We use this to add variables to package modules.  This makes
-        install() methods easier to write (e.g., can call configure())
+        """Module object (not just the name) that this Experiment/System is
+        defined in.
         """
         return __import__(cls.__module__, fromlist=[cls.__name__])
 
     @classproperty
     def namespace(cls):
-        """Spack namespace for the package, which identifies its repo."""
+        """namespace for the Experiment/System, which identifies its repo."""
         parts = cls.__module__.split(".")
         return ".".join(parts[2:-1])
 
     @classproperty
     def fullname(cls):
-        """Name of this package, including the namespace"""
+        """Name of this Experiment/System, including the namespace"""
         return f"{cls.namespace}.{cls.name}"
 
     @classproperty
     def fullnames(cls):
-        """Fullnames for this package and any packages from which it inherits."""
+        """Fullnames for this Experiment/System and any from which it inherits."""
         fullnames = []
         for cls in inspect.getmro(cls):
             namespace = getattr(cls, "namespace", None)
@@ -192,9 +191,9 @@ class SpecTemplate(metaclass=DirectiveMeta):
 
     @classproperty
     def name(cls):
-        """The name of this package.
-        The name of a package is the name of its Python module, without
-        the containing module names.
+        """The name of this Experiment/System.
+        This is the name of its Python module, without the containing module
+        names.
         """
         if cls._name is None:
             cls._name = cls.module.__name__
