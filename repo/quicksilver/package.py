@@ -24,7 +24,7 @@ class Quicksilver(MakefilePackage):
 
     variant("openmp", default=False, description="Build with OpenMP support")
     variant("mpi", default=False, description="Build with MPI support")
-    variant("cuda", default=True, description="Build with CUDA support")
+    variant("cuda", default=False, description="Build with CUDA support")
     depends_on("mpi", when="+mpi")
 
     build_directory = "src"
