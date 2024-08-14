@@ -22,9 +22,9 @@ class Quicksilver(MakefilePackage):
     version("master", branch="master")
     version("1.0", sha256="83371603b169ec75e41fb358881b7bd498e83597cd251ff9e5c35769ef22c59a")
 
-    variant("openmp", default=True, description="Build with OpenMP support")
-    variant("mpi", default=True, description="Build with MPI support")
-
+    variant("openmp", default=False, description="Build with OpenMP support")
+    variant("mpi", default=False, description="Build with MPI support")
+    variant("cuda", default=True, description="Build with CUDA support")
     depends_on("mpi", when="+mpi")
 
     build_directory = "src"
@@ -33,8 +33,10 @@ class Quicksilver(MakefilePackage):
     def build_targets(self):
         targets = []
         spec = self.spec
-
-        targets.append("CXXFLAGS={0}".format(self.compiler.cxx11_flag))
+        if "+cuda" in spec:
+            targets.append("CXXFLAGS= -DHAVE_CUDA {0}".format(self.compiler.cxx11_flag))
+        else:
+            targets.append("CXXFLAGS={0}".format(self.compiler.cxx11_flag))
 
         if "+mpi" in spec:
             targets.append("CXX={0}".format(spec["mpi"].mpicxx))
@@ -42,14 +44,11 @@ class Quicksilver(MakefilePackage):
             targets.append("CXX={0}".format(spack_cxx))
 
         if "+openmp+mpi" in spec:
-            targets.append(
-                "CPPFLAGS=-DHAVE_MPI -DHAVE_OPENMP {0}".format(self.compiler.openmp_flag)
-            )
+            targets.append("CPPFLAGS=-DHAVE_MPI -DHAVE_OPENMP {0}".format(self.compiler.openmp_flag))
         elif "+openmp" in spec:
             targets.append("CPPFLAGS=-DHAVE_OPENMP {0}".format(self.compiler.openmp_flag))
         elif "+mpi" in spec:
             targets.append("CPPFLAGS=-DHAVE_MPI")
-
         if "+openmp" in self.spec:
             targets.append("LDFLAGS={0}".format(self.compiler.openmp_flag))
 

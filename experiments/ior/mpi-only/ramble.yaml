@@ -23,7 +23,7 @@ ramble:
           variables:
             n_ranks: '{n_nodes}*{sys_cores_per_node}'
           experiments:
-            ior_openmp_weak_{n_nodes}:
+            ior_mpi_weak_{n_nodes}:
               variants:
                 package_manager: spack 
               variables:
@@ -32,7 +32,7 @@ ramble:
 
                 t: '{b}/256'
 
-            ior_openmp_strong_{n_nodes}:
+            ior_mpi_strong_{n_nodes}:
               variants:
                 package_manager: spack 
               variables:
