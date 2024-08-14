@@ -62,7 +62,7 @@ ramble:
   software:
     packages:
       quicksilver:
-        pkg_spec: quicksilver 
+        pkg_spec: quicksilver +openmp+mpi
         compiler: default-compiler
     environments:
       quicksilver:
