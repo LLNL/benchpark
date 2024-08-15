@@ -31,6 +31,9 @@ ramble:
               variants:
                 package_manager: spack
               variables:
+                p: '3'
+                rs: '5'
+                ms: '500'
   software:
     packages:
       zlib:
