@@ -63,7 +63,11 @@ ramble:
   software:
     packages:
       kripke:
-        pkg_spec: kripke@develop +mpi+openmp{modifier_spack_variant} ^chai@2024.02
+# spack_spec: kripke@develop +mpi+openmp{modifier_spack_variant} ^chai@2024.02
+        pkg_spec: kripke@comm_cali +mpi+openmp{modifier_spack_variant} ^chai@2024.02
+        # spack_spec: kripke@1.2.7.0 +mpi+openmp{modifier_spack_variant} ^chai@2024.02
+        # # 3918228 (edit spack spec version)
+        #  pkg_spec: kripke@develop +mpi+openmp{modifier_spack_variant} ^chai@2024.02
         compiler: default-compiler
     environments:
       kripke:

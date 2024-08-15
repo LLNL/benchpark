@@ -16,10 +16,12 @@ class Amg2023(CMakePackage, CudaPackage, ROCmPackage):
     tags = ["benchmark"]
     homepage = "https://github.com/LLNL/AMG2023"
     git = "https://github.com/LLNL/AMG2023.git"
+    # git = "https://github.com/gracenansamba/hypre.git"
 
     license("Apache-2.0")
 
     version("develop", branch="main")
+    version("devlop", branch="comm_cali")
 
     variant("mpi", default=True, description="Enable MPI support")
     variant("openmp", default=False, description="Enable OpenMP support")
@@ -31,7 +33,8 @@ class Amg2023(CMakePackage, CudaPackage, ROCmPackage):
     depends_on("caliper", when="+caliper")
     depends_on("adiak", when="+caliper")
     depends_on("hypre+caliper", when="+caliper")
-    depends_on("hypre@2.31.0:")
+    # depends_on("hypre@2.31.0:")
+    depends_on("hypre@comm_cali")
     depends_on("hypre+cuda", when="+cuda")
     requires("+cuda", when="^hypre+cuda")
     depends_on("hypre+rocm", when="+rocm")
