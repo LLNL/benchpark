@@ -6,7 +6,7 @@
 variables:
   timeout: "120"
   scheduler: "slurm"
-  sys_cores_per_node: "36"
+  sys_cores_per_node: "96"
   max_request: "1000"  # n_ranks/n_nodes cannot exceed this
   n_ranks: '1000001'  # placeholder value
   n_nodes: '1000001'  # placeholder value
