@@ -1,4 +1,7 @@
-
+# Copyright 2013-2024 Lawrence Livermore National Security, LLC and other
+# Spack Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: (Apache-2.0 OR MIT)
 from spack.package import *
 
 class Gpcnet(MakefilePackage):
@@ -6,7 +9,6 @@ class Gpcnet(MakefilePackage):
 
     tags = ["proxy-app"]
 
-    homepage = "https://codesign.llnl.gov/quicksilver.php"
     url = "https://github.com/netbench/GPCNET/archive/refs/tags/1.2.tar.gz"
     git = "https://github.com/netbench/GPCNET"
 
