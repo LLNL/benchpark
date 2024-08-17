@@ -30,7 +30,7 @@ class Mfem(BuiltinMfem):
         caliper_opt = ["MFEM_USE_CALIPER=%s" % yes_no("+caliper"), ]
         return options + caliper_opt
 
-    version("4.1_comm_cali", branch="comm_cali", submodules=False, git="https://github.com/gracenansamba/mfem.git")
+    version("4.4_comm_cali", branch="comm_cali", submodules=False, git="https://github.com/gracenansamba/mfem.git")
 
     variant("caliper", default=False, description="Enable/disable Caliper support")
     depends_on("caliper", when="+caliper")
