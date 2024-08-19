@@ -7,7 +7,7 @@ import pathlib
 import sys
 
 import benchpark.paths
-from benchpark.directives import SpecTemplate
+from benchpark.directives import ExperimentSystemBase
 import benchpark.repo
 from benchpark.runtime import RuntimeResources
 
@@ -63,7 +63,7 @@ def _hash_id(content_list):
     return sha256_hash.hexdigest()
 
 
-class System(SpecTemplate):
+class System(ExperimentSystemBase):
     variants: Dict[
         str,
         Tuple["benchpark.variant.Variant", "benchpark.spec.ConcreteSystemSpec"],

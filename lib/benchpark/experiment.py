@@ -6,7 +6,7 @@
 from typing import Dict, Tuple
 import yaml  # TODO: some way to ensure yaml available
 
-from benchpark.directives import SpecTemplate
+from benchpark.directives import ExperimentSystemBase
 import benchpark.spec
 import benchpark.paths
 import benchpark.repo
@@ -20,7 +20,7 @@ import ramble.language.language_base  # noqa
 import ramble.language.language_helpers  # noqa
 
 
-class Experiment(SpecTemplate):
+class Experiment(ExperimentSystemBase):
     """This is the superclass for all benchpark experiments.
 
     ***The Experiment class***

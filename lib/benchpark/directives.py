@@ -152,7 +152,7 @@ def variant(
     return _execute_variant
 
 
-class SpecTemplate(metaclass=DirectiveMeta):
+class ExperimentSystemBase(metaclass=DirectiveMeta):
     @classproperty
     def template_dir(cls):
         """Directory where the experiment/system.py file lives."""
