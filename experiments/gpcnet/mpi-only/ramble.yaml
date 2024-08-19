@@ -21,7 +21,8 @@ ramble:
       workloads:
         network_test:
           variables:
-            n_ranks: '{n_nodes}*32'
+            #only running on half of available cores per node because of mpi error on ruby when running with more than half
+            n_ranks: '{n_nodes}*{sys_cores_per_node}//2'
           experiments:
             gpcnet_network_test_strong_{n_nodes}:
               variants: 
@@ -31,7 +32,7 @@ ramble:
                 n_nodes: ['2','4']
         network_load_test:
           variables:
-            n_ranks: '{n_nodes}*32'
+            n_ranks: '{n_nodes}*{sys_cores_per_node}//2'
           experiments:
             gpcnet_network_load_test_strong_{n_nodes}:
               variants: 

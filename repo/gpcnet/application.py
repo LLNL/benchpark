@@ -17,8 +17,8 @@ class Gpcnet(ExecutableApplication):
     workload('network_test', executables=['p1'])
     workload('network_load_test', executables=['p2'])
 
-    figure_of_merit('Mean read',
+    figure_of_merit('TBD',
                     log_file='{experiment_run_dir}/{experiment_name}.out',
-                    fom_regex=r'read\s+[0-9]+\.[0-9]*[0-9]*\s+[0-9]+\.[0-9]*[0-9]*\s+(?P<fom>[0-9]+\.[0-9]*([0-9]*)?)',
+                    fom_regex=r'.*',
                     group_name='fom', units='MiB/sec')
     success_criteria('pass', mode='string', match=r'.*', file='{experiment_run_dir}/{experiment_name}.out')

@@ -1,3 +1,7 @@
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: Apache-2.0
 
 from spack.package import *
 
@@ -21,9 +25,6 @@ class Gpcnet(MakefilePackage):
     @property
     def build_targets(self):
         targets = ["all"]
-      #  spec=self.spec
-       # if "+mpi" in spec:
-        #    targets.append("CC={0}".format(spec["mpi"].mpicxx))
         return targets
 
     def edit(self, spec, prefix):
