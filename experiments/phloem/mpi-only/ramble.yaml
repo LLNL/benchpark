@@ -30,10 +30,16 @@ ramble:
                 num_cores: ['1','2','4']
                 num_nbors: '{num_cores}'
         mpiBench:
-          variables:
-            n_ranks: '{n_nodes}*{sys_cores_per_node}'
           experiments:
             phloem_mpiBench_strong_{n_ranks}:
+              variants: 
+                package_manager: spack  
+              variables:
+                n_ranks: '2'
+
+        mpiGraph:
+          experiments:
+            phloem_mpiGraph_strong_{n_ranks}:
               variants: 
                 package_manager: spack  
               variables:

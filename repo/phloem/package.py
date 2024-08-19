@@ -1,4 +1,7 @@
-
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+#
+# SPDX-License-Identifier: Apache-2.0
 from spack.package import *
 
 class Phloem(MakefilePackage):
@@ -15,22 +18,10 @@ class Phloem(MakefilePackage):
     
     depends_on("mpi", when="+mpi")
 
-    #@property
-    #def build_targets(self):
-        #targets = ["all"]
-      #  spec=self.spec
-       # if "+mpi" in spec:
-        #    targets.append("CC={0}".format(spec["mpi"].mpicxx))dd
-        #return targets
-
-    #def edit(self, spec, prefix):
-     #   makefile = FileFilter("Makefile")
-      #  makefile.filter('CC = cc', "CC = {0}".format(spec["mpi"].mpicc))
-
-
     def install(self, spec, prefix):
         mkdir(prefix.bin)
         mkdir(prefix.doc)
         install("mpigraph-1.6/mpiBench/mpiBench", prefix.bin)
         install("sqmr-1.1.0/sqmr", prefix.bin)
+        install("mpigraph-1.6/mpiGraph/mpiGraph", prefix.bin)
         install("README", prefix.doc)
