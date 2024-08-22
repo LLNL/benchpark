@@ -201,20 +201,6 @@ class ExperimentSpec(Spec):
         return ConcreteExperimentSpec(self)
 
 
-def autospec(function):
-    """Decorator that automatically converts the first argument of a
-    function to a Spec.
-    """
-
-    @functools.wraps(function)
-    def converter(self, spec_like, *args, **kwargs):
-        if not isinstance(spec_like, ExperimentSpec):
-            spec_like = ExperimentSpec(spec_like)
-        return function(self, spec_like, *args, **kwargs)
-
-    return converter
-
-
 class ConcreteSpec(Spec):
     def __init__(self, str_or_spec: Union[str, Spec]):
         super().__init__(str_or_spec)
