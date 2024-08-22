@@ -16,7 +16,7 @@ class Saxpy(Experiment):
 
         # GPU tests include some smaller sizes
         n = ["512", "1024"]
-        matrix = ["size"]
+        matrix = ["n"]
         if self.spec.satisfies("programming_model=openmp"):
             matrix += ["omp_num_threads"]
             variables["n_nodes"] = ["1", "2"]
