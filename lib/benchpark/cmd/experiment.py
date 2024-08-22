@@ -37,7 +37,11 @@ def experiment_init(args):
 
 
 def experiment_list(args):
-    raise NotImplementedError("'benchpark experiment list' is not available")
+    experiments = benchpark.repo.all_object_names(
+        benchpark.repo.ObjectTypes.experiments
+    )
+    # TODO: prettier printing
+    print("    ".join(experiments))
 
 
 def setup_parser(root_parser):
