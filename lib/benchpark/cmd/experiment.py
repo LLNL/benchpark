@@ -12,11 +12,8 @@ import benchpark.spec
 
 
 def experiment_init(args):
-    experiment_spec = benchpark.spec.ExperimentSpec(" ".join(args.spec))
-    experiment_spec = experiment_spec.concretize()
-
+    experiment_spec = benchpark.spec.ExperimentSpec(" ".join(args.spec)).concretize()
     experiment = experiment_spec.experiment
-    experiment.initialize()
 
     if args.basedir:
         base = args.basedir
@@ -29,7 +26,7 @@ def experiment_init(args):
 
     try:
         os.mkdir(destdir)
-        experiment.generate_description(destdir)
+        experiment.write_ramble_dict(f"{destdir}/ramble.yaml")
     except FileExistsError:
         print(f"Abort: experiment description dir already exists ({destdir})")
         sys.exit(1)
