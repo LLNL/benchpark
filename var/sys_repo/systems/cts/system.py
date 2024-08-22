@@ -59,7 +59,7 @@ class Cts(System):
         if compiler == "gcc":
             selections.append(externals / "mpi" / "00-gcc-packages.yaml")
         elif compiler == "intel":
-            selections.append(externals / "mpi" / "00-intel-packages.yaml")
+            selections.append(externals / "mpi" / "01-intel-packages.yaml")
 
         return selections
 
