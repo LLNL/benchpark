@@ -157,7 +157,7 @@ class Spec(object):
 
     def intersects(self, other: Union[str, "Spec"]) -> bool:
         if not isinstance(other, Spec):
-            other = type(self)(other)  # keep type from subclass
+            other = Spec(other)  # subclasses do not override intersects behavior
         return (
             (self.name is None or other.name is None or self.name == other.name)
             and (
@@ -170,7 +170,7 @@ class Spec(object):
 
     def satisfies(self, other: Union[str, "Spec"]) -> bool:
         if not isinstance(other, Spec):
-            other = type(self)(other)  # keep type from subclass
+            other = Spec(other)  # subclasses do not override satisfies behavior
         return (
             (other.name is None or self.name == other.name)
             and (other.namespace is None or self.namespace == other.namespace)
