@@ -66,4 +66,6 @@ def command(args):
     if args.experiment_subcommand in actions:
         actions[args.experiment_subcommand](args)
     else:
-        raise ValueError(f"Unknown subcommand for 'system': {args.system_subcommand}")
+        raise ValueError(
+            f"Unknown subcommand for 'experiment': {args.experiment_subcommand}"
+        )
