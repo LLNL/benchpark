@@ -17,13 +17,14 @@ id_to_resources = {
     },
 }
 
+
 class Cts(System):
 
     variant(
         "cluster",
-        default="ruby", 
+        default="ruby",
         values=("ruby", "magma"),
-        description="Which cluster to run on"
+        description="Which cluster to run on",
     )
 
     variant(
