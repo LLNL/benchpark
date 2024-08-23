@@ -22,7 +22,7 @@ class OsuMicroBenchmarks(Experiment):
             "osu-micro-benchmarks": { 
                 # TODO replace with a hash once we have one?
                "workloads": {
-                  f"osu_latency-{str(self.spec)}": {
+                  "osu_latency": {
                       "experiments": {
                           "scaling_{n_nodes}nodes_medium": {
                               "variables": variables,
