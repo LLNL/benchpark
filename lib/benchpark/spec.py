@@ -1,5 +1,4 @@
 import enum
-import functools
 import pathlib
 import re
 from typing import Iterable, Iterator, List, Match, Optional, Union

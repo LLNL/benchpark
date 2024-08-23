@@ -40,7 +40,9 @@ jobs:
               - 'docs/**'
               - 'experiments/**'
               - 'repo/**'
+              - 'var/**'
               - 'README.rst'
+              - 'tags.yaml'
             style:
               - '.github/**'
               - 'bin/**'
@@ -48,6 +50,7 @@ jobs:
               - 'docs/conf.py'
               - 'experiments/**'
               - 'repo/**'
+              - 'var/**'
             run:
               - '.github/**'
               - 'bin/**'
@@ -55,6 +58,7 @@ jobs:
               - 'checkout-versions.yaml'
               - 'experiments/**'
               - 'repo/**'
+              - 'var/**'
             license:
               - '.github/**'
               - 'bin/**'
@@ -62,6 +66,7 @@ jobs:
               - 'docs/**'
               - 'experiments/**'
               - 'repo/**'
+              - 'var/**'
 
   docs:
     if: ${{ needs.changes.outputs.docs == 'true' }}
