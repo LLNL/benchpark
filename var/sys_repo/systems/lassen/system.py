@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import pathlib
+import tempfile
 
 from benchpark.directives import variant
 from benchpark.system import System
@@ -40,29 +41,32 @@ class Lassen(System):
             f.write(self.sw_description())
 
     def external_pkg_configs(self):
-        externals = Tioga.resource_location / "externals"
+        externals = Lassen.resource_location / "externals"
 
-        rocm = self.spec.variants["rocm"][0]
-        gtl = self.spec.variants["gtl"][0]
         compiler = self.spec.variants["compiler"][0]
+        cuda_ver = self.spec.variants["cuda"][0]
 
         selections = [externals / "base" / "00-packages.yaml"]
-        if rocm == "543":
-            selections.append(externals / "rocm" / "00-version-543-packages.yaml")
-        elif rocm == "551":
-            selections.append(externals / "rocm" / "01-version-551-packages.yaml")
+        # 00-version-10-1-243-packages.yaml  01-version-11-8-0-packages.yaml
+        if cuda_ver == "10-1-243":
+            selections.append(externals / "cuda" / "00-version-10-1-243-packages.yaml")
+        elif cuda_ver == "11-8-0":
+            selections.append(externals / "cuda" / "00-version-10-1-243-packages.yaml")
+    
 
-        if compiler == "cce":
-            if gtl == "true":
-                selections.append(externals / "mpi" / "02-cce-ygtl-packages.yaml")
-            else:
-                selections.append(externals / "mpi" / "01-cce-ngtl-packages.yaml")
-            selections.append(externals / "libsci" / "01-cce-packages.yaml")
-        elif compiler == "gcc":
-            selections.append(externals / "mpi" / "00-gcc-ngtl-packages.yaml")
-            selections.append(externals / "libsci" / "00-gcc-packages.yaml")
 
         return selections
+
+    def _adhoc_cfgs(self):
+        if not getattr(self, "_tmp_cfgs", None):
+            self._tmp_cfgs = tempfile.mkdtemp()
+            self._adhoc_cfg_idx = 0
+        return self._tmp_cfgs
+
+    def next_adhoc_cfg(self):
+        basedir = self._adhoc_cfgs()
+        self._adhoc_cfg_idx += 1
+        return os.path.join(basedir, str(self._adhoc_cfg_idx))
 
     def compiler_configs(self):
         #values=("clang-ibm", "xl", "xl-gcc", "clang"),
@@ -167,7 +171,11 @@ class Lassen(System):
 compilers:
 {cfg}
 """
+        gen_file = self.next_adhoc_cfg()
+        with open(gen_file, "w") as f:
+            f.write(full_cfg)
 
+        selections = [gen_file]
         return selections
 
     def sw_description(self):
