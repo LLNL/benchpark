@@ -17,8 +17,8 @@ def experiment_init(args):
 
     if args.basedir:
         base = args.basedir
-        sysdir = experiment.experiment_id()
-        destdir = os.path.join(base, sysdir)
+        expdir = str(hash(experiment_spec))
+        destdir = os.path.join(base, expdir)
     elif args.dest:
         destdir = args.dest
     else:
