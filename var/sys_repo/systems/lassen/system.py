@@ -3,6 +3,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+import os
 import pathlib
 import tempfile
 
@@ -87,7 +88,7 @@ class Lassen(System):
 """
         }
 
-        cfg = mpi_cfgs[(compiler, cuda_ver)]]
+        cfg = mpi_cfgs[(compiler, cuda_ver)]
         full_cfg = f"""\
 packages:
   mpi:
@@ -210,7 +211,7 @@ packages:
 
         compiler = self.spec.variants["compiler"][0]
         cuda_ver = self.spec.variants["cuda"][0]
-        cfg = compiler_cfgs[(compiler, cuda_ver)]]
+        cfg = compiler_cfgs[(compiler, cuda_ver)]
         full_cfg = f"""\
 compilers:
 {cfg}
