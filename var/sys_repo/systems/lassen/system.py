@@ -51,9 +51,53 @@ class Lassen(System):
         if cuda_ver == "10-1-243":
             selections.append(externals / "cuda" / "00-version-10-1-243-packages.yaml")
         elif cuda_ver == "11-8-0":
-            selections.append(externals / "cuda" / "00-version-10-1-243-packages.yaml")
+            selections.append(externals / "cuda" / "01-version-11-8-0-packages.yaml")
     
+        mpi_cfgs = {
+            ("clang-ibm", "11-8-0"): """\
+    - spec: spectrum-mpi@2023.06.28-clang-ibm-16.0.6-cuda-11.8.0-gcc-11.2.1
+      prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-clang-ibm-16.0.6-cuda-11.8.0-gcc-11.2.1
+      extra_attributes:
+        extra_link_flags: "-L/usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-clang-ibm-16.0.6-cuda-11.8.0-gcc-11.2.1 -lmpiprofilesupport -lmpi_ibm_usempi -lmpi_ibm_mpifh -lmpi_ibm"
+        ldflags: "-lmpiprofilesupport -lmpi_ibm_usempi -lmpi_ibm_mpifh -lmpi_ibm"
+""",
+            ("xl-gcc", "11-8-0"): """\
+    - spec: spectrum-mpi@2023.06.28-cuda-11.8.0-gcc-11.2.1
+      prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-xl-2023.06.28-cuda-11.8.0-gcc-11.2.1
+      extra_attributes:
+        ldflags: "-lmpiprofilesupport -lmpi_ibm_usempi -lmpi_ibm_mpifh -lmpi_ibm"
+""",
+            ("xl", "10-1-243"): """\
+    - spec: spectrum-mpi@2022.08.19-cuda-10.1.243
+      prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-xl-2022.08.19-cuda-10.1.243
+      extra_attributes:
+        ldflags: "-lmpiprofilesupport -lmpi_ibm_usempi -lmpi_ibm_mpifh -lmpi_ibm"
+""",
+            ("clang", "11-8-0"): """\
+    - spec: spectrum-mpi@2022.08.19-clang16.0.6-cuda-11.8.0
+      prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-clang-16.0.6-cuda-11.8.0-gcc-11.2.1
+      extra_attributes:
+        ldflags: "-lmpiprofilesupport -lmpi_ibm_usempi -lmpi_ibm_mpifh -lmpi_ibm"
+""",
+            ("xl", "11-8-0"): """\
+    - spec: spectrum-mpi@2022.08.19-cuda-11.8.0
+      prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-xl-2022.08.19-cuda-11.8.0
+      extra_attributes:
+        ldflags: "-lmpiprofilesupport -lmpi_ibm_usempi -lmpi_ibm_mpifh -lmpi_ibm"
+"""
+        }
 
+        cfg = mpi_cfgs[(compiler, cuda_ver)]]
+        full_cfg = f"""\
+packages:
+  mpi:
+    externals:
+{cfg}
+"""
+        gen_file = self.next_adhoc_cfg()
+        with open(gen_file, "w") as f:
+            f.write(full_cfg)
+        selections.append(gen_file)
 
         return selections
 
