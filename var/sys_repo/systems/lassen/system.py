@@ -57,7 +57,7 @@ class Lassen(System):
         mpi_cfgs = {
             (
                 "clang-ibm",
-                "11-8-0"
+                "11-8-0",
             ): """\
     - spec: spectrum-mpi@2023.06.28-clang-ibm-16.0.6-cuda-11.8.0-gcc-11.2.1
       prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-clang-ibm-16.0.6-cuda-11.8.0-gcc-11.2.1
@@ -67,7 +67,7 @@ class Lassen(System):
 """,
             (
                 "xl-gcc",
-                "11-8-0"
+                "11-8-0",
             ): """\
     - spec: spectrum-mpi@2023.06.28-cuda-11.8.0-gcc-11.2.1
       prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-xl-2023.06.28-cuda-11.8.0-gcc-11.2.1
@@ -76,7 +76,7 @@ class Lassen(System):
 """,
             (
                 "xl",
-                "10-1-243"
+                "10-1-243",
             ): """\
     - spec: spectrum-mpi@2022.08.19-cuda-10.1.243
       prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-xl-2022.08.19-cuda-10.1.243
@@ -85,7 +85,7 @@ class Lassen(System):
 """,
             (
                 "clang",
-                "11-8-0"
+                "11-8-0",
             ): """\
     - spec: spectrum-mpi@2022.08.19-clang16.0.6-cuda-11.8.0
       prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-clang-16.0.6-cuda-11.8.0-gcc-11.2.1
@@ -94,7 +94,7 @@ class Lassen(System):
 """,
             (
                 "xl",
-                "11-8-0"
+                "11-8-0",
             ): """\
     - spec: spectrum-mpi@2022.08.19-cuda-11.8.0
       prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-xl-2022.08.19-cuda-11.8.0
@@ -134,7 +134,7 @@ packages:
         compiler_cfgs = {
             (
                 "clang-ibm",
-                "11-8-0"
+                "11-8-0",
             ): """\
 - compiler:
     spec: clang@16.0.6-ibm-cuda-11.8.0-gcc-11.2.1
@@ -155,7 +155,7 @@ packages:
 """,
             (
                 "xl-gcc",
-                "11-8-0"
+                "11-8-0",
             ): """\
 - compiler:
     spec: xl@16.1.1-2023.06.28-cuda-11.8.0-gcc-11.2.1
@@ -176,7 +176,7 @@ packages:
 """,
             (
                 "xl",
-                "10-1-243"
+                "10-1-243",
             ): """\
 - compiler:
     spec: xl@16.1.1-2022.08.19-cuda10.1.243
@@ -197,7 +197,7 @@ packages:
 """,
             (
                 "xl",
-                "11-8-0"
+                "11-8-0",
             ): """\
 - compiler:
     spec: xl@16.1.1-2022.08.19-cuda11.8.0
@@ -218,7 +218,7 @@ packages:
 """,
             (
                 "clang",
-                "11-8-0"
+                "11-8-0",
             ): """\
 - compiler:
     spec: clang@16.0.6-cuda11.8.0
