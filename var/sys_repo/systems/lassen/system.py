@@ -53,39 +53,54 @@ class Lassen(System):
             selections.append(externals / "cuda" / "00-version-10-1-243-packages.yaml")
         elif cuda_ver == "11-8-0":
             selections.append(externals / "cuda" / "01-version-11-8-0-packages.yaml")
-    
+
         mpi_cfgs = {
-            ("clang-ibm", "11-8-0"): """\
+            (
+                "clang-ibm",
+                "11-8-0"
+            ): """\
     - spec: spectrum-mpi@2023.06.28-clang-ibm-16.0.6-cuda-11.8.0-gcc-11.2.1
       prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-clang-ibm-16.0.6-cuda-11.8.0-gcc-11.2.1
       extra_attributes:
         extra_link_flags: "-L/usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-clang-ibm-16.0.6-cuda-11.8.0-gcc-11.2.1 -lmpiprofilesupport -lmpi_ibm_usempi -lmpi_ibm_mpifh -lmpi_ibm"
         ldflags: "-lmpiprofilesupport -lmpi_ibm_usempi -lmpi_ibm_mpifh -lmpi_ibm"
 """,
-            ("xl-gcc", "11-8-0"): """\
+            (
+                "xl-gcc",
+                "11-8-0"
+            ): """\
     - spec: spectrum-mpi@2023.06.28-cuda-11.8.0-gcc-11.2.1
       prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-xl-2023.06.28-cuda-11.8.0-gcc-11.2.1
       extra_attributes:
         ldflags: "-lmpiprofilesupport -lmpi_ibm_usempi -lmpi_ibm_mpifh -lmpi_ibm"
 """,
-            ("xl", "10-1-243"): """\
+            (
+                "xl",
+                "10-1-243"
+            ): """\
     - spec: spectrum-mpi@2022.08.19-cuda-10.1.243
       prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-xl-2022.08.19-cuda-10.1.243
       extra_attributes:
         ldflags: "-lmpiprofilesupport -lmpi_ibm_usempi -lmpi_ibm_mpifh -lmpi_ibm"
 """,
-            ("clang", "11-8-0"): """\
+            (
+                "clang",
+                "11-8-0"
+            ): """\
     - spec: spectrum-mpi@2022.08.19-clang16.0.6-cuda-11.8.0
       prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-clang-16.0.6-cuda-11.8.0-gcc-11.2.1
       extra_attributes:
         ldflags: "-lmpiprofilesupport -lmpi_ibm_usempi -lmpi_ibm_mpifh -lmpi_ibm"
 """,
-            ("xl", "11-8-0"): """\
+            (
+                "xl",
+                "11-8-0"
+            ): """\
     - spec: spectrum-mpi@2022.08.19-cuda-11.8.0
       prefix: /usr/tce/packages/spectrum-mpi/spectrum-mpi-rolling-release-xl-2022.08.19-cuda-11.8.0
       extra_attributes:
         ldflags: "-lmpiprofilesupport -lmpi_ibm_usempi -lmpi_ibm_mpifh -lmpi_ibm"
-"""
+""",
         }
 
         cfg = mpi_cfgs[(compiler, cuda_ver)]
@@ -114,10 +129,13 @@ packages:
         return os.path.join(basedir, str(self._adhoc_cfg_idx))
 
     def compiler_configs(self):
-        #values=("clang-ibm", "xl", "xl-gcc", "clang"),
-        #values=("11-8-0", "10-1-243"),
+        # values=("clang-ibm", "xl", "xl-gcc", "clang"),
+        # values=("11-8-0", "10-1-243"),
         compiler_cfgs = {
-            ("clang-ibm", "11-8-0"): """\
+            (
+                "clang-ibm",
+                "11-8-0"
+            ): """\
 - compiler:
     spec: clang@16.0.6-ibm-cuda-11.8.0-gcc-11.2.1
     paths:
@@ -135,7 +153,10 @@ packages:
     environment: {}
     extra_rpaths: []
 """,
-            ("xl-gcc", "11-8-0"): """\
+            (
+                "xl-gcc",
+                "11-8-0"
+            ): """\
 - compiler:
     spec: xl@16.1.1-2023.06.28-cuda-11.8.0-gcc-11.2.1
     paths:
@@ -153,7 +174,10 @@ packages:
     environment: {}
     extra_rpaths: []
 """,
-            ("xl", "10-1-243"): """\
+            (
+                "xl",
+                "10-1-243"
+            ): """\
 - compiler:
     spec: xl@16.1.1-2022.08.19-cuda10.1.243
     paths:
@@ -171,7 +195,10 @@ packages:
     environment: {}
     extra_rpaths: []
 """,
-            ("xl", "11-8-0"): """\
+            (
+                "xl",
+                "11-8-0"
+            ): """\
 - compiler:
     spec: xl@16.1.1-2022.08.19-cuda11.8.0
     paths:
@@ -189,7 +216,10 @@ packages:
     environment: {}
     extra_rpaths: []
 """,
-            ("clang", "11-8-0"): """\
+            (
+                "clang",
+                "11-8-0"
+            ): """\
 - compiler:
     spec: clang@16.0.6-cuda11.8.0
     paths:
@@ -206,7 +236,7 @@ packages:
     modules: []
     environment: {}
     extra_rpaths: []
-"""
+""",
         }
 
         compiler = self.spec.variants["compiler"][0]
