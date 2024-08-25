@@ -151,25 +151,35 @@ class Amg2023(Experiment):
         system_specs["mpi"] = "default-mpi"
         system_specs["lapack"] = "lapack"
         if self.spec.satisfies("programming_model=cuda"):
-          system_specs["cuda_version"] = "{default_cuda_version}"
-          system_specs["cuda_arch"] = "{cuda_arch}"
-          system_specs["blas"] = "cublas-cuda"
+            system_specs["cuda_version"] = "{default_cuda_version}"
+            system_specs["cuda_arch"] = "{cuda_arch}"
+            system_specs["blas"] = "cublas-cuda"
         if self.spec.satisfies("programming_model=rocm"):
-          system_specs["rocm_arch"] = "{rocm_arch}"
-          system_specs["blas"] = "blas-rocm"
+            system_specs["rocm_arch"] = "{rocm_arch}"
+            system_specs["blas"] = "blas-rocm"
 
         # set package spack specs
         package_specs = {}
         if self.spec.satisfies("programming_model=cuda"):
-          package_specs["cuda"] = {
-              "pkg_spec": "cuda@{}+allow-unsupported-compilers".format(system_specs["cuda_version"]),
-              "compiler": system_specs["compiler"],
-          }
-          package_specs[system_specs["blas"]] = {} # empty package_specs value implies external package
+            package_specs["cuda"] = {
+                "pkg_spec": "cuda@{}+allow-unsupported-compilers".format(
+                    system_specs["cuda_version"]
+                ),
+                "compiler": system_specs["compiler"],
+            }
+            package_specs[system_specs["blas"]] = (
+                {}
+            )  # empty package_specs value implies external package
         if self.spec.satisfies("programming_model=rocm"):
-          package_specs[system_specs["blas"]] = {} # empty package_specs value implies external package
-        package_specs[system_specs["mpi"]] = {} # empty package_specs value implies external package
-        package_specs[system_specs["lapack"]] = {} # empty package_specs value implies external package
+            package_specs[system_specs["blas"]] = (
+                {}
+            )  # empty package_specs value implies external package
+        package_specs[system_specs["mpi"]] = (
+            {}
+        )  # empty package_specs value implies external package
+        package_specs[system_specs["lapack"]] = (
+            {}
+        )  # empty package_specs value implies external package
         package_specs["hypre"] = {
             "pkg_spec": f"hypre@{hypre_version} +mpi+mixedint~fortran",
             "compiler": system_specs["compiler"],
@@ -180,14 +190,22 @@ class Amg2023(Experiment):
         }
 
         if self.spec.satisfies("programming_model=openmp"):
-            package_specs["hypre"]["pkg_spec"]  += "+openmp"
+            package_specs["hypre"]["pkg_spec"] += "+openmp"
             package_specs[app_name]["pkg_spec"] += "+openmp"
         elif self.spec.satisfies("programming_model=cuda"):
-            package_specs["hypre"]["pkg_spec"]  += "+cuda cuda_arch={}".format(system_specs["cuda_arch"])
-            package_specs[app_name]["pkg_spec"] += "+cuda cuda_arch={}".format(system_specs["cuda_arch"])
+            package_specs["hypre"]["pkg_spec"] += "+cuda cuda_arch={}".format(
+                system_specs["cuda_arch"]
+            )
+            package_specs[app_name]["pkg_spec"] += "+cuda cuda_arch={}".format(
+                system_specs["cuda_arch"]
+            )
         elif self.spec.satisfies("programming_model=rocm"):
-            package_specs["hypre"]["pkg_spec"]  += "+rocm amdgpu_target={}".format(system_specs["rocm_arch"])
-            package_specs[app_name]["pkg_spec"] += "+rocm amdgpu_target={}".format(system_specs["rocm_arch"])
+            package_specs["hypre"]["pkg_spec"] += "+rocm amdgpu_target={}".format(
+                system_specs["rocm_arch"]
+            )
+            package_specs[app_name]["pkg_spec"] += "+rocm amdgpu_target={}".format(
+                system_specs["rocm_arch"]
+            )
 
         return {
             "packages": {k: v for k, v in package_specs.items() if v},
