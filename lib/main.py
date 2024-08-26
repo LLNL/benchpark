@@ -284,7 +284,9 @@ def init_commands(subparsers, actions_dict):
     system_parser = subparsers.add_parser("system", help="Initialize a system config")
     benchpark.cmd.system.setup_parser(system_parser)
 
-    experiment_parser = subparsers.add_parser("experiment", help="Interact with experiments")
+    experiment_parser = subparsers.add_parser(
+        "experiment", help="Interact with experiments"
+    )
     benchpark.cmd.experiment.setup_parser(experiment_parser)
 
     actions_dict["system"] = benchpark.cmd.system.command
