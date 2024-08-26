@@ -15,7 +15,7 @@ class Caliper(SpackModifier):
 
     maintainers("pearce8")
 
-    cali_datafile = "{experiment_run_dir}/{experiment_name}.cali"
+    _cali_datafile = "{experiment_run_dir}/{experiment_name}.cali"
 
     mode(
         "time",
@@ -24,7 +24,7 @@ class Caliper(SpackModifier):
 
     env_var_modification(
         "CALI_CONFIG",
-        "spot(output={})".format(cali_datafile),
+        "spot(output={})".format(_cali_datafile),
         method="set",
         modes=["time"],
     )
@@ -36,7 +36,7 @@ class Caliper(SpackModifier):
 
     env_var_modification(
         "CALI_CONFIG",
-        "spot(output={}, profile.mpi)".format(cali_datafile),
+        "spot(output={}, profile.mpi)".format(_cali_datafile),
         method="set",
         modes=["mpi"],
     )
@@ -48,7 +48,7 @@ class Caliper(SpackModifier):
 
     env_var_modification(
         "CALI_CONFIG",
-        "spot(output={}, profile.cuda)".format(cali_datafile),
+        "spot(output={}, profile.cuda)".format(_cali_datafile),
         method="set",
         modes=["cuda"],
     )
@@ -60,7 +60,7 @@ class Caliper(SpackModifier):
 
     env_var_modification(
         "CALI_CONFIG",
-        "spot(output={}, topdown-counters.all)".format(cali_datafile),
+        "spot(output={}, topdown-counters.all)".format(_cali_datafile),
         method="set",
         modes=["topdown-counters-all"],
     )
@@ -72,7 +72,7 @@ class Caliper(SpackModifier):
 
     env_var_modification(
         "CALI_CONFIG",
-        "spot(output={}, topdown-counters.toplevel)".format(cali_datafile),
+        "spot(output={}, topdown-counters.toplevel)".format(_cali_datafile),
         method="set",
         modes=["topdown-counters-toplevel"],
     )
@@ -84,7 +84,7 @@ class Caliper(SpackModifier):
 
     env_var_modification(
         "CALI_CONFIG",
-        "spot(output={}, topdown.all)".format(cali_datafile),
+        "spot(output={}, topdown.all)".format(_cali_datafile),
         method="set",
         modes=["topdown-all"],
     )
@@ -96,12 +96,12 @@ class Caliper(SpackModifier):
 
     env_var_modification(
         "CALI_CONFIG",
-        "spot(output={}, topdown.toplevel)".format(cali_datafile),
+        "spot(output={}, topdown.toplevel)".format(_cali_datafile),
         method="set",
         modes=["topdown-toplevel"],
     )
 
-    archive_pattern(cali_datafile)
+    archive_pattern(_cali_datafile)
 
     software_spec("caliper", pkg_spec="caliper")
 
