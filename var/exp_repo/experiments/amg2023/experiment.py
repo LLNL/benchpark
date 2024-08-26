@@ -121,7 +121,6 @@ class Amg2023(Experiment):
         }
 
     def compute_modifiers_section(self):
-        from collections import OrderedDict
         modifier_list = super(Amg2023, self).compute_modifiers_section()
         if not self.spec.satisfies("caliper=none"):
             for var in list(self.spec.variants["caliper"]):
