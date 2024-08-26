@@ -18,8 +18,8 @@ class Caliper(SpackModifier):
     cali_datafile = "{experiment_run_dir}/{experiment_name}.cali"
 
     mode(
-         "time",
-         description="Platform-independent collection of time",
+        "time",
+        description="Platform-independent collection of time",
     )
 
     env_var_modification(

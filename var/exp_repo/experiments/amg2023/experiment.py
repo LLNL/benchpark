@@ -26,7 +26,16 @@ class Amg2023(Experiment):
     variant(
         "caliper",
         default="none",
-        values=("none", "time", "mpi", "cuda", "topdown-counters-all", "topdown-counters-toplevel", "topdown-all", "topdown-toplevel"),
+        values=(
+            "none",
+            "time",
+            "mpi",
+            "cuda",
+            "topdown-counters-all",
+            "topdown-counters-toplevel",
+            "topdown-all",
+            "topdown-toplevel",
+        ),
         description="caliper mode",
     )
 
@@ -208,7 +217,7 @@ class Amg2023(Experiment):
             package_specs["hypre"]["pkg_spec"] += "+caliper"
             package_specs[app_name]["pkg_spec"] += "+caliper"
             if any("topdown" in var for var in self.spec.variants["caliper"]):
-                papi_support = True # check if target system supports papi
+                papi_support = True  # check if target system supports papi
                 if papi_support:
                     package_specs["caliper"]["pkg_spec"] += "+papi"
                 else:
@@ -216,18 +225,22 @@ class Amg2023(Experiment):
                         "Target system does not support the papi interface"
                     )
             elif self.spec.satisfies("caliper=cuda"):
-                cuda_support = self.spec.satisfies("caliper=cuda") and True # check if target system supports cuda
+                cuda_support = (
+                    self.spec.satisfies("caliper=cuda") and True
+                )  # check if target system supports cuda
                 if cuda_support:
-                    package_specs["caliper"]["pkg_spec"] += "~papi+cuda cuda_arch={}".format(
-                        system_specs["cuda_arch"]
-                    )
+                    package_specs["caliper"][
+                        "pkg_spec"
+                    ] += "~papi+cuda cuda_arch={}".format(system_specs["cuda_arch"])
                 else:
                     raise NotImplementedError(
                         "Target system does not support the cuda interface"
                     )
-            elif self.spec.satisfies("caliper=time") or self.spec.satisfies("caliper=mpi"):
+            elif self.spec.satisfies("caliper=time") or self.spec.satisfies(
+                "caliper=mpi"
+            ):
                 package_specs["caliper"]["pkg_spec"] += "~papi"
-            
+
         if self.spec.satisfies("programming_model=openmp"):
             package_specs["hypre"]["pkg_spec"] += "+openmp"
             package_specs[app_name]["pkg_spec"] += "+openmp"
