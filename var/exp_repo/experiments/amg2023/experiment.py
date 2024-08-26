@@ -42,12 +42,6 @@ class Amg2023(Experiment):
     #     description="value of n",
     # )
 
-    def compute_include_section(self):
-        return [
-            "./configs/software.yaml",
-            "./configs/variables.yaml",
-        ]
-
     def make_experiment_example(self):
         app_name = self.spec.name
 
@@ -130,10 +124,12 @@ class Amg2023(Experiment):
         from collections import OrderedDict
         modifier_list = super(Amg2023, self).compute_modifiers_section()
         if not self.spec.satisfies("caliper=none"):
-            caliper_modifier = {}
-            caliper_modifier['name'] = "caliper"
-            caliper_modifier['mode'] = "time"
-        return modifier_list + [caliper_modifier]
+            for var in list(self.spec.variants["caliper"]):
+                caliper_modifier_modes = {}
+                caliper_modifier_modes["name"] = "caliper"
+                caliper_modifier_modes["mode"] = var
+                modifier_list.append(caliper_modifier_modes)
+        return modifier_list
 
     def compute_applications_section(self):
         if self.spec.satisfies("workload=problem1"):
@@ -213,7 +209,7 @@ class Amg2023(Experiment):
             package_specs["hypre"]["pkg_spec"] += "+caliper"
             package_specs[app_name]["pkg_spec"] += "+caliper"
             if any("topdown" in var for var in self.spec.variants["caliper"]):
-                papi_support = True #check if target system supports cuda
+                papi_support = True # check if target system supports papi
                 if papi_support:
                     package_specs["caliper"]["pkg_spec"] += "+papi"
                 else:
@@ -255,8 +251,3 @@ class Amg2023(Experiment):
             "packages": {k: v for k, v in package_specs.items() if v},
             "environments": {app_name: {"packages": list(package_specs.keys())}},
         }
-
-    def compute_ramble_dict(self):
-        ramble_dict = super(Amg2023, self).compute_ramble_dict()
-        ramble_dict["ramble"]["software"] = ramble_dict["ramble"].pop("spack")
-        return ramble_dict
