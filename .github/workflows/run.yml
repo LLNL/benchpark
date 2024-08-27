@@ -190,15 +190,16 @@ jobs:
             --disable-logger \
             workspace setup --dry-run
 
-      - name: Dry run hpl/openmp with Caliper-topdown modifier on Magma
-        run: |
-          ./bin/benchpark setup hpl/openmp --modifier=caliper-topdown LLNL-Magma-Penguin-icelake-OmniPath workspace/
-          . workspace/setup.sh
-          ramble \
-            --workspace-dir workspace/hpl/openmp/LLNL-Magma-Penguin-icelake-OmniPath/workspace \
-            --disable-progress-bar \
-            --disable-logger \
-            workspace setup --dry-run
+      # TODO: Disabling this test till hpl is converted to experiment.py
+      #- name: Dry run hpl/openmp with Caliper-topdown modifier on Magma
+      #  run: |
+      #    ./bin/benchpark setup hpl/openmp --modifier=caliper-topdown LLNL-Magma-Penguin-icelake-OmniPath workspace/
+      #    . workspace/setup.sh
+      #    ramble \
+      #      --workspace-dir workspace/hpl/openmp/LLNL-Magma-Penguin-icelake-OmniPath/workspace \
+      #      --disable-progress-bar \
+      #      --disable-logger \
+      #      workspace setup --dry-run
 
       - name: Dry run genesis/openmp with allocation modifier on Fugaku
         run: |
