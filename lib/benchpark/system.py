@@ -150,6 +150,7 @@ system:
                 raise ValueError(f"Missing required info: {attr}")
 
         optionals = list()
+        optionals_as_cfg = ""
         for opt in ["sys_gpus_per_node", "sys_mem_per_node", "queue"]:
             if getattr(self, opt, None):
                 optionals.append(f"{opt}: {getattr(self, opt)}")

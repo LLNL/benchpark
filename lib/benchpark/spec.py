@@ -28,7 +28,7 @@ class VariantMap(llnl.util.lang.HashableMap):
         if isinstance(values, str):
             values = (values,)
         else:
-            values = tuple(*values)
+            values = tuple(values)
         super().__setitem__(name, values)
 
     def intersects(self, other: "VariantMap") -> bool:
@@ -498,7 +498,7 @@ class SpecParser(object):
                 ), f"SPLIT_KVP cannot split pair {self.ctx.current_token.value}"
 
                 name, value = match.groups()
-                spec.variants[name] = value
+                spec.variants[name] = value.split(",")
             else:
                 break
 
