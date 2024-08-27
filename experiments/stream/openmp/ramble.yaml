@@ -7,7 +7,6 @@ ramble:
   include:
   - ./configs/software.yaml
   - ./configs/variables.yaml
-  - ./configs/modifier.yaml
 
   config:
     deprecated: true
@@ -47,11 +46,10 @@ ramble:
   software:
     packages:
       stream:
-        pkg_spec: stream@5.10-caliper{modifier_spack_variant}
+        pkg_spec: stream@5.10-caliper
         compiler: default-compiler
     environments:
       stream:
         packages:
         - default-mpi
         - stream
-        - '{modifier_package_name}'

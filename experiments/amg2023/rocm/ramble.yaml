@@ -7,7 +7,6 @@ ramble:
   include:
   - ./configs/software.yaml
   - ./configs/variables.yaml
-  - ./configs/modifier.yaml
 
   config:
     deprecated: true
@@ -48,10 +47,10 @@ ramble:
   software:
     packages:
       hypre-{gtl}:
-        pkg_spec: hypre@2.31.0 +mpi+rocm+mixedint~fortran{modifier_spack_variant} amdgpu_target={rocm_arch}
+        pkg_spec: hypre@2.31.0 +mpi+rocm+mixedint~fortran amdgpu_target={rocm_arch}
         compiler: compiler-rocm
       amg2023-gpu-{gtl}:
-        pkg_spec: amg2023@develop +mpi+rocm{modifier_spack_variant} amdgpu_target={rocm_arch}
+        pkg_spec: amg2023@develop +mpi+rocm amdgpu_target={rocm_arch}
         compiler: compiler-rocm
     environments:
       amg2023-gpu-{gtl}:
@@ -61,4 +60,3 @@ ramble:
         - mpi-rocm-{gtl}
         - hypre-{gtl}
         - amg2023-gpu-{gtl}
-        - '{modifier_package_name}'

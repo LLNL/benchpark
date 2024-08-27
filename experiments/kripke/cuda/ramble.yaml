@@ -7,7 +7,6 @@ ramble:
   include:
   - ./configs/software.yaml
   - ./configs/variables.yaml
-  - ./configs/modifier.yaml
 
   config:
     deprecated: true
@@ -64,7 +63,7 @@ ramble:
         pkg_spec: cuda@{default_cuda_version}+allow-unsupported-compilers
         compiler: default-compiler
       kripke:
-        pkg_spec: kripke@develop +mpi+cuda{modifier_spack_variant} ^chai@2024.02
+        pkg_spec: kripke@develop +mpi+cuda ^chai@2024.02
         compiler: default-compiler
     environments:
       kripke:
@@ -72,4 +71,3 @@ ramble:
         - cuda
         - default-mpi
         - kripke
-        - '{modifier_package_name}'

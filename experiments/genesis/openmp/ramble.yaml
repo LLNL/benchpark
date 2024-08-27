@@ -7,7 +7,6 @@ ramble:
   include:
   - ./configs/software.yaml
   - ./configs/variables.yaml
-  - ./configs/modifier.yaml
 
   config:
     deprecated: true
@@ -40,7 +39,7 @@ ramble:
   software:
     packages:
       genesis:
-        pkg_spec: genesis@2.1.3 +mpi+openmp{modifier_spack_variant}
+        pkg_spec: genesis@2.1.3 +mpi+openmp
         compiler: default-compiler
     environments:
       genesis:
@@ -48,4 +47,3 @@ ramble:
         - lapack
         - default-mpi
         - genesis
-        - '{modifier_package_name}'

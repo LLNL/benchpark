@@ -7,7 +7,6 @@ ramble:
   include:
   - ./configs/software.yaml
   - ./configs/variables.yaml
-  - ./configs/modifier.yaml
   
   config:
     deprecated: true
@@ -31,11 +30,10 @@ ramble:
   software:
     packages:
       raja-perf:
-        pkg_spec: raja-perf@develop +rocm~openmp{modifier_spack_variant} amdgpu_target={rocm_arch}
+        pkg_spec: raja-perf@develop +rocm~openmp amdgpu_target={rocm_arch}
         compiler: default-compiler
     environments:
       raja-perf:
         packages:
         - default-mpi
         - raja-perf
-        - '{modifier_package_name}'

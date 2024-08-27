@@ -7,7 +7,6 @@ ramble:
   include:
   - ./configs/software.yaml
   - ./configs/variables.yaml
-  - ./configs/modifier.yaml
 
   config:
     deprecated: true
@@ -63,11 +62,10 @@ ramble:
   software:
     packages:
       kripke:
-        pkg_spec: kripke@develop +mpi+openmp{modifier_spack_variant} ^chai@2024.02
+        pkg_spec: kripke@develop +mpi+openmp ^chai@2024.02
         compiler: default-compiler
     environments:
       kripke:
         packages:
         - default-mpi
         - kripke
-        - '{modifier_package_name}'

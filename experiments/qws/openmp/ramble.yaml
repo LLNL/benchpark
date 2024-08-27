@@ -7,7 +7,6 @@ ramble:
   include:
   - ./configs/software.yaml
   - ./configs/variables.yaml
-  - ./configs/modifier.yaml
 
   config:
     deprecated: true
@@ -49,11 +48,10 @@ ramble:
   software:
     packages:
       qws:
-        pkg_spec: qws@master +mpi+openmp{modifier_spack_variant}
+        pkg_spec: qws@master +mpi+openmp
         compiler: default-compiler
     environments:
       qws:
         packages:
         - default-mpi
         - qws
-        - '{modifier_package_name}'
