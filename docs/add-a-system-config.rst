@@ -15,7 +15,7 @@ System specifications include details like
 There are currently some static, pre-generated system descriptions available
 for use. These are intended to be useful for most experiment runs, but
 generally define multiple versions of resources which imposes additional
-complexity on the experiment definitions. The ``benchpark system init`` can
+complexity on the experiment definitions. ``benchpark system init`` can
 generate more precise system definitions (e.g. ensuring there is only one
 instance of the CUDA libraries defined)
 
@@ -30,6 +30,17 @@ can then be passed to ``benchpark setup``::
 
 where "tioga rocm=551 compiler=cce ~gtl" describes a config for Tioga that
 uses ROCm 5.5.1 components, a CCE compiler, and MPI without GTL support.
+
+If you want to add support for a new system you can add a class definition
+for that system in a separate directory in ``var/sys_repo/systems/``. For
+example the Tioga system is defined in::
+
+  $benchpark
+  ├── var
+     ├── sys_repo
+        ├── systems
+           ├── tioga
+              ├── system.py
 
 Static System Configurations
 ----------------------------
