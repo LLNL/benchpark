@@ -7,9 +7,36 @@
 Adding a System Specification
 =============================
 
-``benchpark/configs`` contains a directory for each system specified in Benchpark.
-If your system is unlike the available configurations,
-you can add a new directory with a name which identifies the system.
+System specifications include details like
+
+- How many CPUs are there per node on the system
+- What pre-installed MPI/GPU libraries are available
+
+There are currently some static, pre-generated system descriptions available
+for use. These are intended to be useful for most experiment runs, but
+generally define multiple versions of resources which imposes additional
+complexity on the experiment definitions. The ``benchpark system init`` can
+generate more precise system definitions (e.g. ensuring there is only one
+instance of the CUDA libraries defined)
+
+Generate a customized system description with ``benchpark system init``
+-----------------------------------------------------------------------
+
+System classes are defined in ``var/sys_repo``. You can run
+``benchpark system init`` to generate a system configuration directory that
+can then be passed to ``benchpark setup``::
+
+    benchpark system init --dest=tioga-system tioga rocm=551 compiler=cce ~gtl
+
+where "tioga rocm=551 compiler=cce ~gtl" describes a config for Tioga that
+uses ROCm 5.5.1 components, a CCE compiler, and MPI without GTL support.
+
+Static System Configurations
+----------------------------
+
+``benchpark/configs`` contains a number of static, manually-generated system
+definitions. As an alternative to implementing a new ``System`` class, you
+can add a new directory with a name which identifies the system.
 
 The naming convention for the systems is as following::
 
