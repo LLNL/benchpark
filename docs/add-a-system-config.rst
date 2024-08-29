@@ -12,19 +12,17 @@ System specifications include details like
 - How many CPUs are there per node on the system
 - What pre-installed MPI/GPU libraries are available
 
-There are currently some static, pre-generated system descriptions available
-for use. These are intended to be useful for most experiment runs, but
-generally define multiple versions of resources which imposes additional
-complexity on the experiment definitions. ``benchpark system init`` can
-generate more precise system definitions (e.g. ensuring there is only one
-instance of the CUDA libraries defined)
+A system description is a set of YAML files collected into a directory.
+You can generate these files directly, but Benchpark also provides an API
+where you can represent systems as objects and customize their description
+with command line arguments.
 
-Generate a customized system description with ``benchpark system init``
------------------------------------------------------------------------
+Using System API to Generate a System Description
+-------------------------------------------------
 
-System classes are defined in ``var/sys_repo``. You can run
-``benchpark system init`` to generate a system configuration directory that
-can then be passed to ``benchpark setup``::
+System classes are defined in ``var/sys_repo``; once the class has been
+defined, you can invoke ``benchpark system init`` to generate a system
+configuration directory that can then be passed to ``benchpark setup``::
 
     benchpark system init --dest=tioga-system tioga rocm=551 compiler=cce ~gtl
 
