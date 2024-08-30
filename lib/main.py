@@ -14,16 +14,13 @@ import yaml
 
 import benchpark.cmd.system
 import benchpark.cmd.experiment
+import benchpark.cmd.setup
+from benchpark.accounting import benchpark_experiments, benchpark_modifiers
+from benchpark.debug import debug_print
+from benchpark.paths import source_location
 from benchpark.runtime import RuntimeResources
 
-DEBUG = False
-
 __version__ = "0.1.0"
-
-
-def debug_print(message):
-    if DEBUG:
-        print("(debug) " + str(message))
 
 
 def main():
@@ -39,7 +36,6 @@ def main():
 
     actions = {}
     benchpark_list(subparsers, actions)
-    benchpark_setup(subparsers, actions)
     benchpark_tags(subparsers, actions)
     init_commands(subparsers, actions)
 
@@ -90,16 +86,6 @@ def benchpark_benchmarks():
     return benchmarks
 
 
-def benchpark_experiments():
-    source_dir = source_location()
-    experiments = []
-    experiments_dir = source_dir / "experiments"
-    for x in os.listdir(experiments_dir):
-        for y in os.listdir(experiments_dir / x):
-            experiments.append(f"{x}/{y}")
-    return experiments
-
-
 def benchpark_systems():
     source_dir = source_location()
     systems = []
@@ -109,14 +95,6 @@ def benchpark_systems():
         ):
             systems.append(x)
     return systems
-
-
-def benchpark_modifiers():
-    source_dir = source_location()
-    modifiers = []
-    for x in os.listdir(source_dir / "modifiers"):
-        modifiers.append(x)
-    return modifiers
 
 
 def benchpark_get_tags():
@@ -188,43 +166,6 @@ def benchpark_check_benchmark(arg_str):
     return found
 
 
-def benchpark_check_experiment(arg_str):
-    experiments = benchpark_experiments()
-    found = arg_str in experiments
-    if not found:
-        out_str = f'Invalid experiment (benchmark/ProgrammingModel) "{arg_str}" - must choose one of: '
-        for experiment in experiments:
-            out_str += f"\n\t{experiment}"
-        raise ValueError(out_str)
-    return found
-
-
-def benchpark_check_system(arg_str):
-    # First check if it's a directory that contains a system_id.yaml
-    cfg_path = pathlib.Path(arg_str)
-    if cfg_path.is_dir():
-        system_id_path = cfg_path / "system_id.yaml"
-        if system_id_path.exists():
-            with open(system_id_path, "r") as f:
-                data = yaml.safe_load(f)
-            system_id = data["system"]["name"]
-            return system_id, cfg_path
-
-    # If it's not a directory, it might be a shorthand that refers
-    # to a pre-constructed config
-    systems = benchpark_systems()
-    if arg_str not in systems:
-        out_str = (
-            f"Invalid system {arg_str}: must choose one of:"
-            "\n\t(a) A system ID from `benchpark systems`"
-            "\n\t(b) A directory containing system_id.yaml"
-        )
-        raise ValueError(out_str)
-
-    configs_src_dir = source_location() / "configs" / str(arg_str)
-    return arg_str, configs_src_dir
-
-
 def benchpark_check_tag(arg_str):
     tags = benchpark_get_tags()
     found = arg_str in tags
@@ -234,45 +175,6 @@ def benchpark_check_tag(arg_str):
             out_str += f"\n\t{tag}"
         raise ValueError(out_str)
     return found
-
-
-def benchpark_check_modifier(arg_str):
-    modifiers = benchpark_modifiers()
-    found = arg_str in modifiers
-    if not found:
-        out_str = f'Invalid modifier "{arg_str}" - must choose one of: '
-        for modifier in modifiers:
-            out_str += f"\n\t{modifier}"
-        raise ValueError(out_str)
-    return found
-
-
-def benchpark_setup(subparsers, actions_dict):
-    create_parser = subparsers.add_parser(
-        "setup", help="Set up an experiment and prepare it to build/run"
-    )
-
-    create_parser.add_argument(
-        "experiment",
-        type=str,
-        help="The experiment (benchmark/ProgrammingModel) to run",
-    )
-    create_parser.add_argument(
-        "system", type=str, help="The system on which to run the experiment"
-    )
-    create_parser.add_argument(
-        "experiments_root",
-        type=str,
-        help="Where to install packages and store results for the experiments. Benchpark expects to manage this directory, and it should be empty/nonexistent the first time you run benchpark setup experiments.",
-    )
-    create_parser.add_argument(
-        "--modifier",
-        type=str,
-        default="none",
-        help="The modifier to apply to the experiment (default none)",
-    )
-
-    actions_dict["setup"] = benchpark_setup_handler
 
 
 def init_commands(subparsers, actions_dict):
@@ -289,8 +191,14 @@ def init_commands(subparsers, actions_dict):
     )
     benchpark.cmd.experiment.setup_parser(experiment_parser)
 
+    setup_parser = subparsers.add_parser(
+        "setup", help="Set up an experiment and prepare it to build/run"
+    )
+    benchpark.cmd.setup.setup_parser(setup_parser)
+
     actions_dict["system"] = benchpark.cmd.system.command
     actions_dict["experiment"] = benchpark.cmd.experiment.command
+    actions_dict["setup"] = benchpark.cmd.setup.command
 
 
 def run_command(command_str, env=None):
@@ -330,159 +238,6 @@ def benchpark_tags(subparsers, actions_dict):
         help="The tag for which to search in Benchpark experiments",
     )
     actions_dict["tags"] = benchpark_tags_handler
-
-
-# Note: it would be nice to vendor spack.llnl.util.link_tree, but that
-# involves pulling in most of llnl/util/ and spack/util/
-def symlink_tree(src, dst, include_fn=None):
-    """Like ``cp -R`` but instead of files, create symlinks"""
-    src = os.path.abspath(src)
-    dst = os.path.abspath(dst)
-    # By default, we include all filenames
-    include_fn = include_fn or (lambda f: True)
-    for x in [src, dst]:
-        if not os.path.isdir(x):
-            raise ValueError(f"Not a directory: {x}")
-    for src_subdir, directories, files in os.walk(src):
-        relative_src_dir = pathlib.Path(os.path.relpath(src_subdir, src))
-        dst_dir = pathlib.Path(dst) / relative_src_dir
-        dst_dir.mkdir(parents=True, exist_ok=True)
-        for x in files:
-            if not include_fn(x):
-                continue
-            dst_symlink = dst_dir / x
-            src_file = os.path.join(src_subdir, x)
-            os.symlink(src_file, dst_symlink)
-
-
-def benchpark_setup_handler(args):
-    """
-    experiments_root/
-        spack/
-        ramble/
-        <experiment>/
-            <system>/
-                workspace/
-                    configs/
-                        (everything from source/configs/<system>)
-                        (everything from source/experiments/<experiment>)
-    """
-
-    experiment = args.experiment
-    system = args.system
-    experiments_root = pathlib.Path(os.path.abspath(args.experiments_root))
-    modifier = args.modifier
-    source_dir = source_location()
-    debug_print(f"source_dir = {source_dir}")
-    debug_print(f"specified experiment (benchmark/ProgrammingModel) = {experiment}")
-    benchpark_check_experiment(experiment)
-    debug_print(f"specified system = {system}")
-    system_id, configs_src_dir = benchpark_check_system(system)
-    debug_print(f"specified modifier = {modifier}")
-    benchpark_check_modifier(modifier)
-
-    workspace_dir = experiments_root / str(experiment) / str(system_id)
-
-    if workspace_dir.exists():
-        if workspace_dir.is_dir():
-            print(f"Clearing existing workspace {workspace_dir}")
-            shutil.rmtree(workspace_dir)
-        else:
-            print(
-                f"Benchpark expects to manage {workspace_dir} as a directory, but it is not"
-            )
-            sys.exit(1)
-
-    workspace_dir.mkdir(parents=True)
-
-    ramble_workspace_dir = workspace_dir / "workspace"
-    ramble_configs_dir = ramble_workspace_dir / "configs"
-    ramble_logs_dir = ramble_workspace_dir / "logs"
-    ramble_spack_experiment_configs_dir = (
-        ramble_configs_dir / "auxiliary_software_files"
-    )
-
-    print(f"Setting up configs for Ramble workspace {ramble_configs_dir}")
-
-    experiment_src_dir = source_dir / "experiments" / experiment
-    modifier_config_dir = source_dir / "modifiers" / modifier / "configs"
-    ramble_configs_dir.mkdir(parents=True)
-    ramble_logs_dir.mkdir(parents=True)
-    ramble_spack_experiment_configs_dir.mkdir(parents=True)
-
-    def include_fn(fname):
-        # Only include .yaml and .tpl files
-        # Always exclude files that start with "."
-        if fname.startswith("."):
-            return False
-        if fname.endswith(".yaml"):
-            return True
-        return False
-
-    symlink_tree(configs_src_dir, ramble_configs_dir, include_fn)
-    symlink_tree(experiment_src_dir, ramble_configs_dir, include_fn)
-    symlink_tree(modifier_config_dir, ramble_configs_dir, include_fn)
-    symlink_tree(
-        source_dir / "configs" / "common",
-        ramble_spack_experiment_configs_dir,
-        include_fn,
-    )
-
-    template_name = "execute_experiment.tpl"
-    experiment_template_options = [
-        configs_src_dir / template_name,
-        experiment_src_dir / template_name,
-        source_dir / "common-resources" / template_name,
-    ]
-    for choice_template in experiment_template_options:
-        if os.path.exists(choice_template):
-            break
-    os.symlink(
-        choice_template,
-        ramble_configs_dir / "execute_experiment.tpl",
-    )
-
-    initializer_script = experiments_root / "setup.sh"
-
-    per_workspace_setup = RuntimeResources(experiments_root)
-
-    spack, first_time_spack = per_workspace_setup.spack_first_time_setup()
-    ramble, first_time_ramble = per_workspace_setup.ramble_first_time_setup()
-
-    if first_time_spack:
-        spack("repo", "add", "--scope=site", f"{source_dir}/repo")
-
-    if first_time_ramble:
-        ramble(f"repo add --scope=site {source_dir}/repo")
-        ramble('config --scope=site add "config:disable_progress_bar:true"')
-        ramble(f"repo add -t modifiers --scope=site {source_dir}/modifiers")
-        ramble("config --scope=site add \"config:spack:global:args:'-d'\"")
-
-    if not initializer_script.exists():
-        with open(initializer_script, "w") as f:
-            f.write(
-                f"""\
-if [ -n "${{_BENCHPARK_INITIALIZED:-}}" ]; then
-    return 0
-fi
-
-. {per_workspace_setup.spack_location}/share/spack/setup-env.sh
-. {per_workspace_setup.ramble_location}/share/ramble/setup-env.sh
-
-export SPACK_DISABLE_LOCAL_CONFIG=1
-
-export _BENCHPARK_INITIALIZED=true
-"""
-            )
-
-    instructions = f"""\
-To complete the benchpark setup, do the following:
-
-    . {initializer_script}
-
-Further steps are needed to build the experiments (ramble -P -D {ramble_workspace_dir} workspace setup) and run them (ramble -P -D {ramble_workspace_dir} on)
-"""
-    print(instructions)
 
 
 def helper_experiments_tags(ramble_exe, benchmarks):
