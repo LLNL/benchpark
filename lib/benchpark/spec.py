@@ -1,5 +1,4 @@
 import enum
-import functools
 import pathlib
 import re
 from typing import Iterable, Iterator, List, Match, Optional, Union
@@ -29,7 +28,7 @@ class VariantMap(llnl.util.lang.HashableMap):
         if isinstance(values, str):
             values = (values,)
         else:
-            values = tuple(*values)
+            values = tuple(values)
         super().__setitem__(name, values)
 
     def intersects(self, other: "VariantMap") -> bool:
@@ -157,7 +156,7 @@ class Spec(object):
 
     def intersects(self, other: Union[str, "Spec"]) -> bool:
         if not isinstance(other, Spec):
-            other = type(self)(other)  # keep type from subclass
+            other = Spec(other)  # subclasses do not override intersects behavior
         return (
             (self.name is None or other.name is None or self.name == other.name)
             and (
@@ -170,7 +169,7 @@ class Spec(object):
 
     def satisfies(self, other: Union[str, "Spec"]) -> bool:
         if not isinstance(other, Spec):
-            other = type(self)(other)  # keep type from subclass
+            other = Spec(other)  # subclasses do not override satisfies behavior
         return (
             (other.name is None or self.name == other.name)
             and (other.namespace is None or self.namespace == other.namespace)
@@ -199,20 +198,6 @@ class ExperimentSpec(Spec):
 
     def concretize(self):
         return ConcreteExperimentSpec(self)
-
-
-def autospec(function):
-    """Decorator that automatically converts the first argument of a
-    function to a Spec.
-    """
-
-    @functools.wraps(function)
-    def converter(self, spec_like, *args, **kwargs):
-        if not isinstance(spec_like, ExperimentSpec):
-            spec_like = ExperimentSpec(spec_like)
-        return function(self, spec_like, *args, **kwargs)
-
-    return converter
 
 
 class ConcreteSpec(Spec):
@@ -513,7 +498,7 @@ class SpecParser(object):
                 ), f"SPLIT_KVP cannot split pair {self.ctx.current_token.value}"
 
                 name, value = match.groups()
-                spec.variants[name] = value
+                spec.variants[name] = value.split(",")
             else:
                 break
 
