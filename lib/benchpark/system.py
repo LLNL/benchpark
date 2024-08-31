@@ -96,12 +96,16 @@ class System(ExperimentSystemBase):
         self.external_packages(output_dir)
         self.compiler_description(output_dir)
 
+        spec_hash = _hash_id([str(self.spec)])
+
         system_id_path = output_dir / "system_id.yaml"
         with open(system_id_path, "w") as f:
             f.write(
                 f"""\
 system:
   name: {self.__class__.__name__}
+  spec: {str(self.spec)}
+  config-hash: {spec_hash}
 """
             )
 

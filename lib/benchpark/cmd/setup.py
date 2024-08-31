@@ -79,7 +79,9 @@ def benchpark_check_system(arg_str):
         if system_id_path.exists():
             with open(system_id_path, "r") as f:
                 data = yaml.safe_load(f)
-            system_id = data["system"]["name"]
+            name = data["system"]["name"]
+            spec_hash = data["system"]["config-hash"]
+            system_id = f"{name}-{spec_hash[:7]}"
             return system_id, cfg_path
 
     # If it's not a directory, it might be a shorthand that refers
