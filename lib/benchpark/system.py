@@ -96,7 +96,7 @@ class System(ExperimentSystemBase):
         self.external_packages(output_dir)
         self.compiler_description(output_dir)
 
-        spec_hash = _hash_id([str(self.spec)])
+        spec_hash = self.system_uid()
 
         system_id_path = output_dir / "system_id.yaml"
         with open(system_id_path, "w") as f:
@@ -109,8 +109,8 @@ system:
 """
             )
 
-    def system_id(self):
-        return _hash_id([self.variables_yaml()])
+    def system_uid(self):
+        return _hash_id([str(self.spec)])
 
     def _merge_config_files(self, schema, selections, dst_path):
         data = cfg.read_config_file(selections[0], schema)
