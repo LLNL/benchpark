@@ -3,13 +3,6 @@ from benchpark.experiment import Experiment
 import re
 
 class OsuMicroBenchmarks(Experiment):
-    #single item list causes crashes, so the variant section has been commented out for now
-    #variant(
-    #    "programming_model",
-    #   default="mpi-only",
-    #    values=("mpi-only"),
-    #    description="on-node parallelism model",
-    #)
     variant(
             "workload",
            default="osu_latency",
