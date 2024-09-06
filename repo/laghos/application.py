@@ -12,9 +12,12 @@ class Laghos(ExecutableApplication):
     """Laghos benchmark"""
     name = "laghos"
 
-    tags = ['asc','engineering','hypre','solver','cfd','large-scale',
-            'multi-node','single-node','mpi','network-latency-bound',
-            'network-collectives','unstructured-grid']
+    tags = ['asc','engineering','hypre','solver','mfem','cfd','large-scale',
+            'multi-node','single-node','mpi','c++','high-order','hydrodynamics',
+            'explicit-timestepping','finite-element','time-dependent','ode',
+            'full-assembly','partial-assembly',
+            'lagrangian','spatial-discretization','unstructured-grid',
+            'network-latency-bound','network-collectives','unstructured-grid']
 
     executable('p', 'laghos -p {p} -m {mesh_path} -rs {rs} -ms {ms}', use_mpi=True)
 
