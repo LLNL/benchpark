@@ -5,9 +5,9 @@ from benchpark.experiment import Experiment
 class Laghos(Experiment):
 
     variant(
-        "scaling",
+        "experiment",
         default="weak",
-        values=("weak", "strong"),
+        values=("weak", "strong","example"),
         description="weak or strong scaling",
     )
 
@@ -16,10 +16,12 @@ class Laghos(Experiment):
             
         if self.spec.satisfies("scaling=weak"):
             variables["rs"] = ["5","6"]
-        else:
+            variables["n_nodes"] = ["1","8"]
+        elif self.spec.satisfies("scaling=strong"):
+            variables["n_nodes"] = ["1","8"]
             variables["rs"] = "5"
-        variables["n_nodes"] = ["1","8"]
-        #variables["n_nodes"] = ["1","2","4","8","16","32","64","128"]
+        else:
+            variables["n_nodes"] = ["1","2","4","8","16","32","64","128"]    
         variables["n_ranks"] = "{sys_cores_per_node} * {n_nodes}"
 
         return {
