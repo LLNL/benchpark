@@ -4,10 +4,22 @@ from benchpark.experiment import Experiment
 
 class Laghos(Experiment):
 
+    variant(
+        "scaling",
+        default="weak",
+        values=("weak", "strong"),
+        description="weak or strong scaling",
+    )
+
     def compute_applications_section(self):
         variables = {}
-
-        variables["n_nodes"] = ["1","2","4","8","16","32","64","128"]
+            
+        if self.spec.satisfies("scaling=weak"):
+            variables["rs"] = ["5","6"]
+        else:
+            variables["rs"] = "5"
+        variables["n_nodes"] = ["1","8"]
+        #variables["n_nodes"] = ["1","2","4","8","16","32","64","128"]
         variables["n_ranks"] = "{sys_cores_per_node} * {n_nodes}"
 
         return {
