@@ -6,7 +6,7 @@ class Laghos(Experiment):
 
     variant(
         "experiment",
-        default="weak",
+        default="example",
         values=("weak", "strong","example"),
         description="weak or strong scaling",
     )
