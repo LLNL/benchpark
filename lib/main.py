@@ -7,7 +7,6 @@ import argparse
 import os
 import pathlib
 import shlex
-import shutil
 import subprocess
 import sys
 import yaml
@@ -20,9 +19,7 @@ from benchpark.accounting import (
     benchpark_modifiers,
     benchpark_systems,
 )
-from benchpark.debug import debug_print
 from benchpark.paths import source_location
-from benchpark.runtime import RuntimeResources
 
 __version__ = "0.1.0"
 
@@ -66,11 +63,6 @@ def main():
 def get_version():
     benchpark_version = __version__
     return benchpark_version
-
-
-def source_location():
-    script_location = os.path.dirname(os.path.abspath(__file__))
-    return pathlib.Path(script_location).parent
 
 
 def benchpark_list(subparsers, actions_dict):
