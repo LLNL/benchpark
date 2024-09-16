@@ -22,4 +22,3 @@ variables:
   n_nodes: '1000001'  # placeholder value
   batch_submit: "placeholder"
   mpi_command: "placeholder"
-  #sys_arch: 'arch=linux-rhel8-a64fx'
