@@ -24,3 +24,14 @@ def benchpark_modifiers():
     for x in os.listdir(source_dir / "modifiers"):
         modifiers.append(x)
     return modifiers
+
+
+def benchpark_systems():
+    source_dir = source_location()
+    systems = []
+    for x in os.listdir(source_dir / "configs"):
+        if not (
+            os.path.isfile(os.path.join(source_dir / "configs", x)) or x == "common"
+        ):
+            systems.append(x)
+    return systems
