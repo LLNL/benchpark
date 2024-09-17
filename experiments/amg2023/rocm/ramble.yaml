@@ -115,5 +115,7 @@ ramble:
         - lapack
         - mpi-rocm-gtl
         - hypre-gtl
-        - amg2023-gpu-gtl
+        - mpi-rocm
+        - hypre
+        - amg2023-gpu
         - '{modifier_package_name}'
