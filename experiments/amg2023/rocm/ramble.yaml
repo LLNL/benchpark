@@ -109,7 +109,7 @@ ramble:
         pkg_spec: amg2023@develop +mpi+rocm{modifier_spack_variant} amdgpu_target={rocm_arch}
         compiler: compiler-rocm
     environments:
-      amg2023-gpu-gtl:
+      amg2023-gpu:
         packages:
         - blas-rocm
         - lapack
