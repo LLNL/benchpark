@@ -48,7 +48,7 @@ ramble:
                 nx: '10'
                 ny: '10'
                 nz: '10'
-                n_ranks_per_node: '8'
+                n_ranks_per_node: '{px}*{py}*{pz}'
                 n_nodes: ['1', '2', '4']
                 n_threads_per_proc: '6'
                 env_name: amg2023-omp
@@ -62,7 +62,7 @@ ramble:
                 nx: ['10', '20', '20']
                 ny: ['10', '10', '20']
                 nz: ['10', '10', '10']
-                n_ranks_per_node: '8'
+                n_ranks_per_node: '{px}*{py}*{pz}'
                 n_nodes: ['1', '2', '4']
                 n_threads_per_proc: '6'
                 env_name: amg2023-omp
@@ -93,7 +93,7 @@ ramble:
                 nx: '10'
                 ny: '10'
                 nz: '10'
-                n_ranks_per_node: '8'
+                n_ranks_per_node: '{px}*{py}*{pz}'
                 n_nodes: ['1', '2', '4']
                 n_threads_per_proc: '6'
                 env_name: amg2023-omp
