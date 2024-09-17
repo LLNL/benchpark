@@ -161,6 +161,17 @@ jobs:
             --disable-logger \
             workspace setup --dry-run
 
+      - name: Dry run dynamic saxpy/rocm with dynamic Tioga
+        run: |
+          ./bin/benchpark system init --dest=tioga-system tioga rocm=551 compiler=cce ~gtl
+          ./bin/benchpark experiment init --dest=saxpy-rocm saxpy programming_model=rocm
+          ./bin/benchpark setup ./saxpy-rocm ./tioga-system workspace/
+          ramble \
+            --workspace-dir workspace/saxpy-rocm/Tioga-d34a754/workspace \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace setup --dry-run
+
       - name: Dry run laghos/mpi on LLNL-Magma-Penguin-icelake-OmniPath with allocation modifier
         run: |
           ./bin/benchpark setup laghos/mpi LLNL-Magma-Penguin-icelake-OmniPath workspace/

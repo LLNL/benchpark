@@ -30,12 +30,14 @@ class Saxpy(Experiment):
 
         return {
             "saxpy": {  # ramble Application name
-                # TODO replace with a hash once we have one?
-                f"problem-{str(self.spec)}": {
-                    "experiments": {
-                        "saxpy_{n}_{n_nodes}_{omp_num_threads}": {
-                            "variables": variables,
-                            "matrices": matrix,
+                "workloads": {
+                    # TODO replace with a hash once we have one?
+                    "problem": {
+                        "experiments": {
+                            "saxpy_{n}_{n_nodes}_{omp_num_threads}": {
+                                "variables": variables,
+                                "matrices": matrix,
+                            }
                         }
                     }
                 }
