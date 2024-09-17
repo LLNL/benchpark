@@ -35,7 +35,7 @@ ramble:
                 ny: ['10', '10', '20']
                 nz: ['10', '10', '10']
                 n_ranks_per_node: '8'
-                n_nodes: '1'
+                n_nodes: '{px}*{py}*{pz}/{n_ranks_per_node}'
                 n_threads_per_proc: '6'
                 env_name: amg2023-omp
             amg2023_omp_strong_problem1_{n_nodes}_{n_threads_per_proc}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
