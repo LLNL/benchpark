@@ -156,7 +156,7 @@ jobs:
           ./bin/benchpark setup kripke/rocm ./tioga-system workspace/
           . workspace/setup.sh
           ramble \
-            --workspace-dir workspace/kripke/rocm/Tioga/workspace \
+            --workspace-dir workspace/kripke/rocm/Tioga-d34a754/workspace \
             --disable-progress-bar \
             --disable-logger \
             workspace setup --dry-run
