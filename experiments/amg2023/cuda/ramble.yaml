@@ -34,7 +34,7 @@ ramble:
                 ny: ['10', '10', '20']
                 nz: ['10', '10', '10']
                 env_name: 'amg2023'
-                n_gpus: '8'
+                n_gpus: '{px}*{py}*{pz}'
             'amg2023_cuda_strong_problem1_{px}_{py}_{pz}_{nx}_{ny}_{nz}':
               variants:
                 package_manager: spack
