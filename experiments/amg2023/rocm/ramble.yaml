@@ -98,7 +98,7 @@ ramble:
                 nx: ['10', '20', '20']
                 ny: ['10', '10', '20']
                 nz: ['10', '10', '10']
-                env_name: 'amg2023-gpu-{gtl}'
+                env_name: 'amg2023-gpu'
                 n_gpus: '{px}*{py}*{pz}'
   software:
     packages:
