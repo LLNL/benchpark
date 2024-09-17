@@ -150,7 +150,7 @@ jobs:
             --disable-logger \
             workspace setup --dry-run
 
-      - name: Dry run kripke/rocm on Tioga with allocation modifier
+      - name: Dry run kripke/rocm on dynamic Tioga with allocation modifier
         run: |
           ./bin/benchpark system init --dest=tioga-system tioga rocm=551 compiler=cce ~gtl
           ./bin/benchpark setup kripke/rocm ./tioga-system workspace/
@@ -163,9 +163,9 @@ jobs:
 
       - name: Dry run dynamic saxpy/rocm with dynamic Tioga
         run: |
-          ./bin/benchpark system init --dest=tioga-system tioga rocm=551 compiler=cce ~gtl
+          ./bin/benchpark system init --dest=tioga-system2 tioga rocm=551 compiler=cce ~gtl
           ./bin/benchpark experiment init --dest=saxpy-rocm saxpy programming_model=rocm
-          ./bin/benchpark setup ./saxpy-rocm ./tioga-system workspace/
+          ./bin/benchpark setup ./saxpy-rocm ./tioga-system2 workspace/
           ramble \
             --workspace-dir workspace/saxpy-rocm/Tioga-d34a754/workspace \
             --disable-progress-bar \
