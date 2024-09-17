@@ -102,7 +102,7 @@ ramble:
                 n_gpus: '{px}*{py}*{pz}'
   software:
     packages:
-      hypre-gtl:
+      hypre:
         pkg_spec: hypre@2.31.0 +mpi+rocm+mixedint~fortran{modifier_spack_variant} amdgpu_target={rocm_arch}
         compiler: compiler-rocm
       amg2023-gpu-gtl:
