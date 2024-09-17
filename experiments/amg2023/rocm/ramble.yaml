@@ -18,9 +18,6 @@ ramble:
   modifiers:
   - name: allocation
 
-  variables:
-    gtl: "gtl"
-
   applications:
     amg2023:
       workloads:
@@ -48,7 +45,7 @@ ramble:
                 nx: '10'
                 ny: '10'
                 nz: '10'
-                env_name: 'amg2023-gpu-{gtl}'
+                env_name: 'amg2023-gpu'
                 n_gpus: '{px}*{py}*{pz}'
             'amg2023_rocm_weak_problem1_{px}_{py}_{pz}_{nx}_{ny}_{nz}':
               variants:
@@ -113,8 +110,8 @@ ramble:
         packages:
         - blas-rocm
         - lapack
-        - mpi-rocm-gtl
-        - hypre-gtl
+        - mpi-rocm
+        - hypre
         - mpi-rocm
         - hypre
         - amg2023-gpu
