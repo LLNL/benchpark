@@ -24,6 +24,7 @@ class Laghos(MakefilePackage):
 
     version("develop", branch="caliper")
 
+
     variant("metis", default=True, description="Enable/disable METIS support")
     variant("caliper", default=False, description="Enable/disable Caliper support")
     variant("ofast", default=False, description="Enable gcc optimization flags")
@@ -33,13 +34,15 @@ class Laghos(MakefilePackage):
     depends_on("caliper", when="+caliper")
     depends_on("adiak", when="+caliper")
 
-    depends_on("mfem@develop", when="@develop")
+  #  depends_on("mfem@develop", when="@develop")
     depends_on("mfem@4.2.0:", when="@3.1")
     depends_on("mfem@4.1.0:4.1", when="@3.0")
     # Recommended mfem version for laghos v2.0 is: ^mfem@3.4.1-laghos-v2.0
     depends_on("mfem@3.4.1-laghos-v2.0", when="@2.0")
     # Recommended mfem version for laghos v1.x is: ^mfem@3.3.1-laghos-v1.0
     depends_on("mfem@3.3.1-laghos-v1.0", when="@1.0,1.1")
+    depends_on("mfem@4.4_comm_cali", when="+caliper")
+
 
     # Replace MPI_Session
     patch(
