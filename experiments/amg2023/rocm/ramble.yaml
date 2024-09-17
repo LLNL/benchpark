@@ -86,7 +86,7 @@ ramble:
                 nx: '10'
                 ny: '10'
                 nz: '10'
-                env_name: 'amg2023-gpu-{gtl}'
+                env_name: 'amg2023-gpu'
                 n_gpus: '{px}*{py}*{pz}'
             'amg2023_rocm_weak_problem2_{px}_{py}_{pz}_{nx}_{ny}_{nz}':
               variants:
