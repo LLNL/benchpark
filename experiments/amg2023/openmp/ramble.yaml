@@ -34,9 +34,9 @@ ramble:
                 nx: ['10', '20', '20']
                 ny: ['10', '10', '20']
                 nz: ['10', '10', '10']
-                n_ranks_per_node: '8'
-                n_nodes: '{px}*{py}*{pz}/{n_ranks_per_node}'
-                n_threads_per_proc: '6'
+                n_ranks: '{npx}*{npy}*{npz}'
+                n_threads_per_proc: '1'
+                omp_num_threads: '{n_threads_per_proc}'
                 env_name: amg2023-omp
             amg2023_omp_strong_problem1_{n_nodes}_{n_threads_per_proc}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
               variants:
@@ -48,9 +48,9 @@ ramble:
                 nx: '10'
                 ny: '10'
                 nz: '10'
-                n_ranks_per_node: '{px}*{py}*{pz}'
-                n_nodes: ['1', '2', '4']
-                n_threads_per_proc: '6'
+                n_ranks: '{px}*{py}*{pz}'
+                n_threads_per_proc: '1'
+                omp_num_threads: '{n_threads_per_proc}'
                 env_name: amg2023-omp
             amg2023_omp_weak_problem1_{n_nodes}_{n_threads_per_proc}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
               variants:
@@ -62,9 +62,9 @@ ramble:
                 nx: ['10', '20', '20']
                 ny: ['10', '10', '20']
                 nz: ['10', '10', '10']
-                n_ranks_per_node: '{px}*{py}*{pz}'
-                n_nodes: ['1', '2', '4']
-                n_threads_per_proc: '6'
+                n_ranks: '{px}*{py}*{pz}'
+                n_threads_per_proc: '1'
+                omp_num_threads: '{n_threads_per_proc}'
                 env_name: amg2023-omp
         problem2:
           experiments:
@@ -79,9 +79,9 @@ ramble:
                 nx: ['10', '20', '20']
                 ny: ['10', '10', '20']
                 nz: ['10', '10', '10']
-                n_ranks_per_node: '8'
-                n_nodes: '1'
-                n_threads_per_proc: '6'
+                n_ranks: '{px}*{py}*{pz}'
+                n_threads_per_proc: '1'
+                omp_num_threads: '{n_threads_per_proc}'
                 env_name: amg2023-omp
             amg2023_omp_strong_problem2_{n_nodes}_{n_threads_per_proc}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
               variants:
@@ -93,9 +93,9 @@ ramble:
                 nx: '10'
                 ny: '10'
                 nz: '10'
-                n_ranks_per_node: '{px}*{py}*{pz}'
-                n_nodes: ['1', '2', '4']
-                n_threads_per_proc: '6'
+                n_ranks: '{px}*{py}*{pz}'
+                n_threads_per_proc: '1'
+                omp_num_threads: '{n_threads_per_proc}'
                 env_name: amg2023-omp
             amg2023_omp_weak_problem2_{n_nodes}_{n_threads_per_proc}_{px}_{py}_{pz}_{nx}_{ny}_{nz}:
               variants:
@@ -107,9 +107,10 @@ ramble:
                 nx: ['10', '20', '20']
                 ny: ['10', '10', '20']
                 nz: ['10', '10', '10']
-                n_ranks_per_node: '8'
-                n_nodes: ['1', '2', '4']
-                n_threads_per_proc: '6'
+                n_ranks: '{px}*{py}*{pz}'
+                n_threads_per_proc: '1'
+                omp_num_threads: '{n_threads_per_proc}'
+                arch: 'OpenMP'
                 env_name: amg2023-omp
   software:
     packages:
