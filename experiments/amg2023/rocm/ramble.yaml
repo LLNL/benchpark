@@ -105,7 +105,7 @@ ramble:
       hypre:
         pkg_spec: hypre@2.31.0 +mpi+rocm+mixedint~fortran{modifier_spack_variant} amdgpu_target={rocm_arch}
         compiler: compiler-rocm
-      amg2023-gpu-gtl:
+      amg2023-gpu:
         pkg_spec: amg2023@develop +mpi+rocm{modifier_spack_variant} amdgpu_target={rocm_arch}
         compiler: compiler-rocm
     environments:
