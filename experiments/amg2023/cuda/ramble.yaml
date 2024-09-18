@@ -7,6 +7,7 @@ ramble:
   include:
   - ./configs/software.yaml
   - ./configs/variables.yaml
+  - ./configs/modifier.yaml
 
   config:
     deprecated: true
@@ -102,10 +103,10 @@ ramble:
         pkg_spec: cuda@{default_cuda_version}+allow-unsupported-compilers
         compiler: default-compiler
       hypre:
-        pkg_spec: hypre@2.31.0 +mpi+cuda+mixedint~fortran cuda_arch=={cuda_arch}
+        pkg_spec: hypre@2.31.0 +mpi+cuda+mixedint~fortran{modifier_spack_variant} cuda_arch=={cuda_arch}
         compiler: default-compiler
       amg2023:
-        pkg_spec: amg2023@develop +mpi+cuda cuda_arch=={cuda_arch}
+        pkg_spec: amg2023@develop +mpi+cuda{modifier_spack_variant} cuda_arch=={cuda_arch}
         compiler: default-compiler
     environments:
       amg2023:
@@ -116,3 +117,4 @@ ramble:
         - default-mpi
         - hypre
         - amg2023
+        - '{modifier_package_name}'

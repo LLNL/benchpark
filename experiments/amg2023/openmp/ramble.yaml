@@ -7,6 +7,7 @@ ramble:
   include:
   - ./configs/software.yaml
   - ./configs/variables.yaml
+  - ./configs/modifier.yaml
 
   config:
     deprecated: true
@@ -114,10 +115,10 @@ ramble:
   software:
     packages:
       hypre-omp:
-        pkg_spec: hypre@2.31.0 +mpi+openmp+mixedint~fortran
+        pkg_spec: hypre@2.31.0 +mpi+openmp+mixedint~fortran{modifier_spack_variant}
         compiler: default-compiler
       amg2023-omp:
-        pkg_spec: amg2023@develop +mpi+openmp
+        pkg_spec: amg2023@develop +mpi+openmp{modifier_spack_variant}
         compiler: default-compiler
     environments:
       amg2023-omp:
@@ -126,3 +127,4 @@ ramble:
         - default-mpi
         - hypre-omp
         - amg2023-omp
+        - '{modifier_package_name}'

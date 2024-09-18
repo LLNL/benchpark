@@ -7,6 +7,7 @@ ramble:
   include:
   - ./configs/software.yaml
   - ./configs/variables.yaml
+  - ./configs/modifier.yaml
 
   config:
     deprecated: true
@@ -36,7 +37,7 @@ ramble:
         pkg_spec: 'blt@0.5.2:'
         compiler: compiler-gcc
       raja-perf:
-        pkg_spec: raja-perf@develop ~openmp +mpi
+        pkg_spec: raja-perf@develop{modifier_spack_variant} ~openmp +mpi
         compiler: default-compiler
     environments:
       raja-perf:
@@ -44,3 +45,4 @@ ramble:
         - blt
         - default-mpi
         - raja-perf
+        - '{modifier_package_name}'

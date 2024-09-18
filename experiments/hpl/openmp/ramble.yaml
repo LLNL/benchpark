@@ -7,6 +7,7 @@ ramble:
   include:
   - ./configs/software.yaml
   - ./configs/variables.yaml
+  - ./configs/modifier.yaml
 
   config:
     deprecated: true
@@ -43,7 +44,7 @@ ramble:
   software:
     packages:
       hpl-omp:
-        pkg_spec: hpl@2.3-caliper+openmp
+        pkg_spec: hpl@2.3-caliper+openmp{modifier_spack_variant}
         compiler: default-compiler
     environments:
       hpl-omp:
@@ -51,3 +52,4 @@ ramble:
         - blas
         - default-mpi
         - hpl-omp
+        - '{modifier_package_name}'
