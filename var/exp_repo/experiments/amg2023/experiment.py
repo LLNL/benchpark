@@ -36,6 +36,7 @@ class Amg2023(Experiment):
             "topdown-all",
             "topdown-toplevel",
         ),
+        multi=True,
         description="caliper mode",
     )
 
