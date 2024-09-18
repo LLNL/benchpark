@@ -55,7 +55,11 @@ class Saxpy(Experiment):
         }
 
     def compute_include_section(self):
-        return ["./configs/software.yaml", "./configs/variables.yaml", "./configs/modifier.yaml"]
+        return [
+            "./configs/software.yaml",
+            "./configs/variables.yaml",
+            "./configs/modifier.yaml",
+        ]
 
     def compute_spack_section(self):
         # TODO: express that we need certain variables from system
