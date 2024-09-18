@@ -54,6 +54,9 @@ class Saxpy(Experiment):
             }
         }
 
+    def compute_include_section(self):
+        return ["./configs/software.yaml", "./configs/variables.yaml", "./configs/modifier.yaml"]
+
     def compute_spack_section(self):
         # TODO: express that we need certain variables from system
         # Does not need to happen before merge, separate task
@@ -70,8 +73,8 @@ class Saxpy(Experiment):
         return {
             "packages": {
                 "saxpy": {
-                    "spack_spec": saxpy_spack_spec,
-                    "compiler": "default_compiler",  # TODO: this should probably move?
+                    "pkg_spec": saxpy_spack_spec,
+                    "compiler": "default-compiler",  # TODO: this should probably move?
                 }
             },
             "environments": {"saxpy": {"packages": packages}},
