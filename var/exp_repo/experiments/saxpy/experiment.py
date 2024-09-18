@@ -12,21 +12,34 @@ class Saxpy(Experiment):
 
     def compute_applications_section(self):
         variables = {}
-        matrix = {}
 
         # GPU tests include some smaller sizes
         n = ["512", "1024"]
-        matrix = ["n"]
         if self.spec.satisfies("programming_model=openmp"):
-            matrix += ["omp_num_threads"]
             variables["n_nodes"] = ["1", "2"]
             variables["n_ranks"] = "8"
             variables["omp_num_threads"] = ["2", "4"]
+            matrix_cfg = {
+                "matrices": [
+                    {
+                        "size_threads": ["n", "omp_num_threads"],
+                    }
+                ]
+            }
         else:
             n = ["128", "256"] + n
             variables["n_gpus"] = "1"
+            matrix_cfg = {"matrix": ["n"]}
 
         variables["n"] = n
+
+        the_experiment = {
+            "variants": {
+                "package_manager": "spack",
+            },
+            "variables": variables,
+        }
+        the_experiment.update(matrix_cfg)
 
         return {
             "saxpy": {  # ramble Application name
@@ -34,10 +47,7 @@ class Saxpy(Experiment):
                     # TODO replace with a hash once we have one?
                     "problem": {
                         "experiments": {
-                            "saxpy_{n}_{n_nodes}_{omp_num_threads}": {
-                                "variables": variables,
-                                "matrices": matrix,
-                            }
+                            "saxpy_{n}_{n_nodes}_{omp_num_threads}": the_experiment,
                         }
                     }
                 }
