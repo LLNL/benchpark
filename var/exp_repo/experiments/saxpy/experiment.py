@@ -68,13 +68,11 @@ class Saxpy(Experiment):
         packages = ["default-mpi", self.spec.name, "{modifier_package_name}"]
 
         return {
-            "spack": {
-                "packages": {
-                    "saxpy": {
-                        "spack_spec": saxpy_spack_spec,
-                        "compiler": "default_compiler",  # TODO: this should probably move?
-                    }
-                },
-                "environments": {"saxpy": {"packages": packages}},
-            }
+            "packages": {
+                "saxpy": {
+                    "spack_spec": saxpy_spack_spec,
+                    "compiler": "default_compiler",  # TODO: this should probably move?
+                }
+            },
+            "environments": {"saxpy": {"packages": packages}},
         }
