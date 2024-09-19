@@ -35,15 +35,15 @@ class Laghos(ExecutableApplication):
             description='partitioning ratio',
             workloads=['laghos'])
 
-    workload_variable('rs', default='',
+    workload_variable('rs', default='5',
             description='number of serial refinements',
             workloads=['laghos'])
     
     workload_variable('rp', default='0',
             description='number of parallel refinements',
             workloads=['laghos'])
-    workload_variable('ms', default='4',
-            description='',
+    workload_variable('ms', default='500',
+            description='max number of steps',
             workloads=['laghos'])
 
     figure_of_merit('Major kernels total time',

@@ -14,16 +14,18 @@ class Laghos(Experiment):
     def compute_applications_section(self):
         variables = {}
             
-        if self.spec.satisfies("scaling=weak"):
-            variables["rs"] = ["5","6"]
-            variables["n_nodes"] = ["1","8"]
-        elif self.spec.satisfies("scaling=strong"):
-            variables["n_nodes"] = ["1","8"]
+        if self.spec.satisfies("experiment=weak"):
+            variables["rs"] = "5"
+            variables["rp"] = ["0","1","2","3"]
+            variables["n_ranks"] = "8"
+        elif self.spec.satisfies("experiment=strong"):
+            variables["n_ranks"] = ["4","8","16","32"]
             variables["rs"] = "5"
         else:
             variables["n_nodes"] = ["1","2","4","8","16","32","64","128"]    
-        variables["n_ranks"] = "{sys_cores_per_node} * {n_nodes}"
-
+            variables["n_ranks"] = "{sys_cores_per_node} * {n_nodes}"
+        experiment_name_template = f"laghos_{self.spec.variants['experiment'][0]}"
+        experiment_name_template += "_{n_nodes}_{n_ranks}_{rs}_{rp}_{ms}"
         return {
             "laghos": {  # ramble Application name
                 "workloads":{
@@ -31,7 +33,7 @@ class Laghos(Experiment):
                     "problem": {
                        #"variables": variables,
                         "experiments": {
-                            "laghos_{n_nodes}_{n_ranks}": {
+                            experiment_name_template: {
                                 "variants": {"package_manager": "spack"},
                                 "variables": variables,
                             }
