@@ -47,7 +47,7 @@ def main():
 
     # Remove system_definition from all field names
     # (e.g., system_definition.system-tested.description)
-    df.columns = df.columns.str.removeprefix('system_definition.')
+    df.columns = df.columns.str.removeprefix("system_definition.")
 
     # Replace NaN with empty string
     df.fillna("", inplace=True)
