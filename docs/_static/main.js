@@ -1,3 +1,3 @@
 $(document).ready( function () {
-    $('csv-table.datatable').DataTable();
+    $('table.datatable').DataTable({paging: false});
 } );
