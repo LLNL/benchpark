@@ -5,6 +5,19 @@
 
 from ramble.modkit import *
 
+def add_mode(mode_name, mode_option, description):
+    mode(
+        name=mode_name,
+        description=description,
+    )
+
+    env_var_modification(
+        "CALI_CONFIG_MODE",
+        mode_option,
+        method="append",
+        separator=",",
+        modes=[mode_name],
+    )
 
 class Caliper(SpackModifier):
     """Define a modifier for Caliper"""
@@ -17,88 +30,59 @@ class Caliper(SpackModifier):
 
     _cali_datafile = "{experiment_run_dir}/{experiment_name}.cali"
 
+    _base_mode = "_base"
     mode(
-        "time",
+        name=_base_mode,
+        description="Base caliper mode",
+    )
+
+    env_var_modification(
+        "CALI_CONFIG",
+        "spot(output={}{})".format(_cali_datafile, "${CALI_CONFIG_MODE}"),
+        method="set",
+        modes=[_base_mode],
+    )
+
+    add_mode(
+        mode_name="time",
+        mode_option=" ",
         description="Platform-independent collection of time",
     )
 
-    env_var_modification(
-        "CALI_CONFIG",
-        "spot(output={})".format(_cali_datafile),
-        method="set",
-        modes=["time"],
-    )
-
-    mode(
-        "mpi",
+    add_mode(
+        mode_name="mpi",
+        mode_option="profile.mpi",
         description="Profile MPI functions",
     )
 
-    env_var_modification(
-        "CALI_CONFIG",
-        "spot(output={}, profile.mpi)".format(_cali_datafile),
-        method="set",
-        modes=["mpi"],
-    )
-
-    mode(
-        "cuda",
+    add_mode(
+        mode_name="cuda",
+        mode_option="profile.cuda",
         description="Profile CUDA API functions",
     )
 
-    env_var_modification(
-        "CALI_CONFIG",
-        "spot(output={}, profile.cuda)".format(_cali_datafile),
-        method="set",
-        modes=["cuda"],
-    )
-
-    mode(
-        "topdown-counters-all",
+    add_mode(
+        mode_name="topdown-counters-all",
+        mode_option="topdown-counters.all",
         description="Raw counter values for Intel top-down analysis (all levels)",
     )
 
-    env_var_modification(
-        "CALI_CONFIG",
-        "spot(output={}, topdown-counters.all)".format(_cali_datafile),
-        method="set",
-        modes=["topdown-counters-all"],
-    )
-
-    mode(
-        "topdown-counters-toplevel",
+    add_mode(
+        mode_name="topdown-counters-toplevel",
+        mode_option="topdown-counters.toplevel",
         description="Raw counter values for Intel top-down analysis (top level)",
     )
 
-    env_var_modification(
-        "CALI_CONFIG",
-        "spot(output={}, topdown-counters.toplevel)".format(_cali_datafile),
-        method="set",
-        modes=["topdown-counters-toplevel"],
-    )
-
-    mode(
-        "topdown-all",
+    add_mode(
+        mode_name="topdown-all",
+        mode_option="topdown.all",
         description="Top-down analysis for Intel CPUs (all levels)",
     )
 
-    env_var_modification(
-        "CALI_CONFIG",
-        "spot(output={}, topdown.all)".format(_cali_datafile),
-        method="set",
-        modes=["topdown-all"],
-    )
-
-    mode(
-        "topdown-toplevel",
+    add_mode(
+        mode_name="topdown-toplevel",
+        mode_option="topdown.toplevel",
         description="Top-down analysis for Intel CPUs (top level)",
-    )
-
-    env_var_modification(
-        "CALI_CONFIG",
-        "spot(output={}, topdown.toplevel)".format(_cali_datafile),
-        method="set",
-        modes=["topdown-toplevel"],
     )
 
     archive_pattern(_cali_datafile)
