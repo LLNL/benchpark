@@ -239,7 +239,7 @@ def helper_experiments_tags(ramble_exe, benchmarks):
     for benchmark in benchmarks:
         if ramble_applications_tags.get(benchmark) is not None:
             benchpark_experiments_tags[benchmark] = ramble_applications_tags[benchmark]
- 
+
     return benchpark_experiments_tags
 
 
@@ -269,7 +269,7 @@ def benchpark_tags_handler(args):
                 print(benchpark_experiments_tags[args.application])
             else:
                 app = args.application
-                print("Benchmark {} does not exist in ramble.".format(app) )
+                print("Benchmark {} does not exist in ramble.".format(app))
     else:
         print("IN ELSE")
         benchpark_experiments_tags = helper_experiments_tags(ramble_exe, benchmarks)
