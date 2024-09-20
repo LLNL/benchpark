@@ -27,7 +27,7 @@ def benchpark_benchmarks(benchmarks):
 def main(workspace):
     benchmarks = list()
     benchpark_benchmarks(benchmarks)
-
+    
     f = "../tags.yaml"
     with open(f, "r") as stream:
         try:
