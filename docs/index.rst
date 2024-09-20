@@ -20,6 +20,17 @@
 
 .. toctree::
    :maxdepth: 1
+   :caption: New System Workflow
+
+   run-benchpark-on-new-system
+   identifying-system-hardware
+   identifying-system-software
+   customizing-system-hardware
+   customizing-system-software
+   validating-system
+
+.. toctree::
+   :maxdepth: 1
    :caption: FAQ
 
    FAQ-what-to-rerun
