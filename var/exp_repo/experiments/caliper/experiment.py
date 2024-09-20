@@ -31,7 +31,7 @@ class Caliper(Experiment):
                 caliper_modifier_modes["name"] = "caliper"
                 caliper_modifier_modes["mode"] = var
                 modifier_list.append(caliper_modifier_modes)
-            modifier_list.append({"name":"caliper", "mode":"_base"})
+            modifier_list.append({"name": "caliper", "mode": "_base"})
         return modifier_list
 
     def compute_spack_section(self):

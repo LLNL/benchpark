@@ -115,7 +115,9 @@ class Amg2023(Caliper, Experiment):
         }
 
     def compute_modifiers_section(self):
-        return Experiment.compute_modifiers_section(self) + Caliper.compute_modifiers_section(self)
+        return Experiment.compute_modifiers_section(
+            self
+        ) + Caliper.compute_modifiers_section(self)
 
     def compute_applications_section(self):
         if self.spec.satisfies("workload=problem1"):
@@ -213,6 +215,12 @@ class Amg2023(Caliper, Experiment):
             )
 
         return {
-            "packages": {k: v for k, v in package_specs.items() if v} | caliper_package_specs['packages'],
-            "environments": {app_name: {"packages": list(package_specs.keys()) + list(caliper_package_specs['packages'].keys())}},
+            "packages": {k: v for k, v in package_specs.items() if v}
+            | caliper_package_specs["packages"],
+            "environments": {
+                app_name: {
+                    "packages": list(package_specs.keys())
+                    + list(caliper_package_specs["packages"].keys())
+                }
+            },
         }

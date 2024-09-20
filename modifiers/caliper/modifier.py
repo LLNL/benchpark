@@ -5,6 +5,7 @@
 
 from ramble.modkit import *
 
+
 def add_mode(mode_name, mode_option, description):
     mode(
         name=mode_name,
@@ -18,6 +19,7 @@ def add_mode(mode_name, mode_option, description):
         separator=",",
         modes=[mode_name],
     )
+
 
 class Caliper(SpackModifier):
     """Define a modifier for Caliper"""
