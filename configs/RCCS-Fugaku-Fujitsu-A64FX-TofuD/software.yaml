@@ -6,15 +6,19 @@
 software:
   packages:
     default-compiler:
-      pkg_spec: "{default_comp} {sys_arch}"
+      pkg_spec: clang@{default_llvm_version}
     default-mpi:
-      pkg_spec: fujitsu-mpi@{fj_comp_version}%{default_comp} {sys_arch}
+      pkg_spec: fujitsu-mpi@{default_fj_version}
+      compiler: default-compiler
+    compiler-clang:
+      pkg_spec: clang@{default_llvm_version}
+    compiler-fj:
+      pkg_spec: fj@{default_fj_version}
+    compiler-gcc:
+      pkg_spec: gcc@{default_gnu_version}
     blas:
-      pkg_spec: fujitsu-ssl2@{fj_comp_version}%{default_comp} {sys_arch}
+      pkg_spec: fujitsu-ssl2@{default_fj_version}
+      compiler: default-compiler
     lapack:
-      pkg_spec: fujitsu-ssl2@{fj_comp_version}%{default_comp} {sys_arch}
-    gmake:
-      pkg_spec: gmake@4.2.1 {sys_arch}
-    cmake:
-      pkg_spec: cmake@3.20.2 {sys_arch}
-
+      pkg_spec: fujitsu-ssl2@{default_fj_version}
+      compiler: default-compiler
