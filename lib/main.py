@@ -268,10 +268,8 @@ def benchpark_tags_handler(args):
             if benchpark_experiments_tags.get(args.application) is not None:
                 print(benchpark_experiments_tags[args.application])
             else:
-                app = args.application
-                print("Benchmark {} does not exist in ramble.".format(app))
+                print("Benchmark {} does not exist in ramble.".format(args.application))
     else:
-        print("IN ELSE")
         benchpark_experiments_tags = helper_experiments_tags(ramble_exe, benchmarks)
         print("All tags that exist in Benchpark experiments:")
         for k, v in benchpark_experiments_tags.items():
