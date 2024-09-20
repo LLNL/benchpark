@@ -8,7 +8,6 @@ Benchmarks and Experiments
 ==========================
 
 .. csv-table:: Current Benchpark tags by Benchmark and tag groups.
-   :class: datatable 
    :file: benchmark-list.csv
    :header-rows: 1
    :align: left
