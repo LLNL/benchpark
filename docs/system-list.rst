@@ -16,3 +16,4 @@ use as the ``system`` parameter in ``Benchpark setup``. See
    :class: datatable
    :file: current-system-definitions.csv
    :header-rows: 1
+   :align: left
