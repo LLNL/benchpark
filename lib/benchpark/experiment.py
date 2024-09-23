@@ -88,7 +88,7 @@ class Experiment(ExperimentSystemBase):
                 "config": self.compute_config_section(),
                 "modifiers": self.compute_modifiers_section(),
                 "applications": self.compute_applications_section(),
-                "spack": self.compute_spack_section(),
+                "software": self.compute_spack_section(),
             }
         }
 

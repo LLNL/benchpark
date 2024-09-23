@@ -7,9 +7,45 @@
 Adding a System Specification
 =============================
 
-``benchpark/configs`` contains a directory for each system specified in Benchpark.
-If your system is unlike the available configurations,
-you can add a new directory with a name which identifies the system.
+System specifications include details like
+
+- How many CPUs are there per node on the system
+- What pre-installed MPI/GPU libraries are available
+
+A system description is a set of YAML files collected into a directory.
+You can generate these files directly, but Benchpark also provides an API
+where you can represent systems as objects and customize their description
+with command line arguments.
+
+Using System API to Generate a System Description
+-------------------------------------------------
+
+System classes are defined in ``var/sys_repo``; once the class has been
+defined, you can invoke ``benchpark system init`` to generate a system
+configuration directory that can then be passed to ``benchpark setup``::
+
+    benchpark system init --dest=tioga-system tioga rocm=551 compiler=cce ~gtl
+
+where "tioga rocm=551 compiler=cce ~gtl" describes a config for Tioga that
+uses ROCm 5.5.1 components, a CCE compiler, and MPI without GTL support.
+
+If you want to add support for a new system you can add a class definition
+for that system in a separate directory in ``var/sys_repo/systems/``. For
+example the Tioga system is defined in::
+
+  $benchpark
+  ├── var
+     ├── sys_repo
+        ├── systems
+           ├── tioga
+              ├── system.py
+
+Static System Configurations
+----------------------------
+
+``benchpark/configs`` contains a number of static, manually-generated system
+definitions. As an alternative to implementing a new ``System`` class, you
+can add a new directory with a name which identifies the system.
 
 The naming convention for the systems is as following::
 
