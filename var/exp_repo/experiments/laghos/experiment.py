@@ -15,17 +15,18 @@ class Laghos(Experiment):
         variables = {}
             
         if self.spec.satisfies("experiment=weak"):
-            variables["rs"] = "5"
+            variables["rs"] = "3"
             variables["rp"] = ["0","1","2","3"]
             variables["n_ranks"] = "8"
         elif self.spec.satisfies("experiment=strong"):
             variables["n_ranks"] = ["4","8","16","32"]
-            variables["rs"] = "5"
+            variables["rs"] = "3"
+            variables["rp"] = "0"
         else:
             variables["n_nodes"] = ["1","2","4","8","16","32","64","128"]    
             variables["n_ranks"] = "{sys_cores_per_node} * {n_nodes}"
         experiment_name_template = f"laghos_{self.spec.variants['experiment'][0]}"
-        experiment_name_template += "_{n_nodes}_{n_ranks}_{rs}_{rp}_{ms}"
+        experiment_name_template += "_{n_nodes}_{n_ranks}_{rs}_{rp}"
         return {
             "laghos": {  # ramble Application name
                 "workloads":{

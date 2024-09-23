@@ -19,32 +19,29 @@ class Laghos(ExecutableApplication):
             'lagrangian','spatial-discretization','unstructured-grid',
             'network-latency-bound','network-collectives','unstructured-grid']
 
-    executable('p', 'laghos -p {p} -m {mesh} -rs {rs} -rp {rp} -ms {ms}', use_mpi=True)
+    executable('prob', 'laghos -p {problem} -m {mesh} -rs {rs} -rp {rp} -ms {ms}', use_mpi=True)
 
-    workload('problem', executables=['p'])
+    workload('problem', executables=['prob'])
 
     workload_variable('mesh', default='{laghos}/data/box01_hex.mesh',
             description='mesh file',
-            workloads=['laghos'])
+            workloads=['problem'])
 
-    workload_variable('p', default='3',
+    workload_variable('problem', default='3',
             description='problem number',
-            workloads=['laghos'])
+            workloads=['problem'])
         
-    workload_variable('pt', default='',
-            description='partitioning ratio',
-            workloads=['laghos'])
 
     workload_variable('rs', default='5',
             description='number of serial refinements',
-            workloads=['laghos'])
+            workloads=['problem'])
     
     workload_variable('rp', default='0',
             description='number of parallel refinements',
-            workloads=['laghos'])
+            workloads=['problem'])
     workload_variable('ms', default='500',
             description='max number of steps',
-            workloads=['laghos'])
+            workloads=['problem'])
 
     figure_of_merit('Major kernels total time',
                     log_file='{experiment_run_dir}/{experiment_name}.out',
