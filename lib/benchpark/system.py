@@ -96,17 +96,21 @@ class System(ExperimentSystemBase):
         self.external_packages(output_dir)
         self.compiler_description(output_dir)
 
+        spec_hash = self.system_uid()
+
         system_id_path = output_dir / "system_id.yaml"
         with open(system_id_path, "w") as f:
             f.write(
                 f"""\
 system:
   name: {self.__class__.__name__}
+  spec: {str(self.spec)}
+  config-hash: {spec_hash}
 """
             )
 
-    def system_id(self):
-        return _hash_id([self.variables_yaml()])
+    def system_uid(self):
+        return _hash_id([str(self.spec)])
 
     def _merge_config_files(self, schema, selections, dst_path):
         data = cfg.read_config_file(selections[0], schema)
@@ -150,6 +154,7 @@ system:
                 raise ValueError(f"Missing required info: {attr}")
 
         optionals = list()
+        optionals_as_cfg = ""
         for opt in ["sys_gpus_per_node", "sys_mem_per_node", "queue"]:
             if getattr(self, opt, None):
                 optionals.append(f"{opt}: {getattr(self, opt)}")
