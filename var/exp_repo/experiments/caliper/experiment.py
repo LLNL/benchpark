@@ -27,11 +27,13 @@ class Caliper(Experiment):
         modifier_list = []
         if not self.spec.satisfies("caliper=none"):
             for var in list(self.spec.variants["caliper"]):
-                caliper_modifier_modes = {}
-                caliper_modifier_modes["name"] = "caliper"
-                caliper_modifier_modes["mode"] = var
-                modifier_list.append(caliper_modifier_modes)
-            modifier_list.append({"name": "caliper", "mode": "_base"})
+                if var != "time":
+                    caliper_modifier_modes = {}
+                    caliper_modifier_modes["name"] = "caliper"
+                    caliper_modifier_modes["mode"] = var
+                    modifier_list.append(caliper_modifier_modes)
+            # Add time as the last mode
+            modifier_list.append({"name": "caliper", "mode": "time"})
         return modifier_list
 
     def compute_spack_section(self):

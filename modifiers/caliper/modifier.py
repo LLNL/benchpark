@@ -32,23 +32,19 @@ class Caliper(SpackModifier):
 
     _cali_datafile = "{experiment_run_dir}/{experiment_name}.cali"
 
-    _base_mode = "_base"
-    mode(
-        name=_base_mode,
-        description="Base caliper mode",
+    _default_mode = "time"
+
+    add_mode(
+        mode_name=_default_mode,
+        mode_option="time.exclusive",
+        description="Platform-independent collection of time (default mode)",
     )
 
     env_var_modification(
         "CALI_CONFIG",
         "spot(output={}{})".format(_cali_datafile, "${CALI_CONFIG_MODE}"),
         method="set",
-        modes=[_base_mode],
-    )
-
-    add_mode(
-        mode_name="time",
-        mode_option=" ",
-        description="Platform-independent collection of time",
+        modes=[_default_mode],
     )
 
     add_mode(
