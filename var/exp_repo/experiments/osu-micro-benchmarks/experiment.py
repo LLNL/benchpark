@@ -81,14 +81,14 @@ class OsuMicroBenchmarks(Experiment):
         ),
         description="workloads available",
     )
-    
+
     def compute_applications_section(self):
         variables = {}
 
         variables["scaling_nodes"] = "2"
         variables["n_nodes"] = "{scaling_nodes}"
         variables["n_ranks_per_node"] = "36"
-        
+
         pattern = r"workload=(?P<workload>[^ ]+)\s*"
         workload = re.search(pattern, str(self.spec.variants))
         workload_string = workload.group(1)
