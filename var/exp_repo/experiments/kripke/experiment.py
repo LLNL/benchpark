@@ -18,8 +18,8 @@ class Kripke(Experiment):
     )
 
     def compute_applications_section(self):
-        n_ranks = "{npx}*{npy}*{npz}"
-        n_threads_per_proc = "1"
+        n_ranks = {npx}*{npy}*{npz}
+        n_threads_per_proc = 1
 
         # Number of zones in each dimension, per process
         initial_nzx = 64
@@ -32,19 +32,19 @@ class Kripke(Experiment):
         initial_npz = 1
 
         if self.spec.satisfies("scaling=single-node"):
-            nzx = str(initial_nzx)
-            nzy = str(initial_nzy)
-            nzz = str(initial_nzz)
+            nzx = initial_nzx
+            nzy = initial_nzy
+            nzz = initial_nzz
 
-            npx = str(initial_npx)
-            npy = str(initial_npy)
-            npz = str(initial_npz)
+            npx = initial_npx
+            npy = initial_npy
+            npz = initial_npz
 
         if self.spec.satisfies("scaling=strong" or "scaling=weak"):
             # Number of processes in each dimension
-            npx = [str(initial_npx)]
-            npy = [str(initial_npy)]
-            npz = [str(initial_npz)]
+            npx = [initial_npx]
+            npy = [initial_npy]
+            npz = [initial_npz]
             for i in (3, 4, 5):  # doubles in round robin
                 if i % 3 == 0:
                     initial_npz *= 2
@@ -52,15 +52,15 @@ class Kripke(Experiment):
                     initial_npx *= 2
                 if i % 3 == 2:
                     initial_npy *= 2
-                npx.append(str(initial_npx))
-                npy.append(str(initial_npy))
-                npz.append(str(initial_npz))
+                npx.append(initial_npx)
+                npy.append(initial_npy)
+                npz.append(initial_npz)
 
         if self.spec.satisfies("scaling=weak"):
             # Number of zones in each dimension
-            nzx = [str(initial_nzx)]
-            nzy = [str(initial_nzy)]
-            nzz = [str(initial_nzz)]
+            nzx = [initial_nzx]
+            nzy = [initial_nzy]
+            nzz = [initial_nzz]
             for i in (3, 4, 5):  # doubles in round robin
                 if i % 3 == 0:
                     initial_nzz *= 2
@@ -68,9 +68,9 @@ class Kripke(Experiment):
                     initial_nzx *= 2
                 if i % 3 == 2:
                     initial_nzy *= 2
-                npx.append(str(initial_npx))
-                npy.append(str(initial_npy))
-                npz.append(str(initial_npz))
+                npx.append(initial_npx)
+                npy.append(initial_npy)
+                npz.append(initial_npz)
 
         variables = {
             "experiment_setup": "",
@@ -91,10 +91,10 @@ class Kripke(Experiment):
 
         if self.spec.satisfies("programming_model=openmp"):
             variables["arch"] = "OpenMP"
-            variables["omp_num_threads"] = "{n_threads_per_proc}"
+            variables["omp_num_threads"] = n_threads_per_proc
         elif self.spec.satisfies("programming_model=cuda"):
             variables["arch"] = "CUDA"
-            variables["n_gpus"] = "{n_ranks}"
+            variables["n_gpus"] = n_ranks
         elif self.spec.satisfies("programming_model=rocm"):
             variables["arch"] = "HIP"
 
