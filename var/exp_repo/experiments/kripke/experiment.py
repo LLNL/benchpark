@@ -55,7 +55,7 @@ class Kripke(Experiment):
                 npx.append(string(initial_npx))
                 npy.append(string(initial_npy))
                 npz.append(string(initial_npz))
-        
+
         if self.spec.satisfies("scaling=weak"):
             # Number of zones in each dimension
             nzx = [string(initial_nzx)]
