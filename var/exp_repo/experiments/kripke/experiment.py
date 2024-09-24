@@ -62,11 +62,11 @@ class Kripke(Experiment):
             nzy = [string(initial_nzy)]
             nzz = [string(initial_nzz)]
             for i in (3,4,5):  # doubles in round robin
-                if (i % 3 = 0):
+                if (i % 3 == 0):
                     initial_nzz *= 2
-                if (i % 3 = 1):
+                if (i % 3 == 1):
                     initial_nzx *= 2
-                if (i % 3 = 2):
+                if (i % 3 == 2):
                     initial_nzy *= 2   
                 npx.append(string(initial_npx))
                 npy.append(string(initial_npy))
