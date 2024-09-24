@@ -6,6 +6,7 @@
 from benchpark.directives import variant
 from benchpark.experiment import Experiment
 
+
 class Quicksilver(Experiment):
     variant(
         "experiment",
@@ -18,7 +19,7 @@ class Quicksilver(Experiment):
         variables = {}
         variants = {}
 
-        variables["n_threads_per_proc"] = '1'
+        variables["n_threads_per_proc"] = "1"
         variables["omp_num_threads"] = "{n_threads_per_proc}"
         variables["n_ranks"] = "{I}*{J}*{K}"
         variables["n"] = "{x}*{y}*{z}*10"
