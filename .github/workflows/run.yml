@@ -231,7 +231,7 @@ jobs:
           ./bin/benchpark setup ./quicksilver-openmp nosite-x86_64 workspace/
           . workspace/setup.sh
           ramble \
-            --workspace-dir workspace/quicksilver/openmp/nosite-x86_64/workspace \
+            --workspace-dir workspace/quicksilver-openmp/nosite-x86_64/workspace \
             --disable-progress-bar \
             --disable-logger \
             workspace setup --dry-run
