@@ -20,7 +20,7 @@ def system_init(args):
 
     if args.basedir:
         base = args.basedir
-        sysdir = system.system_id()
+        sysdir = system.system_uid()
         destdir = os.path.join(base, sysdir)
     elif args.dest:
         destdir = args.dest
