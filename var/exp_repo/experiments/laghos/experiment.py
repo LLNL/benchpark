@@ -45,14 +45,13 @@ class Laghos(Experiment):
         }
 
     def compute_spack_section(self):
-        laghos_spack_spec = "laghos@develop +metis{modifier_spack_variant}"
+        laghos_spack_spec = "laghos@develop +metis"
         zlib_spack_spec = "zlib@1.3.1 +optimize+pic+shared"
         packages = [
             "default-mpi",
             "zlib",
             "blas",
             self.spec.name,
-            "{modifier_package_name}",
         ]
 
         return {
