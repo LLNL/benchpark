@@ -59,7 +59,7 @@ class Quicksilver(Experiment):
         # TODO: express that we need certain variables from system
         # Does not need to happen before merge, separate task
         qs_spack_spec = "quicksilver +openmp+mpi"
-        packages = ["default-mpi", self.spec.name, "{modifier_package_name}"]
+        packages = ["default-mpi", self.spec.name]
 
         return {
             "packages": {
