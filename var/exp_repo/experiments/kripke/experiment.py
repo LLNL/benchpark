@@ -119,7 +119,7 @@ class Kripke(Experiment):
         }
 
     def compute_spack_section(self):
-        kripke_spec = "kripke@develop+mpi{modifier_spack_variant}"
+        kripke_spec = "kripke@develop+mpi"
         if self.spec.satisfies("programming_model=openmp"):
             pass
         elif self.spec.satisfies("programming_model=cuda"):
@@ -140,7 +140,6 @@ class Kripke(Experiment):
                     "packages": [
                         "default_mpi",
                         "kripke",
-                        "{modifier_package_name}",
                     ]
                 }
             },
