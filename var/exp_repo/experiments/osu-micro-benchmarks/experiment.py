@@ -79,7 +79,7 @@ class OsuMicroBenchmarks(Experiment):
             "osu_hello",
             "osu_init",
         ),
-        description="workloads available"
+        description="workloads available",
     )
     
     def compute_applications_section(self):
@@ -89,12 +89,12 @@ class OsuMicroBenchmarks(Experiment):
         variables["n_nodes"] = "{scaling_nodes}"
         variables["n_ranks_per_node"] = "36"
         
-        pattern=r"workload=(?P<workload>[^ ]+)\s*"
-        workload=re.search(pattern, str(self.spec.variants))
-        workload_string=workload.group(1)
+        pattern = r"workload=(?P<workload>[^ ]+)\s*"
+        workload = re.search(pattern, str(self.spec.variants))
+        workload_string = workload.group(1)
 
         return {
-            "osu-micro-benchmarks": { 
+            "osu-micro-benchmarks": {
                 # TODO replace with a hash once we have one?
                 "workloads": {
                     workload_string: {
