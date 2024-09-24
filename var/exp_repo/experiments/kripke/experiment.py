@@ -32,19 +32,19 @@ class Kripke(Experiment):
         initial_npz = 1
 
         if self.spec.satisfies("scaling=single-node"):
-            nzx = string(initial_nzx)
-            nzy = string(initial_nzy)
-            nzz = string(initial_nzz)
+            nzx = str(initial_nzx)
+            nzy = str(initial_nzy)
+            nzz = str(initial_nzz)
 
-            npx = string(initial_npx)
-            npy = string(initial_npy)
-            npz = string(initial_npz)
+            npx = str(initial_npx)
+            npy = str(initial_npy)
+            npz = str(initial_npz)
 
         if self.spec.satisfies("scaling=strong" or "scaling=weak"):
             # Number of processes in each dimension
-            npx = [string(initial_npx)]
-            npy = [string(initial_npy)]
-            npz = [string(initial_npz)]
+            npx = [str(initial_npx)]
+            npy = [str(initial_npy)]
+            npz = [str(initial_npz)]
             for i in (3, 4, 5):  # doubles in round robin
                 if i % 3 == 0:
                     initial_npz *= 2
@@ -52,15 +52,15 @@ class Kripke(Experiment):
                     initial_npx *= 2
                 if i % 3 == 2:
                     initial_npy *= 2
-                npx.append(string(initial_npx))
-                npy.append(string(initial_npy))
-                npz.append(string(initial_npz))
+                npx.append(str(initial_npx))
+                npy.append(str(initial_npy))
+                npz.append(str(initial_npz))
 
         if self.spec.satisfies("scaling=weak"):
             # Number of zones in each dimension
-            nzx = [string(initial_nzx)]
-            nzy = [string(initial_nzy)]
-            nzz = [string(initial_nzz)]
+            nzx = [str(initial_nzx)]
+            nzy = [str(initial_nzy)]
+            nzz = [str(initial_nzz)]
             for i in (3, 4, 5):  # doubles in round robin
                 if i % 3 == 0:
                     initial_nzz *= 2
@@ -68,9 +68,9 @@ class Kripke(Experiment):
                     initial_nzx *= 2
                 if i % 3 == 2:
                     initial_nzy *= 2
-                npx.append(string(initial_npx))
-                npy.append(string(initial_npy))
-                npz.append(string(initial_npz))
+                npx.append(str(initial_npx))
+                npy.append(str(initial_npy))
+                npz.append(str(initial_npz))
 
         variables = {
             "experiment_setup": "",
