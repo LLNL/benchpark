@@ -12,26 +12,65 @@ class Kripke(Experiment):
 
     variant(
         "scaling",
-        default="weak",
-        values=("weak", "strong"),
-        description="weak or strong scaling study",
+        default="single-node",
+        values=("single-node", "weak", "strong"),
+        description="Single node, weak scaling, or strong scaling study",
     )
 
     def compute_applications_section(self):
         n_ranks = "{npx}*{npy}*{npz}"
         n_threads_per_proc = "1"
 
-        npx = ["2", "2", "4", "4"]
-        npy = ["2", "2", "2", "4"]
-        npz = ["1", "2", "2", "2"]
+        # Number of zones in each dimension, per process
+        initial_nzx = 64
+        initial_nzy = 64
+        initial_nzz = 32
 
-        nzx = "64"
-        nzy = "64"
-        nzz = "32"
+        # Number of processes in each dimension
+        initial_npx = 2
+        initial_npy = 2
+        initial_npz = 1
+
+        if self.spec.satisfies("scaling=single-node"):
+            nzx = string(initial_nzx)
+            nzy = string(initial_nzy)
+            nzz = string(initial_nzz)
+
+            npx = string(initial_npx)
+            npy = string(initial_npy)
+            npz = string(initial_npz)
+
+        if self.spec.satisfies("scaling=strong" or "scaling=weak"):
+            # Number of processes in each dimension
+            npx = [string(initial_npx)]
+            npy = [string(initial_npy)]
+            npz = [string(initial_npz)]
+            for i in (3,4,5):  # doubles in round robin
+                if (i % 3 = 0):
+                    initial_npz *= 2
+                if (i % 3 = 1):
+                    initial_npx *= 2
+                if (i % 3 = 2):
+                    initial_npy *= 2   
+                npx.append(string(initial_npx))
+                npy.append(string(initial_npy))
+                npz.append(string(initial_npz))     
+        
         if self.spec.satisfies("scaling=weak"):
-            nzx = ["64", "64", "128", "128"]
-            nzy = ["64", "64", "64", "128"]
-            nzz = ["32", "64", "64", "64"]
+            # Number of zones in each dimension
+            nzx = [string(initial_nzx)]
+            nzy = [string(initial_nzy)]
+            nzz = [string(initial_nzz)]
+            for i in (3,4,5):  # doubles in round robin
+                if (i % 3 = 0):
+                    initial_nzz *= 2
+                if (i % 3 = 1):
+                    initial_nzx *= 2
+                if (i % 3 = 2):
+                    initial_nzy *= 2   
+                npx.append(string(initial_npx))
+                npy.append(string(initial_npy))
+                npz.append(string(initial_npz))   
 
         variables = {
             "experiment_setup": "",
