@@ -18,7 +18,7 @@ class Kripke(Experiment):
     )
 
     def compute_applications_section(self):
-        n_ranks = {npx}*{npy}*{npz}
+        n_ranks = "{npx} * {npy} * {npz}"
         n_threads_per_proc = 1
 
         # Number of zones in each dimension, per process
