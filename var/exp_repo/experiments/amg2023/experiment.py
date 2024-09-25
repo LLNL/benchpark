@@ -57,14 +57,63 @@ class Amg2023(Scaling, Experiment):
         if self.spec.satisfies("programming_model=openmp"):
             variables["n_ranks"] = "{px}*{py}*{pz}"
             variables["n_threads_per_proc"] = '1'
-            variables["omp_num_threads"] = "{n_threads_per_proc}"
-            exp_name = f"{app_name}_omp_strong_{self.workload}_{{n_nodes}}_{{n_ranks}}_{{n_threads_per_proc}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
+            exp_name = f"{app_name}_openmp_strong_{self.workload}_{{n_nodes}}_{{n_ranks}}_{{n_threads_per_proc}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
         elif self.spec.satisfies("programming_model=cuda"):
             variables["n_gpus"] = "{px}*{py}*{pz}"
             exp_name = f"{app_name}_cuda_strong_{self.workload}_{{n_gpus}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
         elif self.spec.satisfies("programming_model=rocm"):
             variables["n_gpus"] = "{px}*{py}*{pz}"
             exp_name = f"{app_name}_rocm_strong_{self.workload}_{{n_gpus}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
+        else:
+            raise NotImplementedError(
+                "Unsupported programming_model. Only openmp, cuda and rocm are supported"
+            )
+
+        return {
+            app_name: {
+                "workloads": {
+                    f"{self.workload}": {
+                        "experiments": {
+                            exp_name: {
+                                "variants": {"package_manager": "spack"},
+                                "variables": variables,
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    def make_experiment_weak_scaling(self):
+        app_name = self.spec.name
+        variables = {}
+
+        #TODO: Use variant for px, py, pz
+        p = 2
+
+        #TODO: Use variant for nx, ny, nz
+        n = 10
+
+        p_list, n_list = self.generate_weak_scaling_parameters([p,p,p], [n,n,n])
+        variables["px"] = p_list[0]
+        variables["py"] = p_list[1]
+        variables["pz"] = p_list[2]
+
+        variables["nx"] = n_list[0]
+        variables["ny"] = n_list[1]
+        variables["nz"] = n_list[2]
+
+        #TODO: Use allocation modifier here???
+        if self.spec.satisfies("programming_model=openmp"):
+            variables["n_ranks"] = "{px}*{py}*{pz}"
+            variables["n_threads_per_proc"] = '1'
+            exp_name = f"{app_name}_openmp_weak_{self.workload}_{{n_nodes}}_{{n_ranks}}_{{n_threads_per_proc}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
+        elif self.spec.satisfies("programming_model=cuda"):
+            variables["n_gpus"] = "{px}*{py}*{pz}"
+            exp_name = f"{app_name}_cuda_weak_{self.workload}_{{n_gpus}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
+        elif self.spec.satisfies("programming_model=rocm"):
+            variables["n_gpus"] = "{px}*{py}*{pz}"
+            exp_name = f"{app_name}_rocm_weak_{self.workload}_{{n_gpus}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
         else:
             raise NotImplementedError(
                 "Unsupported programming_model. Only openmp, cuda and rocm are supported"
@@ -98,7 +147,7 @@ class Amg2023(Scaling, Experiment):
             variables["n_nodes"] = ["1", "2"]
             variables["n_ranks"] = "8"
             variables["n_threads_per_proc"] = ["4", "6", "12"]
-            exp_name = f"{app_name}_example_omp_{{n_nodes}}_{{n_ranks}}_{{n_threads_per_proc}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
+            exp_name = f"{app_name}_example_openmp_{{n_nodes}}_{{n_ranks}}_{{n_threads_per_proc}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
         elif self.spec.satisfies("programming_model=cuda"):
             # TODO: Support variants
             n = ["10", "20"]

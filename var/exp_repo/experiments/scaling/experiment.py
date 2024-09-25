@@ -46,3 +46,20 @@ class Scaling(object):
                 if not num_exprs:
                     break
         return resource_list
+
+    def generate_weak_scaling_parameters(self, initial_resource_list: list, initial_problem_size_list: list):
+        scaling_factor = int(self.spec.variants["weak-scaling-factor"][0])
+        num_exprs = int(self.spec.variants["weak-scaling-num-exprs"][0]) - 1
+        round_robin_order = self.compute_round_robin_order(initial_resource_list)
+        resource_list = [[x] for x in initial_resource_list]
+        problem_size_list = [[x] for x in initial_problem_size_list]
+
+        while num_exprs > 0:
+            for idx in round_robin_order:
+                for (i, r), p in zip(enumerate(resource_list), problem_size_list):
+                    r.append(r[-1]*scaling_factor if i == idx else r[-1])
+                    p.append(p[-1]*scaling_factor if i == idx else p[-1])
+                num_exprs=num_exprs-1
+                if not num_exprs:
+                    break
+        return resource_list,problem_size_list
