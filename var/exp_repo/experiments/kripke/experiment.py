@@ -132,13 +132,13 @@ class Kripke(Experiment):
             "packages": {
                 "kripke": {
                     "pkg_spec": kripke_spec,
-                    "compiler": "default_compiler",
+                    "compiler": "default-compiler",
                 }
             },
             "environments": {
                 "kripke": {
                     "packages": [
-                        "default_mpi",
+                        "default-mpi",
                         "kripke",
                     ]
                 }
