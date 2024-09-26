@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-from typing import Dict, Tuple
+from typing import Dict
 import yaml  # TODO: some way to ensure yaml available
 
 from benchpark.directives import ExperimentSystemBase
