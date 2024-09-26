@@ -44,8 +44,8 @@ class Experiment(ExperimentSystemBase):
 
     # This allows analysis tools to correctly interpret the class attributes.
     variants: Dict[
-        str,
-        Tuple["benchpark.variant.Variant", "benchpark.spec.ConcreteExperimentSpec"],
+        "benchpark.spec.Spec",
+        Dict[str, benchpark.variant.Variant],
     ]
 
     def __init__(self, spec):
