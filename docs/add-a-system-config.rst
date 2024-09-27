@@ -158,6 +158,23 @@ If defining a specific system, one can be more specific with available software 
 and packages, as demonstrated in :doc:`add-a-site-specific-system-config`.
 
 
+
+TODO: New System Steps:
+------------------------
+
+We provide an example of editing the generic_x86 system configurations. 
+
+The main driver for configuring a system is done by defining a subclass for that system in a ``var/sys_repo/{SYSTEM}/system.py`` file, which inherits from the System base class defined in ``/lib/benchpark/system.py``.
+
+As is, the x86_64 system subclass should work for most x86_64 systems, but potential common changes might be to edit the number of cores per cpu, compiler locations, or adding external packages.
+
+TODO: Examples of making these changes...
+
+Once the system subclass is written with proper configurations run: 
+``./benchpark system init --dest </path/to/destination/folder> x86_64``
+
+This will generate the required yaml configurations for your system and you can move on to experiments.
+
 Validate the System
 ------------------------
 
