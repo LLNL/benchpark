@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Benchpark
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
 
       - name: Add needed Python libs
         run: |
@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Benchpark
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
 
       - name: Add needed Python libs
         run: |
@@ -130,16 +130,28 @@ jobs:
             --disable-logger \
             workspace setup --dry-run
 
-      - name: Dry run kripke/openmp on nosite-x86_64 with allocation modifier
+      - name: Dry run dynamic kripke-openmp on nosite-x86_64 with allocation modifier
         run: |
-          ./bin/benchpark setup kripke/openmp nosite-x86_64 workspace/
+          ./bin/benchpark experiment init --dest=kripke-openmp kripke programming_model=openmp
+          ./bin/benchpark setup ./kripke-openmp nosite-x86_64 workspace/
           . workspace/setup.sh
           ramble \
-            --workspace-dir workspace/kripke/openmp/nosite-x86_64/workspace \
+            --workspace-dir workspace/kripke-openmp/nosite-x86_64/workspace \
             --disable-progress-bar \
             --disable-logger \
             workspace setup --dry-run
 
+      - name: Dry run dynamic kripke-rocm on LLNL-Tioga-HPECray-zen3-MI250X-Slingshot with allocation modifier
+        run: |
+          ./bin/benchpark experiment init --dest=kripke-rocm kripke programming_model=rocm
+          ./bin/benchpark setup ./kripke-openmp LLNL-Tioga-HPECray-zen3-MI250X-Slingshot workspace/
+          . workspace/setup.sh
+          ramble \
+            --workspace-dir workspace/kripke-openmp/LLNL-Tioga-HPECray-zen3-MI250X-Slingshot/workspace \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace setup --dry-run
+            
       - name: Dry run kripke/cuda on Sierra with allocation modifier
         run: |
           ./bin/benchpark setup kripke/cuda LLNL-Sierra-IBM-power9-V100-Infiniband workspace/
@@ -232,6 +244,16 @@ jobs:
           . workspace/setup.sh
           ramble \
             --workspace-dir workspace/quicksilver-openmp/nosite-x86_64/workspace \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace setup --dry-run
+
+      - name: Dry run phloem/mpi-only on nosite-x86_64 with allocation modifier
+        run: |
+          ./bin/benchpark setup phloem/mpi-only nosite-x86_64 workspace/
+          . workspace/setup.sh
+          ramble \
+            --workspace-dir workspace/phloem/mpi-only/nosite-x86_64/workspace \
             --disable-progress-bar \
             --disable-logger \
             workspace setup --dry-run
