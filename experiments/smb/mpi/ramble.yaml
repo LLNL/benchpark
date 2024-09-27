@@ -1,0 +1,49 @@
+# Copyright 2023 Lawrence Livermore National Security, LLC and other
+# Benchpark Project Developers. See the top-level COPYRIGHT file for details.
+# 
+# SPDX-License-Identifier: Apache-2.0
+ramble:
+  include:
+  - ./configs/software.yaml
+  - ./configs/variables.yaml
+  - ./configs/modifier.yaml
+  config:
+    deprecated: true
+    spack_flags:
+      install: '--add --keep-stage'
+      concretize: '-U -f'
+
+  modifiers:
+  - name: allocation
+
+  applications:
+    smb:
+      workloads:
+        mpi_overhead:
+          experiments:
+            smb_mpi_overhead_strong_{n_ranks}:
+              variants: 
+                package_manager: spack  
+              variables:
+                n_ranks: ['2','4','8']
+        msgrate:
+          experiments:
+            smb_msgrate_strong_{n_nodes}:
+              variants: 
+                package_manager: spack  
+              variables:
+                n_nodes: ['1','2','4']
+                n_ranks: '{n_nodes}*{sys_cores_per_node}'
+                ppn: '1'
+
+  software:
+    packages:
+      smb:
+        pkg_spec: smb@master +mpi
+        compiler: default-compiler
+    environments:
+      smb:
+        packages:
+        - default-mpi
+        - smb
+        - '{modifier_package_name}'
