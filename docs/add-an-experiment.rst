@@ -10,7 +10,7 @@ Adding an Experiment
 
 
 Experiment Specifications are created with ``experiment.py`` files (that inherit from the Experiment base class in ``/lib/benchpark/experiment.py``),
- each located in ``benchpark/var/exp_repo/experiments/${Benchmark1}``.
+each located in ``benchpark/var/exp_repo/experiments/${Benchmark1}``.
 
 Variants of the experiment can be added to utilize different *ProgrammingModels* used for on-node parallelization,
 e.g., ``benchpark/var/exp_repo/experiments/amg2023/experiment.py`` has variant ``programming_model``, which can be 
