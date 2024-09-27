@@ -12,22 +12,11 @@
 
    1-getting-started
    2-benchpark-list
-   3-opt-edit-experiment
+   3-benchpark-workflow
    4-benchpark-setup
    5-build-experiment
    6-run-experiment
    7-analyze-experiment
-
-.. toctree::
-   :maxdepth: 1
-   :caption: New System Workflow
-
-   run-benchpark-on-new-system
-   identifying-system-hardware
-   identifying-system-software
-   customizing-system-hardware
-   customizing-system-software
-   validating-system
 
 .. toctree::
    :maxdepth: 1
@@ -49,6 +38,7 @@
    :maxdepth: 1
    :caption: Contributing
 
+   identifying-similar-system
    add-a-system-config
    add-a-site-specific-system-config
    add-a-benchmark

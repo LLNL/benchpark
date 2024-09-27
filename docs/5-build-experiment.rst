@@ -33,3 +33,5 @@ Ramble will build the source code and set up the following workspace directory s
 
 If you edit any of the files, see :doc:`FAQ-what-to-rerun` to determine
 whether you need to re-do any of the previous steps.
+
+Once that is complete, you are ready for :doc:`6-run-experiment`. 

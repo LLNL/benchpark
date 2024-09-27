@@ -7,7 +7,10 @@
 Adding a Benchmark
 ==================
 
-The following system-independent specification is required for each ${Benchmark1}:
+Add a New Benchmark
+------------------------
+
+The following system-independent specification is required for each ${Benchmark1} in ``benchpark/repo/${Benchmark1}``:
 
 - ``package.py`` is a Spack specification that defines how to build and install ${Benchmark1}.
 - ``application.py`` is a Ramble specification that defines the ${Benchmark1} input and parameters.
@@ -20,3 +23,9 @@ By default, Benchpark will use ${Benchmark1} specifications (``package.py`` and 
 provided in the Spack and Ramble repos.
 It is possible to overwrite the benchmark specifications provided in the Spack and Ramble repos;
 see :doc:`FAQ-benchpark-repo` for details.
+
+
+Validate a Benchmark (Needed?)
+------------------------
+
+Now that the benchmark has been created/updated/validated you need to configure at least one experiment, see :doc:`add-an-experiment`.
