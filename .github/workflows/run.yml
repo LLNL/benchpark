@@ -237,12 +237,13 @@ jobs:
             --disable-logger \
             workspace setup --dry-run
 
-      - name: Dry run quicksilver/openmp on nosite-x86_64 with allocation modifier
+      - name: Dry run dynamic quicksilver-openmp on nosite-x86_64 with allocation modifier
         run: |
-          ./bin/benchpark setup quicksilver/openmp nosite-x86_64 workspace/
+          ./bin/benchpark experiment init --dest=quicksilver-openmp quicksilver experiment=weak
+          ./bin/benchpark setup ./quicksilver-openmp nosite-x86_64 workspace/
           . workspace/setup.sh
           ramble \
-            --workspace-dir workspace/quicksilver/openmp/nosite-x86_64/workspace \
+            --workspace-dir workspace/quicksilver-openmp/nosite-x86_64/workspace \
             --disable-progress-bar \
             --disable-logger \
             workspace setup --dry-run
