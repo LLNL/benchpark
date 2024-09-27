@@ -21,7 +21,7 @@ system_definition:
     ISA:
     uArch:
   interconnect:
-    vendor: Intel
+    vendor: CornelisNetworks
     name: OmniPath
   system-tested:
     site: LLNL
