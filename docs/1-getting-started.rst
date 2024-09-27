@@ -20,6 +20,9 @@ To install this, you can use::
 
     pip install -r requirements.txt
 
-Now you are ready to look at the benchmarks and systems available in Benchpark,
-as described in :doc:`2-benchpark-list`.
+The executable is in ``benchpark/bin``, to check the version you can run:: 
 
+    ./bin/benchpark --v
+
+Now you are ready to look at the benchmarks and systems available in Benchpark, 
+and determine your workflow as described in :doc:`2-benchpark-list`.
