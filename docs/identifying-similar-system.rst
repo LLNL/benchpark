@@ -11,7 +11,7 @@ The easiest place to start when configuring a new system is to find the closest 
 one that has an existing configuration already. Existing system configurations are listed
 in the table in :doc:`system-list`. 
 
-If you are running on a system with an accelerator, find an existing system wih the same accelerator vendor,
+If you are running on a system with an accelerator, find an existing system with the same accelerator vendor,
 and then secondarily, if you can, match the actual accererator. 
 
 1. accelerator.vendor
