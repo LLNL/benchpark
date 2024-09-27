@@ -156,3 +156,11 @@ file
 
 If defining a specific system, one can be more specific with available software versions
 and packages, as demonstrated in :doc:`add-a-site-specific-system-config`.
+
+
+Validate the System
+------------------------
+
+dryrun dynamic system static experiment
+
+Once the dryrun passes, the new system has been validated and you can continue your :doc:`3-benchpark-workflow`.

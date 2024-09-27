@@ -7,7 +7,10 @@
 Searching Benchpark
 ===================
 
-The user can search for available system and experiment specifications in Benchpark.
+The easiest way to get started is to run existing experiments one existing systems, or 
+to modify one that is similar. You can search through the existing experiments and benchmarks with the below commands. 
+
+Search for available system and experiment specifications in Benchpark.
 
 .. list-table:: Searching for specifications in Benchpark
    :widths: 25 25 50
@@ -39,7 +42,6 @@ The user can search for available system and experiment specifications in Benchp
      -
 
 
-Once you have decided on a ``system`` you will use, and the ``benchmark/ProgrammingModel``
-to run, you can proceed to :doc:`4-benchpark-setup`.
-
 For a complete list of options, see the help menu in :doc:`benchpark-help`.
+
+Now that you know the existing benchmarks and systems, you can determine your necessary workflow in :doc:`3-benchpark-workflow`:
