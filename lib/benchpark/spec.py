@@ -46,6 +46,12 @@ class VariantMap(llnl.util.lang.HashableMap):
             name in self and set(self[name]) >= set(other[name]) for name in other
         )
 
+    def constrain(self, other: "VariantMap") -> None:
+        for name in other:
+            self_values = list(self.dict.get(name, []))
+            values = llnl.util.lang.dedupe(self_values + list(other[name]))
+            self[name] = values
+
     @staticmethod
     def stringify(name: str, values: tuple) -> str:
         if len(values) == 1:
@@ -124,6 +130,10 @@ class Spec(object):
             and self.variants == other.variants
         )
 
+    def __hash__(self):
+        # If hashing specs, client code is responsible for ensuring they do not mutate
+        return hash((self.name, self.namespace, self.variants))
+
     def __str__(self):
         string = ""
         if self.namespace is not None:
@@ -176,6 +186,21 @@ class Spec(object):
             and self.variants.satisfies(other.variants)
         )
 
+    def constrain(self, other: Union[str, "Spec"]) -> None:
+        if not isinstance(other, Spec):
+            other = Spec(other)
+        if other.name:
+            if self.name and self.name != other.name:
+                raise Exception
+            self.name == other.name
+
+        if other.namespace:
+            if self.namespace and self.namespace != other.namespace:
+                raise Exception
+            self.namespace == other.namespace
+
+        self.variants.constrain(other.variants)
+
     def concretize(self):
         raise NotImplementedError("Spec.concretize must be implemented by subclass")
 
@@ -204,9 +229,6 @@ class ConcreteSpec(Spec):
     def __init__(self, str_or_spec: Union[str, Spec]):
         super().__init__(str_or_spec)
         self._concretize()
-
-    def __hash__(self):
-        return hash((self.name, self.namespace, self.variants))
 
     @property
     def name(self):
@@ -237,19 +259,62 @@ class ConcreteSpec(Spec):
             raise AnonymousSpecError(f"Cannot concretize anonymous {type(self)} {self}")
 
         if not self.namespace:
-            # TODO interface combination ##
             self._namespace = self.object_class.namespace
 
-        # TODO interface combination ##
-        for name, variant in self.object_class.variants.items():
-            if name not in self.variants:
-                self._variants[name] = variant.default
+        # For variants that are set, set whatever they imply
+        variants_to_check = set(
+            (name, values) for name, values in self.variants.items()
+        )
+        checked = set()
+        while variants_to_check:
+            name, values = variants_to_check.pop()
+            checked.add((name, values))
 
-        for name, values in self.variants.items():
-            if name not in self.object_class.variants:
+            conditions = [
+                w
+                for w, v_by_n in self.object_class.variants.items()
+                for n, v in v_by_n.items()
+                if n == name and v.validate_values_bool(values)
+            ]
+
+            if not conditions:
                 raise Exception(f"{name} is not a valid variant of {self.name}")
 
-            variant = self.object_class.variants[name]
+            # This variant is already valid on self
+            if any(self.satisfies(c) for c in conditions):
+                continue
+
+            # If there is not a condition that allows this variant already, add one
+            cond = conditions[0]
+            for n, v in cond.variants.items():
+                if (n, v) not in checked:
+                    variants_to_check.add((n, v))
+            self.constrain(cond)
+
+        # Concretize variants that aren't set
+        changed = True
+        while changed:
+            changed = False
+
+            for when, variants_by_name in self.object_class.variants.items():
+                for name, variant in variants_by_name.items():
+                    if self.satisfies(when):
+                        if name not in self.variants:
+                            changed = True
+                            self._variants[name] = variant.default
+
+        # Validate all set variant values
+        for name, values in self.variants.items():
+            try:
+                variant = next(
+                    v
+                    for w, v_by_n in self.object_class.variants.items()
+                    for n, v in v_by_n.items()
+                    if self.satisfies(w) and n == name
+                )
+            except StopIteration:
+                raise Exception(f"{name} is not a valid variant of {self.name}")
+
             variant.validate_values(self.variants[name])
 
         # Convert to immutable type
