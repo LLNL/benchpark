@@ -6,10 +6,12 @@
 ====================
 Adding an Experiment
 ====================
-.
 
+Similar to systems, Benchpark also provides an API where you can represent experiments 
+as objects and customize their description with command line arguments.
 
-Experiment Specifications are created with ``experiment.py`` files (that inherit from the Experiment base class in ``/lib/benchpark/experiment.py``),
+Experiment Specifications are created with ``experiment.py`` files 
+(that inherit from the Experiment base class in ``/lib/benchpark/experiment.py``),
 each located in ``benchpark/var/exp_repo/experiments/${Benchmark1}``.
 
 Variants of the experiment can be added to utilize different *ProgrammingModels* used for on-node parallelization,
@@ -18,6 +20,10 @@ set to ``cuda`` for an AMG2023 experiment using CUDA (on an NVIDIA GPU),
 or ``openmp`` for an AMG2023 experiment using OpenMP (on a CPU).
 These files, in conjunction with the system configuration files and package/application repositories,
 are used to generate a set of concrete Ramble experiments for the target system and programming model.
+
+An experiment is initialized with TODO: ``benchpark experiment init...``
+
+Initializing an experiment generates the following yaml files:
 
 - ``ramble.yaml`` defines the `Ramble specs <https://googlecloudplatform.github.io/ramble/workspace_config.html#workspace-config>`_ for building, running, analyzing and archiving experiments.
 - ``execution_template.tpl`` serves as a template for the final experiment script that will be concretized and executed.
