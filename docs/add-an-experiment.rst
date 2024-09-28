@@ -10,7 +10,7 @@ Adding an Experiment
 Similar to systems, Benchpark also provides an API where you can represent experiments 
 as objects and customize their description with command line arguments.
 
-Experiment Specifications are created with ``experiment.py`` files 
+Experiment specifications are created with ``experiment.py`` files 
 (that inherit from the Experiment base class in ``/lib/benchpark/experiment.py``),
 each located in ``benchpark/var/exp_repo/experiments/${Benchmark1}``.
 
