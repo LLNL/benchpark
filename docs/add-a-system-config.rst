@@ -40,53 +40,9 @@ example the Tioga system is defined in::
            ├── tioga
               ├── system.py
 
-Static System Configurations
-----------------------------
+The following yaml files are examples of what is generated for a system after it is initialized:
 
-``benchpark/configs`` contains a number of static, manually-generated system
-definitions. As an alternative to implementing a new ``System`` class, you
-can add a new directory with a name which identifies the system.
-
-The naming convention for the systems is as following::
-
-  SITE-[SYSTEMNAME-][INTEGRATOR]-MICROARCHITECTURE[-GPU][-NETWORK]
-
-where::
-
-  SITE = nosite | DATACENTERNAME
-
-  SYSTEMNAME = the name of the specific system
-
-  INTEGRATOR = COMPANY[_PRODUCTNAME][...]
-
-  MICROARCHITECTURE = CPU Microarchitecture
-
-  GPU = GPU Product Name
-
-  NETWORK = Network Product Name
-
-Benchpark has definitions for the following (nosite) systems:
-
-- nosite-AWS_PCluster_Hpc7a-zen4-EFA
-
-- nosite-HPECray-zen3-MI250X-Slingshot (same hardware as Frontier, Lumi, Tioga)
-
-- nosite-x86_64 (x86 CPU only platform)
-
-
-
-Benchpark has definitions for the following site-specific systems:
-
-- LLNL-Magma-Penguin-icelake-OmniPath
-
-- LLNL-Sierra-IBM-power9-V100-Infiniband (Sierra, Lassen)
-
-- LLNL-Tioga-HPECray-zen3-MI250X-Slingshot
-
-
-The following files are required for each nosite system ``benchpark/configs/${SYSTEM}``:
-
-1. ``system_definition.yaml`` describes the system hardware, including the integrator (and the name of the product node or cluster type), the processor, (optionally) the accelerator, and the network; the information included here is what you will typically see recorded about the system on Top500.org.  We intend to make the system definitions in Benchpark searchable, and will add a schema to enforce consistency; until then, please copy the file and fill out all of the fields without changing the keys.  Also listed is the specific system the config was developed and tested on, as well as the known systems with the same hardware so that the users of those systems can find this system specification.
+1. ``system_id.yaml`` describes the system hardware, including the integrator (and the name of the product node or cluster type), the processor, (optionally) the accelerator, and the network; the information included here is what you will typically see recorded about the system on Top500.org.  We intend to make the system definitions in Benchpark searchable, and will add a schema to enforce consistency; until then, please copy the file and fill out all of the fields without changing the keys.  Also listed is the specific system the config was developed and tested on, as well as the known systems with the same hardware so that the users of those systems can find this system specification.
 
 .. code-block:: yaml
 
@@ -154,15 +110,11 @@ file
       # batch_queue: "pbatch"
       # batch_bank: "guest"
 
-If defining a specific system, one can be more specific with available software versions
-and packages, as demonstrated in :doc:`add-a-site-specific-system-config`.
 
-
-
-TODO: New System Steps:
+Example: Creating a New System:
 ------------------------
 
-We provide an example of editing the generic_x86 system configurations. 
+We provide an example of creating a new system, based on the generic_x86 system configurations. 
 
 The main driver for configuring a system is done by defining a subclass for that system in a ``var/sys_repo/{SYSTEM}/system.py`` file, which inherits from the System base class defined in ``/lib/benchpark/system.py``.
 
@@ -173,9 +125,9 @@ TODO: Examples of making these changes...
 Once the system subclass is written with proper configurations run: 
 ``./benchpark system init --dest </path/to/destination/folder> x86_64``
 
-This will generate the required yaml configurations for your system and you can move on to experiments.
+This will generate the required yaml configurations for your system and you now validate it works with a static experiment test.
 
-Validate the System
+Validating the System
 ------------------------
 
 dryrun dynamic system static experiment
