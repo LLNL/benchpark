@@ -12,10 +12,8 @@ System specifications include details like
 - How many CPUs are there per node on the system
 - What pre-installed MPI/GPU libraries are available
 
-A system description is a set of YAML files collected into a directory.
-You can generate these files directly, but Benchpark also provides an API
-where you can represent systems as objects and customize their description
-with command line arguments.
+A system description is a set of YAML files collected into a directory. Benchpark provides an API
+where you can represent systems as objects and customize their description with command line arguments.
 
 Using System API to Generate a System Description
 -------------------------------------------------
