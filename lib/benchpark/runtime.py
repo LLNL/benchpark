@@ -1,10 +1,13 @@
-from contextlib import contextmanager
 import os
 import pathlib
 import shlex
 import subprocess
 import sys
+from contextlib import contextmanager
+
 import yaml
+
+import benchpark.paths
 
 DEBUG = False
 
@@ -29,11 +32,6 @@ def git_clone_commit(url, commit, destination):
 
     with working_dir(destination):
         run_command(f"git checkout {commit}")
-
-
-def benchpark_root():
-    this_module_path = pathlib.Path(os.path.abspath(__file__))
-    return this_module_path.parents[2]
 
 
 def run_command(command_str, env=None):
@@ -66,7 +64,7 @@ class Command:
 
 class RuntimeResources:
     def __init__(self, dest):
-        self.root = benchpark_root()
+        self.root = benchpark.paths.benchpark_root
         self.dest = pathlib.Path(dest)
 
         checkout_versions_location = self.root / "checkout-versions.yaml"
