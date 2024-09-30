@@ -168,14 +168,14 @@ def do_list(args, extra_args):
     if args.list == "list":
         files = set(tests.keys())
         color_files = [colorize("B", file) for file in sorted(files)]
-        colify(color_files)
+        colify.colify(color_files)
 
     elif args.list == "long":
         for prefix, functions in sorted(tests.items()):
             path = colorize("*B", prefix) + "::"
             functions = [colorize("c", f) for f in sorted(functions)]
             color.cprint(path)
-            colify(functions, indent=4)
+            colify.colify(functions, indent=4)
             print()
 
     else:  # args.list == "names"
@@ -184,7 +184,7 @@ def do_list(args, extra_args):
             for prefix, functions in sorted(tests.items())
             for f in sorted(functions)
         ]
-        colify(all_functions)
+        colify.colify(all_functions)
 
 
 def add_back_pytest_args(args, unknown_args):
