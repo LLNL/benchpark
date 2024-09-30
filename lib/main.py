@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import argparse
+import inspect
 import os
 import pathlib
 import shlex
@@ -14,6 +15,7 @@ import yaml
 import benchpark.cmd.system
 import benchpark.cmd.experiment
 import benchpark.cmd.setup
+import benchpark.cmd.unit_test
 from benchpark.accounting import (
     benchpark_experiments,
     benchpark_modifiers,
@@ -40,7 +42,7 @@ def main():
     benchpark_tags(subparsers, actions)
     init_commands(subparsers, actions)
 
-    args = parser.parse_args()
+    args, unknown_args = parser.parse_known_args()
     no_args = True if len(sys.argv) == 1 else False
 
     if no_args:
@@ -52,12 +54,33 @@ def main():
         return 0
 
     if args.subcommand in actions:
-        actions[args.subcommand](args)
+        action = actions[args.subcommand]
+        if supports_unknown_args(action):
+            action(args, unknown_args)
+        elif unknown_args:
+            raise UnknownArgumentError(
+                f"benchpark {args.subcommand} has no option(s) {unknown_args}"
+            )
+        else:
+            action(args)
     else:
         print(
             "Invalid subcommand ({args.subcommand}) - must choose one of: "
             + " ".join(actions.keys())
         )
+
+
+def supports_unknown_args(command):
+    """Implements really simple argument injection for unknown arguments.
+
+    Commands may add an optional argument called "unknown args" to
+    indicate they can handle unknonwn args, and we'll pass the unknown
+    args in.
+    """
+    info = dict(inspect.getmembers(command))
+    varnames = info["__code__"].co_varnames
+    argcount = info["__code__"].co_argcount
+    return argcount == 2 and varnames[1] == "unknown_args"
 
 
 def get_version():
@@ -181,9 +204,15 @@ def init_commands(subparsers, actions_dict):
     )
     benchpark.cmd.setup.setup_parser(setup_parser)
 
+    unit_test_parser = subparsers.add_parser(
+        "unit-test", help="Run benchpark unit tests"
+    )
+    benchpark.cmd.unit_test.setup_parser(unit_test_parser)
+
     actions_dict["system"] = benchpark.cmd.system.command
     actions_dict["experiment"] = benchpark.cmd.experiment.command
     actions_dict["setup"] = benchpark.cmd.setup.command
+    actions_dict["unit-test"] = benchpark.cmd.unit_test.command
 
 
 def run_command(command_str, env=None):

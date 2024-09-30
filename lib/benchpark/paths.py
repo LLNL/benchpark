@@ -14,3 +14,6 @@ global_spack_path = benchpark_home / "spack"
 def source_location():
     the_directory_with_this_file = os.path.dirname(os.path.abspath(__file__))
     return pathlib.Path(the_directory_with_this_file).parent.parent
+
+
+benchpark_root = source_location()
