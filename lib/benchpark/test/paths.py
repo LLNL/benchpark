@@ -3,7 +3,11 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+import pathlib
+
 import benchpark.paths
 
-def test_source_location():
-    assert str(benchpark.paths.source_location()).endswith("benchpark")
+
+def test_bechpark_root(pytestconfig):
+    expected_path = pathlib.Path(pytestconfig.inipath).resolve().parent
+    assert benchpark.paths.benchpark_root == expected_path
