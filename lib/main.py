@@ -16,12 +16,13 @@ import benchpark.cmd.system
 import benchpark.cmd.experiment
 import benchpark.cmd.setup
 import benchpark.cmd.unit_test
+import benchpark.paths
 from benchpark.accounting import (
     benchpark_experiments,
     benchpark_modifiers,
     benchpark_systems,
 )
-from benchpark.paths import source_location
+
 
 __version__ = "0.1.0"
 
@@ -97,7 +98,7 @@ def benchpark_list(subparsers, actions_dict):
 
 
 def benchpark_benchmarks():
-    source_dir = source_location()
+    source_dir = benchpark.paths.benchpark_root
     benchmarks = []
     experiments_dir = source_dir / "experiments"
     for x in os.listdir(experiments_dir):
@@ -106,7 +107,7 @@ def benchpark_benchmarks():
 
 
 def benchpark_get_tags():
-    f = source_location() / "tags.yaml"
+    f = benchpark.paths.benchpark_root / "tags.yaml"
     tags = []
 
     with open(f, "r") as stream:
