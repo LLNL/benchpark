@@ -12,7 +12,7 @@ import sys
 
 
 def main():
-    basedir = pathlib.Path(__file__).resolve().parents[2]
+    basedir = pathlib.Path(__file__).resolve().parents[1]
     main_py = basedir / "lib" / "main.py"
     subprocess.run([sys.executable, main_py] + sys.argv[1:], check=True)
 
