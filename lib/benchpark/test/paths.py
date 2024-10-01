@@ -8,6 +8,6 @@ import pathlib
 import benchpark.paths
 
 
-def test_bechpark_root(pytestconfig):
+def test_benchpark_root(pytestconfig):
     expected_path = pathlib.Path(pytestconfig.inipath).resolve().parent
     assert benchpark.paths.benchpark_root == expected_path

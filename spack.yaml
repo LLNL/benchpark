@@ -7,6 +7,7 @@ spack:
   specs:
   - py-pyyaml
   - py-pytest
+  - py-codespell
   view: true
   concretizer:
     unify: true
