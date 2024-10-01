@@ -43,7 +43,9 @@ class Saxpy(Experiment):
 
         if self.spec.satisfies("programming_model=openmp"):
             experiment_id = "saxpy_{n}_{n_nodes}_{omp_num_threads}"
-        elif self.spec.satisfies("programming_model=cuda") or self.spec.satisfies("programming_model=rocm"):
+        elif self.spec.satisfies("programming_model=cuda") or self.spec.satisfies(
+            "programming_model=rocm"
+        ):
             experiment_id = "saxpy_{n}"
 
         return {
