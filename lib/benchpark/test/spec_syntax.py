@@ -3,7 +3,6 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-# import itertools
 import pytest
 
 from benchpark.spec import (
