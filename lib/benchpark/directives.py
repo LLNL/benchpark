@@ -1,6 +1,10 @@
 # Copyright 2023 Lawrence Livermore National Security, LLC and other
 # Benchpark Project Developers. See the top-level COPYRIGHT file for details.
 #
+# Copyright 2022-2024 The Ramble Authors
+#
+# Copyright 2013-2024 Spack Project Developers
+#
 # SPDX-License-Identifier: Apache-2.0
 
 import collections.abc
