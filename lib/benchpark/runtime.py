@@ -9,7 +9,6 @@ import pathlib
 import shlex
 import subprocess
 import sys
-from contextlib import contextmanager
 
 import yaml
 
