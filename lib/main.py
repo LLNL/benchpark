@@ -61,7 +61,7 @@ def main():
         if supports_unknown_args(action):
             action(args, unknown_args)
         elif unknown_args:
-            raise ArgumentTypeError(
+            raise argparse.ArgumentTypeError(
                 f"benchpark {args.subcommand} has no option(s) {unknown_args}"
             )
         else:
