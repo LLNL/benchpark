@@ -35,7 +35,7 @@ Benchpark Modifiers
 In Benchpark, a ``modifier`` follows the `Ramble Modifier
 <https://googlecloudplatform.github.io/ramble/tutorials/10_using_modifiers.html#modifiers>`_
 and is an abstract object that can be applied to a large set of reproducible
-specifications. Modifiers are intended to encasulate reusable patterns that
+specifications. Modifiers are intended to encapsulate reusable patterns that
 perform a specific configuration of an experiment. This may include injecting
 performance analysis or setting up system resources.
 
@@ -93,24 +93,25 @@ The modifier checks the resources requested by the experiment,
 computes the values for the unspecified variables, and
 checks that the request does not exceed the resources available on the system.
 
-To use the resource allocation modifier with your experiment,
-add the following in your ramble.yaml::
+The resource allocation modifier is used by default in your experiment. However, 
+it will only calculate values if you have not specified them yourself. 
 
-  ramble:
-    include:
-      - ...
-      - ./configs/modifier.yaml
-    config:
-      ...
-    modifiers:
-    - name: allocation
-    applications:
-      ...
-    software:
-      ...
-    environments:
-      - ...
-      - '{modifier_package_name}'
+If you do not specify values, it will assign the default values as listed below.
+
+.. list-table:: Default Values For the Allocation Modifier
+   :widths: 20 80
+   :header-rows: 1
+
+   * - Variable
+     - Default Value
+   * - n_nodes
+     - (n_ranks / sys_cores_per_node) OR (n_gpus / sys_gpus_per_node) whichever is greater
+   * - n_ranks
+     - (n_nodes * n_ranks_per_node) OR (n_gpus)
+   * - n_gpus
+     - 0 
+   * - n_threads_per_proc
+     - 1 
 
 
 Profiling with Caliper Modifier
