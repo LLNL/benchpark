@@ -21,7 +21,11 @@ or ``openmp`` for an AMG2023 experiment using OpenMP (on a CPU).
 These files, in conjunction with the system configuration files and package/application repositories,
 are used to generate a set of concrete Ramble experiments for the target system and programming model.
 
-An experiment is initialized with TODO: ``benchpark experiment init...``
+An experiment is initialized with the following command, as well as any additional variants that have been defined in your experiment.py passed in as key-value pairs: 
+``./bin/benchpark experiment init --dest {path/to/dest} experiment={experiment_variant} programming_model={prog_model_variant}``
+
+For example, to run the AMG2023 strong scaling experiment for problem 1, using CUDA the command would be:
+``./bin/benchpark experiment init --dest amg2023 programming_model=cuda workload=problem1 experiment=strong``
 
 Initializing an experiment generates the following yaml files:
 
