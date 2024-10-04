@@ -110,6 +110,17 @@ jobs:
             --disable-logger \
             workspace setup --dry-run
 
+      - name: Dry run dynamic amg2023-openmp on Dane with allocation modifier
+        run: |
+          ./bin/benchpark experiment init --dest=amg2023-openmp amg2023 programming_model=openmp
+          ./bin/benchpark setup ./amg2023-openmp LLNL-Dane-DELL-sapphirerapids-OmniPath workspace/
+          . workspace/setup.sh
+          ramble \
+            --workspace-dir workspace/amg2023-openmp/LLNL-Dane-DELL-sapphirerapids-OmniPath/workspace \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace setup --dry-run
+
       - name: Dry run amg2023/cuda on Sierra with allocation modifier
         run: |
           ./bin/benchpark setup amg2023/cuda LLNL-Sierra-IBM-power9-V100-Infiniband workspace/
