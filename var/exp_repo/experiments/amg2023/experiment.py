@@ -23,35 +23,6 @@ class Amg2023(Experiment):
         description="type of experiment",
     )
 
-    # variant(
-    #     "caliper",
-    #     default="none",
-    #     values=(
-    #         "none",
-    #         "time",
-    #         "mpi",
-    #         "cuda",
-    #         "topdown-counters-all",
-    #         "topdown-counters-toplevel",
-    #         "topdown-all",
-    #         "topdown-toplevel",
-    #     ),
-    #     multi=True,
-    #     description="caliper mode",
-    # )
-
-    # TODO: Support list of 3-tuples
-    # variant(
-    #     "p",
-    #     description="value of p",
-    # )
-
-    # TODO: Support list of 3-tuples
-    # variant(
-    #     "n",
-    #     description="value of n",
-    # )
-
     def make_experiment_example(self):
         app_name = self.spec.name
 
@@ -130,16 +101,6 @@ class Amg2023(Experiment):
             }
         }
 
-    # def compute_modifiers_section(self):
-    #     modifier_list = super(Amg2023, self).compute_modifiers_section()
-    #     if not self.spec.satisfies("caliper=none"):
-    #         for var in list(self.spec.variants["caliper"]):
-    #             caliper_modifier_modes = {}
-    #             caliper_modifier_modes["name"] = "caliper"
-    #             caliper_modifier_modes["mode"] = var
-    #             modifier_list.append(caliper_modifier_modes)
-    #     return modifier_list
-
     def compute_applications_section(self):
         if self.spec.satisfies("workload=problem1"):
             self.workload = "problem1"
@@ -209,38 +170,6 @@ class Amg2023(Experiment):
             "pkg_spec": f"amg2023@{app_version} +mpi",
             "compiler": system_specs["compiler"],
         }
-
-        # if not self.spec.satisfies("caliper=none"):
-        #     package_specs["caliper"] = {
-        #         "pkg_spec": f"caliper@{caliper_version}+adiak+mpi~libunwind~libdw",
-        #         "compiler": system_specs["compiler"],
-        #     }
-        #     package_specs["hypre"]["pkg_spec"] += "+caliper"
-        #     package_specs[app_name]["pkg_spec"] += "+caliper"
-        #     if any("topdown" in var for var in self.spec.variants["caliper"]):
-        #         papi_support = True  # check if target system supports papi
-        #         if papi_support:
-        #             package_specs["caliper"]["pkg_spec"] += "+papi"
-        #         else:
-        #             raise NotImplementedError(
-        #                 "Target system does not support the papi interface"
-        #             )
-        #     elif self.spec.satisfies("caliper=cuda"):
-        #         cuda_support = (
-        #             self.spec.satisfies("caliper=cuda") and True
-        #         )  # check if target system supports cuda
-        #         if cuda_support:
-        #             package_specs["caliper"][
-        #                 "pkg_spec"
-        #             ] += "~papi+cuda cuda_arch={}".format(system_specs["cuda_arch"])
-        #         else:
-        #             raise NotImplementedError(
-        #                 "Target system does not support the cuda interface"
-        #             )
-        #     elif self.spec.satisfies("caliper=time") or self.spec.satisfies(
-        #         "caliper=mpi"
-        #     ):
-        #         package_specs["caliper"]["pkg_spec"] += "~papi"
 
         if self.spec.satisfies("programming_model=openmp"):
             package_specs["hypre"]["pkg_spec"] += "+openmp"
