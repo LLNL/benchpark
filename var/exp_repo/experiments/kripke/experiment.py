@@ -1,9 +1,9 @@
 from benchpark.directives import variant
 from benchpark.experiment import Experiment
-from benchpark.expr.builtin.scaling import Scaling
+from benchpark.expr.builtin.scalingexperiment import ScalingExperiment
 
 
-class Kripke(Scaling, Experiment):
+class Kripke(ScalingExperiment, Experiment):
     variant(
         "programming_model",
         default="openmp",
@@ -22,45 +22,34 @@ class Kripke(Scaling, Experiment):
         n_ranks = "{npx} * {npy} * {npz}"
         n_threads_per_proc = 1
 
-        # Number of zones in each dimension, per process
-        initial_nzx = 64
-        initial_nzy = 64
-        initial_nzz = 32
-
         # Number of processes in each dimension
-        initial_npx = 2
-        initial_npy = 2
-        initial_npz = 1
+        initial_np = [2, 2, 1]
+
+        # Number of zones in each dimension, per process
+        initial_nz = [64, 64, 32]
 
         if self.spec.satisfies("scaling=single-node"):
-            nzx = initial_nzx
-            nzy = initial_nzy
-            nzz = initial_nzz
+            npx = initial_np[0]
+            npy = initial_np[1]
+            npz = initial_np[2]
 
-            npx = initial_npx
-            npy = initial_npy
-            npz = initial_npz
+            nzx = initial_nz[0]
+            nzy = initial_nz[1]
+            nzz = initial_nz[2]
+        else:
+            input_params = {}
+            if self.spec.satisfies("scaling=strong") or self.spec.satisfies("scaling=weak"):
+                input_params["np"] = initial_np
+            if self.spec.satisfies("scaling=weak"):
+                input_params["nz"] = initial_nz
+            scaled_params = self.scale_experiment_variables(input_params, "np")
+            npx = scaled_params["np"][0]
+            npy = scaled_params["np"][1]
+            npz = scaled_params["np"][2]
 
-        if self.spec.satisfies("scaling=strong"):
-            nzx = initial_nzx
-            nzy = initial_nzy
-            nzz = initial_nzz
-
-            # Number of processes in each dimension
-            np_list = self.generate_strong_scaling_parameters([initial_npx, initial_npy, initial_npz])
-            npx = np_list[0]
-            npy = np_list[1]
-            npz = np_list[2]
-        if self.spec.satisfies("scaling=weak"):
-            np_list, nz_list = self.generate_weak_scaling_parameters([initial_npx, initial_npy, initial_npz],
-               [initial_nzx, initial_nzy, initial_nzz])
-            npx = np_list[0]
-            npy = np_list[1]
-            npz = np_list[2]
-
-            nzx = nz_list[0]
-            nzy = nz_list[1]
-            nzz = nz_list[2]
+            nzx = scaled_params["nz"][0]
+            nzy = scaled_params["nz"][1]
+            nzz = scaled_params["nz"][2]
 
         variables = {
             "experiment_setup": "",
