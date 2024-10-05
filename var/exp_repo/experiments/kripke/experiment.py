@@ -33,12 +33,15 @@ class Kripke(ScalingExperiment, Experiment):
             variables["arch"] = "OpenMP"
             variables["n_ranks"] = num_procs
             variables["n_threads_per_proc"] = 1
+            n_resources = "{n_ranks}_{n_threads_per_proc}"
         elif self.spec.satisfies("programming_model=cuda"):
             variables["arch"] = "CUDA"
             variables["n_gpus"] = num_procs
+            n_resources = "{n_gpus}"
         elif self.spec.satisfies("programming_model=rocm"):
             variables["arch"] = "HIP"
             variables["n_gpus"] = num_procs
+            n_resources = "{n_gpus}"
 
         variables |= {
             "ngroups": 64,
@@ -77,8 +80,7 @@ class Kripke(ScalingExperiment, Experiment):
                 int(self.spec.variants["scaling-iterations"][0]),
             )
 
-        experiment_name_template = f"kripke_{self.spec.variants['programming_model'][0]}_{self.spec.variants['scaling'][0]}"
-        experiment_name_template += "_{n_nodes}_{n_ranks}_{n_threads_per_proc}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}"
+        experiment_name_template = f"kripke_{self.spec.variants['programming_model'][0]}_{self.spec.variants['scaling'][0]}_{{n_nodes}}_{n_resources}_{{ngroups}}_{{gs}}_{{nquad}}_{{ds}}_{{lorder}}_{{nzx}}_{{nzy}}_{{nzz}}_{{npx}}_{{npy}}_{{npz}}"
 
         return {
             "kripke": {
