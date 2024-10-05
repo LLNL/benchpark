@@ -40,23 +40,23 @@ class Amg2023(Scaling, Experiment):
         app_name = self.spec.name
         variables = {}
 
-        #TODO: Use variant for px, py, pz
+        # TODO: Use variant for px, py, pz
         p = 2
         p_list = self.generate_strong_scaling_parameters([p,p,p])
         variables["px"] = p_list[0]
         variables["py"] = p_list[1]
         variables["pz"] = p_list[2]
 
-        #TODO: Use variant for nx, ny, nz
+        # TODO: Use variant for nx, ny, nz
         n = 10
         variables["nx"] = n
         variables["ny"] = n
         variables["nz"] = n
 
-        #TODO: Use allocation modifier here???
+        # TODO: Use allocation modifier here???
         if self.spec.satisfies("programming_model=openmp"):
             variables["n_ranks"] = "{px}*{py}*{pz}"
-            variables["n_threads_per_proc"] = '1'
+            variables["n_threads_per_proc"] = "1"
             exp_name = f"{app_name}_openmp_strong_{self.workload}_{{n_nodes}}_{{n_ranks}}_{{n_threads_per_proc}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
         elif self.spec.satisfies("programming_model=cuda"):
             variables["n_gpus"] = "{px}*{py}*{pz}"
@@ -88,13 +88,13 @@ class Amg2023(Scaling, Experiment):
         app_name = self.spec.name
         variables = {}
 
-        #TODO: Use variant for px, py, pz
+        # TODO: Use variant for px, py, pz
         p = 2
 
-        #TODO: Use variant for nx, ny, nz
+        # TODO: Use variant for nx, ny, nz
         n = 10
 
-        p_list, n_list = self.generate_weak_scaling_parameters([p,p,p], [n,n,n])
+        p_list, n_list = self.generate_weak_scaling_parameters([p, p, p], [n, n, n])
         variables["px"] = p_list[0]
         variables["py"] = p_list[1]
         variables["pz"] = p_list[2]
@@ -103,10 +103,10 @@ class Amg2023(Scaling, Experiment):
         variables["ny"] = n_list[1]
         variables["nz"] = n_list[2]
 
-        #TODO: Use allocation modifier here???
+        # TODO: Use allocation modifier here???
         if self.spec.satisfies("programming_model=openmp"):
             variables["n_ranks"] = "{px}*{py}*{pz}"
-            variables["n_threads_per_proc"] = '1'
+            variables["n_threads_per_proc"] = "1"
             exp_name = f"{app_name}_openmp_weak_{self.workload}_{{n_nodes}}_{{n_ranks}}_{{n_threads_per_proc}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
         elif self.spec.satisfies("programming_model=cuda"):
             variables["n_gpus"] = "{px}*{py}*{pz}"

@@ -24,7 +24,7 @@ class ScalingExperiment(object):
     # the number of dimensions in an (ascending) round-robin order
     #
     # output:
-    # scaling_order: list[int]. list of num_exprs values, one for each dimension, 
+    # scaling_order: list[int]. list of num_exprs values, one for each dimension,
     # starting with the minimum value of the first element in input_variables arranged
     # in an ascending round-robin order
     def configure_scaling_policy(self, input_variables):
@@ -71,9 +71,7 @@ class ScalingExperiment(object):
         for k, v in input_variables.items():
             if isinstance(k, str):
                 if not isinstance(v, int):
-                    raise RuntimeError(
-                        "Invalid key-value pair. Expected type str->int"
-                    )
+                    raise RuntimeError("Invalid key-value pair. Expected type str->int")
             elif isinstance(k, tuple) and all(isinstance(s, str) for s in k):
                 if isinstance(v, list) and all(isinstance(i, int) for i in v):
                     if len(k) != len(v):
@@ -92,24 +90,29 @@ class ScalingExperiment(object):
                         "Invalid key-value pair. Expected type tuple(str)->list[int]"
                     )
             else:
-                raise RuntimeError(
-                    "Invalid key. Expected type str or tuple(str)"
-                )
+                raise RuntimeError("Invalid key. Expected type str or tuple(str)")
 
         # compute the scaling order based on the ordering_param
         scaling_order_index = self.configure_scaling_policy(input_variables)
 
         scaled_variables = {}
         for key, val in input_variables.items():
-            scaled_variables[key] = [[v] for v in val] if isinstance(val, list) else [[val]] 
+            scaled_variables[key] = (
+                [[v] for v in val] if isinstance(val, list) else [[val]]
+            )
 
         for exp_num in range(num_exprs - 1):
             for param in scaled_variables.values():
                 if len(param) == 1:
-                    param[0].append(param[0][-1]*scaling_factor)
+                    param[0].append(param[0][-1] * scaling_factor)
                 else:
                     for p_idx, p_val in enumerate(param):
-                        p_val.append(p_val[-1]*scaling_factor if p_idx == scaling_order_index[exp_num%len(scaling_order_index)] else p_val[-1])
+                        p_val.append(
+                            p_val[-1] * scaling_factor
+                            if p_idx
+                            == scaling_order_index[exp_num % len(scaling_order_index)]
+                            else p_val[-1]
+                        )
 
         output_variables = {}
         for k, v in scaled_variables.items():

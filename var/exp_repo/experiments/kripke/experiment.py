@@ -71,7 +71,11 @@ class Kripke(ScalingExperiment, Experiment):
             if self.spec.satisfies("scaling=weak"):
                 input_params[(npx, npy, npz)] = initial_np
                 input_params[(nzx, nzy, nzz)] = initial_nz
-            variables |= self.scale_experiment_variables(input_params, int(self.spec.variants['scaling-factor'][0]), int(self.spec.variants['scaling-iterations'][0]))
+            variables |= self.scale_experiment_variables(
+                input_params,
+                int(self.spec.variants["scaling-factor"][0]),
+                int(self.spec.variants["scaling-iterations"][0]),
+            )
 
         experiment_name_template = f"kripke_{self.spec.variants['programming_model'][0]}_{self.spec.variants['scaling'][0]}"
         experiment_name_template += "_{n_nodes}_{n_ranks}_{n_threads_per_proc}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}"
