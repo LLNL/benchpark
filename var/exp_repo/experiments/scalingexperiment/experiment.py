@@ -122,4 +122,3 @@ class ScalingExperiment(object):
             else:
                 output_variables[k] = v[0] if len(v[0]) > 1 else v[0][0]
         return output_variables
-
