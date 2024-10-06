@@ -99,18 +99,28 @@ class Amg2023(ScalingExperiment, Experiment):
             variables[ny] = initial_n
             variables[nz] = initial_n
             zips_size = "size"
-            experiment_setup["zips"] = {f"{zips_size}" : [nx, ny, nz]}
+            experiment_setup["zips"] = {f"{zips_size}": [nx, ny, nz]}
 
             if self.spec.satisfies("programming_model=openmp"):
-                experiment_setup["matrices"] = [{"size_nodes_threads": [f"{zips_size}", "n_nodes", "n_threads_per_proc"]}]
+                experiment_setup["matrices"] = [
+                    {
+                        "size_nodes_threads": [
+                            f"{zips_size}",
+                            "n_nodes",
+                            "n_threads_per_proc",
+                        ]
+                    }
+                ]
             elif self.spec.satisfies("programming_model=cuda") or self.spec.satisfies(
                 "programming_model=rocm"
             ):
                 experiment_setup["matrix"] = [f"{zips_size}"]
             if self.spec.satisfies("programming_model=openmp"):
-                experiment_setup["exclude"] = {"where" : [
-                    "{n_threads_per_proc} * {n_ranks} > {n_nodes} * {sys_cores_per_node}"
-                ]}
+                experiment_setup["exclude"] = {
+                    "where": [
+                        "{n_threads_per_proc} * {n_ranks} > {n_nodes} * {sys_cores_per_node}"
+                    ]
+                }
         else:
             input_params = {}
             if self.spec.satisfies("experiment=throughput"):
