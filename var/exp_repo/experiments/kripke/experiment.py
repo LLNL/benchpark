@@ -80,7 +80,7 @@ class Kripke(ScalingExperiment, Experiment):
                 int(self.spec.variants["scaling-iterations"][0]),
             )
 
-        experiment_name_template = f"kripke_{self.spec.variants['programming_model'][0]}_{self.spec.variants['scaling'][0]}_{{n_nodes}}_{n_resources}_{{ngroups}}_{{gs}}_{{nquad}}_{{ds}}_{{lorder}}_{{nzx}}_{{nzy}}_{{nzz}}_{{npx}}_{{npy}}_{{npz}}"
+        experiment_name_template = f"kripke_{self.spec.variants['programming_model'][0]}_{self.spec.variants['scaling'][0]}_{{n_nodes}}_{n_resources}_{{ngroups}}_{{gs}}_{{nquad}}_{{ds}}_{{lorder}}_{{{nzx}}}_{{{nzy}}}_{{{nzz}}}_{{{npx}}}_{{{npy}}}_{{{npz}}}"
 
         return {
             "kripke": {
