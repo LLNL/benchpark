@@ -5,10 +5,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-import sys
 import contextlib
-import pathlib
-
+import sys
 from enum import Enum
 
 import benchpark.paths
@@ -82,10 +80,6 @@ def override_ramble_hardcoded_globals():
     ramble.language.language_base.namespaces = _old[2]
 
 
-def _base_path():
-    return pathlib.Path(__file__).resolve().parents[2]
-
-
 # Experiments
 def _exprs():
     """Get the singleton RepoPath instance for Ramble.
@@ -94,7 +88,7 @@ def _exprs():
 
     TODO: consider not making this a singleton.
     """
-    experiments_repo = _base_path() / "var" / "exp_repo"
+    experiments_repo = benchpark.paths.benchpark_root / "var" / "exp_repo"
     return _add_repo(experiments_repo, ObjectTypes.experiments)
 
 
@@ -112,7 +106,7 @@ def _add_repo(repo_dir, obj_type):
 
 # Systems
 def _systems():
-    systems_repo = _base_path() / "var" / "sys_repo"
+    systems_repo = benchpark.paths.benchpark_root / "var" / "sys_repo"
     return _add_repo(systems_repo, ObjectTypes.systems)
 
 
