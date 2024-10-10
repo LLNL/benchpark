@@ -25,7 +25,7 @@ It is possible to overwrite the benchmark specifications provided in the Spack a
 see :doc:`FAQ-benchpark-repo` for details.
 
 
-Validate a Benchmark (Needed?)
+Validate a Benchmark 
 ------------------------
 
-Now that the benchmark has been created/updated/validated you need to configure at least one experiment, see :doc:`add-an-experiment`.
+Now that the benchmark has been created/updated you need to configure at least one experiment, and then validate it, see :doc:`add-an-experiment`.
