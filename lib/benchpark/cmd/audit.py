@@ -17,7 +17,7 @@ def setup_parser(subparser):
 
 
 def audit_experiment(exp_cls):
-    required_methods = ["compute_applications_section"]
+    required_methods = ["compute_applications_section", "compute_spack_section"]
 
     errors = list()
 
