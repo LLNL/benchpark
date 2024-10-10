@@ -128,6 +128,33 @@ This will generate the required yaml configurations for your system and you now 
 Validating the System
 ------------------------
 
-dryrun dynamic system static experiment
+To manually validate your new system, you should initialize it and run an existing experiment such as saxpy. For example::
+  
+  ./bin/benchpark system init --dest=test-new-system {SYSTEM}
+  ./bin/benchpark experiment init --dest=saxpy saxpy
+  ./bin/benchpark setup ./saxpy ./test-new-system workspace/
 
-Once the dryrun passes, the new system has been validated and you can continue your :doc:`3-benchpark-workflow`.
+Then you can run the commands provided by the output, the experiments should be built and run successfully without any errors. 
+
+If you are contributing the system to our code repository you must add a passing dryrun test to the ``.github/workflows/run.yml`` file before
+your pull request will be merged. 
+
+For example:
+TODO: Tioga Hash?
+
+.. code-block:: yaml
+
+  - name: Dry run dynamic saxpy on dynamic {SYSTEM}
+    run: |
+      ./bin/benchpark system init --dest=new-system {SYSTEM}
+      ./bin/benchpark experiment init --dest=saxpy-openmp saxpy
+      ./bin/benchpark setup ./saxpy ./new-system workspace/
+      . workspace/setup.sh
+      ramble \
+        --workspace-dir workspace/saxpy/Tioga-975af3c/workspace \
+        --disable-progress-bar \
+        --disable-logger \
+        workspace setup --dry-run
+
+
+Once you can run an experiment successfully, the new system has been validated and you can continue your :doc:`3-benchpark-workflow`.
