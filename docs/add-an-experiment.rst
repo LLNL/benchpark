@@ -161,9 +161,38 @@ is created which contains the collected performance metrics.
      - | - CUDA API functions (e.g., time.gpu)
 
      
-Validate the Experiment
+Validating the Benchmark/Experiment
 ------------------------
 
-To validate the new experiment run a dryrun with a static system.
+TODO update the validation steps
+
+To manually validate your benchmark experiments work, you should initialize an existing system, and run your experiments. For example:::
+
+  ./bin/benchpark system init --dest=x86 cts cluster=ruby
+  ./bin/benchpark experiment init --dest=test-new-benchmark {BENCHMARK}
+  ./bin/benchpark setup ./test-new-experiment ./x86 workspace/
+
+Then you can run the commands provided by the output, the experiments should be built and run successfully without any errors. 
+
+If you are contributing the benchmark and/or experiments to our code repository you must add a passing dryrun test to the ``.github/workflows/run.yml`` file before
+your pull request will be merged. All experiments should be tested per benchmark. 
+
+For example:
+TODO: Tioga Hash?
+
+.. code-block:: yaml
+
+  - name: Dry run dynamic new-experiment on dynamic x86
+    run: |
+      ./bin/benchpark system init --dest=x86 cts cluster=ruby
+      ./bin/benchpark experiment init --dest=new-benchmark {BENCHMARK}
+      ./bin/benchpark setup ./new-benchmark ./x86 workspace/
+      . workspace/setup.sh
+      ramble \
+        --workspace-dir workspace/new-benchmark/Tioga-975af3c/workspace \
+        --disable-progress-bar \
+        --disable-logger \
+        workspace setup --dry-run
+
 
 When the experiment passes the dryrun you are now ready to setup and run it, go to :doc:`4-benchpark-setup`.
