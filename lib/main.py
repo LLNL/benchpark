@@ -216,6 +216,7 @@ def init_commands(subparsers, actions_dict):
     audit_parser = subparsers.add_parser(
         "audit", help="Look for problems in System/Experiment repos"
     )
+    benchpark.cmd.audit.setup_parser(audit_parser)
 
     actions_dict["system"] = benchpark.cmd.system.command
     actions_dict["experiment"] = benchpark.cmd.experiment.command
