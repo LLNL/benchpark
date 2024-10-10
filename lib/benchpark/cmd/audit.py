@@ -22,7 +22,7 @@ def audit_experiment(exp_cls):
     errors = list()
 
     for method in required_methods:
-        if method  not in exp_cls.__dict__:
+        if method not in exp_cls.__dict__:
             errors.append(f"{exp_cls.__name__} does not implement {method}")
 
     return errors
