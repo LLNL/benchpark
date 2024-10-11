@@ -129,7 +129,7 @@ class Experiment(ExperimentSystemBase):
             scaling_variable = next(iter(input_variables))
 
         # check if scaling_variable is a valid key into the input_variables dictionary
-        if not scaling_variable in input_variables:
+        if scaling_variable not in input_variables:
             raise RuntimeError("Invalid ordering variable")
 
         # check if:
