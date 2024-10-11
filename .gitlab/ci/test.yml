@@ -1,0 +1,25 @@
+.test_clusters: &test_clusters
+  parallel:
+    matrix:
+      - HOST:
+          - tioga
+          - dane
+
+test_run:
+  stage: test
+  tags:
+    - $HOST
+    - shell
+  <<: *test_clusters
+  rules:
+    - changes:
+        - .gitlab-ci.yml
+        - .gitlab/ci/*
+        - experiments/**
+        - systems/**
+        - repo/**
+        - modifiers/**
+        - var/**
+        - lib/**
+  script:
+    - # execute benchparky things here
