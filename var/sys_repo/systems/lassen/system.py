@@ -41,6 +41,9 @@ class Lassen(System):
         with open(sw_description, "w") as f:
             f.write(self.sw_description())
 
+    def system_specific_variables(self):
+        return {"cuda_arch": "70"}
+
     def external_pkg_configs(self):
         externals = Lassen.resource_location / "externals"
 
