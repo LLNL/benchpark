@@ -11,7 +11,7 @@ from benchpark.directives import variant
 from benchpark.system import System
 
 
-class Lassen(System):
+class Sierra(System):
     variant(
         "cuda",
         default="11-8-0",
@@ -45,7 +45,7 @@ class Lassen(System):
         return {"cuda_arch": "70"}
 
     def external_pkg_configs(self):
-        externals = Lassen.resource_location / "externals"
+        externals = Sierra.resource_location / "externals"
 
         compiler = self.spec.variants["compiler"][0]
         cuda_ver = self.spec.variants["cuda"][0]
