@@ -14,6 +14,7 @@ import subprocess
 import sys
 import yaml
 
+import benchpark.cmd.audit
 import benchpark.cmd.system
 import benchpark.cmd.experiment
 import benchpark.cmd.setup
@@ -212,10 +213,16 @@ def init_commands(subparsers, actions_dict):
     )
     benchpark.cmd.unit_test.setup_parser(unit_test_parser)
 
+    audit_parser = subparsers.add_parser(
+        "audit", help="Look for problems in System/Experiment repos"
+    )
+    benchpark.cmd.audit.setup_parser(audit_parser)
+
     actions_dict["system"] = benchpark.cmd.system.command
     actions_dict["experiment"] = benchpark.cmd.experiment.command
     actions_dict["setup"] = benchpark.cmd.setup.command
     actions_dict["unit-test"] = benchpark.cmd.unit_test.command
+    actions_dict["audit"] = benchpark.cmd.audit.command
 
 
 def run_command(command_str, env=None):
