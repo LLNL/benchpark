@@ -62,7 +62,9 @@ def _path_for_system_class(sys_cls):
     if component:
         components.append(component)
     system_dirname = "-".join(x.lower() for x in components)
-    basedir = pathlib.Path(sys_repo.filename_for_object_name(sys_cls.__name__)).parent.parent
+    basedir = pathlib.Path(
+        sys_repo.filename_for_object_name(sys_cls.__name__)
+    ).parent.parent
     assert basedir.exists()
     return basedir / system_dirname
 
