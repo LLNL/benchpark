@@ -207,6 +207,18 @@ jobs:
             --disable-logger \
             workspace setup --dry-run
 
+      - name: Dry run dynamic saxpy/cuda with dynamic Sierra
+        run: |
+          ./bin/benchpark system init --dest=sierra-system sierra cuda=10-1-243 compiler=xl
+          ./bin/benchpark experiment init --dest=saxpy-cuda saxpy programming_model=cuda
+          ./bin/benchpark setup ./saxpy-cuda ./sierra-system workspace/
+          . workspace/setup.sh
+          ramble \
+            --workspace-dir workspace/saxpy-cuda/Sierra-bdc4915/workspace \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace setup --dry-run
+
       - name: Dry run laghos/mpi-only on LLNL-Magma-Penguin-icelake-OmniPath with allocation modifier
         run: |
           ./bin/benchpark setup laghos/mpi-only LLNL-Magma-Penguin-icelake-OmniPath workspace/
