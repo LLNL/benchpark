@@ -1,9 +1,8 @@
 from benchpark.directives import variant
 from benchpark.experiment import Experiment
-from benchpark.expr.builtin.scalingexperiment import ScalingExperiment
 
 
-class Amg2023(ScalingExperiment, Experiment):
+class Amg2023(Experiment):
     variant(
         "programming_model",
         default="openmp",
@@ -127,19 +126,23 @@ class Amg2023(ScalingExperiment, Experiment):
                 variables[px] = initial_p[0]
                 variables[py] = initial_p[1]
                 variables[pz] = initial_p[2]
-                input_params[(nx, ny, nz)] = initial_n
+                scaling_variable = (nx, ny, nz)
+                input_params[scaling_variable] = initial_n
             elif self.spec.satisfies("experiment=strong"):
-                input_params[(px, py, pz)] = initial_p
+                scaling_variable = (px, py, pz)
+                input_params[scaling_variable] = initial_p
                 variables[nx] = initial_n[0]
                 variables[ny] = initial_n[1]
                 variables[nz] = initial_n[2]
             elif self.spec.satisfies("experiment=weak"):
-                input_params[(px, py, pz)] = initial_p
+                scaling_variable = (px, py, pz)
+                input_params[scaling_variable] = initial_p
                 input_params[(nx, ny, nz)] = initial_n
             variables |= self.scale_experiment_variables(
                 input_params,
                 int(self.spec.variants["scaling-factor"][0]),
                 int(self.spec.variants["scaling-iterations"][0]),
+                scaling_variable,
             )
 
         experiment_setup["variables"] = variables

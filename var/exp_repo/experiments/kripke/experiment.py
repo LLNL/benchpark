@@ -1,9 +1,8 @@
 from benchpark.directives import variant
 from benchpark.experiment import Experiment
-from benchpark.expr.builtin.scalingexperiment import ScalingExperiment
 
 
-class Kripke(ScalingExperiment, Experiment):
+class Kripke(Experiment):
     variant(
         "programming_model",
         default="openmp",
@@ -67,17 +66,20 @@ class Kripke(ScalingExperiment, Experiment):
         else:
             input_params = {}
             if self.spec.satisfies("scaling=strong"):
-                input_params[(npx, npy, npz)] = initial_np
+                scaling_variable = (npx, npy, npz)
+                input_params[scaling_variable] = initial_np
                 variables[nzx] = initial_nz[0]
                 variables[nzy] = initial_nz[1]
                 variables[nzz] = initial_nz[2]
             if self.spec.satisfies("scaling=weak"):
-                input_params[(npx, npy, npz)] = initial_np
+                scaling_variable = (npx, npy, npz)
+                input_params[scaling_variable] = initial_np
                 input_params[(nzx, nzy, nzz)] = initial_nz
             variables |= self.scale_experiment_variables(
                 input_params,
                 int(self.spec.variants["scaling-factor"][0]),
                 int(self.spec.variants["scaling-iterations"][0]),
+                scaling_variable,
             )
 
         experiment_name_template = f"kripke_{self.spec.variants['programming_model'][0]}_{self.spec.variants['scaling'][0]}_{{n_nodes}}_{n_resources}_{{ngroups}}_{{gs}}_{{nquad}}_{{ds}}_{{lorder}}_{{{nzx}}}_{{{nzy}}}_{{{nzz}}}_{{{npx}}}_{{{npy}}}_{{{npz}}}"
