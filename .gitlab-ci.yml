@@ -1,0 +1,10 @@
+default:
+  id_tokens:
+    SITE_ID_TOKEN:
+      aud: https://lc.llnl.gov/gitlab
+
+include:
+  - local: '/.gitlab/ci/test.yml'
+
+stages:
+  - test
