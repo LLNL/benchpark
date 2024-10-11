@@ -10,6 +10,7 @@ import sys
 
 import benchpark.paths
 import benchpark.repo
+
 # import benchpark.system as system
 from benchpark.runtime import RuntimeResources
 
