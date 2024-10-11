@@ -117,7 +117,9 @@ class Experiment(ExperimentSystemBase):
     # output_variables: dict[str, int | list[int]]. num_exprs values for each
     # dimension of the input variable scaled by the scaling_factor according to the
     # scaling policy
-    def scale_experiment_variables(self, input_variables, scaling_factor, num_exprs, scaling_variable=None):
+    def scale_experiment_variables(
+        self, input_variables, scaling_factor, num_exprs, scaling_variable=None
+    ):
         # check if variable list is not empty
         if not input_variables:
             return {}
@@ -160,7 +162,9 @@ class Experiment(ExperimentSystemBase):
                 raise RuntimeError("Invalid key. Expected type str or tuple(str)")
 
         # compute the scaling order based on the scaling_variable
-        scaling_order_index = self.configure_scaling_policy(input_variables, scaling_variable)
+        scaling_order_index = self.configure_scaling_policy(
+            input_variables, scaling_variable
+        )
 
         scaled_variables = {}
         for key, val in input_variables.items():
