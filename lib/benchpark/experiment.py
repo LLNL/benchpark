@@ -73,6 +73,8 @@ class Experiment(ExperimentSystemBase):
     # if the value is a list, select the index of its smallest element, 0 otherwise
     # Beginning with this index, generate a list of indexes of length equal to
     # the number of dimensions in an (ascending) round-robin order
+    # 2. scaling_variable: variable of type str or tuple(str). The scaling order is determined by
+    # the value in input_variables corresponding to scaling_variable.
     #
     # output:
     # scaling_order: list[int]. list of indices, with one value for each dimension,
@@ -105,6 +107,12 @@ class Experiment(ExperimentSystemBase):
     #
     # 3. num_exprs: int. Number of experiments to be generated
     #
+    # 4. scaling_variable: variable of type str or tuple(str). The scaling order is determined by
+    # the value in input_variables corresponding to scaling_variable. If no scaling_variable is
+    # specified, the scaling order is defined using the first element in input_variables
+    #
+    # output:
+    # scaling_order: list[int]. list of indices, with one value for each dimension,
     # output:
     # output_variables: dict[str, int | list[int]]. num_exprs values for each
     # dimension of the input variable scaled by the scaling_factor according to the
