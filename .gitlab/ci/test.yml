@@ -23,8 +23,8 @@ test_run:
         - lib/**
   script:
     # Build Saxpy Workspace
-    - ./bin/benchpark setup saxpy/openmp nosite-x86_64 workspace/
     - which spack
+    - ./bin/benchpark setup saxpy/openmp LLNL-Dane-DELL-sapphirerapids-OmniPath workspace/
 #    # Setup Ramble & Spack
 #    - . workspace/setup.sh
 #    - spack mirror add ci-buildcache oci://ghcr.io/llnl/benchpark-binary-cache
