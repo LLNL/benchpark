@@ -22,4 +22,33 @@ test_run:
         - var/**
         - lib/**
   script:
-    - # execute benchparky things here
+    # Build Saxpy Workspace
+    - ./bin/benchpark setup saxpy/openmp nosite-x86_64 workspace/
+    - which spack
+#    # Setup Ramble & Spack
+#    - . workspace/setup.sh
+#    - spack mirror add ci-buildcache oci://ghcr.io/llnl/benchpark-binary-cache
+#    - spack config add "packages:all:target:[x86_64_v3]"
+#    - env | grep SPACK >> "$GITHUB_ENV"
+#    - env | grep RAMBLE >> "$GITHUB_ENV"
+#    - echo "PATH=$PATH" >> "$GITHUB_ENV"
+#    # Setup Saxpy Workspace
+#        working-directory: ./workspace/saxpy/openmp/nosite-x86_64/workspace/
+#    - ramble \
+#      --workspace-dir . \
+#      --disable-progress-bar \
+#      --disable-logger \
+#      -c config:spack_flags:install:'--no-check-signature' \
+#      workspace setup
+#
+#      - name: Run Saxpy Experiments
+#        working-directory: ./workspace/saxpy/openmp/nosite-x86_64/workspace/
+#        run: |
+#          ramble \
+#            --workspace-dir . \
+#            --disable-progress-bar \
+#            --disable-logger \
+#            on \
+#            --executor '{execute_experiment}' \
+#            --where '{n_nodes} == 1'
+
