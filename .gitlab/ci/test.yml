@@ -28,9 +28,9 @@ test_run:
     - . workspace/setup.sh
     - spack mirror add ci-buildcache oci://ghcr.io/llnl/benchpark-binary-cache
     - spack config add "packages:all:target:[x86_64_v3]"
-    - env | grep SPACK >> "$GITHUB_ENV"
-    - env | grep RAMBLE >> "$GITHUB_ENV"
-    - echo "PATH=$PATH" >> "$GITHUB_ENV"
+    #- env | grep SPACK >> "$GITHUB_ENV"
+    #- env | grep RAMBLE >> "$GITHUB_ENV"
+    #- echo "PATH=$PATH" >> "$GITHUB_ENV"
     # Setup Saxpy Workspace
     - cd ./workspace/saxpy/openmp/LLNL-Dane-DELL-sapphirerapids-OmniPath/workspace/
     - ramble --workspace-dir . --disable-progress-bar --disable-logger -c config:spack_flags:install:'--no-check-signature' workspace setup
