@@ -1,9 +1,10 @@
 .test_clusters: &test_clusters
   parallel:
     matrix:
-      - HOST:
-          - tioga
-          - dane
+      - HOST: tioga
+        ARCHCONFIG: LLNL-Tioga-HPECray-zen3-MI250X-Slingshot
+      - HOST: dane
+        ARCHCONFIG: LLNL-Dane-DELL-sapphirerapids-OmniPath
 
 test_run:
   stage: test
@@ -22,4 +23,13 @@ test_run:
         - var/**
         - lib/**
   script:
-    - # execute benchparky things here
+    - . /usr/workspace/benchpark-dev/benchpark-venv/$SYS_TYPE/bin/activate
+    # Build Saxpy Workspace
+    - ./bin/benchpark setup saxpy/openmp $ARCHCONFIG workspace/
+    # Setup Ramble & Spack
+    - . workspace/setup.sh
+    # Setup Saxpy Workspace
+    - cd ./workspace/saxpy/openmp/$ARCHCONFIG/workspace/
+    - ramble --workspace-dir . --disable-progress-bar --disable-logger workspace setup
+    # Run Saxpy Experiments
+    - ramble --workspace-dir . --disable-progress-bar --disable-logger on
