@@ -20,7 +20,7 @@ import ramble.language.language_base  # noqa
 import ramble.language.language_helpers  # noqa
 
 
-class Experiment(ExperimentSystemBase):
+class CudaExperiment(ExperimentSystemBase):
     """This is the superclass for all benchpark experiments.
 
     ***The Experiment class***
@@ -37,6 +37,10 @@ class Experiment(ExperimentSystemBase):
          essentially a collection of files defining an experiment in a
          Ramble workspace.
     """
+
+    variant("cuda", default=False, description="Build and run with CUDA")
+
+
 
     #
     # These are default values for instance variables.
@@ -71,8 +75,7 @@ class Experiment(ExperimentSystemBase):
     def compute_applications_section(self):
         # TODO: is there some reasonable default?
         variables = {}
-        variables["n_ranks"] = num_procs  # TODO: num_procs will be defined in the child...
-        n_resources = num_procs
+        variables["n_gpus"] = num_procs  # TODO: num_procs will be defined in the child...
 
         raise NotImplementedError(
             "Each experiment must implement compute_applications_section"
@@ -81,31 +84,30 @@ class Experiment(ExperimentSystemBase):
     def compute_spack_section(self):
         # TODO: is there some reasonable default based on known variable names?
         system_specs = {}
-        system_specs["compiler"] = "default-compiler"
-        system_specs["mpi"] = "default-mpi"
-        system_specs["lapack"] = "lapack"   #TODO: can we define this in lapack experiment?
+        system_specs["cuda_version"] = "{default_cuda_version}"
+        system_specs["cuda_arch"] = "{cuda_arch}"
+        system_specs["blas"] = "cublas-cuda"  #TODO: can we define this in Lapack/Blas CudaExperiment?
 
         package_specs = {}
-        package_specs[system_specs["mpi"]] = (
+        package_specs["cuda"] = {
+            "pkg_spec": "cuda@{}+allow-unsupported-compilers".format(
+                system_specs["cuda_version"]
+            ),
+        "compiler": system_specs["compiler"],
+        }
+
+        # TODO: can we define this in Lapack/Blas CudaExperiment?
+        package_specs[system_specs["blas"]] = (
             {}
         )  # empty package_specs value implies external package
 
-        # TODO: Can we define this in lapack/blas experiment?
-        package_specs[system_specs["lapack"]] = (
-            {}
-        )  # empty package_specs value implies external package
-
-        # TODO: is there a way to define hypre experiment, where this would live?
-        package_specs["hypre"] = {
-            "pkg_spec": f"hypre@{hypre_version} +mpi+mixedint~fortran",
-            "compiler": system_specs["compiler"],
-        }
-
-        # TODO: is there a way to generically do this?
-        package_specs[app_name] = {
-            "pkg_spec": f"{app_name}@{app_version} +mpi",
-            "compiler": system_specs["compiler"],
-        }
+        # TODO: can we define this in Hypre CudaExperiment?
+        package_specs["hypre"]["pkg_spec"] += "+cuda cuda_arch={}".format(
+            system_specs["cuda_arch"]
+        )
+        package_specs[app_name]["pkg_spec"] += "+cuda cuda_arch={}".format(
+            system_specs["cuda_arch"]
+        )
 
         raise NotImplementedError(
             "Each experiment must implement compute_spack_section"
