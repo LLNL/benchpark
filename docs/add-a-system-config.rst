@@ -125,11 +125,50 @@ Once the system subclass is written with proper configurations run:
 
 This will generate the required yaml configurations for your system and you now validate it works with a static experiment test.
 
+
+Adding Site Specific Configurations
+------------------------
+
+For a site-specific system, one can (optionally) add more information about the software installed on the system
+by adding Spack config files in ``benchpark/var/sys_repo/systems/SYSTEMNAME/externals/``or ``benchpark/var/sys_repo/systems/SYSTEMNAME/compilers/``. 
+
+- ``*-compilers.yaml`` defines the `compilers <https://spack.readthedocs.io/en/latest/getting_started.html#compiler-config>`_  installed on the system.
+- ``*-packages.yaml`` defines the pre-installed `packages <https://spack.readthedocs.io/en/latest/build_settings.html#package-settings-packages-yaml>`_   (e.g., system MPI) on the system.  One way to populate this list is to find available external packages: `spack external <https://spack.readthedocs.io/en/v0.21.0/command_index.html#spack-external>`_.
+
+These can be specified as variants and are then the proper configs are pulled into the system.py. Within the Cts ``system.py`` at (site-LLNL) the code is below.  ::
+  def external_pkg_configs(self):
+      externals = Cts.resource_location / "externals"
+
+      compiler = self.spec.variants["compiler"][0]
+
+      selections = [externals / "base" / "00-packages.yaml"]
+
+      if compiler == "gcc":
+          selections.append(externals / "mpi" / "00-gcc-packages.yaml")
+      elif compiler == "intel":
+          selections.append(externals / "mpi" / "01-intel-packages.yaml")
+
+      return selections
+
+  def compiler_configs(self):
+      compilers = Cts.resource_location / "compilers"
+
+      compiler = self.spec.variants["compiler"][0]
+
+      selections = []
+      if compiler == "gcc":
+          selections.append(compilers / "gcc" / "00-gcc-12-compilers.yaml")
+      elif compiler == "intel":
+          selections.append(compilers / "intel" / "00-intel-2021-6-0-compilers.yaml")
+
+      return selections
+
+
 Validating the System
 ------------------------
 
 To manually validate your new system, you should initialize it and run an existing experiment such as saxpy. For example::
-  
+
   ./bin/benchpark system init --dest=test-new-system {SYSTEM}
   ./bin/benchpark experiment init --dest=saxpy saxpy
   ./bin/benchpark setup ./saxpy ./test-new-system workspace/

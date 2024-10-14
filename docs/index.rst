@@ -40,7 +40,6 @@
 
    identifying-similar-system
    add-a-system-config
-   add-a-site-specific-system-config
    add-a-benchmark
    add-an-experiment
 
