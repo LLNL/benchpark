@@ -135,7 +135,9 @@ by adding Spack config files in ``benchpark/var/sys_repo/systems/SYSTEMNAME/exte
 - ``*-compilers.yaml`` defines the `compilers <https://spack.readthedocs.io/en/latest/getting_started.html#compiler-config>`_  installed on the system.
 - ``*-packages.yaml`` defines the pre-installed `packages <https://spack.readthedocs.io/en/latest/build_settings.html#package-settings-packages-yaml>`_   (e.g., system MPI) on the system.  One way to populate this list is to find available external packages: `spack external <https://spack.readthedocs.io/en/v0.21.0/command_index.html#spack-external>`_.
 
-These can be specified as variants and are then the proper configs are pulled into the system.py. Within the Cts ``system.py`` at (site-LLNL) the code is below.  ::
+These can be specified as variants and are then the proper configs are pulled into the system.py. Within the Cts ``system.py`` at (site-LLNL) the code is below.  
+
+.. code-block:: python
   def external_pkg_configs(self):
       externals = Cts.resource_location / "externals"
 
