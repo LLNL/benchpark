@@ -88,8 +88,7 @@ class Amg2023(Experiment):
                     "{n_threads_per_proc} * {n_ranks} > {n_nodes} * {sys_cores_per_node}"
                 ]
             }
-        elif self.spec.satisfies("programming_model=cuda") or 
-             self.spec.satisfies("programming_model=rocm"):
+        elif self.spec.satisfies("programming_model=cuda") or self.spec.satisfies("programming_model=rocm"):
             experiment_setup["matrix"] = [f"{zips_size}"]
     
         # TODO: Is there an order these code blocks need to be in?  
