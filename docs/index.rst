@@ -12,7 +12,7 @@
 
    1-getting-started
    2-benchpark-list
-   3-opt-edit-experiment
+   3-benchpark-workflow
    4-benchpark-setup
    5-build-experiment
    6-run-experiment
@@ -38,6 +38,7 @@
    :maxdepth: 1
    :caption: Contributing
 
+   identifying-similar-system
    add-a-system-config
    add-a-site-specific-system-config
    add-a-benchmark
