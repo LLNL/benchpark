@@ -22,7 +22,7 @@ To install this, you can use::
 
 The executable is in ``/bin``, to check the version you can run:: 
 
-    ./bin/benchpark --v
+    ./bin/benchpark --version
 
 Now you are ready to look at the benchmarks and systems available in Benchpark, 
 and determine your workflow as described in :doc:`2-benchpark-list`.
