@@ -7,4 +7,6 @@ include:
   - local: '/.gitlab/ci/test.yml'
 
 stages:
+  - status_initiate
   - test
+  - status_update
