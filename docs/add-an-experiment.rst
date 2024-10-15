@@ -12,16 +12,29 @@ as objects and customize their description with command line arguments.
 
 Experiment specifications are created with ``experiment.py`` files 
 (that inherit from the Experiment base class in ``/lib/benchpark/experiment.py``),
-each located in ``benchpark/var/exp_repo/experiments/${Benchmark1}``.
-
-Variants of the experiment can be added to utilize different *ProgrammingModels* used for on-node parallelization,
-e.g., ``benchpark/var/exp_repo/experiments/amg2023/experiment.py`` has variant ``programming_model``, which can be 
-set to ``cuda`` for an AMG2023 experiment using CUDA (on an NVIDIA GPU),
-or ``openmp`` for an AMG2023 experiment using OpenMP (on a CPU).
+each located in ``benchpark/var/exp_repo/experiments/${Benchmark1}``. 
 These files, in conjunction with the system configuration files and package/application repositories,
 are used to generate a set of concrete Ramble experiments for the target system and programming model.
 
-An experiment is initialized with the following command, as well as any additional variants that have been defined in your experiment.py passed in as key-value pairs: 
+Variants of the experiment can be added to utilize different *ProgrammingModels* used for on-node parallelization,
+e.g., ``benchpark/var/exp_repo/experiments/amg2023/experiment.py`` has variant ``programming_model``, which can be 
+set to ``cuda`` for an experiment using CUDA (on an NVIDIA GPU),
+or ``openmp`` for an experiment using OpenMP (on a CPU).
+An example of these variants defined in the saxpy experiment follow.::
+  class Saxpy(Experiment):
+    variant(
+        "programming_model",
+        default="openmp",
+        values=("openmp", "cuda", "rocm"),
+        description="on-node parallelism model",
+    )
+
+Multiple types of experiments can be created using variants as well (e.g., strong scaling, weak scaling). See AMG2023 or Kripke for examples.
+
+The second required portion of the experiment.py class is the ``compute_applications_section()`` function. This is where, based on logic for 
+the particular experiment and variants, the application variables are set.
+
+Once an experiment class has been written, an experiment is initialized with the following command, with any variants that have been defined in your experiment.py passed in as key-value pairs: 
 ``./bin/benchpark experiment init --dest {path/to/dest} experiment={experiment_variant} programming_model={prog_model_variant}``
 
 For example, to run the AMG2023 strong scaling experiment for problem 1, using CUDA the command would be:
