@@ -6,7 +6,7 @@
 from typing import Dict
 import yaml  # TODO: some way to ensure yaml available
 
-from benchpark.directives import ExperimentSystemBase
+from benchpark.directives import Experiment
 import benchpark.spec
 import benchpark.paths
 import benchpark.repo
@@ -20,23 +20,11 @@ import ramble.language.language_base  # noqa
 import ramble.language.language_helpers  # noqa
 
 
-class Experiment(ExperimentSystemBase):
-    """This is the superclass for all benchpark experiments.
-
-    ***The Experiment class***
-
-    Experiments are written in pure Python.
-
-    There are two main parts of a Benchpark experiment:
-
-      1. **The experiment class**.  Classes contain ``directives``, which are
-         special functions, that add metadata (variants) to packages (see
-         ``directives.py``).
-
-      2. **Experiment instances**. Once instantiated, an experiment is
-         essentially a collection of files defining an experiment in a
-         Ramble workspace.
+class CudaExperiment(Experiment):
+    """Auxiliary class which contains CUDA variant, dependencies and conflicts                                                         
+    and is meant to unify and facilitate its usage.  
     """
+    variant("cuda", default=False, description="Build and run with CUDA")
 
     #
     # These are default values for instance variables.
@@ -64,43 +52,35 @@ class Experiment(ExperimentSystemBase):
             "spack_flags": {"install": "--add --keep-stage", "concretize": "-U -f"},
         }
 
-    def compute_modifiers_section(self):
-        # by default we use the allocation modifier and no others
-        return [{"name": "allocation"}]
+    # def compute_applications_section(self):
+    #    # TODO: The default in GPU experiments is 1 MPI rank per GPU.
+    #    #       What goes here?
 
-    def compute_applications_section(self):
-        # Require that the experiment defines num_procs
-        variables = {}
-        variables["n_ranks"] = self.num_procs 
-        
-        raise NotImplementedError(
-            "Each experiment must implement compute_applications_section"
-        )
-
-    def needs_external(pkgs_dict, system_specs, pkg_name):
-        # TODO: how to compose these here?
-        pkgs_dict[system_specs[pkg_name]] = {}
-    
     def compute_spack_section(self):
-        # TODO: is there some reasonable default based on known variable names?
+        # CUDA specific versions
         system_specs = {}
-        system_specs["compiler"] = "default-compiler"
-        system_specs["mpi"] = "default-mpi"
+        system_specs["cuda_version"] = "{default_cuda_version}"
+        system_specs["cuda_arch"] = "{cuda_arch}"
 
         package_specs = {}
-        package_specs[system_specs["mpi"]] = (
-            {}
-        )  # empty package_specs value implies external package
-
-        # TODO: is there a way to generically do this?
-        package_specs[app_name] = {
-            "pkg_spec": f"{app_name}@{app_version} +mpi",
-            "compiler": system_specs["compiler"],
+        # TODO: help!!  
+        # package_specs["cuda"] = needs_external(
+        
+        package_specs["cuda"] = {
+            "pkg_spec": "cuda@{}+allow-unsupported-compilers".format(
+                system_specs["cuda_version"]
+            ),
+        "compiler": system_specs["compiler"],
         }
 
-        raise NotImplementedError(
-            "Each experiment must implement compute_spack_section"
+        package_specs[app_name]["pkg_spec"] += "+cuda cuda_arch={}".format(
+            system_specs["cuda_arch"]
         )
+    
+        return {
+            "packages": {k: v for k, v in package_specs.items() if v},
+            "environments": {app_name: {"packages": list(package_specs.keys())}},
+        }
 
     def compute_ramble_dict(self):
         # This can be overridden by any subclass that needs more flexibility
