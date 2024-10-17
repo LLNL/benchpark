@@ -3,18 +3,21 @@ from benchpark.experiment import Experiment
 
 
 class Amg2023(Experiment):
-    variant(
-        "programming_model",
-        default="openmp",
-        values=("openmp", "cuda", "rocm"),
-        description="on-node parallelism model",
-    )
-
+    # TODO: application.py already defines the name, can we reuse it here?
+    name = "amg2023"
+    
     variant(
         "workload",
         default="problem1",
         values=("problem1", "problem2"),
         description="problem1 or problem2",
+    )
+    
+    variant(
+        "programming_model",
+        default="openmp",
+        values=("openmp", "cuda", "rocm"),
+        description="on-node parallelism model",
     )
 
     variant(
@@ -36,7 +39,7 @@ class Amg2023(Experiment):
         nx = "nx"
         ny = "ny"
         nz = "nz"
-        num_procs = f"{{{px}}} * {{{py}}} * {{{pz}}}"
+        num_procs = "{px} * {py} * {pz}"
 
         variables = {}
         variables["n_ranks"] = num_procs
@@ -83,11 +86,12 @@ class Amg2023(Experiment):
                     ]
                    }
             ]
-            experiment_setup["exclude"] = {
-                "where": [
-                    "{n_threads_per_proc} * {n_ranks} > {n_nodes} * {sys_cores_per_node}"
-                ]
-            }
+            # TODO: We should use the allocation modifier to check for an unsatisfiable request for resources instead of here
+            # experiment_setup["exclude"] = {
+            #    "where": [
+            #        "{n_threads_per_proc} * {n_ranks} > {n_nodes} * {sys_cores_per_node}"
+            #    ]
+            #}
         elif self.spec.satisfies("programming_model=cuda") or self.spec.satisfies("programming_model=rocm"):
             experiment_setup["matrix"] = [f"{zips_size}"]
     
@@ -121,7 +125,7 @@ class Amg2023(Experiment):
         experiment_setup["variables"] = variables
 
         return {
-            "amg2023": {
+            self.name: {
                 "workloads": {
                     self.workload: {
                         "experiments": {
