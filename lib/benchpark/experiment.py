@@ -69,37 +69,28 @@ class Experiment(ExperimentSystemBase):
         return [{"name": "allocation"}]
 
     def compute_applications_section(self):
-        # TODO: is there some reasonable default?
+        # Require that the experiment defines num_procs
         variables = {}
-        variables["n_ranks"] = num_procs  # TODO: num_procs will be defined in the child...
-        n_resources = num_procs
-
+        variables["n_ranks"] = self.num_procs 
+        
         raise NotImplementedError(
             "Each experiment must implement compute_applications_section"
         )
 
+    def needs_external(pkgs_dict, system_specs, pkg_name):
+        # TODO: how to compose these here?
+        pkgs_dict[system_specs[pkg_name]] = {}
+    
     def compute_spack_section(self):
         # TODO: is there some reasonable default based on known variable names?
         system_specs = {}
         system_specs["compiler"] = "default-compiler"
         system_specs["mpi"] = "default-mpi"
-        system_specs["lapack"] = "lapack"   #TODO: can we define this in lapack experiment?
 
         package_specs = {}
         package_specs[system_specs["mpi"]] = (
             {}
         )  # empty package_specs value implies external package
-
-        # TODO: Can we define this in lapack/blas experiment?
-        package_specs[system_specs["lapack"]] = (
-            {}
-        )  # empty package_specs value implies external package
-
-        # TODO: is there a way to define hypre experiment, where this would live?
-        package_specs["hypre"] = {
-            "pkg_spec": f"hypre@{hypre_version} +mpi+mixedint~fortran",
-            "compiler": system_specs["compiler"],
-        }
 
         # TODO: is there a way to generically do this?
         package_specs[app_name] = {
