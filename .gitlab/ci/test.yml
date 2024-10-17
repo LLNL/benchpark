@@ -79,4 +79,5 @@ test_run:
     - cd ./workspace/saxpy/openmp/$ARCHCONFIG/workspace/
     - ramble --workspace-dir . --disable-progress-bar --disable-logger -c config:spack_flags:install:'--no-check-signature' workspace setup
     # Run Saxpy Experiments
-    - srun -N 1 --reservation=ci --time=02:00:00 ramble --workspace-dir . --disable-progress-bar --disable-logger on --executor '{execute_experiment}' --where '{n_nodes} == 1'
+    - ramble --workspace-dir . --disable-progress-bar --disable-logger on --executor '{execute_experiment}' --where '{n_nodes} == 1'
+    #- srun -N 1 --reservation=ci --time=01:00:00 ramble --workspace-dir . --disable-progress-bar --disable-logger on --executor '{execute_experiment}' --where '{n_nodes} == 1'
