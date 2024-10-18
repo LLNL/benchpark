@@ -11,7 +11,7 @@ Building the experiment
 The next step is setting up the Ramble workspace and building the code::
 
    cd <experiments_root>/<Benchmark/ProgrammingModel>/<System>/workspace
-   ramble -P -D . workspace setup
+   ramble --disable-progress-bar --workspace-dir . workspace setup
 
 
 Ramble will build the source code and set up the following workspace directory structure::
