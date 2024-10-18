@@ -52,7 +52,7 @@ status_failure:
     - *status_report
   when: on_failure
 
-test_run:
+legacy_test_run:
   stage: test
   tags:
     - $HOST
@@ -72,6 +72,36 @@ test_run:
     - . /usr/workspace/benchpark-dev/benchpark-venv/$SYS_TYPE/bin/activate
     # Build Saxpy Workspace
     - ./bin/benchpark setup saxpy/openmp $ARCHCONFIG workspace/
+    # Setup Ramble & Spack
+    - . workspace/setup.sh
+    # Setup Saxpy Workspace
+    - cd ./workspace/saxpy/openmp/$ARCHCONFIG/workspace/
+    - ramble --workspace-dir . --disable-progress-bar --disable-logger workspace setup
+    # Run Saxpy Experiments
+    - ramble --workspace-dir . --disable-progress-bar --disable-logger on
+
+test_run:
+  stage: test
+  tags:
+    - tioga
+    - shell
+  rules:
+    - changes:
+        - .gitlab-ci.yml
+        - .gitlab/ci/*
+        - experiments/**
+        - systems/**
+        - repo/**
+        - modifiers/**
+        - var/**
+        - lib/**
+  script:
+    - . /usr/workspace/benchpark-dev/benchpark-venv/$SYS_TYPE/bin/activate
+    # Initialize system & experiment
+    - ./bin/benchpark system init --dest=tioga-system cts cluster=tioga
+    - ./bin/benchpark experiment init --dest=saxpy-benchmark saxpy/openmp
+    # Build Saxpy Workspace
+    - ./bin/benchpark setup saxpy-benchmark tioga-system workspace/
     # Setup Ramble & Spack
     - . workspace/setup.sh
     # Setup Saxpy Workspace
