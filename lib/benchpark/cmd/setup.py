@@ -253,6 +253,6 @@ To complete the benchpark setup, do the following:
 
     . {initializer_script}
 
-Further steps are needed to build the experiments (ramble -P -D {ramble_workspace_dir} workspace setup) and run them (ramble -P -D {ramble_workspace_dir} on)
+Further steps are needed to build the experiments (ramble --disable-progress-bar --workspace-dir {ramble_workspace_dir} workspace setup) and run them (ramble --disable-progress-bar --workspace-dir {ramble_workspace_dir} on)
 """
     print(instructions)
