@@ -6,9 +6,10 @@
 
 from benchpark.directives import variant
 from benchpark.experiment import Experiment
+from benchpark.experiment import ExperimentHelperBase
 
 
-class Caliper(Experiment):
+class Caliper:
     variant(
         "caliper",
         default="none",
@@ -29,66 +30,70 @@ class Caliper(Experiment):
     def is_enabled(self):
         return not self.spec.satisfies("caliper=none")
 
-    def compute_modifiers_section(self):
-        modifier_list = []
-        if not self.spec.satisfies("caliper=none"):
-            for var in list(self.spec.variants["caliper"]):
-                if var != "time":
-                    caliper_modifier_modes = {}
-                    caliper_modifier_modes["name"] = "caliper"
-                    caliper_modifier_modes["mode"] = var
-                    modifier_list.append(caliper_modifier_modes)
-            # Add time as the last mode
-            modifier_list.append({"name": "caliper", "mode": "time"})
-        return modifier_list
+    class Helper(ExperimentHelperBase):
+        def __init__(self, exp):
+            self.spec = exp.spec
 
-    def compute_spack_section(self):
-        # set package versions
-        caliper_version = "master"
+        def compute_modifiers_section(self):
+            modifier_list = []
+            if not self.spec.satisfies("caliper=none"):
+                for var in list(self.spec.variants["caliper"]):
+                    if var != "time":
+                        caliper_modifier_modes = {}
+                        caliper_modifier_modes["name"] = "caliper"
+                        caliper_modifier_modes["mode"] = var
+                        modifier_list.append(caliper_modifier_modes)
+                # Add time as the last mode
+                modifier_list.append({"name": "caliper", "mode": "time"})
+            return modifier_list
 
-        # get system config options
-        # TODO: Get compiler/mpi/package handles directly from system.py
-        system_specs = {}
-        system_specs["compiler"] = "default-compiler"
-        if self.spec.satisfies("programming_model=cuda"):
-            system_specs["cuda_arch"] = "{cuda_arch}"
-        if self.spec.satisfies("programming_model=rocm"):
-            system_specs["rocm_arch"] = "{rocm_arch}"
+        def compute_spack_section(self):
+            # set package versions
+            caliper_version = "master"
 
-        # set package spack specs
-        package_specs = {}
+            # get system config options
+            # TODO: Get compiler/mpi/package handles directly from system.py
+            system_specs = {}
+            system_specs["compiler"] = "default-compiler"
+            if self.spec.satisfies("programming_model=cuda"):
+                system_specs["cuda_arch"] = "{cuda_arch}"
+            if self.spec.satisfies("programming_model=rocm"):
+                system_specs["rocm_arch"] = "{rocm_arch}"
 
-        if not self.spec.satisfies("caliper=none"):
-            package_specs["caliper"] = {
-                "pkg_spec": f"caliper@{caliper_version}+adiak+mpi~libunwind~libdw",
-                "compiler": system_specs["compiler"],
+            # set package spack specs
+            package_specs = {}
+
+            if not self.spec.satisfies("caliper=none"):
+                package_specs["caliper"] = {
+                    "pkg_spec": f"caliper@{caliper_version}+adiak+mpi~libunwind~libdw",
+                    "compiler": system_specs["compiler"],
+                }
+                if any("topdown" in var for var in self.spec.variants["caliper"]):
+                    papi_support = True  # check if target system supports papi
+                    if papi_support:
+                        package_specs["caliper"]["pkg_spec"] += "+papi"
+                    else:
+                        raise NotImplementedError(
+                            "Target system does not support the papi interface"
+                        )
+                elif self.spec.satisfies("caliper=cuda"):
+                    cuda_support = (
+                        self.spec.satisfies("caliper=cuda") and True
+                    )  # check if target system supports cuda
+                    if cuda_support:
+                        package_specs["caliper"][
+                            "pkg_spec"
+                        ] += "~papi+cuda cuda_arch={}".format(system_specs["cuda_arch"])
+                    else:
+                        raise NotImplementedError(
+                            "Target system does not support the cuda interface"
+                        )
+                elif self.spec.satisfies("caliper=time") or self.spec.satisfies(
+                    "caliper=mpi"
+                ):
+                    package_specs["caliper"]["pkg_spec"] += "~papi"
+
+            return {
+                "packages": {k: v for k, v in package_specs.items() if v},
+                "environments": {"caliper": {"packages": list(package_specs.keys())}},
             }
-            if any("topdown" in var for var in self.spec.variants["caliper"]):
-                papi_support = True  # check if target system supports papi
-                if papi_support:
-                    package_specs["caliper"]["pkg_spec"] += "+papi"
-                else:
-                    raise NotImplementedError(
-                        "Target system does not support the papi interface"
-                    )
-            elif self.spec.satisfies("caliper=cuda"):
-                cuda_support = (
-                    self.spec.satisfies("caliper=cuda") and True
-                )  # check if target system supports cuda
-                if cuda_support:
-                    package_specs["caliper"][
-                        "pkg_spec"
-                    ] += "~papi+cuda cuda_arch={}".format(system_specs["cuda_arch"])
-                else:
-                    raise NotImplementedError(
-                        "Target system does not support the cuda interface"
-                    )
-            elif self.spec.satisfies("caliper=time") or self.spec.satisfies(
-                "caliper=mpi"
-            ):
-                package_specs["caliper"]["pkg_spec"] += "~papi"
-
-        return {
-            "packages": {k: v for k, v in package_specs.items() if v},
-            "environments": {"caliper": {"packages": list(package_specs.keys())}},
-        }

@@ -19,6 +19,21 @@ bootstrapper.bootstrap()
 import ramble.language.language_base  # noqa
 import ramble.language.language_helpers  # noqa
 
+class ExperimentHelperBase:
+    def compute_include_section(self):
+        return []
+
+    def compute_config_section(self):
+        return {}
+
+    def compute_modifiers_section(self):
+        return []
+
+    def compute_applications_section(self):
+        return {}
+
+    def compute_spack_section(self):
+        return {}
 
 class Experiment(ExperimentSystemBase):
     """This is the superclass for all benchpark experiments.
@@ -51,6 +66,13 @@ class Experiment(ExperimentSystemBase):
     def __init__(self, spec):
         self.spec: "benchpark.spec.ConcreteExperimentSpec" = spec
         super().__init__()
+        self.helpers = []
+
+        for cls in self.__class__.mro()[1:]:
+            if cls is not Experiment and cls is not object:
+                if hasattr(cls, 'Helper'):
+                    helper_instance = cls.Helper(self)
+                    self.helpers.append(helper_instance)
 
     def compute_include_section(self):
         # include the config directory
@@ -66,7 +88,10 @@ class Experiment(ExperimentSystemBase):
 
     def compute_modifiers_section(self):
         # by default we use the allocation modifier and no others
-        return [{"name": "allocation"}]
+        modifier_list = [{"name": "allocation"}]
+        for cls in self.helpers:
+            modifier_list += cls.compute_modifiers_section()
+        return modifier_list
 
     def compute_applications_section(self):
         # Require that the experiment defines num_procs
@@ -82,25 +107,17 @@ class Experiment(ExperimentSystemBase):
         pkgs_dict[system_specs[pkg_name]] = {}
     
     def compute_spack_section(self):
-        # TODO: is there some reasonable default based on known variable names?
-        system_specs = {}
-        system_specs["compiler"] = "default-compiler"
-        system_specs["mpi"] = "default-mpi"
-
-        package_specs = {}
-        package_specs[system_specs["mpi"]] = (
-            {}
-        )  # empty package_specs value implies external package
-
-        # TODO: is there a way to generically do this?
-        package_specs[app_name] = {
-            "pkg_spec": f"{app_name}@{app_version} +mpi",
-            "compiler": system_specs["compiler"],
-        }
-
-        raise NotImplementedError(
-            "Each experiment must implement compute_spack_section"
-        )
+        package_specs_dict = {}
+        for cls in self.helpers:
+            cls_package_specs_dict = cls.compute_spack_section()
+            if cls_package_specs_dict and "packages" in cls_package_specs_dict and "environments" in cls_package_specs_dict:
+                if not package_specs_dict:
+                    package_specs_dict["packages"] = cls_package_specs_dict["packages"]
+                    package_specs_dict["environment"] = cls_package_specs_dict["environments"]
+                else:
+                    package_specs_dict["packages"] |= cls_package_specs_dict["packages"]
+                    package_specs_dict["environment"] |= cls_package_specs_dict["environments"]
+        return package_specs_dict
 
     def compute_ramble_dict(self):
         # This can be overridden by any subclass that needs more flexibility

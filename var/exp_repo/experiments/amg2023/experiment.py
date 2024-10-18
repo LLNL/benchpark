@@ -114,11 +114,6 @@ class Amg2023(Caliper, Experiment):
             }
         }
 
-    def compute_modifiers_section(self):
-        return Experiment.compute_modifiers_section(
-            self
-        ) + Caliper.compute_modifiers_section(self)
-
     def compute_applications_section(self):
         if self.spec.satisfies("workload=problem1"):
             self.workload = "problem1"
@@ -137,6 +132,8 @@ class Amg2023(Caliper, Experiment):
             )
 
     def compute_spack_section(self):
+        package_specs = super().compute_spack_section()["packages"]
+
         app_name = self.spec.name
 
         # set package versions
@@ -158,7 +155,6 @@ class Amg2023(Caliper, Experiment):
             system_specs["blas"] = "blas-rocm"
 
         # set package spack specs
-        package_specs = {}
         if self.spec.satisfies("programming_model=cuda"):
             package_specs["cuda"] = {
                 "pkg_spec": "cuda@{}+allow-unsupported-compilers".format(
@@ -188,7 +184,6 @@ class Amg2023(Caliper, Experiment):
             "compiler": system_specs["compiler"],
         }
 
-        caliper_package_specs = Caliper.compute_spack_section(self)
         if Caliper.is_enabled(self):
             package_specs["hypre"]["pkg_spec"] += "+caliper"
             package_specs[app_name]["pkg_spec"] += "+caliper"
@@ -215,12 +210,10 @@ class Amg2023(Caliper, Experiment):
             )
 
         return {
-            "packages": {k: v for k, v in package_specs.items() if v}
-            | caliper_package_specs["packages"],
+            "packages": {k: v for k, v in package_specs.items() if v},
             "environments": {
                 app_name: {
                     "packages": list(package_specs.keys())
-                    + list(caliper_package_specs["packages"].keys())
                 }
             },
         }
