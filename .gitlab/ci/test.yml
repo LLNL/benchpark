@@ -98,14 +98,14 @@ test_run:
   script:
     - . /usr/workspace/benchpark-dev/benchpark-venv/$SYS_TYPE/bin/activate
     # Initialize system & experiment
-    - ./bin/benchpark system init --dest=tioga-system cts cluster=tioga
-    - ./bin/benchpark experiment init --dest=saxpy-benchmark saxpy/openmp
+    - ./bin/benchpark system init --dest=tioga-system tioga
+    - ./bin/benchpark experiment init --dest=saxpy-benchmark saxpy programming_model=openmp
     # Build Saxpy Workspace
     - ./bin/benchpark setup saxpy-benchmark tioga-system workspace/
     # Setup Ramble & Spack
     - . workspace/setup.sh
     # Setup Saxpy Workspace
-    - cd ./workspace/saxpy/openmp/$ARCHCONFIG/workspace/
+    - cd ./workspace/saxpy/openmp/Tioga-975af3c/workspace/
     - ramble --workspace-dir . --disable-progress-bar --disable-logger workspace setup
     # Run Saxpy Experiments
     - ramble --workspace-dir . --disable-progress-bar --disable-logger on
