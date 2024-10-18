@@ -3,6 +3,16 @@ from benchpark.experiment import Experiment
 
 
 class Amg2023(Experiment):
+    # TODO: application.py already defines the name, can we reuse it here?
+    name = "amg2023"
+    
+    variant(
+        "workload",
+        default="problem1",
+        values=("problem1", "problem2"),
+        description="problem1 or problem2",
+    )
+    
     variant(
         "programming_model",
         default="openmp",
@@ -11,95 +21,11 @@ class Amg2023(Experiment):
     )
 
     variant(
-        "workload",
-        default="problem1",
-        description="problem1 or problem2",
-    )
-
-    variant(
         "experiment",
-        default="example",
-        values=("strong", "weak", "example"),
+        default="throughput",
+        values=("strong", "weak", "throughput"),
         description="type of experiment",
     )
-
-    def make_experiment_example(self):
-        app_name = self.spec.name
-
-        variables = {}
-        matrices = []
-        zips = {}
-
-        if self.spec.satisfies("programming_model=openmp"):
-            # TODO: Support variants
-            n = ["55", "110"]
-            variables["n_nodes"] = ["1", "2"]
-            variables["n_ranks"] = "8"
-            variables["n_threads_per_proc"] = ["4", "6", "12"]
-            exp_name = f"{app_name}_example_omp_{{n_nodes}}_{{n_ranks}}_{{n_threads_per_proc}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
-        elif self.spec.satisfies("programming_model=cuda"):
-            # TODO: Support variants
-            n = ["10", "20"]
-            variables["n_gpus"] = "8"
-            exp_name = f"{app_name}_example_cuda_{{n_gpus}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
-        elif self.spec.satisfies("programming_model=rocm"):
-            # TODO: Support variants
-            n = ["110", "220"]
-            variables["n_gpus"] = "8"
-            exp_name = f"{app_name}_example_rocm_{{n_gpus}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
-        else:
-            raise NotImplementedError(
-                "Unsupported programming_model. Only openmp, cuda and rocm are supported"
-            )
-
-        # TODO: Support variant
-        p = "2"
-        variables["px"] = p
-        variables["py"] = p
-        variables["pz"] = p
-
-        variables["nx"] = n
-        variables["ny"] = n
-        variables["nz"] = n
-        zips["size"] = ["nx", "ny", "nz"]
-
-        m_tag = (
-            "matrices" if self.spec.satisfies("programming_model=openmp") else "matrix"
-        )
-        if self.spec.satisfies("programming_model=openmp"):
-            matrices.append(
-                {"size_nodes_threads": ["size", "n_nodes", "n_threads_per_proc"]}
-            )
-        elif self.spec.satisfies("programming_model=cuda") or self.spec.satisfies(
-            "programming_model=rocm"
-        ):
-            matrices.append("size")
-        else:
-            pass
-
-        excludes = {}
-        if self.spec.satisfies("programming_model=openmp"):
-            excludes["where"] = [
-                "{n_threads_per_proc} * {n_ranks} > {n_nodes} * {sys_cores_per_node}"
-            ]
-
-        return {
-            app_name: {
-                "workloads": {
-                    f"{self.workload}": {
-                        "experiments": {
-                            exp_name: {
-                                "variants": {"package_manager": "spack"},
-                                "variables": variables,
-                                "zips": zips,
-                                "exclude": excludes,
-                                m_tag: matrices,
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
     def compute_applications_section(self):
         if self.spec.satisfies("workload=problem1"):
@@ -107,16 +33,108 @@ class Amg2023(Experiment):
         else:
             self.workload = "problem2"
 
-        if self.spec.satisfies("experiment=example"):
-            return self.make_experiment_example()
+        px = "px"
+        py = "py"
+        pz = "pz"
+        nx = "nx"
+        ny = "ny"
+        nz = "nz"
+        num_procs = "{px} * {py} * {pz}"
+
+        variables = {}
+        variables["n_ranks"] = num_procs
+
+        # TODO: Use conditional variants
+        # TODO: Implement supports for matrices, zips and excludes
+        # TODO: Check for target system using programming_model mixin
+        if self.spec.satisfies("programming_model=openmp"):
+            variables["n_threads_per_proc"] = 1
+            n_resources = "{n_ranks}_{n_threads_per_proc}"
+        elif self.spec.satisfies("programming_model=cuda") or
+             self.spec.satisfies("programming_model=rocm"):
+            variables["n_gpus"] = num_procs
+            n_resources = "{n_gpus}"
+
+        experiment_name = f"amg2023_{self.spec.variants['programming_model'][0]}_{self.spec.variants['experiment'][0]}_{self.workload}_{{n_nodes}}_{n_resources}_{{{px}}}_{{{py}}}_{{{pz}}}_{{{nx}}}_{{{ny}}}_{{{nz}}}"
+
+        experiment_setup = {}
+        experiment_setup["variants"] = {"package_manager": "spack"}
+
+        # Number of processes in each dimension
+        initial_p = [2, 2, 2]
+        variables[px] = initial_p[0]
+        variables[py] = initial_p[1]
+        variables[pz] = initial_p[2]    
+
+        # Per-process size (in zones) in each dimension
+        initial_n = [80, 80, 80]
+        variables[nx] = initial_n[0]
+        variables[ny] = initial_n[1]
+        variables[nz] = initial_n[2]
+        
+        # TODO: Please explain the zips here.  Can we just declare this as a vector to begin with?
+        zips_size = "size"
+        experiment_setup["zips"] = {f"{zips_size}": [nx, ny, nz]}
+
+        if self.spec.satisfies("programming_model=openmp"):
+            experiment_setup["matrices"] = [
+                {
+                    "size_nodes_threads": [
+                        f"{zips_size}",
+                        "n_nodes",
+                        "n_threads_per_proc",
+                    ]
+                   }
+            ]
+            # TODO: We should use the allocation modifier to check for an unsatisfiable request for resources instead of here
+            # experiment_setup["exclude"] = {
+            #    "where": [
+            #        "{n_threads_per_proc} * {n_ranks} > {n_nodes} * {sys_cores_per_node}"
+            #    ]
+            #}
+        elif self.spec.satisfies("programming_model=cuda") or self.spec.satisfies("programming_model=rocm"):
+            experiment_setup["matrix"] = [f"{zips_size}"]
+    
+        # TODO: Is there an order these code blocks need to be in?  
+        # Can the programming model part be completely separate from the scaling part?
+        input_params = {}
+        if self.spec.satisfies("experiment=throughput"):
+            variables[px] = initial_p[0]
+            variables[py] = initial_p[1]
+            variables[pz] = initial_p[2]
+            scaling_variable = (nx, ny, nz)
+            input_params[scaling_variable] = initial_n
         elif self.spec.satisfies("experiment=strong"):
-            return self.make_experiment_strong()
+            scaling_variable = (px, py, pz)
+            input_params[scaling_variable] = initial_p
+            variables[nx] = initial_n[0]
+            variables[ny] = initial_n[1]
+            variables[nz] = initial_n[2]
         elif self.spec.satisfies("experiment=weak"):
-            return self.make_experiment_weak()
-        else:
-            raise NotImplementedError(
-                "Unsupported experiment. Only strong, weak and example experiments are supported"
-            )
+            scaling_variable = (px, py, pz)
+            input_params[scaling_variable] = initial_p
+            input_params[(nx, ny, nz)] = initial_n
+        variables |= self.scale_experiment_variables(
+            input_params,
+            int(self.spec.variants["scaling-factor"][0]),
+            int(self.spec.variants["scaling-iterations"][0]),
+            scaling_variable,
+        )
+
+        # TODO: Add explanation
+        experiment_setup["variables"] = variables
+
+        return {
+            self.name: {
+                "workloads": {
+                    self.workload: {
+                        "experiments": {
+                            experiment_name: experiment_setup,
+                        }
+                    }
+                }
+            }
+        }
 
     def compute_spack_section(self):
         app_name = self.spec.name
