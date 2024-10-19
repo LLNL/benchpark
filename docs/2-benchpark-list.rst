@@ -21,13 +21,13 @@ The user can search for available system and experiment specifications in Benchp
      -
    * - benchpark list systems
      - Lists all system specified in Benchpark
-     - :doc:`available-system-specs`
+     - :doc:`system-list`
    * - benchmark list benchmarks
      - Lists all benchmarks specified in Benchpark
      -
    * - benchpark list systems
      - Lists all system specified in Benchpark
-     - :doc:`available-system-specs`
+     - :doc:`system-list`
    * - benchpark tags workspace
      - Lists all tags specified in Benchpark
      -

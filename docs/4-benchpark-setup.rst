@@ -15,7 +15,7 @@ Also choose a directory for your experiment::
 where:
 
 - ``<Benchmark/ProgrammingModel>``: amg2023/openmp | amg2023/cuda | saxpy/openmp (available choices in ``benchpark/experiments``)
-- ``<System>``: use ``benchpark system init``, or a predefined system in :doc:`available-system-specs`)
+- ``<System>``: use ``benchpark system init``, or a predefined system in :doc:`system-list`)
 
 This command will assemble a Ramble workspace per experiment
 with a configuration for the specified benchmark and system
