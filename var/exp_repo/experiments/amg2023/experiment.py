@@ -1,16 +1,12 @@
 from benchpark.directives import variant
 from benchpark.experiment import Experiment
+from benchpark.openmp import OpenMPExperiment
+from benchpark.cuda import CudaExperiment
+from benchpark.rocm import ROCmExperiment
 from benchpark.expr.builtin.caliper import Caliper
 
 
-class Amg2023(Caliper, Experiment):
-    variant(
-        "programming_model",
-        default="openmp",
-        values=("openmp", "cuda", "rocm"),
-        description="on-node parallelism model",
-    )
-
+class Amg2023(OpenMPExperiment, CudaExperiment, ROCmExperiment, Caliper, Experiment):
     variant(
         "workload",
         default="problem1",
@@ -23,6 +19,8 @@ class Amg2023(Caliper, Experiment):
         values=("strong", "weak", "example"),
         description="type of experiment",
     )
+
+    #requires("system+papi", when(caliper=topdown*))
 
     # TODO: Support list of 3-tuples
     # variant(
@@ -43,19 +41,19 @@ class Amg2023(Caliper, Experiment):
         matrices = []
         zips = {}
 
-        if self.spec.satisfies("programming_model=openmp"):
+        if self.spec.satisfies("openmp=oui"):
             # TODO: Support variants
             n = ["55", "110"]
             variables["n_nodes"] = ["1", "2"]
             variables["n_ranks"] = "8"
             variables["n_threads_per_proc"] = ["4", "6", "12"]
             exp_name = f"{app_name}_example_omp_{{n_nodes}}_{{n_ranks}}_{{n_threads_per_proc}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
-        elif self.spec.satisfies("programming_model=cuda"):
+        elif self.spec.satisfies("cuda=oui"):
             # TODO: Support variants
             n = ["10", "20"]
             variables["n_gpus"] = "8"
             exp_name = f"{app_name}_example_cuda_{{n_gpus}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
-        elif self.spec.satisfies("programming_model=rocm"):
+        elif self.spec.satisfies("rocm=oui"):
             # TODO: Support variants
             n = ["110", "220"]
             variables["n_gpus"] = "8"
@@ -77,21 +75,21 @@ class Amg2023(Caliper, Experiment):
         zips["size"] = ["nx", "ny", "nz"]
 
         m_tag = (
-            "matrices" if self.spec.satisfies("programming_model=openmp") else "matrix"
+            "matrices" if self.spec.satisfies("openmp=oui") else "matrix"
         )
-        if self.spec.satisfies("programming_model=openmp"):
+        if self.spec.satisfies("openmp=oui"):
             matrices.append(
                 {"size_nodes_threads": ["size", "n_nodes", "n_threads_per_proc"]}
             )
-        elif self.spec.satisfies("programming_model=cuda") or self.spec.satisfies(
-            "programming_model=rocm"
+        elif self.spec.satisfies("cuda=oui") or self.spec.satisfies(
+            "rocm=oui"
         ):
             matrices.append("size")
         else:
             pass
 
         excludes = {}
-        if self.spec.satisfies("programming_model=openmp"):
+        if self.spec.satisfies("openmp=oui"):
             excludes["where"] = [
                 "{n_threads_per_proc} * {n_ranks} > {n_nodes} * {sys_cores_per_node}"
             ]
@@ -146,26 +144,20 @@ class Amg2023(Caliper, Experiment):
         system_specs["compiler"] = "default-compiler"
         system_specs["mpi"] = "default-mpi"
         system_specs["lapack"] = "lapack"
-        if self.spec.satisfies("programming_model=cuda"):
+        if self.spec.satisfies("cuda=oui"):
             system_specs["cuda_version"] = "{default_cuda_version}"
             system_specs["cuda_arch"] = "{cuda_arch}"
             system_specs["blas"] = "cublas-cuda"
-        if self.spec.satisfies("programming_model=rocm"):
+        if self.spec.satisfies("rocm=oui"):
             system_specs["rocm_arch"] = "{rocm_arch}"
             system_specs["blas"] = "blas-rocm"
 
         # set package spack specs
-        if self.spec.satisfies("programming_model=cuda"):
-            package_specs["cuda"] = {
-                "pkg_spec": "cuda@{}+allow-unsupported-compilers".format(
-                    system_specs["cuda_version"]
-                ),
-                "compiler": system_specs["compiler"],
-            }
+        if self.spec.satisfies("cuda=oui"):
             package_specs[system_specs["blas"]] = (
                 {}
             )  # empty package_specs value implies external package
-        if self.spec.satisfies("programming_model=rocm"):
+        if self.spec.satisfies("rocm=oui"):
             package_specs[system_specs["blas"]] = (
                 {}
             )  # empty package_specs value implies external package
@@ -184,30 +176,7 @@ class Amg2023(Caliper, Experiment):
             "compiler": system_specs["compiler"],
         }
 
-        if Caliper.is_enabled(self):
-            package_specs["hypre"]["pkg_spec"] += "+caliper"
-            package_specs[app_name]["pkg_spec"] += "+caliper"
-        else:
-            package_specs["hypre"]["pkg_spec"] += "~caliper"
-            package_specs[app_name]["pkg_spec"] += "~caliper"
-
-        if self.spec.satisfies("programming_model=openmp"):
-            package_specs["hypre"]["pkg_spec"] += "+openmp"
-            package_specs[app_name]["pkg_spec"] += "+openmp"
-        elif self.spec.satisfies("programming_model=cuda"):
-            package_specs["hypre"]["pkg_spec"] += "+cuda cuda_arch={}".format(
-                system_specs["cuda_arch"]
-            )
-            package_specs[app_name]["pkg_spec"] += "+cuda cuda_arch={}".format(
-                system_specs["cuda_arch"]
-            )
-        elif self.spec.satisfies("programming_model=rocm"):
-            package_specs["hypre"]["pkg_spec"] += "+rocm amdgpu_target={}".format(
-                system_specs["rocm_arch"]
-            )
-            package_specs[app_name]["pkg_spec"] += "+rocm amdgpu_target={}".format(
-                system_specs["rocm_arch"]
-            )
+        package_specs[app_name]["pkg_spec"] += super().generate_spack_specs()
 
         return {
             "packages": {k: v for k, v in package_specs.items() if v},

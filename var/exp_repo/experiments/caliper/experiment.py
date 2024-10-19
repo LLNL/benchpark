@@ -27,13 +27,7 @@ class Caliper:
         description="caliper mode",
     )
 
-    def is_enabled(self):
-        return not self.spec.satisfies("caliper=none")
-
     class Helper(ExperimentHelperBase):
-        def __init__(self, exp):
-            self.spec = exp.spec
-
         def compute_modifiers_section(self):
             modifier_list = []
             if not self.spec.satisfies("caliper=none"):
@@ -55,9 +49,9 @@ class Caliper:
             # TODO: Get compiler/mpi/package handles directly from system.py
             system_specs = {}
             system_specs["compiler"] = "default-compiler"
-            if self.spec.satisfies("programming_model=cuda"):
+            if self.spec.satisfies("caliper=cuda"):
                 system_specs["cuda_arch"] = "{cuda_arch}"
-            if self.spec.satisfies("programming_model=rocm"):
+            if self.spec.satisfies("caliper=rocm"):
                 system_specs["rocm_arch"] = "{rocm_arch}"
 
             # set package spack specs
@@ -97,3 +91,6 @@ class Caliper:
                 "packages": {k: v for k, v in package_specs.items() if v},
                 "environments": {"caliper": {"packages": list(package_specs.keys())}},
             }
+
+        def generate_spack_specs(self):
+            return "~caliper" if self.spec.satisfies("caliper=none") else "+caliper"

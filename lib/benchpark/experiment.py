@@ -20,6 +20,9 @@ import ramble.language.language_base  # noqa
 import ramble.language.language_helpers  # noqa
 
 class ExperimentHelperBase:
+    def __init__(self, exp):
+        self.spec = exp.spec
+
     def compute_include_section(self):
         return []
 
@@ -34,6 +37,11 @@ class ExperimentHelperBase:
 
     def compute_spack_section(self):
         return {}
+
+    def generate_spack_specs(self):
+        raise NotImplementedError(
+            "Each experiment must implement generate_spack_specs"
+        )
 
 class Experiment(ExperimentSystemBase):
     """This is the superclass for all benchpark experiments.
@@ -118,6 +126,12 @@ class Experiment(ExperimentSystemBase):
                     package_specs_dict["packages"] |= cls_package_specs_dict["packages"]
                     package_specs_dict["environment"] |= cls_package_specs_dict["environments"]
         return package_specs_dict
+
+    def generate_spack_specs(self):
+        spack_specs = []
+        for cls in self.helpers:
+            spack_specs.append(cls.generate_spack_specs())
+        return " ".join(spack_specs)
 
     def compute_ramble_dict(self):
         # This can be overridden by any subclass that needs more flexibility
