@@ -10,6 +10,7 @@ class Amg2023(OpenMPExperiment, CudaExperiment, ROCmExperiment, Caliper, Experim
     variant(
         "workload",
         default="problem1",
+        values=("problem1", "problem2"),
         description="problem1 or problem2",
     )
 
