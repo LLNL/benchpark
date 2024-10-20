@@ -9,7 +9,7 @@ Analyzing Experiments in Benchpark
 
 Once the experiments completed running, the command::
 
-  ramble -P -D . workspace analyze 
+  ramble --disable-progress-bar --workspace-dir . workspace analyze 
 
 can be used to analyze figures of merit and evaluate 
 `success/failure <https://googlecloudplatform.github.io/ramble/success_criteria.html>`_ 
