@@ -6,32 +6,31 @@ class Laghos(Experiment):
 
     variant(
         "experiment",
-        default="example",
-        values=("weak", "strong", "example"),
+        default="strong",
+        values=("single-node","strong"),
         description="weak or strong scaling",
     )
 
     def compute_applications_section(self):
+        app_name = self.spec.name
+        if self.spec.satisfies("workload=triplept"):
+            self.workload = "triplept"
         variables = {}
 
-        if self.spec.satisfies("experiment=weak"):
-            variables["rs"] = "3"
-            variables["rp"] = ["0", "1", "2", "3"]
-            variables["n_ranks"] = "8"
+        if self.spec.satisfies("experiment=single-node"):
+            variables["n_nodes"] = ["1"]
         elif self.spec.satisfies("experiment=strong"):
-            variables["n_ranks"] = ["4", "8", "16", "32"]
-            variables["rs"] = "3"
-            variables["rp"] = "0"
-        else:
             variables["n_nodes"] = ["1", "2", "4", "8", "16", "32", "64", "128"]
-            variables["n_ranks"] = "{sys_cores_per_node} * {n_nodes}"
+            
+        variables["n_ranks"] = "{sys_cores_per_node} * {n_nodes}"
+            
         experiment_name_template = f"laghos_{self.spec.variants['experiment'][0]}"
         experiment_name_template += "_{n_nodes}_{n_ranks}_{rs}_{rp}"
         return {
-            "laghos": {  # ramble Application name
+            f"{self.spec.name}": {  # ramble Application name
                 "workloads": {
                     # TODO replace with a hash once we have one?
-                    "problem": {
+                    f"{self.workload}": {
                         # "variables": variables,
                         "experiments": {
                             experiment_name_template: {
