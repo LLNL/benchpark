@@ -21,27 +21,27 @@ class Laghos(ExecutableApplication):
 
     executable('prob', 'laghos -p {problem} -m {mesh} -rs {rs} -rp {rp} -ms {ms}', use_mpi=True)
 
-    workload('problem', executables=['prob'])
+    workload('triplept', executables=['prob'])
 
     workload_variable('mesh', default='{laghos}/data/box01_hex.mesh',
             description='mesh file',
-            workloads=['problem'])
+            workloads=['triplept'])
 
     workload_variable('problem', default='3',
             description='problem number',
-            workloads=['problem'])
+            workloads=['triplept'])
         
-
     workload_variable('rs', default='5',
             description='number of serial refinements',
-            workloads=['problem'])
+            workloads=['triplept'])
     
     workload_variable('rp', default='0',
             description='number of parallel refinements',
-            workloads=['problem'])
+            workloads=['triplept'])
+    
     workload_variable('ms', default='500',
             description='max number of steps',
-            workloads=['problem'])
+            workloads=['triplept'])
 
     figure_of_merit('Major kernels total time',
                     log_file='{experiment_run_dir}/{experiment_name}.out',
