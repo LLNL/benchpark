@@ -180,10 +180,6 @@ class Amg2023(OpenMPExperiment, CudaExperiment, ROCmExperiment, Caliper, Experim
         package_specs[system_specs["lapack"]] = (
             {}
         )  # empty package_specs value implies external package
-        package_specs["hypre"] = {
-            "pkg_spec": f"hypre@{hypre_version} +mpi+mixedint~fortran",
-            "compiler": system_specs["compiler"],
-        }
         package_specs[app_name] = {
             "pkg_spec": f"amg2023@{app_version} +mpi",
             "compiler": system_specs["compiler"],

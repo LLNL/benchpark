@@ -19,4 +19,4 @@ class ROCmExperiment:
 
     class Helper(ExperimentHelperBase):
         def generate_spack_specs(self):
-            return "+rocm" if self.spec.satisfies("+rocm") else "~rocm"
+            return "+rocm amdgpu_target={rocm_arch}" if self.spec.satisfies("rocm=oui") else "~rocm"
