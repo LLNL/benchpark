@@ -21,6 +21,18 @@ class Amg2023(OpenMPExperiment, CudaExperiment, ROCmExperiment, Caliper, Experim
         description="type of experiment",
     )
 
+    variant(
+        "version",
+        default="develop",
+        description="app version",
+    )
+
+    variant(
+        "extra_specs",
+        default=" ",
+        description="custom spack specs",
+    )
+
     #requires("system+papi", when(caliper=topdown*))
 
     # TODO: Support list of 3-tuples
@@ -136,7 +148,7 @@ class Amg2023(OpenMPExperiment, CudaExperiment, ROCmExperiment, Caliper, Experim
         app_name = self.spec.name
 
         # set package versions
-        app_version = "develop"
+        app_version = self.spec.variants['version'][0]
         hypre_version = "2.31.0"
 
         # get system config options
@@ -178,6 +190,8 @@ class Amg2023(OpenMPExperiment, CudaExperiment, ROCmExperiment, Caliper, Experim
         }
 
         package_specs[app_name]["pkg_spec"] += super().generate_spack_specs()
+        package_specs[app_name]["pkg_spec"] += " " + self.spec.variants['extra_specs'][0]
+        package_specs[app_name]["pkg_spec"] = package_specs[app_name]["pkg_spec"].strip()
 
         return {
             "packages": {k: v for k, v in package_specs.items() if v},
