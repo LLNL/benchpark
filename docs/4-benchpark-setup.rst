@@ -3,9 +3,9 @@
 
    SPDX-License-Identifier: Apache-2.0
 
-====================
-Setting up Benchpark
-====================
+==============================
+Setting Up Benchpark Workspace
+==============================
 
 To setup an experiment workspace you must first initalize both an experiment and a system to use. 
 Any system or experiment variants are specified at the end of the command as shown below.

@@ -7,6 +7,8 @@
 Adding an Experiment
 ====================
 
+This guide is intended for those wanting to define a new set of experiment parameters for a given benchmark. 
+
 Similar to systems, Benchpark also provides an API where you can represent experiments 
 as objects and customize their description with command line arguments.
 
@@ -21,13 +23,14 @@ e.g., ``benchpark/var/exp_repo/experiments/amg2023/experiment.py`` has variant `
 set to ``cuda`` for an experiment using CUDA (on an NVIDIA GPU),
 or ``openmp`` for an experiment using OpenMP (on a CPU).
 An example of these variants defined in the saxpy experiment follow.::
-  class Saxpy(Experiment):
-    variant(
-        "programming_model",
-        default="openmp",
-        values=("openmp", "cuda", "rocm"),
-        description="on-node parallelism model",
-    )
+
+    class Saxpy(Experiment):
+      variant(
+          "programming_model",
+          default="openmp",
+          values=("openmp", "cuda", "rocm"),
+          description="on-node parallelism model",
+      )
 
 Multiple types of experiments can be created using variants as well (e.g., strong scaling, weak scaling). See AMG2023 or Kripke for examples.
 
@@ -175,7 +178,7 @@ is created which contains the collected performance metrics.
 
      
 Validating the Benchmark/Experiment
-------------------------
+-----------------------------------
 
 TODO update the validation steps
 

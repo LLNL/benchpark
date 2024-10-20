@@ -7,13 +7,40 @@
 Adding a System Specification
 =============================
 
-System specifications include details like
+This guide is intended for those wanting to run a benchmark on a new system,
+such as vendors, system administrators, or application developers. It assumes
+a system specification does not already exist.
+
+System specifications include details like:
 
 - How many CPUs are there per node on the system
 - What pre-installed MPI/GPU libraries are available
 
 A system description is a set of YAML files collected into a directory. Benchpark provides an API
 where you can represent systems as objects and customize their description with command line arguments.
+
+------------------------------
+Identifying a Similar System
+------------------------------
+
+The easiest place to start when configuring a new system is to find the closest similar
+one that has an existing configuration already. Existing system configurations are listed
+in the table in :doc:`system-list`. 
+
+If you are running on a system with an accelerator, find an existing system with the same accelerator vendor,
+and then secondarily, if you can, match the actual accererator. 
+
+1. accelerator.vendor
+2. accelerator.name
+
+Once you have found an existing system with a similar accelerator or if you do not have an accelerator, 
+match the following processor specs as closely as you can. 
+
+1. processor.name
+2. processor.ISA 
+3. processor.uArch
+
+If there is not an exact match that is okay, we provide steps for customizing the configuration to match your system in :doc:`add-a-system-config`.
 
 Using System API to Generate a System Description
 -------------------------------------------------

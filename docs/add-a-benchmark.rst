@@ -7,6 +7,8 @@
 Adding a Benchmark
 ==================
 
+This guide is intended for application developers who want to add a benchmark so that it can be run with Benchpark.
+
 Add a New Benchmark
 ------------------------
 

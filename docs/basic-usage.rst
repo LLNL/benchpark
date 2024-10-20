@@ -3,9 +3,13 @@
 
    SPDX-License-Identifier: Apache-2.0
 
-===================
-Searching Benchpark
-===================
+===========
+Basic Usage
+===========
+
+------------------
+Benchpark Commands
+------------------
 
 The easiest way to get started is to run existing experiments one existing systems, or 
 to modify one that is similar. You can search through the existing experiments and benchmarks with the below commands. 
@@ -28,9 +32,6 @@ Search for available system and experiment specifications in Benchpark.
    * - benchmark list benchmarks
      - Lists all benchmarks specified in Benchpark
      -
-   * - benchpark list systems
-     - Lists all system specified in Benchpark
-     - :doc:`system-list`
    * - benchpark tags workspace
      - Lists all tags specified in Benchpark
      -
@@ -45,3 +46,13 @@ Search for available system and experiment specifications in Benchpark.
 For a complete list of options, see the help menu in :doc:`benchpark-help`.
 
 Now that you know the existing benchmarks and systems, you can determine your necessary workflow in :doc:`3-benchpark-workflow`:
+
+------------
+Getting Help
+------------
+
+Benchpark help menu::
+
+    $ benchpark --help
+
+.. program-output:: ../bin/benchpark --help

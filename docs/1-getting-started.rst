@@ -7,10 +7,22 @@
 Getting Started with Benchpark
 ==============================
 
+------------
+Installation
+------------
+
 Git is needed to clone Benchpark, and Python 3.8+ is needed to run Benchpark::
 
     git clone https://github.com/LLNL/benchpark.git
     cd benchpark
+
+The executable is in ``/bin``, to check the version you can run:: 
+
+    ./bin/benchpark --version
+
+--------------------
+System Prerequisites
+--------------------
 
 Once Benchpark is available on your system, its python dependencies can be
 installed using the ``requirements.txt`` file included in the root directory of
@@ -19,10 +31,6 @@ Benchpark.
 To install this, you can use::
 
     pip install -r requirements.txt
-
-The executable is in ``/bin``, to check the version you can run:: 
-
-    ./bin/benchpark --version
 
 Now you are ready to look at the benchmarks and systems available in Benchpark, 
 and determine your workflow as described in :doc:`2-benchpark-list`.

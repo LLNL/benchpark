@@ -7,12 +7,12 @@
 Benchpark Workflow
 =================================
 
-Follow the workflow diagram to determine how many new configurations are required. 
+Follow the workflow diagram to determine how many new configurations are
+required. If you are running on an existing ``system``, and the ``benchmark``
+and ``experiment`` are already configured, you can proceed directly to
+:doc:`4-benchpark-setup`.
 
 .. image:: /_static/images/new-workflow.png
-
-If you are running on an existing ``system``, and the ``benchmark`` and ``experiment`` are 
-already configured, you can proceed directly to :doc:`4-benchpark-setup`.
 
 Otherwise, you will be editing one or more of the files below.
 

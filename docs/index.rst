@@ -7,12 +7,20 @@
 
 .. toctree::
    :maxdepth: 1
-   :numbered:
-   :caption: Getting Started
+   :caption: Basics
 
+   feature-overview
    1-getting-started
-   2-benchpark-list
+   basic-usage
    3-benchpark-workflow
+   example-workflow
+   FAQ
+
+.. toctree::
+   :maxdepth: 1
+   :numbered:
+   :caption: Guided Steps
+
    4-benchpark-setup
    5-build-experiment
    6-run-experiment
@@ -20,11 +28,11 @@
 
 .. toctree::
    :maxdepth: 1
-   :caption: FAQ
+   :caption: Tutorial
 
-   FAQ-what-to-rerun
-   FAQ-spack-ramble-dependence
-   FAQ-benchpark-repo
+   example-workflow
+   llnl-tutorial
+   system/fugaku
 
 .. toctree::
    :maxdepth: 1
@@ -38,7 +46,6 @@
    :maxdepth: 1
    :caption: Contributing
 
-   identifying-similar-system
    add-a-system-config
    add-a-benchmark
    add-an-experiment
@@ -48,3 +55,9 @@
    :caption: Benchmark Suites
 
    set-of-experiments
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Legacy Workflow
+
+   legacy-getting-started
