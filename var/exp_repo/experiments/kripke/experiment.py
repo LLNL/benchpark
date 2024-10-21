@@ -1,8 +1,11 @@
 from benchpark.directives import variant
 from benchpark.experiment import Experiment
+from benchpark.openmp import OpenMPExperiment
+from benchpark.cuda import CudaExperiment
+from benchpark.rocm import ROCmExperiment
 
 
-class Kripke(Experiment):
+class Kripke(OpenMPExperiment, CudaExperiment, ROCmExperiment, Experiment):
     variant(
         "programming_model",
         default="openmp",
@@ -15,6 +18,18 @@ class Kripke(Experiment):
         default="single-node",
         values=("single-node", "weak", "strong"),
         description="Single node, weak scaling, or strong scaling study",
+    )
+
+    variant(
+        "version",
+        default="develop",
+        description="app version",
+    )
+
+    variant(
+        "extra_specs",
+        default=" ",
+        description="custom spack specs",
     )
 
     def compute_applications_section(self):
@@ -40,7 +55,7 @@ class Kripke(Experiment):
             npy = initial_npy
             npz = initial_npz
 
-        if self.spec.satisfies("scaling=strong" or "scaling=weak"):
+        if self.spec.satisfies("scaling=strong"):
             # Number of processes in each dimension
             npx = [initial_npx]
             npy = [initial_npy]
@@ -58,6 +73,9 @@ class Kripke(Experiment):
 
         if self.spec.satisfies("scaling=weak"):
             # Number of zones in each dimension
+            npx = [initial_npx]
+            npy = [initial_npy]
+            npz = [initial_npz]
             nzx = [initial_nzx]
             nzy = [initial_nzy]
             nzz = [initial_nzz]
@@ -119,28 +137,43 @@ class Kripke(Experiment):
         }
 
     def compute_spack_section(self):
-        kripke_spec = "kripke@develop+mpi"
-        if self.spec.satisfies("programming_model=openmp"):
-            pass
-        elif self.spec.satisfies("programming_model=cuda"):
-            pass
-        elif self.spec.satisfies("programming_model=rocm"):
-            kripke_spec += "+rocm"
-        kripke_spec += "^chai@2024.02"
+        package_specs = super().compute_spack_section()["packages"]
+
+        app_name = self.spec.name
+
+        # set package versions
+        app_version = self.spec.variants['version'][0]
+
+        # get system config options
+        # TODO: Get compiler/mpi/package handles directly from system.py
+        system_specs = {}
+        system_specs["compiler"] = "default-compiler"
+        system_specs["mpi"] = "default-mpi"
+        if self.spec.satisfies("programming_model=cuda"):
+            system_specs["cuda_version"] = "{default_cuda_version}"
+            system_specs["cuda_arch"] = "{cuda_arch}"
+        if self.spec.satisfies("programming_model=rocm"):
+            system_specs["rocm_arch"] = "{rocm_arch}"
+
+        # set package spack specs
+        package_specs = {}
+        package_specs[system_specs["mpi"]] = (
+            {}
+        )  # empty package_specs value implies external package
+        package_specs[app_name] = {
+            "pkg_spec": f"kripke@{app_version} +mpi",
+            "compiler": system_specs["compiler"],
+        }
+
+        package_specs[app_name]["pkg_spec"] += super().generate_spack_specs()
+        package_specs[app_name]["pkg_spec"] += " " + self.spec.variants['extra_specs'][0]
+        package_specs[app_name]["pkg_spec"] = package_specs[app_name]["pkg_spec"].strip()
 
         return {
-            "packages": {
-                "kripke": {
-                    "pkg_spec": kripke_spec,
-                    "compiler": "default-compiler",
-                }
-            },
+            "packages": {k: v for k, v in package_specs.items() if v},
             "environments": {
-                "kripke": {
-                    "packages": [
-                        "default-mpi",
-                        "kripke",
-                    ]
+                app_name: {
+                    "packages": list(package_specs.keys())
                 }
             },
         }
