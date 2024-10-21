@@ -149,7 +149,6 @@ class Amg2023(OpenMPExperiment, CudaExperiment, ROCmExperiment, Caliper, Experim
 
         # set package versions
         app_version = self.spec.variants['version'][0]
-        hypre_version = "2.31.0"
 
         # get system config options
         # TODO: Get compiler/mpi/package handles directly from system.py
