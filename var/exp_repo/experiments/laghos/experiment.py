@@ -13,8 +13,7 @@ class Laghos(Experiment):
 
     def compute_applications_section(self):
         app_name = self.spec.name
-        if self.spec.satisfies("workload=triplept"):
-            self.workload = "triplept"
+        self.workload = "triplept"
         variables = {}
 
         if self.spec.satisfies("experiment=single-node"):
