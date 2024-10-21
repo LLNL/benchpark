@@ -3,7 +3,7 @@ from benchpark.experiment import Experiment
 from benchpark.expr.builtin.caliper import Caliper
 
 
-class Amg2023(Caliper, Experiment):
+class Amg2023(Experiment, Caliper):
     variant(
         "programming_model",
         default="openmp",
@@ -23,18 +23,6 @@ class Amg2023(Caliper, Experiment):
         values=("strong", "weak", "example"),
         description="type of experiment",
     )
-
-    # TODO: Support list of 3-tuples
-    # variant(
-    #     "p",
-    #     description="value of p",
-    # )
-
-    # TODO: Support list of 3-tuples
-    # variant(
-    #     "n",
-    #     description="value of n",
-    # )
 
     def make_experiment_example(self):
         app_name = self.spec.name
