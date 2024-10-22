@@ -58,7 +58,7 @@ class Amg2023(Experiment):
             variables["n_gpus"] = num_procs
             n_resources = "{n_gpus}"
 
-        experiment_name = f"amg2023_{self.spec.variants['programming_model'][0]}_{self.spec.variants['experiment'][0]}_{self.workload}_{{n_nodes}}_{n_resources}_{{{px}}}_{{{py}}}_{{{pz}}}_{{{nx}}}_{{{ny}}}_{{{nz}}}"
+        experiment_name = f"amg2023_{self.spec.variants['programming_model'][0]}_{self.spec.variants['scaling'][0]}_{self.workload}_{{n_nodes}}_{n_resources}_{{{px}}}_{{{py}}}_{{{pz}}}_{{{nx}}}_{{{ny}}}_{{{nz}}}"
 
         experiment_setup = {}
         experiment_setup["variants"] = {"package_manager": "spack"}
