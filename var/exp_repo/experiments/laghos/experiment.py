@@ -18,7 +18,10 @@ class Laghos(Experiment):
     )
 
     def compute_applications_section(self):
+        app_name = self.spec.name
         if self.spec.satisfies("workload=triplept"):
+            self.workload = "triplept"
+        else
             self.workload = "triplept"
         variables = {}
 
@@ -32,9 +35,8 @@ class Laghos(Experiment):
         experiment_name_template = f"laghos_{self.spec.variants['experiment'][0]}"
         experiment_name_template += "_{n_nodes}_{n_ranks}"
         return {
-            f"{self.spec.name}": {  # ramble Application name
+            app_name: {  # ramble Application name
                 "workloads": {
-                    # TODO replace with a hash once we have one?
                     f"{self.workload}": {
                         "experiments": {
                             experiment_name_template: {
