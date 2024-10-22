@@ -1,6 +1,7 @@
 from benchpark.directives import variant
 from benchpark.experiment import Experiment
 
+
 class Laghos(Experiment):
 
     variant(
@@ -12,7 +13,7 @@ class Laghos(Experiment):
 
     def compute_applications_section(self):
         app_name = self.spec.name
-        self.workload = "triplept"
+        workload = "triplept"
         variables = {}
 
         if self.spec.satisfies("experiment=single-node"):
@@ -28,7 +29,7 @@ class Laghos(Experiment):
             f"{self.spec.name}": {  # ramble Application name
                 "workloads": {
                     # TODO replace with a hash once we have one?
-                    f"{self.workload}": {
+                    f"{workload}": {
                         # "variables": variables,
                         "experiments": {
                             experiment_name_template: {
