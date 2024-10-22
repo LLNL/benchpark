@@ -21,7 +21,7 @@ class Laghos(Experiment):
         app_name = self.spec.name
         if self.spec.satisfies("workload=triplept"):
             self.workload = "triplept"
-        else
+        else:
             self.workload = "triplept"
         variables = {}
 
