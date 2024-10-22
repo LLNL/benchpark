@@ -112,7 +112,7 @@ jobs:
 
       - name: Dry run dynamic amg2023-openmp on Dane with allocation modifier
         run: |
-          ./bin/benchpark experiment init --dest=amg2023-openmp amg2023 programming_model=openmp
+          ./bin/benchpark experiment init --dest=amg2023-openmp amg2023 openmp=oui
           ./bin/benchpark setup ./amg2023-openmp LLNL-Dane-DELL-sapphirerapids-OmniPath workspace/
           . workspace/setup.sh
           ramble \
@@ -143,7 +143,7 @@ jobs:
 
       - name: Dry run dynamic kripke-openmp on nosite-x86_64 with allocation modifier
         run: |
-          ./bin/benchpark experiment init --dest=kripke-openmp kripke programming_model=openmp
+          ./bin/benchpark experiment init --dest=kripke-openmp kripke openmp=oui
           ./bin/benchpark setup ./kripke-openmp nosite-x86_64 workspace/
           . workspace/setup.sh
           ramble \
