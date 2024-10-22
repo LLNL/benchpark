@@ -5,7 +5,6 @@
 
 
 from benchpark.directives import variant
-from benchpark.experiment import Experiment
 from benchpark.experiment import ExperimentHelperBase
 
 
