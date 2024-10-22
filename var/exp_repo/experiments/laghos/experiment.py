@@ -20,9 +20,9 @@ class Laghos(Experiment):
             variables["n_nodes"] = ["1"]
         elif self.spec.satisfies("experiment=strong"):
             variables["n_nodes"] = ["1", "2", "4", "8", "16", "32", "64", "128"]
-            
+
         variables["n_ranks"] = "{sys_cores_per_node} * {n_nodes}"
-        
+
         experiment_name_template = f"laghos_{self.spec.variants['experiment'][0]}"
         experiment_name_template += "_{n_nodes}_{n_ranks}_{rs}_{rp}"
         return {
