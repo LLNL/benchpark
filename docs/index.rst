@@ -17,6 +17,14 @@
 
 .. toctree::
    :maxdepth: 1
+   :caption: Catalogue
+
+   system-list
+   benchmark-list
+   benchpark-help
+
+.. toctree::
+   :maxdepth: 1
    :caption: Tutorials
 
    example-workflow
@@ -32,14 +40,6 @@
    run-experiment
    analyze-experiment
    modifiers
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Catalogue
-
-   system-list
-   benchmark-list
-   benchpark-help
 
 .. toctree::
    :maxdepth: 1
