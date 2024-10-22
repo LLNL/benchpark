@@ -53,7 +53,7 @@ class Kripke(CMakePackage, CudaPackage, ROCmPackage):
     variant("openmp", default=False, description="Build with OpenMP enabled.")
     variant("caliper", default=False, description="Build with Caliper support enabled.")
 
-    depends_on('chai@2024.02:', when='@develop')
+    depends_on('chai@2024.02', when='@develop')
 
     depends_on("mpi", when="+mpi")
     depends_on("chai+mpi", when="+mpi")

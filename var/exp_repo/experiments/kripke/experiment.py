@@ -7,13 +7,6 @@ from benchpark.rocm import ROCmExperiment
 
 class Kripke(OpenMPExperiment, CudaExperiment, ROCmExperiment, Experiment):
     variant(
-        "programming_model",
-        default="openmp",
-        values=("openmp", "cuda", "rocm"),
-        description="node-level parallelism model",
-    )
-
-    variant(
         "scaling",
         default="single-node",
         values=("single-node", "weak", "strong"),
@@ -107,16 +100,16 @@ class Kripke(OpenMPExperiment, CudaExperiment, ROCmExperiment, Experiment):
             "npz": npz,
         }
 
-        if self.spec.satisfies("programming_model=openmp"):
+        if self.spec.satisfies("openmp=oui"):
             variables["arch"] = "OpenMP"
             variables["omp_num_threads"] = n_threads_per_proc
-        elif self.spec.satisfies("programming_model=cuda"):
+        elif self.spec.satisfies("cuda=oui"):
             variables["arch"] = "CUDA"
             variables["n_gpus"] = n_ranks
-        elif self.spec.satisfies("programming_model=rocm"):
+        elif self.spec.satisfies("rocm=oui"):
             variables["arch"] = "HIP"
 
-        experiment_name_template = f"kripke_{self.spec.variants['programming_model'][0]}_{self.spec.variants['scaling'][0]}"
+        experiment_name_template = f"kripke_{variables['arch']}_{self.spec.variants['scaling'][0]}"
         experiment_name_template += "_{n_nodes}_{n_ranks}_{n_threads_per_proc}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}"
 
         return {
@@ -149,14 +142,13 @@ class Kripke(OpenMPExperiment, CudaExperiment, ROCmExperiment, Experiment):
         system_specs = {}
         system_specs["compiler"] = "default-compiler"
         system_specs["mpi"] = "default-mpi"
-        if self.spec.satisfies("programming_model=cuda"):
+        if self.spec.satisfies("cuda=oui"):
             system_specs["cuda_version"] = "{default_cuda_version}"
             system_specs["cuda_arch"] = "{cuda_arch}"
-        if self.spec.satisfies("programming_model=rocm"):
+        if self.spec.satisfies("rocm=oui"):
             system_specs["rocm_arch"] = "{rocm_arch}"
 
         # set package spack specs
-        package_specs = {}
         package_specs[system_specs["mpi"]] = (
             {}
         )  # empty package_specs value implies external package
