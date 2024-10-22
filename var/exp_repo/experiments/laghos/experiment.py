@@ -1,7 +1,6 @@
 from benchpark.directives import variant
 from benchpark.experiment import Experiment
 
-
 class Laghos(Experiment):
 
     variant(
@@ -24,7 +23,7 @@ class Laghos(Experiment):
         variables["n_ranks"] = "{sys_cores_per_node} * {n_nodes}"
 
         experiment_name_template = f"laghos_{self.spec.variants['experiment'][0]}"
-        experiment_name_template += "_{n_nodes}_{n_ranks}_{rs}_{rp}"
+        experiment_name_template += "_{n_nodes}_{n_ranks}"
         return {
             f"{self.spec.name}": {  # ramble Application name
                 "workloads": {
