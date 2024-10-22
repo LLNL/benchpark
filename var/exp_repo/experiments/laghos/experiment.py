@@ -11,9 +11,15 @@ class Laghos(Experiment):
         description="weak or strong scaling",
     )
 
+    variant(
+        "workload",
+        default="triplept",
+        description="triplept or other problem",
+    )
+
     def compute_applications_section(self):
-        app_name = self.spec.name
-        workload = "triplept"
+        if self.spec.satisfies("workload=triplept"):
+            self.workload = "triplept"
         variables = {}
 
         if self.spec.satisfies("experiment=single-node"):
@@ -29,8 +35,7 @@ class Laghos(Experiment):
             f"{self.spec.name}": {  # ramble Application name
                 "workloads": {
                     # TODO replace with a hash once we have one?
-                    f"{workload}": {
-                        # "variables": variables,
+                    f"{self.workload}": {
                         "experiments": {
                             experiment_name_template: {
                                 "variants": {"package_manager": "spack"},
