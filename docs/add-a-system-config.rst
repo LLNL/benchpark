@@ -16,8 +16,8 @@ System specifications include details like:
 - How many CPUs are there per node on the system
 - What pre-installed MPI/GPU libraries are available
 
-A system description is a set of YAML files collected into a directory. Benchpark provides an API
-where you can represent systems as objects and customize their description with command line arguments.
+A system description is a ``system.py`` file, where Benchpark provides the API
+where you can represent a systems as an object and customize the description with command line arguments.
 
 ------------------------------
 Identifying a Similar System
@@ -26,9 +26,6 @@ Identifying a Similar System
 The easiest place to start when configuring a new system is to find the closest similar
 one that has an existing configuration already. Existing system configurations are listed
 in the table in :doc:`system-list`. 
-
-.. note:  
-  TODO: example with x86 to show "similarity"
 
 If you are running on a system with an accelerator, find an existing system with the same accelerator vendor,
 and then secondarily, if you can, match the actual accererator. 
