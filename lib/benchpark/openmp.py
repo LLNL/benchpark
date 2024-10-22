@@ -12,9 +12,9 @@ from benchpark.experiment import ExperimentHelperBase
 class OpenMPExperiment(Experiment):
     variant(
         "openmp",
-         default="non",
-         values=("oui", "non"),
-         description="Build and run with OpenMP",
+        default="non",
+        values=("oui", "non"),
+        description="Build and run with OpenMP",
     )
 
     class Helper(ExperimentHelperBase):

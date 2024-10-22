@@ -12,11 +12,15 @@ from benchpark.experiment import ExperimentHelperBase
 class ROCmExperiment:
     variant(
         "rocm",
-         default="non",
-         values=("oui", "non"),
-         description="Build and run with ROCm",
+        default="non",
+        values=("oui", "non"),
+        description="Build and run with ROCm",
     )
 
     class Helper(ExperimentHelperBase):
         def generate_spack_specs(self):
-            return "+rocm amdgpu_target={rocm_arch}" if self.spec.satisfies("rocm=oui") else "~rocm"
+            return (
+                "+rocm amdgpu_target={rocm_arch}"
+                if self.spec.satisfies("rocm=oui")
+                else "~rocm"
+            )

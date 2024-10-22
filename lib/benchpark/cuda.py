@@ -12,9 +12,9 @@ from benchpark.experiment import ExperimentHelperBase
 class CudaExperiment:
     variant(
         "cuda",
-         default="non",
-         values=("oui", "non"),
-         description="Build and run with CUDA",
+        default="non",
+        values=("oui", "non"),
+        description="Build and run with CUDA",
     )
 
     class Helper(ExperimentHelperBase):
@@ -43,4 +43,8 @@ class CudaExperiment:
             }
 
         def generate_spack_specs(self):
-            return "+cuda cuda_arch={cuda_arch}" if self.spec.satisfies("cuda=oui") else "~cuda"
+            return (
+                "+cuda cuda_arch={cuda_arch}"
+                if self.spec.satisfies("cuda=oui")
+                else "~cuda"
+            )

@@ -19,6 +19,7 @@ bootstrapper.bootstrap()
 import ramble.language.language_base  # noqa
 import ramble.language.language_helpers  # noqa
 
+
 class ExperimentHelperBase:
     def __init__(self, exp):
         self.spec = exp.spec
@@ -39,9 +40,7 @@ class ExperimentHelperBase:
         return {}
 
     def generate_spack_specs(self):
-        raise NotImplementedError(
-            "Each experiment must implement generate_spack_specs"
-        )
+        raise NotImplementedError("Each experiment must implement generate_spack_specs")
 
 class Experiment(ExperimentSystemBase):
     """This is the superclass for all benchpark experiments.
@@ -78,7 +77,7 @@ class Experiment(ExperimentSystemBase):
 
         for cls in self.__class__.mro()[1:]:
             if cls is not Experiment and cls is not object:
-                if hasattr(cls, 'Helper'):
+                if hasattr(cls, "Helper"):
                     helper_instance = cls.Helper(self)
                     self.helpers.append(helper_instance)
 
@@ -104,8 +103,8 @@ class Experiment(ExperimentSystemBase):
     def compute_applications_section(self):
         # Require that the experiment defines num_procs
         variables = {}
-        variables["n_ranks"] = self.num_procs 
-        
+        variables["n_ranks"] = self.num_procs
+
         raise NotImplementedError(
             "Each experiment must implement compute_applications_section"
         )
@@ -118,13 +117,21 @@ class Experiment(ExperimentSystemBase):
         package_specs_dict = {}
         for cls in self.helpers:
             cls_package_specs_dict = cls.compute_spack_section()
-            if cls_package_specs_dict and "packages" in cls_package_specs_dict and "environments" in cls_package_specs_dict:
+            if (
+                cls_package_specs_dict
+                and "packages" in cls_package_specs_dict
+                and "environments" in cls_package_specs_dict
+            ):
                 if not package_specs_dict:
                     package_specs_dict["packages"] = cls_package_specs_dict["packages"]
-                    package_specs_dict["environment"] = cls_package_specs_dict["environments"]
+                    package_specs_dict["environment"] = cls_package_specs_dict[
+                        "environments"
+                    ]
                 else:
                     package_specs_dict["packages"] |= cls_package_specs_dict["packages"]
-                    package_specs_dict["environment"] |= cls_package_specs_dict["environments"]
+                    package_specs_dict["environment"] |= cls_package_specs_dict[
+                        "environments"
+                    ]
         return package_specs_dict
 
     def generate_spack_specs(self):

@@ -33,7 +33,7 @@ class Amg2023(OpenMPExperiment, CudaExperiment, ROCmExperiment, Caliper, Experim
         description="custom spack specs",
     )
 
-    #requires("system+papi", when(caliper=topdown*))
+    # requires("system+papi", when(caliper=topdown*))
 
     # TODO: Support list of 3-tuples
     # variant(
@@ -87,16 +87,12 @@ class Amg2023(OpenMPExperiment, CudaExperiment, ROCmExperiment, Caliper, Experim
         variables["nz"] = n
         zips["size"] = ["nx", "ny", "nz"]
 
-        m_tag = (
-            "matrices" if self.spec.satisfies("openmp=oui") else "matrix"
-        )
+        m_tag = "matrices" if self.spec.satisfies("openmp=oui") else "matrix"
         if self.spec.satisfies("openmp=oui"):
             matrices.append(
                 {"size_nodes_threads": ["size", "n_nodes", "n_threads_per_proc"]}
             )
-        elif self.spec.satisfies("cuda=oui") or self.spec.satisfies(
-            "rocm=oui"
-        ):
+        elif self.spec.satisfies("cuda=oui") or self.spec.satisfies("rocm=oui"):
             matrices.append("size")
         else:
             pass
@@ -148,7 +144,7 @@ class Amg2023(OpenMPExperiment, CudaExperiment, ROCmExperiment, Caliper, Experim
         app_name = self.spec.name
 
         # set package versions
-        app_version = self.spec.variants['version'][0]
+        app_version = self.spec.variants["version"][0]
 
         # get system config options
         # TODO: Get compiler/mpi/package handles directly from system.py
@@ -185,14 +181,14 @@ class Amg2023(OpenMPExperiment, CudaExperiment, ROCmExperiment, Caliper, Experim
         }
 
         package_specs[app_name]["pkg_spec"] += super().generate_spack_specs()
-        package_specs[app_name]["pkg_spec"] += " " + self.spec.variants['extra_specs'][0]
-        package_specs[app_name]["pkg_spec"] = package_specs[app_name]["pkg_spec"].strip()
+        package_specs[app_name]["pkg_spec"] += (
+            " " + self.spec.variants["extra_specs"][0]
+        )
+        package_specs[app_name]["pkg_spec"] = package_specs[app_name][
+            "pkg_spec"
+        ].strip()
 
         return {
             "packages": {k: v for k, v in package_specs.items() if v},
-            "environments": {
-                app_name: {
-                    "packages": list(package_specs.keys())
-                }
-            },
+            "environments": {app_name: {"packages": list(package_specs.keys())}},
         }

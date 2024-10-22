@@ -109,7 +109,9 @@ class Kripke(OpenMPExperiment, CudaExperiment, ROCmExperiment, Experiment):
         elif self.spec.satisfies("rocm=oui"):
             variables["arch"] = "HIP"
 
-        experiment_name_template = f"kripke_{variables['arch']}_{self.spec.variants['scaling'][0]}"
+        experiment_name_template = (
+            f"kripke_{variables['arch']}_{self.spec.variants['scaling'][0]}"
+        )
         experiment_name_template += "_{n_nodes}_{n_ranks}_{n_threads_per_proc}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}"
 
         return {
@@ -135,7 +137,7 @@ class Kripke(OpenMPExperiment, CudaExperiment, ROCmExperiment, Experiment):
         app_name = self.spec.name
 
         # set package versions
-        app_version = self.spec.variants['version'][0]
+        app_version = self.spec.variants["version"][0]
 
         # get system config options
         # TODO: Get compiler/mpi/package handles directly from system.py
@@ -158,14 +160,14 @@ class Kripke(OpenMPExperiment, CudaExperiment, ROCmExperiment, Experiment):
         }
 
         package_specs[app_name]["pkg_spec"] += super().generate_spack_specs()
-        package_specs[app_name]["pkg_spec"] += " " + self.spec.variants['extra_specs'][0]
-        package_specs[app_name]["pkg_spec"] = package_specs[app_name]["pkg_spec"].strip()
+        package_specs[app_name]["pkg_spec"] += (
+            " " + self.spec.variants["extra_specs"][0]
+        )
+        package_specs[app_name]["pkg_spec"] = package_specs[app_name][
+            "pkg_spec"
+        ].strip()
 
         return {
             "packages": {k: v for k, v in package_specs.items() if v},
-            "environments": {
-                app_name: {
-                    "packages": list(package_specs.keys())
-                }
-            },
+            "environments": {app_name: {"packages": list(package_specs.keys())}},
         }
