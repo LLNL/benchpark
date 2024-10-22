@@ -154,7 +154,7 @@ jobs:
 
       - name: Dry run dynamic kripke-rocm on LLNL-Tioga-HPECray-zen3-MI250X-Slingshot with allocation modifier
         run: |
-          ./bin/benchpark experiment init --dest=kripke-rocm kripke programming_model=rocm
+          ./bin/benchpark experiment init --dest=kripke-rocm kripke rocm=oui
           ./bin/benchpark setup ./kripke-openmp LLNL-Tioga-HPECray-zen3-MI250X-Slingshot workspace/
           . workspace/setup.sh
           ramble \
