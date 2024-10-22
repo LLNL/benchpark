@@ -3,11 +3,11 @@ from benchpark.experiment import Experiment
 
 
 class Kripke(Experiment):
-    # TODO: application.py already defines the name, and the name of the workload; 
+    # TODO: application.py already defines the name, and the name of the workload;
     #       is it needed/required/guaranteed there?  Can we reuse it here?
-    name = "kripke"   
-    workload = "kripke" 
-    
+    name = "kripke"
+    workload = "kripke"
+
     variant(
         "programming_model",
         default="openmp",
@@ -30,7 +30,7 @@ class Kripke(Experiment):
         nzy = "nzy"
         nzz = "nzz"
         num_procs = "{px} * {py} * {pz}"
-        
+    
         variables = {}
 
         if self.spec.satisfies("programming_model=openmp"):
