@@ -98,9 +98,7 @@ test_run:
   script:
     - . /usr/workspace/benchpark-dev/benchpark-venv/$SYS_TYPE/bin/activate
     # Initialize system & experiment
-    #- ./bin/benchpark system init --dest=tioga-system tioga rocm=551 compiler=cce ~gtl  # works, but verbose
-    - ./bin/benchpark system init --dest=tioga-system tioga ~gtl  # simplest working
-    #- ./bin/benchpark system init --dest=tioga-system tioga  # errors
+    - ./bin/benchpark system init --dest=tioga-system tioga ~gtl
     - ./bin/benchpark experiment init --dest=saxpy-benchmark saxpy programming_model=openmp
     # Build Saxpy Workspace
     - ./bin/benchpark setup saxpy-benchmark tioga-system workspace/
