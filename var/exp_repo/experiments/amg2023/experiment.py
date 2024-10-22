@@ -5,14 +5,14 @@ from benchpark.experiment import Experiment
 class Amg2023(Experiment):
     # TODO: application.py already defines the name, can we reuse it here?
     name = "amg2023"
-    
+
     variant(
         "workload",
         default="problem1",
         values=("problem1", "problem2"),
         description="problem1 or problem2",
     )
-    
+
     variant(
         "programming_model",
         default="openmp",
@@ -64,11 +64,11 @@ class Amg2023(Experiment):
         experiment_setup["variants"] = {"package_manager": "spack"}
 
         # Number of processes in each dimension
-        initial_p = [2, 2, 2]   
+        initial_p = [2, 2, 2]
 
         # Per-process size (in zones) in each dimension
         initial_n = [80, 80, 80]
-        
+
         # TODO: Please explain the zips here.  Can we just declare this as a vector to begin with?
         zips_size = "size"
         experiment_setup["zips"] = {f"{zips_size}": [nx, ny, nz]}
@@ -81,11 +81,13 @@ class Amg2023(Experiment):
                         "n_nodes",
                         "n_threads_per_proc",
                     ]
-                   }
+                }
             ]
-        elif self.spec.satisfies("programming_model=cuda") or self.spec.satisfies("programming_model=rocm"):
+        elif self.spec.satisfies("programming_model=cuda") or self.spec.satisfies(
+            "programming_model=rocm"
+        ):
             experiment_setup["matrix"] = [f"{zips_size}"]
-    
+
         if self.spec.satisfies("scaling=single-node"):
             variables[px] = initial_p[0]
             variables[py] = initial_p[1]
@@ -93,7 +95,7 @@ class Amg2023(Experiment):
             variables[nx] = initial_n[0]
             variables[ny] = initial_n[1]
             variables[nz] = initial_n[2]
-        else: # A scaling study
+        else:  # A scaling study
             input_params = {}
             if self.spec.satisfies("scaling=throughput"):
                 variables[px] = initial_p[0]
