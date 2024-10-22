@@ -42,6 +42,7 @@ class ExperimentHelperBase:
     def generate_spack_specs(self):
         raise NotImplementedError("Each experiment must implement generate_spack_specs")
 
+
 class Experiment(ExperimentSystemBase):
     """This is the superclass for all benchpark experiments.
 
@@ -112,7 +113,7 @@ class Experiment(ExperimentSystemBase):
     def needs_external(pkgs_dict, system_specs, pkg_name):
         # TODO: how to compose these here?
         pkgs_dict[system_specs[pkg_name]] = {}
-    
+
     def compute_spack_section(self):
         package_specs_dict = {}
         for cls in self.helpers:
