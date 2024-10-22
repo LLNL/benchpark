@@ -5,11 +5,10 @@
 
 
 from benchpark.directives import variant
-from benchpark.experiment import Experiment
 from benchpark.experiment import ExperimentHelperBase
 
 
-class OpenMPExperiment(Experiment):
+class OpenMPExperiment:
     variant(
         "openmp",
         default="non",
