@@ -30,7 +30,7 @@ class Kripke(Experiment):
         nzy = "nzy"
         nzz = "nzz"
         num_procs = "{px} * {py} * {pz}"
-    
+
         variables = {}
 
         if self.spec.satisfies("programming_model=openmp"):
