@@ -4,7 +4,7 @@
    SPDX-License-Identifier: Apache-2.0
 
 ==============================
-Getting Started with Benchpark
+Getting Started
 ==============================
 
 ------------
@@ -33,4 +33,4 @@ To install this, you can use::
     pip install -r requirements.txt
 
 Now you are ready to look at the benchmarks and systems available in Benchpark, 
-and determine your workflow as described in :doc:`2-benchpark-list`.
+and determine your workflow as described in :doc:`basic-usage`.

@@ -43,4 +43,4 @@ benchpark would run in the second run.  Generally, we would advise the user to r
 ``$workspace/experiments`` directory before re-running the experiments using
 ``ramble --disable-progress-bar --workspace-dir . on``.
 
-Once you have run your experiment you can try :doc:`7-analyze-experiment`.
+Once you have run your experiment you can try :doc:`analyze-experiment`.

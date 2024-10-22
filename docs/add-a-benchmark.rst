@@ -9,7 +9,7 @@ Adding a Benchmark
 
 This guide is intended for application developers who want to add a benchmark so that it can be run with Benchpark.
 
-Add a New Benchmark
+Create a New Benchmark
 ------------------------
 
 The following system-independent specification is required for each ${Benchmark1} in ``benchpark/repo/${Benchmark1}``:
@@ -19,12 +19,12 @@ The following system-independent specification is required for each ${Benchmark1
 
 During ``benchpark setup`` the user selects ${Benchmark1} to run as the following::
 
-     benchpark setup ${Benchmark1}/${ProgrammingModel1} ${System1} </output/path/to/experiments_root>
+     benchpark setup </output/path/to/experiments_root> </output/path/to/system_root> </output/path/to/workspace> 
 
-By default, Benchpark will use ${Benchmark1} specifications (``package.py`` and ``application.py``)
+By default, Benchpark will use ${Benchmark1} specifications (``application.py`` and ``package.py``)
 provided in the Spack and Ramble repos.
 It is possible to overwrite the benchmark specifications provided in the Spack and Ramble repos;
-see :doc:`FAQ-benchpark-repo` for details.
+see :doc:`FAQ` for details.
 
 
 Validate a Benchmark 

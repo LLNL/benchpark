@@ -3,9 +3,9 @@
 
    SPDX-License-Identifier: Apache-2.0
 
-==============
-Run an Example
-==============
+=========================
+Hello Benchpark Example
+=========================
 
 This tutorial will guide you through the process of using Benchpark on a
 container.  In this case, we assume the ``system``, and the ``benchmark``

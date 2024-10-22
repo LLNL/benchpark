@@ -3,9 +3,9 @@
 
    SPDX-License-Identifier: Apache-2.0
 
-=============================
-Adding a System Specification
-=============================
+=====================
+Adding a System 
+=====================
 
 This guide is intended for those wanting to run a benchmark on a new system,
 such as vendors, system administrators, or application developers. It assumes
@@ -27,6 +27,9 @@ The easiest place to start when configuring a new system is to find the closest 
 one that has an existing configuration already. Existing system configurations are listed
 in the table in :doc:`system-list`. 
 
+.. note:  
+  TODO: example with x86 to show "similarity"
+
 If you are running on a system with an accelerator, find an existing system with the same accelerator vendor,
 and then secondarily, if you can, match the actual accererator. 
 
@@ -40,30 +43,60 @@ match the following processor specs as closely as you can.
 2. processor.ISA 
 3. processor.uArch
 
-If there is not an exact match that is okay, we provide steps for customizing the configuration to match your system in :doc:`add-a-system-config`.
+For example, if your system has an NVIDIA A100 GPU and an Intel x86 Icelake CPUs, a similar config would share the A100 GPU, and CPU architecture may or may not match.
+Or, if I do not have GPUs and instead have SapphireRapids CPUs, the closest match would be another system with x86_64, Xeon Platinum, SapphireRapids.
 
-Using System API to Generate a System Description
+If there is not an exact match that is okay, steps for customizing are provided below.
+
+-------------------------------------------------
+Editing an Existing System to Match
 -------------------------------------------------
 
-System classes are defined in ``var/sys_repo``; once the class has been
-defined, you can invoke ``benchpark system init`` to generate a system
-configuration directory that can then be passed to ``benchpark setup``::
-
-    benchpark system init --dest=tioga-system tioga rocm=551 compiler=cce ~gtl
-
-where "tioga rocm=551 compiler=cce ~gtl" describes a config for Tioga that
-uses ROCm 5.5.1 components, a CCE compiler, and MPI without GTL support.
+.. note:
+  make all these x86 example. Automate the directory structure?
 
 If you want to add support for a new system you can add a class definition
-for that system in a separate directory in ``var/sys_repo/systems/``. For
-example the Tioga system is defined in::
+for that system in a separate directory in ``var/sys_repo/systems/``. 
+The best way is to copy the system.py for the most similar system identified above, and then paste it in a new directory and update it.
+For example the genericx86 system is defined in::
 
   $benchpark
   ├── var
      ├── sys_repo
         ├── systems
-           ├── tioga
+           ├── genericx86
               ├── system.py
+
+
+.. note:
+  TODO: example with x86, show new hardware (GPU), compiler. Check the base class for other configurations, can we add docs to system.py and pull them in here?
+
+.. literalinclude:: ../lib/benchpark/system.py
+   :language: python
+
+The main driver for configuring a system is done by defining a subclass for that system in a ``var/sys_repo/{SYSTEM}/system.py`` file, which inherits from the System base class defined in ``/lib/benchpark/system.py``.
+
+As is, the x86_64 system subclass should work for most x86_64 systems, but potential common changes might be to edit the number of cores per cpu, compiler locations, or adding external packages.
+
+.. note:
+  TODO: Examples of making these changes...
+
+Once the system subclass is written with proper configurations run: 
+``./benchpark system init --dest </path/to/destination/folder> x86_64``
+
+This will generate the required yaml configurations for your system and you can validate it works with a static experiment test.
+
+------------------------
+Validating the System
+------------------------
+
+To manually validate your new system, you should initialize it and run an existing experiment such as saxpy. For example::
+
+  ./bin/benchpark system init --dest=test-new-system {SYSTEM}
+  ./bin/benchpark experiment init --dest=saxpy saxpy
+  ./bin/benchpark setup ./saxpy ./test-new-system workspace/
+
+Then you can run the commands provided by the output, the experiments should be built and run successfully without any errors. 
 
 The following yaml files are examples of what is generated for a system after it is initialized:
 
@@ -136,92 +169,6 @@ file
       # batch_bank: "guest"
 
 
-Example: Creating a New System:
-------------------------
-
-We provide an example of creating a new system, based on the generic_x86 system configurations. 
-
-The main driver for configuring a system is done by defining a subclass for that system in a ``var/sys_repo/{SYSTEM}/system.py`` file, which inherits from the System base class defined in ``/lib/benchpark/system.py``.
-
-As is, the x86_64 system subclass should work for most x86_64 systems, but potential common changes might be to edit the number of cores per cpu, compiler locations, or adding external packages.
-
-TODO: Examples of making these changes...
-
-Once the system subclass is written with proper configurations run: 
-``./benchpark system init --dest </path/to/destination/folder> x86_64``
-
-This will generate the required yaml configurations for your system and you now validate it works with a static experiment test.
+Once you can run an experiment successfully, and the yaml looks correct the new system has been validated and you can continue your :doc:`benchpark-workflow`.
 
 
-Adding Site Specific Configurations
-------------------------
-
-For a site-specific system, one can (optionally) add more information about the software installed on the system
-by adding Spack config files (yaml) in ``benchpark/var/sys_repo/systems/SYSTEMNAME/externals/`` or ``benchpark/var/sys_repo/systems/SYSTEMNAME/compilers/``. 
-
-- ``*-compilers.yaml`` defines the `compilers <https://spack.readthedocs.io/en/latest/getting_started.html#compiler-config>`_  installed on the system.
-- ``*-packages.yaml`` defines the pre-installed `packages <https://spack.readthedocs.io/en/latest/build_settings.html#package-settings-packages-yaml>`_   (e.g., system MPI) on the system.  One way to populate this list is to find available external packages: `spack external <https://spack.readthedocs.io/en/v0.21.0/command_index.html#spack-external>`_.
-
-These can be specified as variants and are then the proper configs are pulled into the system.py. Within the Cts ``system.py`` at (site-LLNL) the code is below.::  
-
-  def external_pkg_configs(self):
-      externals = Cts.resource_location / "externals"
-
-      compiler = self.spec.variants["compiler"][0]
-
-      selections = [externals / "base" / "00-packages.yaml"]
-
-      if compiler == "gcc":
-          selections.append(externals / "mpi" / "00-gcc-packages.yaml")
-      elif compiler == "intel":
-          selections.append(externals / "mpi" / "01-intel-packages.yaml")
-
-      return selections
-
-  def compiler_configs(self):
-      compilers = Cts.resource_location / "compilers"
-
-      compiler = self.spec.variants["compiler"][0]
-
-      selections = []
-      if compiler == "gcc":
-          selections.append(compilers / "gcc" / "00-gcc-12-compilers.yaml")
-      elif compiler == "intel":
-          selections.append(compilers / "intel" / "00-intel-2021-6-0-compilers.yaml")
-
-      return selections
-
-
-Validating the System
-------------------------
-
-To manually validate your new system, you should initialize it and run an existing experiment such as saxpy. For example::
-
-  ./bin/benchpark system init --dest=test-new-system {SYSTEM}
-  ./bin/benchpark experiment init --dest=saxpy saxpy
-  ./bin/benchpark setup ./saxpy ./test-new-system workspace/
-
-Then you can run the commands provided by the output, the experiments should be built and run successfully without any errors. 
-
-If you are contributing the system to our code repository you must add a passing dryrun test to the ``.github/workflows/run.yml`` file before
-your pull request will be merged. 
-
-For example:
-TODO: Tioga Hash?
-
-.. code-block:: yaml
-
-  - name: Dry run dynamic saxpy on dynamic {SYSTEM}
-    run: |
-      ./bin/benchpark system init --dest=new-system {SYSTEM}
-      ./bin/benchpark experiment init --dest=saxpy-openmp saxpy
-      ./bin/benchpark setup ./saxpy ./new-system workspace/
-      . workspace/setup.sh
-      ramble \
-        --workspace-dir workspace/saxpy/Tioga-975af3c/workspace \
-        --disable-progress-bar \
-        --disable-logger \
-        workspace setup --dry-run
-
-
-Once you can run an experiment successfully, the new system has been validated and you can continue your :doc:`3-benchpark-workflow`.

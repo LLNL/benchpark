@@ -3,9 +3,9 @@
 
    SPDX-License-Identifier: Apache-2.0
 
-==============================
-Setting Up Benchpark Workspace
-==============================
+=================================
+Setting Up a Benchpark Workspace
+=================================
 
 To setup an experiment workspace you must first initalize both an experiment and a system to use. 
 Any system or experiment variants are specified at the end of the command as shown below.
@@ -48,4 +48,4 @@ parameters to ``ramble workspace setup`` as `documented in Ramble
 <https://googlecloudplatform.github.io/ramble/workspace.html#setting-up-a-workspace>`_,
 including ``--dry-run`` and ``--phases make_experiments``.
 
-Now you are ready to compile your experiments as described in :doc:`5-build-experiment`.
+Now you are ready to compile your experiments as described in :doc:`build-experiment`.

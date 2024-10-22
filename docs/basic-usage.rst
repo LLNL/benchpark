@@ -42,10 +42,7 @@ Search for available system and experiment specifications in Benchpark.
      - Lists all experiments in Benchpark with a given tag
      -
 
-
-For a complete list of options, see the help menu in :doc:`benchpark-help`.
-
-Now that you know the existing benchmarks and systems, you can determine your necessary workflow in :doc:`3-benchpark-workflow`:
+Now that you know the existing benchmarks and systems, you can determine your necessary workflow in :doc:`benchpark-workflow`.
 
 ------------
 Getting Help

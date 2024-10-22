@@ -13,11 +13,17 @@ benchmarking suites.
 Automation of benchmark building, running, and evaluation
 ---------------------------------------------------------
 
+Benchpark is a continuous benchmarking suite, or a fully automated mechanism for evaluating HPC benchmark performance on specified HPC systems. 
+
 Reproducibly run benchmarks
 ---------------------------
 
+
+
 Collaborative maintainance of benchmarks
 ----------------------------------------
+
+Due to benchpark being open-source, 
 
 System definitions
 ------------------

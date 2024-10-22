@@ -9,30 +9,29 @@
    :maxdepth: 1
    :caption: Basics
 
-   feature-overview
-   1-getting-started
+   why-benchpark
+   getting-started
    basic-usage
-   3-benchpark-workflow
-   example-workflow
+   benchpark-workflow
    FAQ
 
 .. toctree::
    :maxdepth: 1
-   :numbered:
-   :caption: Guided Steps
-
-   4-benchpark-setup
-   5-build-experiment
-   6-run-experiment
-   7-analyze-experiment
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Tutorial
+   :caption: Tutorials
 
    example-workflow
    llnl-tutorial
    system/fugaku
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Guided Steps
+
+   benchpark-setup
+   build-experiment
+   run-experiment
+   analyze-experiment
+   modifiers
 
 .. toctree::
    :maxdepth: 1
@@ -49,6 +48,7 @@
    add-a-system-config
    add-a-benchmark
    add-an-experiment
+   add-a-dryrun
 
 .. toctree::
    :maxdepth: 1

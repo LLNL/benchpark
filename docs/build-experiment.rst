@@ -31,7 +31,7 @@ Ramble will build the source code and set up the following workspace directory s
                               <Benchmark>_<ProgrammingModel>_<Problem>
                                     execute_experiment
 
-If you edit any of the files, see :doc:`FAQ-what-to-rerun` to determine
+If you edit any of the files, see :doc:`FAQ` to determine
 whether you need to re-do any of the previous steps.
 
-Once that is complete, you are ready for :doc:`6-run-experiment`. 
+Once that is complete, you are ready for :doc:`run-experiment`. 
