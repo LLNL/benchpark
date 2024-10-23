@@ -7,7 +7,9 @@
 Hello Benchpark Example
 =========================
 
-This tutorial will guide you through the process of using Benchpark on a
+Containerized Benchpark Coming Soon!
+
+This tutorial will guide you through the process of using Benchpark in a
 container.  In this case, we assume the ``system``, and the ``benchmark``
 and ``experiment`` are already configured.
 
