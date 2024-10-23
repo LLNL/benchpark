@@ -82,6 +82,7 @@ class RuntimeResources:
         self.spack_location = self.dest / "spack"
 
     def bootstrap(self):
+        print("Hold tight, Benchpark is bootstrapping itself.")
         if not self.ramble_location.exists():
             self._install_ramble()
         ramble_lib_path = self.ramble_location / "lib" / "ramble"
@@ -99,7 +100,7 @@ class RuntimeResources:
             self._install_spack()
 
     def _install_ramble(self):
-        debug_print(f"Cloning Ramble to {self.ramble_location}")
+        print(f"Cloning Ramble to {self.ramble_location}")
         git_clone_commit(
             "https://github.com/GoogleCloudPlatform/ramble.git",
             self.ramble_commit,
@@ -108,7 +109,7 @@ class RuntimeResources:
         debug_print(f"Done cloning Ramble ({self.ramble_location})")
 
     def _install_spack(self):
-        debug_print(f"Cloning Spack to {self.spack_location}")
+        print(f"Cloning Spack to {self.spack_location}")
         git_clone_commit(
             "https://github.com/spack/spack.git", self.spack_commit, self.spack_location
         )
