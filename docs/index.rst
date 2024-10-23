@@ -29,7 +29,6 @@
 
    example-workflow
    llnl-tutorial
-   system/fugaku
 
 .. toctree::
    :maxdepth: 1
