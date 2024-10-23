@@ -1,92 +1,54 @@
 from benchpark.directives import variant
 from benchpark.experiment import Experiment
+from benchpark.openmp import OpenMPExperiment
+from benchpark.cuda import CudaExperiment
+from benchpark.rocm import ROCmExperiment
+from benchpark.expr.builtin.caliper import Caliper
 
 
-class Saxpy(Experiment):
+class Saxpy(OpenMPExperiment, CudaExperiment, ROCmExperiment, Caliper, Experiment):
     variant(
-        "programming_model",
-        default="openmp",
-        values=("openmp", "cuda", "rocm"),
-        description="on-node parallelism model",
+        "workload",
+        default="problem",
+        description="problem",
+    )
+
+    variant(
+        "version",
+        default="1.0.0",
+        description="app version",
     )
 
     def compute_applications_section(self):
-        variables = {}
-
         # GPU tests include some smaller sizes
         n = ["512", "1024"]
-        if self.spec.satisfies("programming_model=openmp"):
-            variables["n_nodes"] = ["1", "2"]
-            variables["n_ranks"] = "8"
-            variables["omp_num_threads"] = ["2", "4"]
-            matrix_cfg = {
-                "matrices": [
-                    {
-                        "size_threads": ["n", "omp_num_threads"],
-                    }
-                ]
-            }
+        if self.spec.satisfies("openmp=oui"):
+            self.add_experiment_variable("n_nodes", ["1", "2"], True)
+            self.add_experiment_variable("n_ranks", "8")
+            self.add_experiment_variable("n_threads_per_proc", ["2", "4"], True)
+            self.matrix_experiment_variables(["n", "n_threads_per_proc"])
         else:
             n = ["128", "256"] + n
-            variables["n_gpus"] = "1"
-            matrix_cfg = {"matrix": ["n"]}
+            self.add_experiment_variable("n_gpus", "1", False)
+            self.matrix_experiment_variables("n")
 
-        variables["n"] = n
-
-        the_experiment = {
-            "variants": {
-                "package_manager": "spack",
-            },
-            "variables": variables,
-        }
-        the_experiment.update(matrix_cfg)
-
-        if self.spec.satisfies("programming_model=openmp"):
-            experiment_id = "saxpy_{n}_{n_nodes}_{omp_num_threads}"
-        elif self.spec.satisfies("programming_model=cuda") or self.spec.satisfies(
-            "programming_model=rocm"
-        ):
-            experiment_id = "saxpy_{n}"
-
-        return {
-            "saxpy": {  # ramble Application name
-                "workloads": {
-                    # TODO replace with a hash once we have one?
-                    "problem": {
-                        "experiments": {
-                            experiment_id: the_experiment,
-                        }
-                    }
-                }
-            }
-        }
-
-    def compute_include_section(self):
-        return [
-            "./configs/software.yaml",
-            "./configs/variables.yaml",
-            "./configs/modifier.yaml",
-        ]
+        self.add_experiment_variable("n", n, True)
 
     def compute_spack_section(self):
+        # get package version
+        app_version = self.spec.variants["version"][0]
+
         # TODO: express that we need certain variables from system
         # Does not need to happen before merge, separate task
-        saxpy_spack_spec = "saxpy@1.0.0{modifier_spack_variant}"
-        if self.spec.satisfies("programming_model=openmp"):
-            saxpy_spack_spec += "+openmp"
-        elif self.spec.satisfies("programming_model=cuda"):
-            saxpy_spack_spec += "+cuda cuda_arch={cuda_arch}"
-        elif self.spec.satisfies("programming_model=rocm"):
-            saxpy_spack_spec += "+rocm amdgpu_target={rocm_arch}"
+        # TODO: Get compiler/mpi/package handles directly from system.py
+        system_specs = {}
+        system_specs["compiler"] = "default-compiler"
+        system_specs["mpi"] = "default-mpi"
 
-        packages = ["default-mpi", self.spec.name, "{modifier_package_name}"]
+        # empty package_specs value implies external package
+        self.add_spack_spec(system_specs["mpi"])
 
-        return {
-            "packages": {
-                "saxpy": {
-                    "pkg_spec": saxpy_spack_spec,
-                    "compiler": "default-compiler",  # TODO: this should probably move?
-                }
-            },
-            "environments": {"saxpy": {"packages": packages}},
-        }
+        self.add_spack_spec(
+            self.name,
+            [f"saxpy@{app_version}", system_specs["compiler"]]
+        )

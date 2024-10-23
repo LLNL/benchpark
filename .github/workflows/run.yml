@@ -186,7 +186,7 @@ jobs:
 
       - name: Dry run dynamic saxpy/rocm with static Tioga
         run: |
-          ./bin/benchpark experiment init --dest=saxpy-rocm saxpy programming_model=rocm
+          ./bin/benchpark experiment init --dest=saxpy-rocm saxpy rocm=oui
           ./bin/benchpark setup ./saxpy-rocm LLNL-Tioga-HPECray-zen3-MI250X-Slingshot workspace/
           . workspace/setup.sh
           ramble \
@@ -198,7 +198,7 @@ jobs:
       - name: Dry run dynamic saxpy/rocm with dynamic Tioga
         run: |
           ./bin/benchpark system init --dest=tioga-system2 tioga rocm=551 compiler=cce ~gtl
-          ./bin/benchpark experiment init --dest=saxpy-rocm2 saxpy programming_model=rocm
+          ./bin/benchpark experiment init --dest=saxpy-rocm2 saxpy rocm=oui
           ./bin/benchpark setup ./saxpy-rocm2 ./tioga-system2 workspace/
           . workspace/setup.sh
           ramble \
@@ -210,7 +210,7 @@ jobs:
       - name: Dry run dynamic saxpy/cuda with dynamic Sierra
         run: |
           ./bin/benchpark system init --dest=sierra-system sierra cuda=10-1-243 compiler=xl
-          ./bin/benchpark experiment init --dest=saxpy-cuda saxpy programming_model=cuda
+          ./bin/benchpark experiment init --dest=saxpy-cuda saxpy cuda=oui
           ./bin/benchpark setup ./saxpy-cuda ./sierra-system workspace/
           . workspace/setup.sh
           ramble \
