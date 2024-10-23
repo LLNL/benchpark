@@ -82,7 +82,9 @@ class RuntimeResources:
         self.spack_location = self.dest / "spack"
 
     def bootstrap(self):
+        print(f"Hold tight, Benchpark is bootstrapping itself.")
         if not self.ramble_location.exists():
+            print(f"Benchpark is cloning and installing Ramble, this may take a minute.")
             self._install_ramble()
         ramble_lib_path = self.ramble_location / "lib" / "ramble"
         externals = str(ramble_lib_path / "external")
@@ -96,6 +98,7 @@ class RuntimeResources:
         # The reason for this oddity is that spack modules will compete with the internal
         # spack modules from ramble
         if not self.spack_location.exists():
+            print(f"Benchpark is cloning and installing Spack, this may take a few minutes.")
             self._install_spack()
 
     def _install_ramble(self):
