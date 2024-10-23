@@ -80,6 +80,13 @@ legacy_test_run:
     # Run Saxpy Experiments
     - ramble --workspace-dir . --disable-progress-bar --disable-logger on
 
+.test_benchmarks: &test_benchmarks
+  parallel:
+    matrix:
+      - BENCHMARK:
+          - kripke
+          - saxpy
+
 test_run:
   stage: test
   tags:
@@ -99,43 +106,44 @@ test_run:
     - . /usr/workspace/benchpark-dev/benchpark-venv/$SYS_TYPE/bin/activate
     # Initialize system & experiment
     - ./bin/benchpark system init --dest=tioga-system tioga ~gtl
-    - ./bin/benchpark experiment init --dest=saxpy-benchmark saxpy programming_model=openmp
-    # Build Saxpy Workspace
-    - ./bin/benchpark setup saxpy-benchmark tioga-system workspace/
+    - ./bin/benchpark experiment init --dest=${BENCHMARK}-benchmark ${BENCHMARK} programming_model=openmp
+    # Build Workspace
+    - ./bin/benchpark setup ${BENCHMARK}-benchmark tioga-system workspace/
     # Setup Ramble & Spack
     - . workspace/setup.sh
-    # Setup Saxpy Workspace
-    - cd ./workspace/saxpy-benchmark/Tioga-975af3c/workspace/
+    # Setup Workspace
+    - cd ./workspace/${BENCHMARK}-benchmark/Tioga-975af3c/workspace/
     - ramble --workspace-dir . --disable-progress-bar --disable-logger workspace setup
-    # Run Saxpy Experiments
+    # Run Experiments
     - ramble --workspace-dir . --disable-progress-bar --disable-logger on
+  <<: *test_benchmarks
 
-test_run_kripke:
-  stage: test
-  tags:
-    - tioga
-    - shell
-  rules:
-    - changes:
-        - .gitlab-ci.yml
-        - .gitlab/ci/*
-        - experiments/**
-        - systems/**
-        - repo/**
-        - modifiers/**
-        - var/**
-        - lib/**
-  script:
-    - . /usr/workspace/benchpark-dev/benchpark-venv/$SYS_TYPE/bin/activate
-    # Initialize system & experiment
-    - ./bin/benchpark system init --dest=tioga-system tioga ~gtl
-    - ./bin/benchpark experiment init --dest=kripke-benchmark kripke
-    # Build Kripke Workspace
-    - ./bin/benchpark setup kripke-benchmark tioga-system workspace/
-    # Setup Ramble & Spack
-    - . workspace/setup.sh
-    # Setup Kripke Workspace
-    - cd ./workspace/kripke-benchmark/Tioga-975af3c/workspace/
-    - ramble --workspace-dir . --disable-progress-bar --disable-logger workspace setup
-    # Run Kripke Experiments
-    - ramble --workspace-dir . --disable-progress-bar --disable-logger on
+#test_run_kripke:
+#  stage: test
+#  tags:
+#    - tioga
+#    - shell
+#  rules:
+#    - changes:
+#        - .gitlab-ci.yml
+#        - .gitlab/ci/*
+#        - experiments/**
+#        - systems/**
+#        - repo/**
+#        - modifiers/**
+#        - var/**
+#        - lib/**
+#  script:
+#    - . /usr/workspace/benchpark-dev/benchpark-venv/$SYS_TYPE/bin/activate
+#    # Initialize system & experiment
+#    - ./bin/benchpark system init --dest=tioga-system tioga ~gtl
+#    - ./bin/benchpark experiment init --dest=kripke-benchmark kripke
+#    # Build Kripke Workspace
+#    - ./bin/benchpark setup kripke-benchmark tioga-system workspace/
+#    # Setup Ramble & Spack
+#    - . workspace/setup.sh
+#    # Setup Kripke Workspace
+#    - cd ./workspace/kripke-benchmark/Tioga-975af3c/workspace/
+#    - ramble --workspace-dir . --disable-progress-bar --disable-logger workspace setup
+#    # Run Kripke Experiments
+#    - ramble --workspace-dir . --disable-progress-bar --disable-logger on
