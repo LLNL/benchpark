@@ -82,9 +82,7 @@ class RuntimeResources:
         self.spack_location = self.dest / "spack"
 
     def bootstrap(self):
-        print(
-            f"Hold tight, Benchpark is bootstrapping itself."
-        )
+        print(f"Hold tight, Benchpark is bootstrapping itself.")
         if not self.ramble_location.exists():
             print(
                 f"Benchpark is cloning and installing Ramble, this may take a minute."
