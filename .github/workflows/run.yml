@@ -337,7 +337,7 @@ jobs:
           ./bin/benchpark setup ./saxpy-openmp ./ruby-system workspace/
           . workspace/setup.sh
           ramble \
-            --workspace-dir workspace/saxpy-openmp/Cts--6d48f81/workspace \
+            --workspace-dir workspace/saxpy-openmp/Cts-6d48f81/workspace \
             --disable-progress-bar \
             --disable-logger \
             workspace setup --dry-run
@@ -349,7 +349,7 @@ jobs:
           ./bin/benchpark setup ./saxpy-openmp2 ./dane-system workspace/
           . workspace/setup.sh
           ramble \
-            --workspace-dir workspace/saxpy-openmp2/Cts--2c51a80/workspace \
+            --workspace-dir workspace/saxpy-openmp2/Cts-2c51a80/workspace \
             --disable-progress-bar \
             --disable-logger \
             workspace setup --dry-run
@@ -361,7 +361,7 @@ jobs:
           ./bin/benchpark setup ./saxpy-openmp3 ./magma-system workspace/
           . workspace/setup.sh
           ramble \
-            --workspace-dir workspace/saxpy-openmp3/Cts--54a5761/workspace \
+            --workspace-dir workspace/saxpy-openmp3/Cts-54a5761/workspace \
             --disable-progress-bar \
             --disable-logger \
             workspace setup --dry-run
