@@ -5,7 +5,7 @@
 
 
 from benchpark.directives import variant
-from benchpark.experiment import ExperimentHelperBase
+from benchpark.experiment import ExperimentHelper
 
 
 class ROCmExperiment:
@@ -16,8 +16,11 @@ class ROCmExperiment:
         description="Build and run with ROCm",
     )
 
-    class Helper(ExperimentHelperBase):
-        def generate_spack_specs(self):
+    class Helper(ExperimentHelper):
+        def get_helper_name_prefix(self):
+            return "rocm" if self.spec.satisfies("rocm=oui") else ""
+
+        def get_spack_variants(self):
             return (
                 "+rocm amdgpu_target={rocm_arch}"
                 if self.spec.satisfies("rocm=oui")

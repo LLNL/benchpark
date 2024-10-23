@@ -27,12 +27,6 @@ class Amg2023(OpenMPExperiment, CudaExperiment, ROCmExperiment, Caliper, Experim
         description="app version",
     )
 
-    variant(
-        "extra_specs",
-        default=" ",
-        description="custom spack specs",
-    )
-
     # requires("system+papi", when(caliper=topdown*))
 
     # TODO: Support list of 3-tuples
@@ -48,29 +42,22 @@ class Amg2023(OpenMPExperiment, CudaExperiment, ROCmExperiment, Caliper, Experim
     # )
 
     def make_experiment_example(self):
-        app_name = self.spec.name
-
-        variables = {}
-        matrices = []
-        zips = {}
+        self.add_experiment_name_prefix("example")
 
         if self.spec.satisfies("openmp=oui"):
             # TODO: Support variants
             n = ["55", "110"]
-            variables["n_nodes"] = ["1", "2"]
-            variables["n_ranks"] = "8"
-            variables["n_threads_per_proc"] = ["4", "6", "12"]
-            exp_name = f"{app_name}_example_omp_{{n_nodes}}_{{n_ranks}}_{{n_threads_per_proc}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
+            self.add_experiment_variable("n_nodes", ["1", "2"], True)
+            self.add_experiment_variable("n_ranks", "8", True)
+            self.add_experiment_variable("n_threads_per_proc", ["4", "6", "12"], True)
         elif self.spec.satisfies("cuda=oui"):
             # TODO: Support variants
             n = ["10", "20"]
-            variables["n_gpus"] = "8"
-            exp_name = f"{app_name}_example_cuda_{{n_gpus}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
+            self.add_experiment_variable("n_gpus", "8", True)
         elif self.spec.satisfies("rocm=oui"):
             # TODO: Support variants
             n = ["110", "220"]
-            variables["n_gpus"] = "8"
-            exp_name = f"{app_name}_example_rocm_{{n_gpus}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
+            self.add_experiment_variable("n_gpus", "8", True)
         else:
             raise NotImplementedError(
                 "Unsupported programming_model. Only openmp, cuda and rocm are supported"
@@ -78,72 +65,38 @@ class Amg2023(OpenMPExperiment, CudaExperiment, ROCmExperiment, Caliper, Experim
 
         # TODO: Support variant
         p = "2"
-        variables["px"] = p
-        variables["py"] = p
-        variables["pz"] = p
+        self.add_experiment_variable("px", p, True)
+        self.add_experiment_variable("py", p, True)
+        self.add_experiment_variable("pz", p, True)
 
-        variables["nx"] = n
-        variables["ny"] = n
-        variables["nz"] = n
-        zips["size"] = ["nx", "ny", "nz"]
+        self.add_experiment_variable("nx", n, True)
+        self.add_experiment_variable("ny", n, True)
+        self.add_experiment_variable("nz", n, True)
 
-        m_tag = "matrices" if self.spec.satisfies("openmp=oui") else "matrix"
+        self.zip_experiment_variables("size", ["nx", "ny", "nz"])
+
         if self.spec.satisfies("openmp=oui"):
-            matrices.append(
-                {"size_nodes_threads": ["size", "n_nodes", "n_threads_per_proc"]}
-            )
-        elif self.spec.satisfies("cuda=oui") or self.spec.satisfies("rocm=oui"):
-            matrices.append("size")
-        else:
-            pass
+            self.matrix_experiment_variables(["size", "n_nodes", "n_threads_per_proc"])
+        if self.spec.satisfies("cuda=oui") or self.spec.satisfies("rocm=oui"):
+            self.matrix_experiment_variables("size")
 
-        excludes = {}
         if self.spec.satisfies("openmp=oui"):
-            excludes["where"] = [
-                "{n_threads_per_proc} * {n_ranks} > {n_nodes} * {sys_cores_per_node}"
-            ]
-
-        return {
-            app_name: {
-                "workloads": {
-                    f"{self.workload}": {
-                        "experiments": {
-                            exp_name: {
-                                "variants": {"package_manager": "spack"},
-                                "variables": variables,
-                                "zips": zips,
-                                "exclude": excludes,
-                                m_tag: matrices,
-                            }
-                        }
-                    }
-                }
-            }
-        }
+            self.add_experiment_exclude("{n_threads_per_proc} * {n_ranks} > {n_nodes} * {sys_cores_per_node}")
 
     def compute_applications_section(self):
-        if self.spec.satisfies("workload=problem1"):
-            self.workload = "problem1"
-        else:
-            self.workload = "problem2"
-
         if self.spec.satisfies("experiment=example"):
-            return self.make_experiment_example()
+            self.make_experiment_example()
         elif self.spec.satisfies("experiment=strong"):
-            return self.make_experiment_strong()
+            self.make_experiment_strong()
         elif self.spec.satisfies("experiment=weak"):
-            return self.make_experiment_weak()
+            self.make_experiment_weak()
         else:
             raise NotImplementedError(
                 "Unsupported experiment. Only strong, weak and example experiments are supported"
             )
 
     def compute_spack_section(self):
-        package_specs = super().compute_spack_section()["packages"]
-
-        app_name = self.spec.name
-
-        # set package versions
+        # get package version
         app_version = self.spec.variants["version"][0]
 
         # get system config options
@@ -161,34 +114,18 @@ class Amg2023(OpenMPExperiment, CudaExperiment, ROCmExperiment, Caliper, Experim
             system_specs["blas"] = "blas-rocm"
 
         # set package spack specs
-        if self.spec.satisfies("cuda=oui"):
-            package_specs[system_specs["blas"]] = (
-                {}
-            )  # empty package_specs value implies external package
-        if self.spec.satisfies("rocm=oui"):
-            package_specs[system_specs["blas"]] = (
-                {}
-            )  # empty package_specs value implies external package
-        package_specs[system_specs["mpi"]] = (
-            {}
-        )  # empty package_specs value implies external package
-        package_specs[system_specs["lapack"]] = (
-            {}
-        )  # empty package_specs value implies external package
-        package_specs[app_name] = {
-            "pkg_spec": f"amg2023@{app_version} +mpi",
-            "compiler": system_specs["compiler"],
-        }
+        if self.spec.satisfies("cuda=oui") or self.spec.satisfies("rocm=oui"):
+            # empty package_specs value implies external package
+            self.add_spack_spec(system_specs["blas"])
+        # empty package_specs value implies external package
+        self.add_spack_spec(system_specs["mpi"])
+        # empty package_specs value implies external package
+        self.add_spack_spec(system_specs["lapack"])
 
-        package_specs[app_name]["pkg_spec"] += super().generate_spack_specs()
-        package_specs[app_name]["pkg_spec"] += (
-            " " + self.spec.variants["extra_specs"][0]
+        self.add_spack_spec(
+            self.name, 
+            [
+                f"amg2023@{app_version} +mpi",
+                system_specs["compiler"]
+            ]
         )
-        package_specs[app_name]["pkg_spec"] = package_specs[app_name][
-            "pkg_spec"
-        ].strip()
-
-        return {
-            "packages": {k: v for k, v in package_specs.items() if v},
-            "environments": {app_name: {"packages": list(package_specs.keys())}},
-        }

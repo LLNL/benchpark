@@ -5,7 +5,7 @@
 
 
 from benchpark.directives import variant
-from benchpark.experiment import ExperimentHelperBase
+from benchpark.experiment import ExperimentHelper
 
 
 class CudaExperiment:
@@ -16,7 +16,7 @@ class CudaExperiment:
         description="Build and run with CUDA",
     )
 
-    class Helper(ExperimentHelperBase):
+    class Helper(ExperimentHelper):
         def compute_spack_section(self):
             # get system config options
             # TODO: Get compiler/mpi/package handles directly from system.py
@@ -41,7 +41,10 @@ class CudaExperiment:
                 "environments": {"cuda": {"packages": list(package_specs.keys())}},
             }
 
-        def generate_spack_specs(self):
+        def get_helper_name_prefix(self):
+            return "cuda" if self.spec.satisfies("cuda=oui") else ""
+
+        def get_spack_variants(self):
             return (
                 "+cuda cuda_arch={cuda_arch}"
                 if self.spec.satisfies("cuda=oui")

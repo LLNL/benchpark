@@ -5,7 +5,7 @@
 
 
 from benchpark.directives import variant
-from benchpark.experiment import ExperimentHelperBase
+from benchpark.experiment import ExperimentHelper
 
 
 class OpenMPExperiment:
@@ -16,6 +16,9 @@ class OpenMPExperiment:
         description="Build and run with OpenMP",
     )
 
-    class Helper(ExperimentHelperBase):
-        def generate_spack_specs(self):
+    class Helper(ExperimentHelper):
+        def get_helper_name_prefix(self):
+            return "openmp" if self.spec.satisfies("openmp=oui") else ""
+
+        def get_spack_variants(self):
             return "+openmp" if self.spec.satisfies("openmp=oui") else "~openmp"

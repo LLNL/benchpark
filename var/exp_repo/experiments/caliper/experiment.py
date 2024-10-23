@@ -5,7 +5,7 @@
 
 
 from benchpark.directives import variant
-from benchpark.experiment import ExperimentHelperBase
+from benchpark.experiment import ExperimentHelper
 
 
 class Caliper:
@@ -26,7 +26,7 @@ class Caliper:
         description="caliper mode",
     )
 
-    class Helper(ExperimentHelperBase):
+    class Helper(ExperimentHelper):
         def compute_modifiers_section(self):
             modifier_list = []
             if not self.spec.satisfies("caliper=none"):
@@ -91,5 +91,15 @@ class Caliper:
                 "environments": {"caliper": {"packages": list(package_specs.keys())}},
             }
 
-        def generate_spack_specs(self):
+        def get_helper_name_prefix(self):
+            if not self.spec.satisfies("caliper=none"):
+                caliper_prefix = ["caliper"]
+                for var in list(self.spec.variants["caliper"]):
+                    if self.spec.satisfies(f"caliper={var}"):
+                        caliper_prefix.append(var.replace("-", "_"))
+                return "_".join(caliper_prefix)
+            else:
+                return "caliper_none"
+
+        def get_spack_variants(self):
             return "~caliper" if self.spec.satisfies("caliper=none") else "+caliper"

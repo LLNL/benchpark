@@ -19,12 +19,6 @@ class Kripke(OpenMPExperiment, CudaExperiment, ROCmExperiment, Experiment):
         description="app version",
     )
 
-    variant(
-        "extra_specs",
-        default=" ",
-        description="custom spack specs",
-    )
-
     def compute_applications_section(self):
         n_ranks = "{npx} * {npy} * {npz}"
         n_threads_per_proc = 1
@@ -40,6 +34,7 @@ class Kripke(OpenMPExperiment, CudaExperiment, ROCmExperiment, Experiment):
         initial_npz = 1
 
         if self.spec.satisfies("scaling=single-node"):
+            self.add_experiment_name_prefix("single_node")
             nzx = initial_nzx
             nzy = initial_nzy
             nzz = initial_nzz
@@ -49,6 +44,11 @@ class Kripke(OpenMPExperiment, CudaExperiment, ROCmExperiment, Experiment):
             npz = initial_npz
 
         if self.spec.satisfies("scaling=strong"):
+            self.add_experiment_name_prefix("strong")
+            nzx = initial_nzx
+            nzy = initial_nzy
+            nzz = initial_nzz
+
             # Number of processes in each dimension
             npx = [initial_npx]
             npy = [initial_npy]
@@ -65,6 +65,7 @@ class Kripke(OpenMPExperiment, CudaExperiment, ROCmExperiment, Experiment):
                 npz.append(initial_npz)
 
         if self.spec.satisfies("scaling=weak"):
+            self.add_experiment_name_prefix("weak")
             # Number of zones in each dimension
             npx = [initial_npx]
             npy = [initial_npy]
@@ -74,68 +75,47 @@ class Kripke(OpenMPExperiment, CudaExperiment, ROCmExperiment, Experiment):
             nzz = [initial_nzz]
             for i in (3, 4, 5):  # doubles in round robin
                 if i % 3 == 0:
+                    initial_npz *= 2
                     initial_nzz *= 2
                 if i % 3 == 1:
+                    initial_npx *= 2
                     initial_nzx *= 2
                 if i % 3 == 2:
+                    initial_npy *= 2
                     initial_nzy *= 2
                 npx.append(initial_npx)
                 npy.append(initial_npy)
                 npz.append(initial_npz)
+                nzx.append(initial_nzx)
+                nzy.append(initial_nzy)
+                nzz.append(initial_nzz)
 
-        variables = {
-            "experiment_setup": "",
-            "n_ranks": n_ranks,
-            "n_threads_per_proc": n_threads_per_proc,
-            "ngroups": 64,
-            "gs": 1,
-            "nquad": 128,
-            "ds": 128,
-            "lorder": 4,
-            "nzx": nzx,
-            "nzy": nzy,
-            "nzz": nzz,
-            "npx": npx,
-            "npy": npy,
-            "npz": npz,
-        }
+        self.add_experiment_variable("experiment_setup", "")
+        self.add_experiment_variable("n_ranks", n_ranks, True)
+        self.add_experiment_variable("n_threads_per_proc", n_threads_per_proc, True)
+        self.add_experiment_variable("ngroups", 64, True)
+        self.add_experiment_variable("gs", 1, True)
+        self.add_experiment_variable("nquad", 128, True)
+        self.add_experiment_variable("ds", 128, True)
+        self.add_experiment_variable("lorder", 4, True)
+        self.add_experiment_variable("nzx", nzx, True)
+        self.add_experiment_variable("nzy", nzy, True)
+        self.add_experiment_variable("nzz", nzz, True)
+        self.add_experiment_variable("npx", npx, True)
+        self.add_experiment_variable("npy", npy, True)
+        self.add_experiment_variable("npz", npz, True)
 
         if self.spec.satisfies("openmp=oui"):
-            variables["arch"] = "OpenMP"
-            variables["omp_num_threads"] = n_threads_per_proc
+            self.add_experiment_variable("arch", "OpenMP")
         elif self.spec.satisfies("cuda=oui"):
-            variables["arch"] = "CUDA"
-            variables["n_gpus"] = n_ranks
+            self.add_experiment_variable("arch", "CUDA")
         elif self.spec.satisfies("rocm=oui"):
-            variables["arch"] = "HIP"
+            self.add_experiment_variable("arch", "HIP")
 
-        experiment_name_template = (
-            f"kripke_{variables['arch']}_{self.spec.variants['scaling'][0]}"
-        )
-        experiment_name_template += "_{n_nodes}_{n_ranks}_{n_threads_per_proc}_{ngroups}_{gs}_{nquad}_{ds}_{lorder}_{nzx}_{nzy}_{nzz}_{npx}_{npy}_{npz}"
-
-        return {
-            "kripke": {
-                "workloads": {
-                    "kripke": {
-                        "experiments": {
-                            experiment_name_template: {
-                                "variants": {
-                                    "package_manager": "spack",
-                                },
-                                "variables": variables,
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        elif self.spec.satisfies("cuda=oui") or self.spec.satisfies("rocm=oui"):
+            self.add_experiment_variable("n_gpus", n_ranks)
 
     def compute_spack_section(self):
-        package_specs = super().compute_spack_section()["packages"]
-
-        app_name = self.spec.name
-
         # set package versions
         app_version = self.spec.variants["version"][0]
 
@@ -151,23 +131,13 @@ class Kripke(OpenMPExperiment, CudaExperiment, ROCmExperiment, Experiment):
             system_specs["rocm_arch"] = "{rocm_arch}"
 
         # set package spack specs
-        package_specs[system_specs["mpi"]] = (
-            {}
-        )  # empty package_specs value implies external package
-        package_specs[app_name] = {
-            "pkg_spec": f"kripke@{app_version} +mpi",
-            "compiler": system_specs["compiler"],
-        }
+        # empty package_specs value implies external package
+        self.add_spack_spec(system_specs["mpi"])
 
-        package_specs[app_name]["pkg_spec"] += super().generate_spack_specs()
-        package_specs[app_name]["pkg_spec"] += (
-            " " + self.spec.variants["extra_specs"][0]
+        self.add_spack_spec(
+            self.name, 
+            [
+                f"kripke@{app_version} +mpi",
+                system_specs["compiler"]
+            ]
         )
-        package_specs[app_name]["pkg_spec"] = package_specs[app_name][
-            "pkg_spec"
-        ].strip()
-
-        return {
-            "packages": {k: v for k, v in package_specs.items() if v},
-            "environments": {app_name: {"packages": list(package_specs.keys())}},
-        }

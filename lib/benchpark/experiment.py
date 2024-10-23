@@ -6,7 +6,9 @@
 from typing import Dict
 import yaml  # TODO: some way to ensure yaml available
 
+from benchpark.error import BenchparkError
 from benchpark.directives import ExperimentSystemBase
+from benchpark.directives import variant
 import benchpark.spec
 import benchpark.paths
 import benchpark.repo
@@ -20,7 +22,7 @@ import ramble.language.language_base  # noqa
 import ramble.language.language_helpers  # noqa
 
 
-class ExperimentHelperBase:
+class ExperimentHelper:
     def __init__(self, exp):
         self.spec = exp.spec
 
@@ -39,8 +41,11 @@ class ExperimentHelperBase:
     def compute_spack_section(self):
         return {}
 
-    def generate_spack_specs(self):
-        raise NotImplementedError("Each experiment must implement generate_spack_specs")
+    def get_helper_name_prefix(self):
+        return ""
+
+    def get_spack_variants(self):
+        raise NotImplementedError("Each helper must implement get_spack_variants")
 
 
 class Experiment(ExperimentSystemBase):
@@ -71,6 +76,12 @@ class Experiment(ExperimentSystemBase):
         Dict[str, benchpark.variant.Variant],
     ]
 
+    variant(
+        "extra_spack_specs",
+        default=" ",
+        description="additional spack specs",
+    )
+
     def __init__(self, spec):
         self.spec: "benchpark.spec.ConcreteExperimentSpec" = spec
         super().__init__()
@@ -82,9 +93,17 @@ class Experiment(ExperimentSystemBase):
                     helper_instance = cls.Helper(self)
                     self.helpers.append(helper_instance)
 
+        self.name = self.spec.name
+
+        if "workload" in self.spec.variants:
+            self.workload = self.spec.variants["workload"][0]
+        else:
+            self.workload = self.name
+
+        self.package_specs = {}
+
     def compute_include_section(self):
         # include the config directory
-        # TODO: does this need to change to interop with System class
         return ["./configs"]
 
     def compute_config_section(self):
@@ -95,51 +114,114 @@ class Experiment(ExperimentSystemBase):
         }
 
     def compute_modifiers_section(self):
+        return []
+
+    def compute_modifiers_section_wrapper(self):
         # by default we use the allocation modifier and no others
         modifier_list = [{"name": "allocation"}]
+        modifier_list += self.compute_modifiers_section()
         for cls in self.helpers:
             modifier_list += cls.compute_modifiers_section()
         return modifier_list
 
-    def compute_applications_section(self):
-        # Require that the experiment defines num_procs
-        variables = {}
-        variables["n_ranks"] = self.num_procs
+    def add_experiment_name_prefix(self, prefix):
+        self.expr_name = [prefix] + self.expr_name 
 
+    def add_experiment_variable(self, name, values, use_in_expr_name=False):
+        self.variables[name] = values
+        if use_in_expr_name:
+            self.expr_name.append(f"{{{name}}}")
+
+    def zip_experiment_variables(self, name, variable_names):
+        self.zips[name] = list(variable_names)
+
+    def matrix_experiment_variables(self, variable_names):
+        if isinstance(variable_names, str):
+            self.matrix.append(variable_names)
+        elif isinstance(variable_names, list):
+            self.matrix.extend(variable_names)
+        else:
+            raise ValueError("Variable list must be of type str or list[str].")
+
+    def add_experiment_exclude(self, exclude_clause):
+        self.excludes.append(exclude_clause)
+
+    def compute_applications_section(self):
         raise NotImplementedError(
             "Each experiment must implement compute_applications_section"
         )
 
-    def needs_external(pkgs_dict, system_specs, pkg_name):
-        # TODO: how to compose these here?
-        pkgs_dict[system_specs[pkg_name]] = {}
+    def compute_applications_section_wrapper(self):
+        self.expr_name = []
+        self.variables = {}
+        self.zips = {}
+        self.matrix = []
+        self.excludes = []
+
+        self.compute_applications_section()
+
+        expr_name_list = [self.name, self.workload]
+        for cls in self.helpers:
+            helper_prefix = cls.get_helper_name_prefix()
+            if helper_prefix:
+                expr_name_list.append(helper_prefix)
+        expr_name = "_".join(expr_name_list + self.expr_name)
+
+        return {
+            self.name: {
+                "workloads": {
+                    self.workload: {
+                        "experiments": {
+                            expr_name: {
+                                "variants": {"package_manager": "spack"}, 
+                                "variables": self.variables,
+                                "zips": self.zips,
+                                "matrix": self.matrix,
+                                "exclude": {"where" : self.excludes} if self.excludes else {},
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    def add_spack_spec(self, package_name, spec=None):
+        if spec:
+            self.package_specs[package_name] = {
+                "pkg_spec": spec[0],
+                "compiler": spec[1],
+            }
+        else:
+            self.package_specs[package_name] = {}
 
     def compute_spack_section(self):
-        package_specs_dict = {}
-        for cls in self.helpers:
-            cls_package_specs_dict = cls.compute_spack_section()
-            if (
-                cls_package_specs_dict
-                and "packages" in cls_package_specs_dict
-                and "environments" in cls_package_specs_dict
-            ):
-                if not package_specs_dict:
-                    package_specs_dict["packages"] = cls_package_specs_dict["packages"]
-                    package_specs_dict["environment"] = cls_package_specs_dict[
-                        "environments"
-                    ]
-                else:
-                    package_specs_dict["packages"] |= cls_package_specs_dict["packages"]
-                    package_specs_dict["environment"] |= cls_package_specs_dict[
-                        "environments"
-                    ]
-        return package_specs_dict
+        raise NotImplementedError(
+            "Each experiment must implement compute_spack_section"
+        )
 
-    def generate_spack_specs(self):
-        spack_specs = []
+    def compute_spack_section_wrapper(self):
         for cls in self.helpers:
-            spack_specs.append(cls.generate_spack_specs())
-        return " ".join(spack_specs)
+            cls_package_specs = cls.compute_spack_section()
+            if (
+                cls_package_specs
+                and "packages" in cls_package_specs
+            ):
+                self.package_specs |= cls_package_specs["packages"]
+
+        self.compute_spack_section()
+
+        if not self.name in self.package_specs:
+             raise BenchparkError(
+                 f"Spack section must be defined for application package {self.name}"
+             )
+
+        spack_variants = [cls.get_spack_variants() for cls in self.helpers]
+        self.package_specs[self.name]["pkg_spec"] += " ".join(spack_variants+list(self.spec.variants["extra_spack_specs"])).strip()
+
+        return {
+            "packages": {k: v for k, v in self.package_specs.items() if v},
+            "environments": {self.name: {"packages": list(self.package_specs.keys())}},
+        }
 
     def compute_ramble_dict(self):
         # This can be overridden by any subclass that needs more flexibility
@@ -147,9 +229,9 @@ class Experiment(ExperimentSystemBase):
             "ramble": {
                 "include": self.compute_include_section(),
                 "config": self.compute_config_section(),
-                "modifiers": self.compute_modifiers_section(),
-                "applications": self.compute_applications_section(),
-                "software": self.compute_spack_section(),
+                "modifiers": self.compute_modifiers_section_wrapper(),
+                "applications": self.compute_applications_section_wrapper(),
+                "software": self.compute_spack_section_wrapper(),
             }
         }
 
