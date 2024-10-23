@@ -10,8 +10,8 @@ Hello Benchpark Example
 Containerized Benchpark Coming Soon!
 
 This tutorial will guide you through the process of using Benchpark in a
-container.  In this case, we assume the ``system``, and the ``benchmark``
-and ``experiment`` are already configured.
+container.  In this case, the ``system``, and the ``benchmark``
+and ``experiment`` are already configured and just need to be setup and run.
 
 .. note:
 
