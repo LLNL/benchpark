@@ -329,3 +329,39 @@ jobs:
             --disable-progress-bar \
             --disable-logger \
             workspace setup --dry-run
+
+      - name: Dry run dynamic saxpy/openmp with dynamic CTS ruby
+        run: |
+          ./bin/benchpark system init --dest=ruby-system cts cluster=ruby
+          ./bin/benchpark experiment init --dest=saxpy-openmp saxpy programming_model=openmp
+          ./bin/benchpark setup ./saxpy-openmp ./ruby-system workspace/
+          . workspace/setup.sh
+          ramble \
+            --workspace-dir workspace/saxpy-openmp/Cts--6d48f81/workspace \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace setup --dry-run
+            
+      - name: Dry run dynamic saxpy/openmp with dynamic CTS dane
+        run: |
+          ./bin/benchpark system init --dest=dane-system cts cluster=dane
+          ./bin/benchpark experiment init --dest=saxpy-openmp2 saxpy programming_model=openmp
+          ./bin/benchpark setup ./saxpy-openmp2 ./dane-system workspace/
+          . workspace/setup.sh
+          ramble \
+            --workspace-dir workspace/saxpy-openmp2/Cts--2c51a80/workspace \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace setup --dry-run
+
+      - name: Dry run dynamic saxpy/openmp with dynamic CTS magma
+        run: |
+          ./bin/benchpark system init --dest=magma-system cts cluster=magma
+          ./bin/benchpark experiment init --dest=saxpy-openmp3 saxpy programming_model=openmp
+          ./bin/benchpark setup ./saxpy-openmp3 ./magma-system workspace/
+          . workspace/setup.sh
+          ramble \
+            --workspace-dir workspace/saxpy-openmp3/Cts--54a5761/workspace \
+            --disable-progress-bar \
+            --disable-logger \
+            workspace setup --dry-run

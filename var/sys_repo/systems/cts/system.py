@@ -17,7 +17,7 @@ id_to_resources = {
     },
     "dane": {
         "sys_cores_per_node": 112,
-    }
+    },
 }
 
 
