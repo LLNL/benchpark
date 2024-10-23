@@ -98,7 +98,9 @@ class RuntimeResources:
         # The reason for this oddity is that spack modules will compete with the internal
         # spack modules from ramble
         if not self.spack_location.exists():
-            print("Benchpark is cloning and installing Spack, this may take a few minutes.")
+            print(
+                "Benchpark is cloning and installing Spack, this may take a few minutes."
+            )
             self._install_spack()
 
     def _install_ramble(self):
