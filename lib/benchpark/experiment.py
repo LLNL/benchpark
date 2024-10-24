@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-from typing import Dict, Tuple
+from typing import Dict
 import yaml  # TODO: some way to ensure yaml available
 
 from benchpark.directives import ExperimentSystemBase
@@ -44,8 +44,8 @@ class Experiment(ExperimentSystemBase):
 
     # This allows analysis tools to correctly interpret the class attributes.
     variants: Dict[
-        str,
-        Tuple["benchpark.variant.Variant", "benchpark.spec.ConcreteExperimentSpec"],
+        "benchpark.spec.Spec",
+        Dict[str, benchpark.variant.Variant],
     ]
 
     def __init__(self, spec):
