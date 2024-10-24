@@ -5,7 +5,6 @@
 
 import pathlib
 
-from benchpark.directives import variant
 from benchpark.system import System
 
 
