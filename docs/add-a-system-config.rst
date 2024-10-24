@@ -65,21 +65,152 @@ For example the genericx86 system is defined in::
               ├── system.py
 
 
-.. note:
-  TODO: example with x86, show new hardware (GPU), compiler. Check the base class for other configurations, can we add docs to system.py and pull them in here?
+The System base class defined in ``/lib/benchpark/system.py`` is shown below, some or all of the functions can be overridden to define custom system behavior.
 
 .. literalinclude:: ../lib/benchpark/system.py
    :language: python
 
-The main driver for configuring a system is done by defining a subclass for that system in a ``var/sys_repo/{SYSTEM}/system.py`` file, which inherits from the System base class defined in ``/lib/benchpark/system.py``.
+The main driver for configuring a system is done by defining a subclass for that system in a ``var/sys_repo/{SYSTEM}/system.py`` file, which inherits from the System base class. 
 
-As is, the x86_64 system subclass should work for most x86_64 systems, but potential common changes might be to edit the number of cores per cpu, compiler locations, or adding external packages.
+As is, the generic_x86 system subclass should run on most x86_64 systems, but we mostly provide it as a starting point for modifying or testing.
+Potential common changes might be to edit the scheduler or number of cores per node, adding a GPU configuration, or adding other external compilers or packages.
 
-.. note:
-  TODO: Examples of making these changes...
+To make these changes, we provided an example below, where we start with the generic_x86 system.py, and make a system called Modifiedx86.
 
-Once the system subclass is written with proper configurations run: 
-``./benchpark system init --dest </path/to/destination/folder> x86_64``
+1. First, make a copy of the system.py file in generic_x86 folder and move it into a new folder, e.g., ``var/sys_repo/modified_x86/system.py``. 
+Then, update the class name to ``Modifiedx86``::
+  
+  class Modifiedx86(System):
+
+2. Next, to match our new system, we change the scheduler to slurm and the number of cores per node to 48, and number of GPUs per node to 2.
+::
+  # this sets basic attributes of our sytem
+  def initialize(self): 
+        super().initialize() 
+        self.scheduler = "slurm"
+        self.sys_cores_per_node = "48"
+        self.sys_gpus_per_node = "2"
+
+3. Let's say the new system's GPUs are NVIDIA, we can add a variant that allows us to specify the version of CUDA we want to use, and the location of those CUDA installations on our system.
+We then add the spack package configuration for our CUDA installations into the ``var/sys_repo/systems/modified_x86/externals/cuda`` directory (examples in Siera and Tioga systems).
+::
+  # import the variant feature at the top of your system.py
+  from benchpark.directives import variant
+
+  # this allows us to specify which cuda version we want as a command line parameter
+  variant(
+        "cuda",
+        default="11-8-0",
+        values=("11-8-0", "10-1-243"),
+        description="CUDA version",
+    )
+
+    # set this to pass to spack
+    def system_specific_variables(self):
+        return {"cuda_arch": "70"}
+
+    # define the external package locations
+    def external_pkg_configs(self):
+        externals = Modifiedx86.resource_location / "externals"
+
+        cuda_ver = self.spec.variants["cuda"][0]
+
+        selections = []
+        if cuda_ver == "10-1-243":
+            selections.append(externals / "cuda" / "00-version-10-1-243-packages.yaml")
+        elif cuda_ver == "11-8-0":
+            selections.append(externals / "cuda" / "01-version-11-8-0-packages.yaml")
+
+        return selections
+
+4. Next, add any of the packages that can be managed by spack, such as blas/cublas pointing to the correct version,
+this will generate the software configurations for spack (``software.yaml``). The actual version will be rendered by Ramble when it is built.
+::
+  def sw_description(self):
+        return """\
+  software:
+    packages:
+      default-compiler:
+        pkg_spec: gcc
+      compiler-gcc:
+        pkg_spec: gcc
+      default-mpi:
+        pkg_spec: openmpi
+      blas:
+        pkg_spec: cublas@{default_cuda_version}
+      cublas-cuda:
+        pkg_spec: cublas@{default_cuda_version}
+  """
+
+5. The full system.py class for the modified_x86 system should now look like:
+::
+  import pathlib
+
+  from benchpark.directives import variant
+  from benchpark.system import System
+
+  class Modifiedx86(System):
+
+    variant(
+        "cuda",
+        default="11-8-0",
+        values=("11-8-0", "10-1-243"),
+        description="CUDA version",
+    )
+
+    def initialize(self):
+        super().initialize()
+
+        self.scheduler = "slurm"
+        setattr(self, "sys_cores_per_node", 48)
+        self.sys_gpus_per_node = "2"
+
+    def generate_description(self, output_dir):
+        super().generate_description(output_dir)
+
+        sw_description = pathlib.Path(output_dir) / "software.yaml"
+
+        with open(sw_description, "w") as f:
+            f.write(self.sw_description())
+
+    def system_specific_variables(self):
+        return {"cuda_arch": "70"}
+
+    def external_pkg_configs(self):
+        externals = Modifiedx86.resource_location / "externals"
+
+        cuda_ver = self.spec.variants["cuda"][0]
+
+        selections = []
+        if cuda_ver == "10-1-243":
+            selections.append(externals / "cuda" / "00-version-10-1-243-packages.yaml")
+        elif cuda_ver == "11-8-0":
+            selections.append(externals / "cuda" / "01-version-11-8-0-packages.yaml")
+
+        return selections
+
+    def sw_description(self):
+        """This is somewhat vestigial, and maybe deleted later. The experiments
+        will fail if these variables are not defined though, so for now
+        they are still generated (but with more-generic values).
+        """
+        return """\
+  software:
+    packages:
+      default-compiler:
+        pkg_spec: gcc
+      compiler-gcc:
+        pkg_spec: gcc
+      default-mpi:
+        pkg_spec: openmpi
+      blas:
+        pkg_spec: cublas@{default_cuda_version}
+      cublas-cuda:
+        pkg_spec: cublas@{default_cuda_version}
+  """
+
+Once the modified system subclass is written, run: 
+``./bin/benchpark system init --dest=modifiedx86-system modifiedx86``
 
 This will generate the required yaml configurations for your system and you can validate it works with a static experiment test.
 
@@ -89,47 +220,22 @@ Validating the System
 
 To manually validate your new system, you should initialize it and run an existing experiment such as saxpy. For example::
 
-  ./bin/benchpark system init --dest=test-new-system {SYSTEM}
+  ./bin/benchpark system init --dest=modifiedx86-system modifiedx86
   ./bin/benchpark experiment init --dest=saxpy saxpy
-  ./bin/benchpark setup ./saxpy ./test-new-system workspace/
+  ./bin/benchpark setup ./saxpy ./modifiedx86-system workspace/
 
 Then you can run the commands provided by the output, the experiments should be built and run successfully without any errors. 
 
-The following yaml files are examples of what is generated for a system after it is initialized:
+The following yaml files are examples of what is generated for the modified_x86 system from the example after it is initialized:
 
 1. ``system_id.yaml`` describes the system hardware, including the integrator (and the name of the product node or cluster type), the processor, (optionally) the accelerator, and the network; the information included here is what you will typically see recorded about the system on Top500.org.  We intend to make the system definitions in Benchpark searchable, and will add a schema to enforce consistency; until then, please copy the file and fill out all of the fields without changing the keys.  Also listed is the specific system the config was developed and tested on, as well as the known systems with the same hardware so that the users of those systems can find this system specification.
 
 .. code-block:: yaml
 
-  system_definition:
-    name: HPECray-zen3-MI250X-Slingshot # or site-specific name, e.g., Frontier at ORNL
-    site:
-    system: HPECray-zen3-MI250X-Slingshot
-    integrator:
-      vendor: HPECray
-      name: EX235a
-    processor:
-      vendor: AMD
-      name: EPYC-Zen3
-      ISA: x86_64
-      uArch: zen3
-    accelerator:
-      vendor: AMD
-      name: MI250X
-      ISA: GCN
-      uArch: gfx90a
-    interconnect:
-      vendor: HPECray
-      name: Slingshot11
-    system-tested:
-      site: LLNL
-      name: tioga
-      installation-year: 2022
-      description: [top500](https://www.top500.org/system/180052)
-    top500-system-instances:
-      - Frontier (ORNL)
-      - Lumi     (CSC)
-      - Tioga    (LLNL)
+  system:
+    name: Modifiedx86
+    spec: sysbuiltin.modifiedx86 cuda=11-8-0
+    config-hash: 5310ebe8b2c841108e5da854c75dab931f5397a7fb41726902bb8a51ffb84a36
 
 
 2. ``software.yaml`` defines default compiler and package names your package
@@ -143,27 +249,31 @@ file
     software:
       packages:
         default-compiler:
-          pkg_spec: 'spack_spec_for_package'
+          pkg_spec: 'gcc'
+        compiler-gcc:
+          pkg_spec: 'gcc'
         default-mpi:
-          pkg_spec: 'spack_spec_for_package'
+          pkg_spec: 'openmpi'
+        blas:
+          pkg_spec: cublas@{default_cuda_version}
+        cublas-cuda:
+          pkg_spec: cublas@{default_cuda_version}
 
 3. ``variables.yaml`` defines system-specific launcher and job scheduler.
 
 .. code-block:: yaml
 
-    variables:
-      timeout: '30'
-      scheduler: "slurm"
-      sys_cores_per_node: "128"
-      sys_gpus_per_node: "4"
-      sys_mem_per_node unset
-      max_request: "1000"  # n_ranks/n_nodes cannot exceed this
-      n_ranks: '1000001'  # placeholder value
-      n_nodes: '1000001'  # placeholder value
-      batch_submit: "placeholder"
-      mpi_command: "placeholder"
-      # batch_queue: "pbatch"
-      # batch_bank: "guest"
+  variables:
+    timeout: "120"
+    scheduler: "slurm"
+    sys_cores_per_node: "48"
+    sys_gpus_per_node: 2
+    cuda_arch: 70
+    max_request: "1000"  # n_ranks/n_nodes cannot exceed this
+    n_ranks: '1000001'  # placeholder value
+    n_nodes: '1000001'  # placeholder value
+    batch_submit: "placeholder"
+    mpi_command: "placeholder"
 
 
 Once you can run an experiment successfully, and the yaml looks correct the new system has been validated and you can continue your :doc:`benchpark-workflow`.
