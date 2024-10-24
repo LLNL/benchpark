@@ -145,7 +145,7 @@ test_run_cts:
   script:
     - . /usr/workspace/benchpark-dev/benchpark-venv/$SYS_TYPE/bin/activate
     # Initialize system & experiment
-    - ./bin/benchpark system init --dest=$HOST-system cluster=$HOST
+    - ./bin/benchpark system init --dest=$HOST-system cts cluster=$HOST
     - ./bin/benchpark experiment init --dest=kripke-benchmark kripke programming_model=openmp
     # Build Workspace
     - ./bin/benchpark setup kripke-benchmark $HOST-system workspace/
@@ -176,7 +176,7 @@ test_run_cts:
 #  script:
 #    - . /usr/workspace/benchpark-dev/benchpark-venv/$SYS_TYPE/bin/activate
 #    # Initialize system & experiment
-#    - ./bin/benchpark system init --dest=$HOST-system cluster=$HOST
+#    - ./bin/benchpark system init --dest=$HOST-system cts cluster=$HOST
 #    - ./bin/benchpark experiment init --dest=saxpy-benchmark saxpy programming_model=openmp
 #    # Build Workspace
 #    - ./bin/benchpark setup saxpy-benchmark $HOST-system workspace/
