@@ -8,7 +8,7 @@ from benchpark.directives import variant
 from benchpark.experiment import Experiment
 
 
-class Caliper(Experiment):
+class Caliper:
     variant(
         "caliper",
         default="none",

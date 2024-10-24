@@ -3,7 +3,7 @@ from benchpark.experiment import Experiment
 from benchpark.expr.builtin.caliper import Caliper
 
 
-class Amg2023(Experiment, Caliper):
+class Amg2023(Caliper, Experiment):
     variant(
         "programming_model",
         default="openmp",
