@@ -139,17 +139,17 @@ test_run_cts:
         - var/**
         - lib/**
   script:
+    - echo $HOST $BENCHMARK $SYSTEMHASH
     - . /usr/workspace/benchpark-dev/benchpark-venv/$SYS_TYPE/bin/activate
     # Initialize system & experiment
-    - ./bin/benchpark system init --dest=${HOST}-system cluster=${HOST}
-    - ./bin/benchpark experiment init --dest=${BENCHMARK}-benchmark ${BENCHMARK} programming_model=openmp
+    - ./bin/benchpark system init --dest=$HOST-system cluster=$HOST
+    - ./bin/benchpark experiment init --dest=$BENCHMARK-benchmark $BENCHMARK programming_model=openmp
     # Build Workspace
-    - ./bin/benchpark setup ${BENCHMARK}-benchmark ${HOST}-system workspace/
+    - ./bin/benchpark setup $BENCHMARK-benchmark $HOST-system workspace/
     # Setup Ramble & Spack
     - . workspace/setup.sh
     # Setup Workspace
-    - cd ./workspace/${BENCHMARK}-benchmark/${SYSTEMHASH}/workspace/
+    - cd ./workspace/$BENCHMARK-benchmark/$SYSTEMHASH/workspace/
     - ramble --workspace-dir . --disable-progress-bar --disable-logger workspace setup
     # Run Experiments
     - ramble --workspace-dir . --disable-progress-bar --disable-logger on
-  <<: *test_benchmarks
