@@ -20,7 +20,6 @@
 
    system-list
    benchmark-list
-   benchpark-help
 
 .. toctree::
    :maxdepth: 1
@@ -38,6 +37,7 @@
    run-experiment
    analyze-experiment
    modifiers
+   set-of-experiments
 
 .. toctree::
    :maxdepth: 1
@@ -47,12 +47,6 @@
    add-a-benchmark
    add-an-experiment
    add-a-dryrun
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Benchmark Suites
-
-   set-of-experiments
 
 .. toctree::
    :maxdepth: 1
