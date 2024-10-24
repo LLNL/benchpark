@@ -1,21 +1,24 @@
-.test_clusters: &test_clusters
+.legacy_test_clusters: &legacy_test_clusters
   parallel:
     matrix:
       - HOST: tioga
         ARCHCONFIG: LLNL-Tioga-HPECray-zen3-MI250X-Slingshot
-        SYSTEMHASH: Tioga-975af3c
       - HOST: dane
         ARCHCONFIG: LLNL-Dane-DELL-sapphirerapids-OmniPath
+
+.test_clusters: &test_clusters
+  parallel:
+    matrix:
+      - HOST: dane
         SYSTEMHASH: Cts-2c51a80
       - HOST: ruby
-        ARCHCONFIG: LLNL-Ruby-icelake-OmniPath
         SYSTEMHASH: Cts-6d48f81
 
 .on_machine:
   tags:
     - shell
     - $HOST
-  <<: *test_clusters
+  <<: *legacy_test_clusters
   rules:
     # Only report failure if the pipeline failed.
     - if: '$CI_JOB_NAME =~ /status_failure/'
@@ -62,7 +65,7 @@ legacy_test_run:
   tags:
     - $HOST
     - shell
-  <<: *test_clusters
+  <<: *legacy_test_clusters
   rules:
     - changes:
         - .gitlab-ci.yml
@@ -123,7 +126,7 @@ test_run_tioga:
     - ramble --workspace-dir . --disable-progress-bar --disable-logger on
   <<: *test_benchmarks
 
-test_run_kripke_cts:
+test_run_cts:
   stage: test
   tags:
     - $HOST
