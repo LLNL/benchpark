@@ -78,14 +78,14 @@ Potential common changes might be to edit the scheduler or number of cores per n
 To make these changes, we provided an example below, where we start with the generic_x86 system.py, and make a system called Modifiedx86.
 
 1. First, make a copy of the system.py file in generic_x86 folder and move it into a new folder, e.g., ``var/sys_repo/modified_x86/system.py``. 
-Then, update the class name to ``Modifiedx86``::
+Then, update the class name to ``Modifiedx86``.::
   
-  class Modifiedx86(System):
+    class Modifiedx86(System):
 
-2. Next, to match our new system, we change the scheduler to slurm and the number of cores per node to 48, and number of GPUs per node to 2.
-::
-  # this sets basic attributes of our system
-  def initialize(self): 
+2. Next, to match our new system, we change the scheduler to slurm and the number of cores per node to 48, and number of GPUs per node to 2.::
+
+    # this sets basic attributes of our system
+    def initialize(self): 
         super().initialize() 
         self.scheduler = "slurm"
         self.sys_cores_per_node = "48"
@@ -94,11 +94,11 @@ Then, update the class name to ``Modifiedx86``::
 3. Let's say the new system's GPUs are NVIDIA, we can add a variant that allows us to specify the version of CUDA we want to use, and the location of those CUDA installations on our system.
 We then add the spack package configuration for our CUDA installations into the ``var/sys_repo/systems/modified_x86/externals/cuda`` directory (examples in Siera and Tioga systems).
 ::
-  # import the variant feature at the top of your system.py
-  from benchpark.directives import variant
+    # import the variant feature at the top of your system.py
+    from benchpark.directives import variant
 
-  # this allows us to specify which cuda version we want as a command line parameter
-  variant(
+    # this allows us to specify which cuda version we want as a command line parameter
+    variant(
         "cuda",
         default="11-8-0",
         values=("11-8-0", "10-1-243"),
@@ -144,70 +144,70 @@ this will generate the software configurations for spack (``software.yaml``). Th
 
 5. The full system.py class for the modified_x86 system should now look like:
 ::
-  import pathlib
+    import pathlib
 
-  from benchpark.directives import variant
-  from benchpark.system import System
+    from benchpark.directives import variant
+    from benchpark.system import System
 
-  class Modifiedx86(System):
+    class Modifiedx86(System):
 
-    variant(
-        "cuda",
-        default="11-8-0",
-        values=("11-8-0", "10-1-243"),
-        description="CUDA version",
-    )
+        variant(
+            "cuda",
+            default="11-8-0",
+            values=("11-8-0", "10-1-243"),
+            description="CUDA version",
+        )
 
-    def initialize(self):
-        super().initialize()
+        def initialize(self):
+            super().initialize()
 
-        self.scheduler = "slurm"
-        setattr(self, "sys_cores_per_node", 48)
-        self.sys_gpus_per_node = "2"
+            self.scheduler = "slurm"
+            setattr(self, "sys_cores_per_node", 48)
+            self.sys_gpus_per_node = "2"
 
-    def generate_description(self, output_dir):
-        super().generate_description(output_dir)
+        def generate_description(self, output_dir):
+            super().generate_description(output_dir)
 
-        sw_description = pathlib.Path(output_dir) / "software.yaml"
+            sw_description = pathlib.Path(output_dir) / "software.yaml"
 
-        with open(sw_description, "w") as f:
-            f.write(self.sw_description())
+            with open(sw_description, "w") as f:
+                f.write(self.sw_description())
 
-    def system_specific_variables(self):
-        return {"cuda_arch": "70"}
+        def system_specific_variables(self):
+            return {"cuda_arch": "70"}
 
-    def external_pkg_configs(self):
-        externals = Modifiedx86.resource_location / "externals"
+        def external_pkg_configs(self):
+            externals = Modifiedx86.resource_location / "externals"
 
-        cuda_ver = self.spec.variants["cuda"][0]
+            cuda_ver = self.spec.variants["cuda"][0]
 
-        selections = []
-        if cuda_ver == "10-1-243":
-            selections.append(externals / "cuda" / "00-version-10-1-243-packages.yaml")
-        elif cuda_ver == "11-8-0":
-            selections.append(externals / "cuda" / "01-version-11-8-0-packages.yaml")
+            selections = []
+            if cuda_ver == "10-1-243":
+                selections.append(externals / "cuda" / "00-version-10-1-243-packages.yaml")
+            elif cuda_ver == "11-8-0":
+                selections.append(externals / "cuda" / "01-version-11-8-0-packages.yaml")
 
-        return selections
+            return selections
 
-    def sw_description(self):
-        """This is somewhat vestigial, and maybe deleted later. The experiments
-        will fail if these variables are not defined though, so for now
-        they are still generated (but with more-generic values).
-        """
-        return """\
-  software:
-    packages:
-      default-compiler:
-        pkg_spec: gcc
-      compiler-gcc:
-        pkg_spec: gcc
-      default-mpi:
-        pkg_spec: openmpi
-      blas:
-        pkg_spec: cublas@{default_cuda_version}
-      cublas-cuda:
-        pkg_spec: cublas@{default_cuda_version}
-  """
+        def sw_description(self):
+            """This is somewhat vestigial, and maybe deleted later. The experiments
+            will fail if these variables are not defined though, so for now
+            they are still generated (but with more-generic values).
+            """
+            return """\
+      software:
+        packages:
+          default-compiler:
+            pkg_spec: gcc
+          compiler-gcc:
+            pkg_spec: gcc
+          default-mpi:
+            pkg_spec: openmpi
+          blas:
+            pkg_spec: cublas@{default_cuda_version}
+          cublas-cuda:
+            pkg_spec: cublas@{default_cuda_version}
+    """
 
 Once the modified system subclass is written, run: 
 ``./bin/benchpark system init --dest=modifiedx86-system modifiedx86``
