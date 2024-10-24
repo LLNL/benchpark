@@ -171,7 +171,7 @@ test_run_saxpy_openmp:
   tags:
     - $HOST
     - shell
-  <<: *test_clusters
+  <<: *legacy_test_clusters
   rules:
     - changes:
         - .gitlab-ci.yml
