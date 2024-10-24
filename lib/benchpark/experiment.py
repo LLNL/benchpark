@@ -125,7 +125,7 @@ class Experiment(ExperimentSystemBase):
         return modifier_list
 
     def add_experiment_name_prefix(self, prefix):
-        self.expr_name = [prefix] + self.expr_name 
+        self.expr_name = [prefix] + self.expr_name
 
     def add_experiment_variable(self, name, values, use_in_expr_name=False):
         self.variables[name] = values
@@ -173,11 +173,13 @@ class Experiment(ExperimentSystemBase):
                     self.workload: {
                         "experiments": {
                             expr_name: {
-                                "variants": {"package_manager": "spack"}, 
+                                "variants": {"package_manager": "spack"},
                                 "variables": self.variables,
                                 "zips": self.zips,
                                 "matrix": self.matrix,
-                                "exclude": {"where" : self.excludes} if self.excludes else {},
+                                "exclude": (
+                                    {"where" : self.excludes} if self.excludes else {}
+                                ),
                             }
                         }
                     }
@@ -202,21 +204,20 @@ class Experiment(ExperimentSystemBase):
     def compute_spack_section_wrapper(self):
         for cls in self.helpers:
             cls_package_specs = cls.compute_spack_section()
-            if (
-                cls_package_specs
-                and "packages" in cls_package_specs
-            ):
+            if cls_package_specs and "packages" in cls_package_specs:
                 self.package_specs |= cls_package_specs["packages"]
 
         self.compute_spack_section()
 
         if not self.name in self.package_specs:
-             raise BenchparkError(
-                 f"Spack section must be defined for application package {self.name}"
-             )
+            raise BenchparkError(
+                f"Spack section must be defined for application package {self.name}"
+            )
 
         spack_variants = [cls.get_spack_variants() for cls in self.helpers]
-        self.package_specs[self.name]["pkg_spec"] += " ".join(spack_variants+list(self.spec.variants["extra_spack_specs"])).strip()
+        self.package_specs[self.name]["pkg_spec"] += " ".join(
+            spack_variants+list(self.spec.variants["extra_spack_specs"])
+        ).strip()
 
         return {
             "packages": {k: v for k, v in self.package_specs.items() if v},

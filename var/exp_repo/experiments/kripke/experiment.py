@@ -135,9 +135,5 @@ class Kripke(OpenMPExperiment, CudaExperiment, ROCmExperiment, Experiment):
         self.add_spack_spec(system_specs["mpi"])
 
         self.add_spack_spec(
-            self.name, 
-            [
-                f"kripke@{app_version} +mpi",
-                system_specs["compiler"]
-            ]
+            self.name, [f"kripke@{app_version} +mpi", system_specs["compiler"]]
         )

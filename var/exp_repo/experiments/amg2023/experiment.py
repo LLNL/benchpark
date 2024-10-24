@@ -81,7 +81,9 @@ class Amg2023(OpenMPExperiment, CudaExperiment, ROCmExperiment, Caliper, Experim
             self.matrix_experiment_variables("size")
 
         if self.spec.satisfies("openmp=oui"):
-            self.add_experiment_exclude("{n_threads_per_proc} * {n_ranks} > {n_nodes} * {sys_cores_per_node}")
+            self.add_experiment_exclude(
+                "{n_threads_per_proc} * {n_ranks} > {n_nodes} * {sys_cores_per_node}"
+            )
 
     def compute_applications_section(self):
         if self.spec.satisfies("experiment=example"):
@@ -123,9 +125,5 @@ class Amg2023(OpenMPExperiment, CudaExperiment, ROCmExperiment, Caliper, Experim
         self.add_spack_spec(system_specs["lapack"])
 
         self.add_spack_spec(
-            self.name, 
-            [
-                f"amg2023@{app_version} +mpi",
-                system_specs["compiler"]
-            ]
+            self.name, [f"amg2023@{app_version} +mpi", system_specs["compiler"]]
         )
