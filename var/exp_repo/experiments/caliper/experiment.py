@@ -5,7 +5,6 @@
 
 
 from benchpark.directives import variant
-from benchpark.experiment import Experiment
 
 
 class Caliper:
