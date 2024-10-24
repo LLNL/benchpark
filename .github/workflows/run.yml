@@ -345,7 +345,7 @@ jobs:
       - name: Dry run dynamic saxpy/openmp with dynamic CTS dane
         run: |
           ./bin/benchpark system init --dest=dane-system cts cluster=dane
-          ./bin/benchpark experiment init --dest=saxpy-openmp2 saxpy programming_model=openmp
+          ./bin/benchpark experiment init --dest=saxpy-openmp2 saxpy openmp=oui
           ./bin/benchpark setup ./saxpy-openmp2 ./dane-system workspace/
           . workspace/setup.sh
           ramble \
@@ -357,7 +357,7 @@ jobs:
       - name: Dry run dynamic saxpy/openmp with dynamic CTS magma
         run: |
           ./bin/benchpark system init --dest=magma-system cts cluster=magma
-          ./bin/benchpark experiment init --dest=saxpy-openmp3 saxpy programming_model=openmp
+          ./bin/benchpark experiment init --dest=saxpy-openmp3 saxpy openmp=oui
           ./bin/benchpark setup ./saxpy-openmp3 ./magma-system workspace/
           . workspace/setup.sh
           ramble \
