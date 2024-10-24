@@ -7,7 +7,7 @@
 Running on an LLNL System
 ==========================
 
-.. note::
+.. note
 
     We might add console outputs for these, so users know what to expect
 
