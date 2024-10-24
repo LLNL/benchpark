@@ -9,7 +9,7 @@ from benchpark.directives import variant
 from benchpark.system import System
 
 
-class X8664(System):
+class GenericX86(System):
 
     variant(
         "compiler",
@@ -32,8 +32,6 @@ class X8664(System):
         with open(sw_description, "w") as f:
             f.write(self.sw_description())
 
-        # return selections
-
     def sw_description(self):
         """This is somewhat vestigial, and maybe deleted later. The experiments
         will fail if these variables are not defined though, so for now
@@ -46,12 +44,6 @@ software:
       pkg_spec: gcc
     compiler-gcc:
       pkg_spec: gcc
-    compiler-intel:
-      pkg_spec: intel
     default-mpi:
       pkg_spec: openmpi
-    blas:
-      pkg_spec: blas
-    lapack:
-      pkg_spec: lapack
 """
