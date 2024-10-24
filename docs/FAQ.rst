@@ -46,6 +46,7 @@ specified in ``checkout-versions.yaml``.
 
 The user might notice this delay in Spack and Ramble versions
 in two ways:
+
 * The latest functionality of Spack and/or Ramble may not yet be
   available in Benchpark.
 * The latest package.py specifications available in Spack
