@@ -373,7 +373,7 @@ jobs:
           ./bin/benchpark setup ./saxpy-omp-generic ./x86-system workspace/
           . workspace/setup.sh
           ramble \
-            --workspace-dir workspace/saxpy-omp-generic/genericx86-54a5761/workspace \
+            --workspace-dir workspace/saxpy-omp-generic/Genericx86-7be703f/workspace \
             --disable-progress-bar \
             --disable-logger \
             workspace setup --dry-run
