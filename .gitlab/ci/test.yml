@@ -1,17 +1,77 @@
-.test_clusters: &test_clusters
+.legacy_test_clusters: &legacy_test_clusters
   parallel:
     matrix:
       - HOST: tioga
         ARCHCONFIG: LLNL-Tioga-HPECray-zen3-MI250X-Slingshot
+        SYSTEMHASH: Tioga-975af3c
       - HOST: dane
         ARCHCONFIG: LLNL-Dane-DELL-sapphirerapids-OmniPath
+        SYSTEMHASH: Cts-2c51a80
+      - HOST: ruby
+        ARCHCONFIG: LLNL-Ruby-icelake-OmniPath
+        SYSTEMHASH: Cts-6d48f81
 
-test_run:
+#.test_clusters: &test_clusters
+#  parallel:
+#    matrix:
+#      - HOST: dane
+#        SYSTEMHASH: Cts-2c51a80
+#      - HOST: ruby
+#        SYSTEMHASH: Cts-6d48f81
+
+.on_machine:
+  tags:
+    - shell
+    - $HOST
+  <<: *legacy_test_clusters
+  rules:
+    # Only report failure if the pipeline failed.
+    - if: '$CI_JOB_NAME =~ /status_failure/'
+      when: on_failure
+    # A true statement is expected to allow jobs to run. Here is the default.
+    - when: on_success
+
+.status_report: &status_report
+    - export context=$HOST
+    - |
+      curl --url "https://api.github.com/repos/llnl/${CI_PROJECT_NAME}/statuses/${CI_COMMIT_SHA}" \
+           --header 'Content-Type: application/json' \
+           --header "authorization: Bearer ${GITHUB_TOKEN}" \
+           --data "{ \"state\": \"${pipeline_status}\", \"target_url\": \"${CI_PIPELINE_URL}\", \"description\": \"GitLab ${context} pipeline\", \"context\": \"ci/gitlab/${context}\" }"
+
+status_pending:
+  extends: [.on_machine]
+  stage: status_initiate
+  id_tokens:
+    CI_JOB_JWT:
+      aud: https://lc.llnl.gov/gitlab
+  script:
+    - export pipeline_status="pending"
+    - *status_report
+
+status_success:
+  extends: [.on_machine]
+  stage: status_update
+  script:
+    - export pipeline_status="success"
+    - *status_report
+  when: on_success
+
+status_failure:
+  extends: [.on_machine]
+  stage: status_update
+  script:
+    - export pipeline_status="failure"
+    - *status_report
+  when: on_failure
+
+# legacy run on tioga, dane, ruby, saxpy openmp
+legacy_test_run:
   stage: test
   tags:
     - $HOST
     - shell
-  <<: *test_clusters
+  <<: *legacy_test_clusters
   rules:
     - changes:
         - .gitlab-ci.yml
@@ -32,4 +92,107 @@ test_run:
     - cd ./workspace/saxpy/openmp/$ARCHCONFIG/workspace/
     - ramble --workspace-dir . --disable-progress-bar --disable-logger workspace setup
     # Run Saxpy Experiments
+    - ramble --workspace-dir . --disable-progress-bar --disable-logger on
+
+.test_benchmarks: &test_benchmarks
+  parallel:
+    matrix:
+      - BENCHMARK:
+          - kripke
+          - saxpy
+
+# new run on tioga kripke/saxpy rocm
+test_run_tioga_rocm:
+  stage: test
+  tags:
+    - tioga
+    - shell
+  rules:
+    - changes:
+        - .gitlab-ci.yml
+        - .gitlab/ci/*
+        - experiments/**
+        - systems/**
+        - repo/**
+        - modifiers/**
+        - var/**
+        - lib/**
+  script:
+    - . /usr/workspace/benchpark-dev/benchpark-venv/$SYS_TYPE/bin/activate
+    # Initialize system & experiment
+    - ./bin/benchpark system init --dest=tioga-system tioga ~gtl
+    - ./bin/benchpark experiment init --dest=${BENCHMARK}-benchmark ${BENCHMARK} programming_model=rocm
+    # Build Workspace
+    - ./bin/benchpark setup ${BENCHMARK}-benchmark tioga-system workspace/
+    # Setup Ramble & Spack
+    - . workspace/setup.sh
+    # Setup Workspace
+    - cd ./workspace/${BENCHMARK}-benchmark/Tioga-975af3c/workspace/
+    - ramble --workspace-dir . --disable-progress-bar --disable-logger workspace setup
+    # Run Experiments
+    - ramble --workspace-dir . --disable-progress-bar --disable-logger on
+  <<: *test_benchmarks
+
+# new run on tioga, dane, ruby kripke openmp
+test_run_kripke_openmp:
+  stage: test
+  tags:
+    - $HOST
+    - shell
+  <<: *legacy_test_clusters
+  rules:
+    - changes:
+        - .gitlab-ci.yml
+        - .gitlab/ci/*
+        - experiments/**
+        - systems/**
+        - repo/**
+        - modifiers/**
+        - var/**
+        - lib/**
+  script:
+    - . /usr/workspace/benchpark-dev/benchpark-venv/$SYS_TYPE/bin/activate
+    # Initialize system & experiment
+    - if [ "$HOST" == "tioga" ]; then ./bin/benchpark system init --dest=tioga-system tioga ~gtl; else ./bin/benchpark system init --dest=$HOST-system cts cluster=$HOST; fi
+    - ./bin/benchpark experiment init --dest=kripke-benchmark kripke programming_model=openmp
+    # Build Workspace
+    - ./bin/benchpark setup kripke-benchmark $HOST-system workspace/
+    # Setup Ramble & Spack
+    - . workspace/setup.sh
+    # Setup Workspace
+    - cd ./workspace/kripke-benchmark/$SYSTEMHASH/workspace/
+    - ramble --workspace-dir . --disable-progress-bar --disable-logger workspace setup
+    # Run Experiments
+    - ramble --workspace-dir . --disable-progress-bar --disable-logger on
+
+# new run on tioga, dane, ruby saxpy openmp
+test_run_saxpy_openmp:
+  stage: test
+  tags:
+    - $HOST
+    - shell
+  <<: *legacy_test_clusters
+  rules:
+    - changes:
+        - .gitlab-ci.yml
+        - .gitlab/ci/*
+        - experiments/**
+        - systems/**
+        - repo/**
+        - modifiers/**
+        - var/**
+        - lib/**
+  script:
+    - . /usr/workspace/benchpark-dev/benchpark-venv/$SYS_TYPE/bin/activate
+    # Initialize system & experiment
+    - if [ "$HOST" == "tioga" ]; then ./bin/benchpark system init --dest=tioga-system tioga ~gtl; else ./bin/benchpark system init --dest=$HOST-system cts cluster=$HOST; fi
+    - ./bin/benchpark experiment init --dest=saxpy-benchmark saxpy programming_model=openmp
+    # Build Workspace
+    - ./bin/benchpark setup saxpy-benchmark $HOST-system workspace/
+    # Setup Ramble & Spack
+    - . workspace/setup.sh
+    # Setup Workspace
+    - cd ./workspace/saxpy-benchmark/$SYSTEMHASH/workspace/
+    - ramble --workspace-dir . --disable-progress-bar --disable-logger workspace setup
+    # Run Experiments
     - ramble --workspace-dir . --disable-progress-bar --disable-logger on
