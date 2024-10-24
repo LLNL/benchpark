@@ -9,7 +9,7 @@ from benchpark.directives import variant
 from benchpark.system import System
 
 
-class GenericX86(System):
+class Genericx86(System):
 
     variant(
         "compiler",
