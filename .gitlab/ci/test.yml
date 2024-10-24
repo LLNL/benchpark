@@ -9,9 +9,6 @@
       - HOST: ruby
         ARCHCONFIG: LLNL-Ruby-icelake-OmniPath
         SYSTEMHASH: Cts-6d48f81
-      - HOST: magma
-        ARCHCONFIG: LLNL-Magma-Penguin-icelake-OmniPath
-        SYSTEMHASH: Cts-54a5761
 
 .on_machine:
   tags:
@@ -130,6 +127,7 @@ test_run_cts:
   tags:
     - $HOST
     - shell
+  <<: *test_clusters
   rules:
     - changes:
         - .gitlab-ci.yml
