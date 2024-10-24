@@ -16,7 +16,7 @@ A. Run Existing Systems, Benchmarks and Experiments
 ----------------------------------------------------
 
 If you are running on an existing ``system``, and the ``benchmark``
-and ``experiment`` are already configured, you can proceed directly to the Guided Steps, 
+and ``experiment`` are already configured, you can proceed directly to the Running Benchpark Steps, 
 starting with :doc:`benchpark-setup` for:
 
 * Setup / Run / Analyze

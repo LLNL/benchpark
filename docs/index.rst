@@ -32,7 +32,7 @@
 
 .. toctree::
    :maxdepth: 1
-   :caption: Guided Steps
+   :caption: Running Benchpark
 
    benchpark-setup
    build-experiment

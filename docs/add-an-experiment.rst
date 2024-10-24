@@ -68,7 +68,7 @@ Validating the Benchmark/Experiment
 -----------------------------------
 
 To manually validate your new experiments work, you should initialize an existing system, and run your experiments. 
-For example if you just created a benchmark baz with OpenMP and strong scaling variants it may look like this:::
+For example if you just created a benchmark *baz* with OpenMP and strong scaling variants it may look like this:::
 
   ./bin/benchpark system init --dest=genericx86-system genericx86 
   ./bin/benchpark experiment init --dest=baz-benchmark baz programming_model=openmp scaling=strong
