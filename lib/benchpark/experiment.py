@@ -178,7 +178,7 @@ class Experiment(ExperimentSystemBase):
                                 "zips": self.zips,
                                 "matrix": self.matrix,
                                 "exclude": (
-                                    {"where" : self.excludes} if self.excludes else {}
+                                    {"where": self.excludes} if self.excludes else {}
                                 ),
                             }
                         }
@@ -216,7 +216,7 @@ class Experiment(ExperimentSystemBase):
 
         spack_variants = [cls.get_spack_variants() for cls in self.helpers]
         self.package_specs[self.name]["pkg_spec"] += " ".join(
-            spack_variants+list(self.spec.variants["extra_spack_specs"])
+            spack_variants + list(self.spec.variants["extra_spack_specs"])
         ).strip()
 
         return {
