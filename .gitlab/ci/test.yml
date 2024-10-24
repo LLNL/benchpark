@@ -154,3 +154,4 @@ test_run_cts:
     - ramble --workspace-dir . --disable-progress-bar --disable-logger workspace setup
     # Run Experiments
     - ramble --workspace-dir . --disable-progress-bar --disable-logger on
+  <<: *test_benchmarks
