@@ -3,11 +3,6 @@ from benchpark.experiment import Experiment
 
 
 class Kripke(Experiment):
-    # TODO: application.py already defines the name, and the name of the workload;
-    #       is it needed/required/guaranteed there?  Can we reuse it here?
-    name = "kripke"
-    workload = "kripke"
-
     variant(
         "programming_model",
         default="openmp",
@@ -23,13 +18,15 @@ class Kripke(Experiment):
     )
 
     def compute_applications_section(self):
+        self.workload = "kripke"
+
         npx = "npx"
         npy = "npy"
         npz = "npz"
         nzx = "nzx"
         nzy = "nzy"
         nzz = "nzz"
-        num_procs = "{px} * {py} * {pz}"
+        num_procs = "{npx} * {npy} * {npz}"
 
         variables = {}
 
@@ -90,7 +87,7 @@ class Kripke(Experiment):
         experiment_name_template = f"kripke_{self.spec.variants['programming_model'][0]}_{self.spec.variants['scaling'][0]}_{{n_nodes}}_{n_resources}_{{ngroups}}_{{gs}}_{{nquad}}_{{ds}}_{{lorder}}_{{{nzx}}}_{{{nzy}}}_{{{nzz}}}_{{{npx}}}_{{{npy}}}_{{{npz}}}"
 
         return {
-            self.name: {
+            self.spec.name: {
                 "workloads": {
                     self.workload: {
                         "experiments": {

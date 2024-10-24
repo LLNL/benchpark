@@ -1,10 +1,15 @@
 from benchpark.directives import variant
 from benchpark.experiment import Experiment
+from benchpark.expr.builtin.caliper import Caliper
 
 
-class Amg2023(Experiment):
-    # TODO: application.py already defines the name, can we reuse it here?
-    name = "amg2023"
+class Amg2023(Caliper, Experiment):
+    variant(
+        "programming_model",
+        default="openmp",
+        values=("openmp", "cuda", "rocm"),
+        description="on-node parallelism model",
+    )
 
     variant(
         "workload",
@@ -14,24 +19,98 @@ class Amg2023(Experiment):
     )
 
     variant(
-        "programming_model",
-        default="openmp",
-        values=("openmp", "cuda", "rocm"),
-        description="on-node parallelism model",
+        "experiment",
+        default="single-node",
+        values=("strong", "weak", "example", "single-node", "throughput"),
+        description="strong scaling, weak scaling, single-node, throughput study or an example",
     )
 
-    variant(
-        "scaling",
-        default="single-node",
-        values=("single-node", "weak", "strong", "throughput"),
-        description="Single node, weak scaling, strong scaling, or throughput study",
-    )
+    def make_experiment_example(self):
+        app_name = self.spec.name
+
+        variables = {}
+        matrices = []
+        zips = {}
+
+        if self.spec.satisfies("programming_model=openmp"):
+            # TODO: Support variants
+            n = ["55", "110"]
+            variables["n_nodes"] = ["1", "2"]
+            variables["n_ranks"] = "8"
+            variables["n_threads_per_proc"] = ["4", "6", "12"]
+            exp_name = f"{app_name}_example_omp_{{n_nodes}}_{{n_ranks}}_{{n_threads_per_proc}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
+        elif self.spec.satisfies("programming_model=cuda"):
+            # TODO: Support variants
+            n = ["10", "20"]
+            variables["n_gpus"] = "8"
+            exp_name = f"{app_name}_example_cuda_{{n_gpus}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
+        elif self.spec.satisfies("programming_model=rocm"):
+            # TODO: Support variants
+            n = ["110", "220"]
+            variables["n_gpus"] = "8"
+            exp_name = f"{app_name}_example_rocm_{{n_gpus}}_{{px}}_{{py}}_{{pz}}_{{nx}}_{{ny}}_{{nz}}"
+        else:
+            raise NotImplementedError(
+                "Unsupported programming_model. Only openmp, cuda and rocm are supported"
+            )
+
+        # TODO: Support variant
+        p = "2"
+        variables["px"] = p
+        variables["py"] = p
+        variables["pz"] = p
+
+        variables["nx"] = n
+        variables["ny"] = n
+        variables["nz"] = n
+        zips["size"] = ["nx", "ny", "nz"]
+
+        if self.spec.satisfies("programming_model=openmp"):
+            matrices.extend(["size", "n_nodes", "n_threads_per_proc"])
+        elif self.spec.satisfies("programming_model=cuda") or self.spec.satisfies(
+            "programming_model=rocm"
+        ):
+            matrices.append("size")
+        else:
+            pass
+
+        excludes = {}
+        if self.spec.satisfies("programming_model=openmp"):
+            excludes["where"] = [
+                "{n_threads_per_proc} * {n_ranks} > {n_nodes} * {sys_cores_per_node}"
+            ]
+
+        return {
+            app_name: {
+                "workloads": {
+                    f"{self.workload}": {
+                        "experiments": {
+                            exp_name: {
+                                "variants": {"package_manager": "spack"},
+                                "variables": variables,
+                                "zips": zips,
+                                "exclude": excludes,
+                                "matrix": matrices,
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    def compute_modifiers_section(self):
+        return Experiment.compute_modifiers_section(
+            self
+        ) + Caliper.compute_modifiers_section(self)
 
     def compute_applications_section(self):
         if self.spec.satisfies("workload=problem1"):
             self.workload = "problem1"
         else:
             self.workload = "problem2"
+
+        if self.spec.satisfies("experiment=example"):
+            return self.make_experiment_example()
 
         px = "px"
         py = "py"
@@ -45,20 +124,17 @@ class Amg2023(Experiment):
         variables["n_ranks"] = num_procs
 
         if self.spec.satisfies("programming_model=openmp"):
-            variables["arch"] = "OpenMP"
             variables["n_ranks"] = num_procs
             variables["n_threads_per_proc"] = 1
             n_resources = "{n_ranks}_{n_threads_per_proc}"
         elif self.spec.satisfies("programming_model=cuda"):
-            variables["arch"] = "CUDA"
             variables["n_gpus"] = num_procs
             n_resources = "{n_gpus}"
         elif self.spec.satisfies("programming_model=rocm"):
-            variables["arch"] = "HIP"
             variables["n_gpus"] = num_procs
             n_resources = "{n_gpus}"
 
-        experiment_name = f"amg2023_{self.spec.variants['programming_model'][0]}_{self.spec.variants['scaling'][0]}_{self.workload}_{{n_nodes}}_{n_resources}_{{{px}}}_{{{py}}}_{{{pz}}}_{{{nx}}}_{{{ny}}}_{{{nz}}}"
+        experiment_name = f"amg2023_{self.spec.variants['programming_model'][0]}_{self.spec.variants['experiment'][0]}_{self.workload}_{{n_nodes}}_{n_resources}_{{{px}}}_{{{py}}}_{{{pz}}}_{{{nx}}}_{{{ny}}}_{{{nz}}}"
 
         experiment_setup = {}
         experiment_setup["variants"] = {"package_manager": "spack"}
@@ -69,26 +145,7 @@ class Amg2023(Experiment):
         # Per-process size (in zones) in each dimension
         initial_n = [80, 80, 80]
 
-        # TODO: Please explain the zips here.  Can we just declare this as a vector to begin with?
-        zips_size = "size"
-        experiment_setup["zips"] = {f"{zips_size}": [nx, ny, nz]}
-
-        if self.spec.satisfies("programming_model=openmp"):
-            experiment_setup["matrices"] = [
-                {
-                    "size_nodes_threads": [
-                        f"{zips_size}",
-                        "n_nodes",
-                        "n_threads_per_proc",
-                    ]
-                }
-            ]
-        elif self.spec.satisfies("programming_model=cuda") or self.spec.satisfies(
-            "programming_model=rocm"
-        ):
-            experiment_setup["matrix"] = [f"{zips_size}"]
-
-        if self.spec.satisfies("scaling=single-node"):
+        if self.spec.satisfies("experiment=single-node"):
             variables[px] = initial_p[0]
             variables[py] = initial_p[1]
             variables[pz] = initial_p[2]
@@ -97,23 +154,23 @@ class Amg2023(Experiment):
             variables[nz] = initial_n[2]
         else:  # A scaling study
             input_params = {}
-            if self.spec.satisfies("scaling=throughput"):
+            if self.spec.satisfies("experiment=throughput"):
                 variables[px] = initial_p[0]
                 variables[py] = initial_p[1]
                 variables[pz] = initial_p[2]
                 scaling_variable = (nx, ny, nz)
                 input_params[scaling_variable] = initial_n
-            elif self.spec.satisfies("scaling=strong"):
+            elif self.spec.satisfies("experiment=strong"):
                 scaling_variable = (px, py, pz)
                 input_params[scaling_variable] = initial_p
                 variables[nx] = initial_n[0]
                 variables[ny] = initial_n[1]
                 variables[nz] = initial_n[2]
-            elif self.spec.satisfies("scaling=weak"):
+            elif self.spec.satisfies("experiment=weak"):
                 scaling_variable = (px, py, pz)
                 input_params[scaling_variable] = initial_p
                 input_params[(nx, ny, nz)] = initial_n
-            variables |= self.scale_scaling_variables(
+            variables |= self.scale_experiment_variables(
                 input_params,
                 int(self.spec.variants["scaling-factor"][0]),
                 int(self.spec.variants["scaling-iterations"][0]),
@@ -124,7 +181,7 @@ class Amg2023(Experiment):
         experiment_setup["variables"] = variables
 
         return {
-            self.name: {
+            self.spec.name: {
                 "workloads": {
                     self.workload: {
                         "experiments": {
@@ -141,7 +198,6 @@ class Amg2023(Experiment):
         # set package versions
         app_version = "develop"
         hypre_version = "2.31.0"
-        # caliper_version = "master"
 
         # get system config options
         # TODO: Get compiler/mpi/package handles directly from system.py
@@ -188,6 +244,14 @@ class Amg2023(Experiment):
             "compiler": system_specs["compiler"],
         }
 
+        caliper_package_specs = Caliper.compute_spack_section(self)
+        if Caliper.is_enabled(self):
+            package_specs["hypre"]["pkg_spec"] += "+caliper"
+            package_specs[app_name]["pkg_spec"] += "+caliper"
+        else:
+            package_specs["hypre"]["pkg_spec"] += "~caliper"
+            package_specs[app_name]["pkg_spec"] += "~caliper"
+
         if self.spec.satisfies("programming_model=openmp"):
             package_specs["hypre"]["pkg_spec"] += "+openmp"
             package_specs[app_name]["pkg_spec"] += "+openmp"
@@ -207,6 +271,12 @@ class Amg2023(Experiment):
             )
 
         return {
-            "packages": {k: v for k, v in package_specs.items() if v},
-            "environments": {app_name: {"packages": list(package_specs.keys())}},
+            "packages": {k: v for k, v in package_specs.items() if v}
+            | caliper_package_specs["packages"],
+            "environments": {
+                app_name: {
+                    "packages": list(package_specs.keys())
+                    + list(caliper_package_specs["packages"].keys())
+                }
+            },
         }
