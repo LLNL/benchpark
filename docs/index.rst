@@ -9,7 +9,6 @@
    :maxdepth: 1
    :caption: Basics
 
-   why-benchpark
    getting-started
    basic-usage
    benchpark-workflow

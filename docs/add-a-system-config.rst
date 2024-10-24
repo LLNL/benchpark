@@ -84,7 +84,7 @@ Then, update the class name to ``Modifiedx86``::
 
 2. Next, to match our new system, we change the scheduler to slurm and the number of cores per node to 48, and number of GPUs per node to 2.
 ::
-  # this sets basic attributes of our sytem
+  # this sets basic attributes of our system
   def initialize(self): 
         super().initialize() 
         self.scheduler = "slurm"

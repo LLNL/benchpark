@@ -7,7 +7,7 @@
 Setting Up a Benchpark Workspace
 =================================
 
-To setup an experiment workspace you must first initalize both an experiment and a system to use. 
+To setup an experiment workspace you must first initialize both an experiment and a system to use. 
 Any system or experiment variants are specified at the end of the command as shown below.
 The order of the two init commands does not matter, but they both need to be run before the setup command.::
 
