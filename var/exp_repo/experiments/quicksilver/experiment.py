@@ -5,9 +5,16 @@
 
 from benchpark.directives import variant
 from benchpark.experiment import Experiment
+from benchpark.openmp import OpenMPExperiment
 
 
-class Quicksilver(Experiment):
+class Quicksilver(OpenMPExperiment, Experiment):
+    variant(
+        "workload",
+        default="quicksilver",
+        description="quicksilver",
+    )
+
     variant(
         "experiment",
         default="weak",
@@ -15,58 +22,46 @@ class Quicksilver(Experiment):
         description="weak or strong scaling",
     )
 
-    def compute_applications_section(self):
-        variables = {}
-        variants = {}
+    variant(
+        "version",
+        default="master",
+        description="app version",
+    )
 
-        variables["n_threads_per_proc"] = "1"
-        variables["omp_num_threads"] = "{n_threads_per_proc}"
-        variables["n_ranks"] = "{I}*{J}*{K}"
-        variables["n"] = "{x}*{y}*{z}*10"
-        variables["x"] = "{X}"
-        variables["y"] = "{Y}"
-        variables["z"] = "{Z}"
+    def compute_applications_section(self):
+        self.add_experiment_variable("n_threads_per_proc", "1")
+        self.add_experiment_variable("n_ranks", "{I}*{J}*{K}", True)
+        self.add_experiment_variable("n", "{x}*{y}*{z}*10")
+        self.add_experiment_variable("x", "{X}")
+        self.add_experiment_variable("y", "{Y}")
+        self.add_experiment_variable("z", "{Z}")
         if self.spec.satisfies("scaling=weak"):
-            variables["X"] = ["32", "32", "64", "64"]
-            variables["Y"] = ["32", "32", "32", "64"]
-            variables["Z"] = ["16", "32", "32", "32"]
+            self.add_experiment_name_prefix("weak")
+            self.add_experiment_variable("X", ["32", "32", "64", "64"])
+            self.add_experiment_variable("Y", ["32", "32", "32", "64"])
+            self.add_experiment_variable("Z", ["16", "32", "32", "32"])
         else:
-            variables["X"] = "32"
-            variables["Y"] = "32"
-            variables["Z"] = "16"
-        variables["I"] = ["2", "2", "4", "4"]
-        variables["J"] = ["2", "2", "2", "4"]
-        variables["K"] = ["1", "2", "2", "2"]
-        variants["package_manager"] = "spack"
-        experiment_name_template = f"quicksilver_{self.spec.variants['experiment'][0]}"
-        experiment_name_template += "{n_ranks}"
-        return {
-            "quicksilver": {  # ramble Application name
-                "workloads": {
-                    "quicksilver": {
-                        "experiments": {
-                            experiment_name_template: {
-                                "variants": variants,
-                                "variables": variables,
-                            }
-                        }
-                    }
-                }
-            }
-        }
+            self.add_experiment_name_prefix("strong")
+            self.add_experiment_variable("X", "32")
+            self.add_experiment_variable("Y", "32")
+            self.add_experiment_variable("Z", "16")
+        self.add_experiment_variable("I", ["2", "2", "4", "4"])
+        self.add_experiment_variable("J", ["2", "2", "2", "4"])
+        self.add_experiment_variable("K", ["1", "2", "2", "2"])
 
     def compute_spack_section(self):
+        # get package version
+        app_version = self.spec.variants["version"][0]
+
         # TODO: express that we need certain variables from system
         # Does not need to happen before merge, separate task
-        qs_spack_spec = "quicksilver +openmp+mpi"
-        packages = ["default-mpi", self.spec.name]
+        system_specs = {}
+        system_specs["compiler"] = "default-compiler"
+        system_specs["mpi"] = "default-mpi"
 
-        return {
-            "packages": {
-                "quicksilver": {
-                    "pkg_spec": qs_spack_spec,
-                    "compiler": "default-compiler",
-                }
-            },
-            "environments": {"quicksilver": {"packages": packages}},
-        }
+        # empty package_specs value implies external package
+        self.add_spack_spec(system_specs["mpi"])
+
+        self.add_spack_spec(
+            self.name, [f"quicksilver@{app_version} +mpi", system_specs["compiler"]]
+        )
