@@ -333,7 +333,7 @@ jobs:
       - name: Dry run dynamic saxpy/openmp with dynamic CTS ruby
         run: |
           ./bin/benchpark system init --dest=ruby-system cts cluster=ruby
-          ./bin/benchpark experiment init --dest=saxpy-openmp saxpy programming_model=openmp
+          ./bin/benchpark experiment init --dest=saxpy-openmp saxpy openmp=oui
           ./bin/benchpark setup ./saxpy-openmp ./ruby-system workspace/
           . workspace/setup.sh
           ramble \
