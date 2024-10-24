@@ -8,7 +8,7 @@ import pathlib
 from benchpark.directives import variant
 from benchpark.system import System
 
-
+""" This is the generic system class for an x86 system. It can be easily copied and modified to model other systems."""
 class Genericx86(System):
 
     variant(
