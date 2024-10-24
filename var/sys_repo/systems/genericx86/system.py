@@ -10,15 +10,8 @@ from benchpark.system import System
 
 
 class Genericx86(System):
-    """This is the generic system class for an x86 system.
+    """This is the generic system class for an x86 system, gcc compiler, mpi.
     It can be easily copied and modified to model other systems."""
-
-    variant(
-        "compiler",
-        default="gcc",
-        values=("gcc", "intel"),
-        description="Which compiler to use",
-    )
 
     def initialize(self):
         super().initialize()
