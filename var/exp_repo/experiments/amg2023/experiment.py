@@ -1,8 +1,9 @@
 from benchpark.directives import variant
 from benchpark.experiment import Experiment
+from benchpark.expr.builtin.caliper import Caliper
 
 
-class Amg2023(Experiment):
+class Amg2023(Caliper, Experiment):
     variant(
         "programming_model",
         default="openmp",
@@ -101,6 +102,11 @@ class Amg2023(Experiment):
             }
         }
 
+    def compute_modifiers_section(self):
+        return Experiment.compute_modifiers_section(
+            self
+        ) + Caliper.compute_modifiers_section(self)
+
     def compute_applications_section(self):
         if self.spec.satisfies("workload=problem1"):
             self.workload = "problem1"
@@ -124,7 +130,6 @@ class Amg2023(Experiment):
         # set package versions
         app_version = "develop"
         hypre_version = "2.31.0"
-        # caliper_version = "master"
 
         # get system config options
         # TODO: Get compiler/mpi/package handles directly from system.py
@@ -171,6 +176,14 @@ class Amg2023(Experiment):
             "compiler": system_specs["compiler"],
         }
 
+        caliper_package_specs = Caliper.compute_spack_section(self)
+        if Caliper.is_enabled(self):
+            package_specs["hypre"]["pkg_spec"] += "+caliper"
+            package_specs[app_name]["pkg_spec"] += "+caliper"
+        else:
+            package_specs["hypre"]["pkg_spec"] += "~caliper"
+            package_specs[app_name]["pkg_spec"] += "~caliper"
+
         if self.spec.satisfies("programming_model=openmp"):
             package_specs["hypre"]["pkg_spec"] += "+openmp"
             package_specs[app_name]["pkg_spec"] += "+openmp"
@@ -190,6 +203,12 @@ class Amg2023(Experiment):
             )
 
         return {
-            "packages": {k: v for k, v in package_specs.items() if v},
-            "environments": {app_name: {"packages": list(package_specs.keys())}},
+            "packages": {k: v for k, v in package_specs.items() if v}
+            | caliper_package_specs["packages"],
+            "environments": {
+                app_name: {
+                    "packages": list(package_specs.keys())
+                    + list(caliper_package_specs["packages"].keys())
+                }
+            },
         }
