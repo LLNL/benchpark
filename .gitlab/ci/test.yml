@@ -3,6 +3,7 @@
     matrix:
       - HOST: tioga
         ARCHCONFIG: LLNL-Tioga-HPECray-zen3-MI250X-Slingshot
+        SYSTEMHASH: Tioga-975af3c
       - HOST: dane
         ARCHCONFIG: LLNL-Dane-DELL-sapphirerapids-OmniPath
         SYSTEMHASH: Cts-2c51a80
