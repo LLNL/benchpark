@@ -20,7 +20,7 @@ Reproducibly run benchmarks
 
 
 
-Collaborative maintainance of benchmarks
+Collaborative maintenance of benchmarks
 ----------------------------------------
 
 Due to benchpark being open-source, 
