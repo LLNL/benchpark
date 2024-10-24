@@ -123,7 +123,7 @@ test_run_tioga:
     - ramble --workspace-dir . --disable-progress-bar --disable-logger on
   <<: *test_benchmarks
 
-test_run_cts:
+test_run_kripke_cts:
   stage: test
   tags:
     - $HOST
@@ -140,17 +140,48 @@ test_run_cts:
         - var/**
         - lib/**
   script:
-    - echo $HOST $BENCHMARK $SYSTEMHASH
     - . /usr/workspace/benchpark-dev/benchpark-venv/$SYS_TYPE/bin/activate
     # Initialize system & experiment
     - ./bin/benchpark system init --dest=$HOST-system cluster=$HOST
-    - ./bin/benchpark experiment init --dest=$BENCHMARK-benchmark $BENCHMARK programming_model=openmp
+    - ./bin/benchpark experiment init --dest=kripke-benchmark kripke programming_model=openmp
     # Build Workspace
-    - ./bin/benchpark setup $BENCHMARK-benchmark $HOST-system workspace/
+    - ./bin/benchpark setup kripke-benchmark $HOST-system workspace/
     # Setup Ramble & Spack
     - . workspace/setup.sh
     # Setup Workspace
-    - cd ./workspace/$BENCHMARK-benchmark/$SYSTEMHASH/workspace/
+    - cd ./workspace/kripke-benchmark/$SYSTEMHASH/workspace/
+    - ramble --workspace-dir . --disable-progress-bar --disable-logger workspace setup
+    # Run Experiments
+    - ramble --workspace-dir . --disable-progress-bar --disable-logger on
+  <<: *test_benchmarks
+
+test_run_saxpy_cts:
+  stage: test
+  tags:
+    - $HOST
+    - shell
+  <<: *test_clusters
+  rules:
+    - changes:
+        - .gitlab-ci.yml
+        - .gitlab/ci/*
+        - experiments/**
+        - systems/**
+        - repo/**
+        - modifiers/**
+        - var/**
+        - lib/**
+  script:
+    - . /usr/workspace/benchpark-dev/benchpark-venv/$SYS_TYPE/bin/activate
+    # Initialize system & experiment
+    - ./bin/benchpark system init --dest=$HOST-system cluster=$HOST
+    - ./bin/benchpark experiment init --dest=saxpy-benchmark saxpy programming_model=openmp
+    # Build Workspace
+    - ./bin/benchpark setup saxpy-benchmark $HOST-system workspace/
+    # Setup Ramble & Spack
+    - . workspace/setup.sh
+    # Setup Workspace
+    - cd ./workspace/saxpy-benchmark/$SYSTEMHASH/workspace/
     - ramble --workspace-dir . --disable-progress-bar --disable-logger workspace setup
     # Run Experiments
     - ramble --workspace-dir . --disable-progress-bar --disable-logger on
