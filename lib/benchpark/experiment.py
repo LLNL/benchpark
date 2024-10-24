@@ -209,7 +209,7 @@ class Experiment(ExperimentSystemBase):
 
         self.compute_spack_section()
 
-        if not self.name in self.package_specs:
+        if self.name not in self.package_specs:
             raise BenchparkError(
                 f"Spack section must be defined for application package {self.name}"
             )
