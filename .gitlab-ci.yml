@@ -92,6 +92,7 @@ stages:
   - test
   - release-resources
   - summarize
+  - deploy-performance
   - cleanup-dir
 bootstrap_benchpark:
   tags: [shell, oslic]
@@ -113,6 +114,18 @@ generate_test_summary:
     paths: [artifact-test-summary/]
   rules:
     - when: always
+deploy_nightly_performance_metadata:
+  tags: [shell, oslic]
+  stage: deploy-performance
+  needs:
+    - job: generate_test_summary
+      artifacts: true
+  script:
+    - bash .gitlab/utils/push-to-perf-repo.sh
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: always
+    - when: never
 cleanup_pipeline_dir:
   tags: [shell, oslic]
   stage: cleanup-dir
