@@ -36,23 +36,23 @@ chmod 700 "${askpass_script}"
 GIT_ASKPASS="${askpass_script}" GIT_TERMINAL_PROMPT=0 \
     git clone "${perf_repo_url}" "${perf_repo_dir}"
 
-copied=0
+copied_hosts=()
 for host in "${host_dirs[@]}"; do
     if [[ -d "${summary_dir}/${host}" ]]; then
         mkdir -p "${perf_repo_dir}/${host}"
         find "${summary_dir}/${host}" -maxdepth 1 -type f -name '*.json' -exec cp {} "${perf_repo_dir}/${host}/" \;
-        copied=1
+        copied_hosts+=("${host}")
     fi
 done
 
-if [[ "${copied}" -eq 0 ]]; then
+if [[ "${#copied_hosts[@]}" -eq 0 ]]; then
     echo "No host metadata JSON files found in ${summary_dir}; nothing to deploy."
     exit 0
 fi
 
 cd "${perf_repo_dir}"
 
-if [[ -z "$(git status --porcelain -- "${host_dirs[@]}")" ]]; then
+if [[ -z "$(git status --porcelain -- "${copied_hosts[@]}")" ]]; then
     echo "No benchpark-performance metadata changes to commit."
     exit 0
 fi
@@ -60,7 +60,7 @@ fi
 git config user.name "${GITLAB_USER_NAME:-benchpark-ci}"
 git config user.email "${GITLAB_USER_EMAIL:-benchpark-ci@llnl.gov}"
 
-git add "${host_dirs[@]}"
+git add "${copied_hosts[@]}"
 git commit -m "Update nightly performance metadata from ${CI_PIPELINE_ID:-unknown}"
 GIT_ASKPASS="${askpass_script}" GIT_TERMINAL_PROMPT=0 \
     git push origin HEAD
