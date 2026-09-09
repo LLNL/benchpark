@@ -21,9 +21,9 @@ if [[ ! -d "${summary_dir}" ]]; then
     exit 1
 fi
 
-auth_repo_url="${perf_repo_url/https:\/\//https:\/\/x-access-token:${BENCHPARK_PERF_DEPLOY_TOKEN}@}"
+auth_header="Authorization: Basic $(printf 'x-access-token:%s' "${BENCHPARK_PERF_DEPLOY_TOKEN}" | base64 | tr -d '\n')"
 
-git clone "${auth_repo_url}" "${perf_repo_dir}"
+git -c http.extraHeader="${auth_header}" clone "${perf_repo_url}" "${perf_repo_dir}"
 
 copied=0
 for host in "${host_dirs[@]}"; do
@@ -51,4 +51,4 @@ git config user.email "${GITLAB_USER_EMAIL:-benchpark-ci@llnl.gov}"
 
 git add "${host_dirs[@]}"
 git commit -m "Update nightly performance metadata from ${CI_PIPELINE_ID:-unknown}"
-git push origin HEAD
+git -c http.extraHeader="${auth_header}" push origin HEAD
