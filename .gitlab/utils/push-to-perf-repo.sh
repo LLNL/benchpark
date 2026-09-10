@@ -29,9 +29,7 @@ else
     printf '%s\n' "${BENCHPARK_PERF_DEPLOY_TOKEN}" | tr -d '\r' > "${ssh_key_file}"
 fi
 chmod 600 "${ssh_key_file}"
-ssh-keygen -lf "${ssh_key_file}"
-ssh -V
-git_ssh_command="ssh -vvv -i ${ssh_key_file} -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
+git_ssh_command="ssh -i ${ssh_key_file} -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
 
 GIT_SSH_COMMAND="${git_ssh_command}" GIT_TERMINAL_PROMPT=0 \
     git clone "${perf_repo_url}" "${perf_repo_dir}"
