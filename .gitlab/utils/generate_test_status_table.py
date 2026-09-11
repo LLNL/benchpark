@@ -11,12 +11,11 @@ matplotlib_cache = Path(tempfile.gettempdir()) / "matplotlib-cache"
 matplotlib_cache.mkdir(parents=True, exist_ok=True)
 os.environ.setdefault("MPLCONFIGDIR", str(matplotlib_cache))
 
-import matplotlib
+import matplotlib  # noqa: E402
 
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
-
+import matplotlib.pyplot as plt  # noqa: E402
+from matplotlib.patches import Rectangle  # noqa: E402
 
 STATUS_ORDER = {
     "Unknown": 0,
@@ -185,9 +184,7 @@ def build_matrix(results):
 
 def marker_text(markers):
     ordered = [
-        marker
-        for marker in ("dep", "sys", "exp", "app", "!")
-        if marker in markers
+        marker for marker in ("dep", "sys", "exp", "app", "!") if marker in markers
     ]
     return " ".join(ordered)
 
@@ -195,11 +192,7 @@ def marker_text(markers):
 def changed_packages(result):
     changes = result.get("changes") or {}
     packages = changes.get("packages") or []
-    return {
-        package.get("name")
-        for package in packages
-        if package.get("name")
-    }
+    return {package.get("name") for package in packages if package.get("name")}
 
 
 def add_cell(ax, x, y, width, height, status, markers=None):
@@ -252,14 +245,20 @@ def render_table(summary, output_path):
             "benchmark": benchmark,
             "config": config,
             "config_lines": wrap_config(config),
-            "package_lines": wrap_packages(row_packages.get((benchmark, config), set())),
+            "package_lines": wrap_packages(
+                row_packages.get((benchmark, config), set())
+            ),
         }
         for benchmark, config in rows
     ]
     row_heights = [
         max(
             0.42 if not row["config_lines"] else 0.35 + 0.17 * len(row["config_lines"]),
-            0.42 if not row["package_lines"] else 0.35 + 0.17 * len(row["package_lines"]),
+            (
+                0.42
+                if not row["package_lines"]
+                else 0.35 + 0.17 * len(row["package_lines"])
+            ),
         )
         for row in row_infos
     ]
