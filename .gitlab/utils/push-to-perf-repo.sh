@@ -36,7 +36,7 @@ GIT_SSH_COMMAND="${git_ssh_command}" GIT_TERMINAL_PROMPT=0 \
 
 copied_hosts=()
 for host in "${host_dirs[@]}"; do
-    if [[ -d "${summary_dir}/${host}" ]]; then
+    if [[ -d "${summary_dir}/${host}" ]] && find "${summary_dir}/${host}" -maxdepth 1 -type f -name '*.json' | grep -q .; then
         mkdir -p "${perf_repo_dir}/${host}"
         find "${summary_dir}/${host}" -maxdepth 1 -type f -name '*.json' -exec cp {} "${perf_repo_dir}/${host}/" \;
         copied_hosts+=("${host}")

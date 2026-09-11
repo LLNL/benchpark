@@ -2,7 +2,7 @@
 set -euo pipefail
 
 usage() {
-    echo "Usage: $0 --ref <ref> --job-name <job_name> --artifact-path <path> --output-path <path> [--pipeline-id <id>] [--exclude-pipeline-id <id>] [--status-output-path <path>] [--directory] [--optional]" >&2
+    echo "Usage: $0 --ref <ref> --job-name <job_name> --artifact-path <path> --output-path <path> [--pipeline-id <id>] [--exclude-pipeline-id <id>] [--status-output-path <path>] [--optional]" >&2
     echo "       $0 --pipeline-id <id> --pipeline-stage <stage> --artifact-path <path> --output-path <dir> [--optional]" >&2
 }
 
@@ -14,7 +14,6 @@ pipeline_id=""
 pipeline_stage=""
 exclude_pipeline_id=""
 status_output_path=""
-directory=false
 optional=false
 
 while [[ $# -gt 0 ]]; do
@@ -27,7 +26,6 @@ while [[ $# -gt 0 ]]; do
         --pipeline-stage) pipeline_stage=$2; shift 2 ;;
         --exclude-pipeline-id) exclude_pipeline_id=$2; shift 2 ;;
         --status-output-path) status_output_path=$2; shift 2 ;;
-        --directory) directory=true; shift ;;
         --optional) optional=true; shift ;;
         -h|--help) usage; exit 0 ;;
         *) echo "Unknown argument: $1" >&2; usage; exit 1 ;;
@@ -95,49 +93,21 @@ fetch_job_artifact() {
         "${api_url}/projects/${project_id}/jobs/${artifact_job_id}/artifacts" \
         --output "${artifact_archive}"
 
-    if [[ "${directory}" == true ]]; then
-        prefix="${artifact_path%/}/"
-        mkdir -p "${artifact_output_path}"
-        matches=$(unzip -Z -1 "${artifact_archive}" "${prefix}*" 2>/dev/null | grep -v '/$' || true)
-
-        if [[ -z "${matches}" ]]; then
-            rm -f "${artifact_archive}"
-            if [[ "${optional}" == true ]]; then
-                echo "No optional artifacts found under ${artifact_path}."
-                return 0
-            fi
-            echo "Unable to locate artifact directory ${artifact_path}." >&2
-            return 1
+    mkdir -p "$(dirname "${artifact_output_path}")"
+    if ! unzip -p "${artifact_archive}" "${artifact_path}" > "${artifact_output_path}" 2>/dev/null; then
+        rm -f "${artifact_output_path}" "${artifact_archive}"
+        if [[ "${optional}" == true ]]; then
+            echo "Optional artifact ${artifact_path} was not found."
+            return 0
         fi
-
-        while read -r member; do
-            relative_path=${member#"${prefix}"}
-            destination="${artifact_output_path}/${relative_path}"
-            mkdir -p "$(dirname "${destination}")"
-            unzip -p "${artifact_archive}" "${member}" > "${destination}"
-        done <<< "${matches}"
-    else
-        mkdir -p "$(dirname "${artifact_output_path}")"
-        if ! unzip -p "${artifact_archive}" "${artifact_path}" > "${artifact_output_path}" 2>/dev/null; then
-            rm -f "${artifact_output_path}" "${artifact_archive}"
-            if [[ "${optional}" == true ]]; then
-                echo "Optional artifact ${artifact_path} was not found."
-                return 0
-            fi
-            echo "Unable to locate artifact ${artifact_path}." >&2
-            return 1
-        fi
+        echo "Unable to locate artifact ${artifact_path}." >&2
+        return 1
     fi
 
     rm -f "${artifact_archive}"
 }
 
 if [[ -n "${pipeline_stage}" ]]; then
-    if [[ "${directory}" == true ]]; then
-        echo "--directory is not supported with --pipeline-stage." >&2
-        exit 1
-    fi
-
     mkdir -p "${output_path}"
     find "${output_path}" -maxdepth 1 -type f -name '*.json' -delete
 
