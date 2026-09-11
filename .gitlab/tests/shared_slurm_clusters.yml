@@ -80,7 +80,7 @@ release_resources_matrix:
     BASELINE_REF: develop
   artifacts:
     when: always
-    paths: [artifact-githash/githash_metadata.json, artifact-cali/]
+    paths: [artifact-githash/githash_metadata.json, artifact-cali/, artifact-test-metadata/test_metadata.json]
   before_script:
     - !reference [.report_status, before_script]
   script:
@@ -105,6 +105,8 @@ release_resources_matrix:
       bash .gitlab/utils/collect-cali-artifact.sh
     - |
       bash .gitlab/utils/collect-githash-artifact.sh PR "$CI_PROJECT_DIR/pr_flux.status"
+    - |
+      bash .gitlab/utils/write-test-metadata.sh PR "$CI_PROJECT_DIR/pr_flux.status"
 run_tests_slurm_dane:
   extends: .run_tests_slurm
   tags: [shell, dane]
